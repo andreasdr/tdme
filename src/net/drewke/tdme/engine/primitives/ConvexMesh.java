@@ -164,6 +164,14 @@ public final class ConvexMesh implements BoundingVolume {
 	 * @see net.drewke.tdme.engine.primitives.BoundingVolume#computeClosestPointOnBoundingVolume(net.drewke.tdme.math.Vector3, net.drewke.tdme.math.Vector3)
 	 */
 	public void computeClosestPointOnBoundingVolume(Vector3 point, Vector3 closestsPoint) {
+		// check if convex mesh contains point
+		if (containsPoint(point) == true) {
+			// yep, return it
+			closestsPoint.set(point);
+			return;
+		}
+
+		// otherwise find closests point on triangles
 		if (triangles.length == 0) {
 			return;
 		}
