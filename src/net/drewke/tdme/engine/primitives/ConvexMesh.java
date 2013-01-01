@@ -2,12 +2,12 @@ package net.drewke.tdme.engine.primitives;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
 
 import net.drewke.tdme.engine.Object3DModel;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.physics.CollisionResponse;
+import net.drewke.tdme.math.SeparatingAxisTheorem;
 import net.drewke.tdme.math.Vector3;
 
 /**
@@ -17,7 +17,13 @@ import net.drewke.tdme.math.Vector3;
  */
 public final class ConvexMesh implements BoundingVolume {
 
+	private SeparatingAxisTheorem sat;
 	private Triangle[] triangles;
+	private Vector3 triangleEdge1;
+	private Vector3 triangleEdge2;
+	private Vector3 triangleEdge3;
+	private Vector3 triangleNormal;
+
 	protected Vector3[] vertices;
 	protected Vector3 center;
 	protected Vector3 distanceVector;
@@ -29,10 +35,15 @@ public final class ConvexMesh implements BoundingVolume {
 	 * @param model
 	 */
 	public ConvexMesh(Triangle[] triangles) {
+		this.sat = new SeparatingAxisTheorem();
 		this.center = new Vector3();
 		this.distanceVector = new Vector3();
 		this.closestsPoint = new Vector3();
 		this.triangles = triangles;
+		this.triangleEdge1 = new Vector3();
+		this.triangleEdge2 = new Vector3();
+		this.triangleEdge3 = new Vector3();
+		this.triangleNormal = new Vector3();
 		update();
 		createVertices();
 	}
@@ -42,10 +53,15 @@ public final class ConvexMesh implements BoundingVolume {
 	 * @param model
 	 */
 	public ConvexMesh(Object3DModel model) {
+		sat = new SeparatingAxisTheorem();
 		center = new Vector3();
 		distanceVector = new Vector3();
 		closestsPoint = new Vector3();
 		triangles = model.getFaceTriangles();
+		triangleEdge1 = new Vector3();
+		triangleEdge2 = new Vector3();
+		triangleEdge3 = new Vector3();
+		triangleNormal = new Vector3();
 		update();
 		createVertices();
 	}
@@ -168,9 +184,23 @@ public final class ConvexMesh implements BoundingVolume {
 	 */
 	public boolean containsPoint(Vector3 point) {
 		for (int i = 0; i < triangles.length; i++) {
-			if (triangles[i].containsPoint(point) == true) return true;
+			Triangle triangle = triangles[i];
+			Vector3[] triangleVertices = triangle.getVertices();
+
+			// determine axes to test
+			triangleEdge1.set(triangleVertices[1]).sub(triangleVertices[0]).normalize();
+			triangleEdge2.set(triangleVertices[2]).sub(triangleVertices[1]).normalize();
+			triangleEdge3.set(triangleVertices[0]).sub(triangleVertices[2]).normalize();
+			Vector3.computeCrossProduct(triangleEdge1, triangleEdge2, triangleNormal).normalize();
+
+			// check if projected point is between min and max of projected vertices
+			if (sat.checkPointInVerticesOnAxis(vertices, point, triangleEdge1) == false) return false;
+			if (sat.checkPointInVerticesOnAxis(vertices, point, triangleEdge2) == false) return false;
+			if (sat.checkPointInVerticesOnAxis(vertices, point, triangleEdge3) == false) return false;
+			if (sat.checkPointInVerticesOnAxis(vertices, point, triangleNormal) == false) return false;
 		}
-		return false;
+
+		return true;
 	}
 
 	/*

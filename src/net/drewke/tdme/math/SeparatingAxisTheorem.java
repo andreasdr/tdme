@@ -40,6 +40,17 @@ public final class SeparatingAxisTheorem {
 	}
 
 	/**
+	 * Projects the point on given axis and returns its value
+	 * @param point
+	 * @param axis
+	 * @return
+	 */
+	private float doCalculatePoint(Vector3 point, Vector3 axis) {
+		float distance = Vector3.computeDotProduct(point, axis);
+		return distance;
+	}
+
+	/**
 	 * Projects the vertices onto the plane and returns the minimum and maximum values
 	 * 	ported from "game physics - a practical introduction/ben kenwright"
 	 * @param obb
@@ -59,6 +70,19 @@ public final class SeparatingAxisTheorem {
 		// return min, max
 		result[0] = min;
 		result[1] = max;
+	}
+
+	/**
+	 * Check if point is in vertices on given axis
+	 * @param vertices
+	 * @param point
+	 * @param axis
+	 * @return point in vertices
+	 */
+	public boolean checkPointInVerticesOnAxis(Vector3[] vertices, Vector3 point, Vector3 axis) {
+		doCalculateInterval(vertices, axis, minMax1);
+		float pOnAxis = doCalculatePoint(point, axis);
+		return pOnAxis >= minMax1[0] && pOnAxis <= minMax1[1];
 	}
 
 	/**
