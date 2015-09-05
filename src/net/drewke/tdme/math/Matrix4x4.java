@@ -1,0 +1,519 @@
+package net.drewke.tdme.math;
+
+import java.util.Arrays;
+
+/**
+ * 4x4 Matrix class
+ * @author Andreas Drewke, Song Ho Ahn <song.ahn@gmail.com>
+ * @version $Id$
+ */
+public final class Matrix4x4 {
+
+	protected float data[];
+	protected float _data[];
+
+	/**
+	 * Public constructor
+	 */
+	public Matrix4x4() {
+		data = new float[16];
+		Arrays.fill(data, 0.0f);
+		_data = new float[16];
+	}
+
+	/**
+	 * Public constructor
+	 * @param float array m
+	 */
+	public Matrix4x4(float[] m) {
+		data = new float[16];
+		System.arraycopy(m, 0, data, 0, Math.min(m.length, data.length));
+		_data = new float[16];
+	}
+
+	/**
+	 * Public constructor
+	 * @param matrix
+	 */
+	public Matrix4x4(Matrix4x4 matrix) {
+		data = new float[16];
+		System.arraycopy(matrix.data, 0, data, 0, data.length);
+		_data = new float[16];
+	}
+
+	/**
+	 * Public constructor
+	 * @param row 0, column 0
+	 * @param row 1, column 0
+	 * @param row 2, column 0
+	 * @param row 3, column 0
+	 * @param row 0, column 1
+	 * @param row 1, column 1
+	 * @param row 2, column 1
+	 * @param row 3, column 1
+	 * @param row 0, column 2
+	 * @param row 1, column 2
+	 * @param row 2, column 2
+	 * @param row 3, column 2
+	 * @param row 0, column 3
+	 * @param row 1, column 3
+	 * @param row 2, column 3
+	 * @param row 3, column 3
+	 */
+	public Matrix4x4(
+		float r0c0, float r1c0, float r2c0, float r3c0,
+		float r0c1, float r1c1, float r2c1, float r3c1,
+		float r0c2, float r1c2, float r2c2, float r3c2,
+		float r0c3, float r1c3, float r2c3, float r3c3) {
+		//
+		data = new float[16];
+		_data = new float[16];
+		set(
+			r0c0, r1c0, r2c0, r3c0,
+			r0c1, r1c1, r2c1, r3c1,
+			r0c2, r1c2, r2c2, r3c2,
+			r0c3, r1c3, r2c3, r3c3
+		);
+	}
+
+	/**
+	 * Set up matrix by values
+	 * @param row 0, column 0
+	 * @param row 1, column 0
+	 * @param row 2, column 0
+	 * @param row 3, column 0
+	 * @param row 0, column 1
+	 * @param row 1, column 1
+	 * @param row 2, column 1
+	 * @param row 3, column 1
+	 * @param row 0, column 2
+	 * @param row 1, column 2
+	 * @param row 2, column 2
+	 * @param row 3, column 2
+	 * @param row 0, column 3
+	 * @param row 1, column 3
+	 * @param row 2, column 3
+	 * @param row 3, column 3
+	 * @return this matrix
+	 */
+	public Matrix4x4 set(
+		float r0c0, float r1c0, float r2c0, float r3c0,
+		float r0c1, float r1c1, float r2c1, float r3c1,
+		float r0c2, float r1c2, float r2c2, float r3c2,
+		float r0c3, float r1c3, float r2c3, float r3c3) {
+		data[0] = r0c0;
+		data[1] = r1c0;
+		data[2] = r2c0;
+		data[3] = r3c0;
+		data[4] = r0c1; 
+		data[5] = r1c1;
+		data[6] = r2c1;
+		data[7] = r3c1;
+		data[8] = r0c2;
+		data[9] = r1c2;
+		data[10] = r2c2;
+		data[11] = r3c2;
+		data[12] = r0c3;
+		data[13] = r1c3;
+		data[14] = r2c3;
+		data[15] = r3c3;
+		return this;
+	}
+
+	/**
+	 * Sets up this matrix by matrix m
+	 * @param m
+	 * @return
+	 */
+	public Matrix4x4 set(float[] m) {
+		System.arraycopy(m, 0, data, 0, Math.min(m.length, data.length));
+		return this;
+	}
+
+	/**
+	 * Sets up this matrix by matrix m
+	 * @param m
+	 * @return
+	 */
+	public Matrix4x4 set(Matrix4x4 m) {
+		System.arraycopy(m.data, 0, data, 0, data.length);
+		return this;
+	}
+
+	/**
+	 * Setup identity matrix
+	 * @return this matrix
+	 */
+	public Matrix4x4 identity() {
+	    data[0] = 1.0f;
+	    data[1] = 0.0f;
+	    data[2] = 0.0f;
+	    data[3] = 0.0f;
+	    data[4] = 0.0f;
+	    data[5] = 1.0f;
+	    data[6] = 0.0f;
+	    data[7] = 0.0f;
+	    data[8] = 0.0f;
+	    data[9] = 0.0f;
+	    data[10] = 1.0f;
+	    data[11] = 0.0f;
+	    data[12] = 0.0f;
+	    data[13] = 0.0f;
+	    data[14] = 0.0f;
+	    data[15] = 1.0f;
+	    return this;
+	}
+
+	/**
+	 * Multiplies a vector3 with this matrix into destination vector
+	 * @param vector 3
+	 * @param destination vector 3
+	 * @return vector 3
+	 */
+	public Vector3 multiply(Vector3 v, Vector3 dest) {
+		return dest.set(
+			v.data[0] * data[0] + v.data[1] * data[4] + v.data[2] * data[8] + data[12],
+			v.data[0] * data[1] + v.data[1] * data[5] + v.data[2] * data[9] + data[13],
+			v.data[0] * data[2] + v.data[1] * data[6] + v.data[2] * data[10] + data[14]
+	    );
+	}
+
+	/**
+	 * Multiplies a vector3 with this matrix ignoring translation
+	 * @param vector 3
+	 * @param destination vector 3
+	 * @return vector 3 dest
+	 */
+	public Vector3 multiplyNoTranslation(Vector3 v, Vector3 dest) {
+		return dest.set(
+			v.data[0] * data[0] + v.data[1] * data[4] + v.data[2] * data[8],
+			v.data[0] * data[1] + v.data[1] * data[5] + v.data[2] * data[9],
+			v.data[0] * data[2] + v.data[1] * data[6] + v.data[2] * data[10]
+	    );
+	}
+
+	/**
+	 * Multiplies a vector4 with this matrix into destination vector
+	 * @param vector 4
+	 * @param destination vector4
+	 * @return destination vector 4
+	 */
+	public Vector4 multiply(Vector4 v, Vector4 dest) {
+		dest.set(
+			v.data[0] * data[0] + v.data[1] * data[4] + v.data[2] * data[8] + v.data[3] * data[12],
+			v.data[0] * data[1] + v.data[1] * data[5] + v.data[2] * data[9] + v.data[3] * data[13],
+			v.data[0] * data[2] + v.data[1] * data[6] + v.data[2] * data[10] + v.data[3] * data[14],
+			v.data[0] * data[3] + v.data[1] * data[7] + v.data[2] * data[11] + v.data[3] * data[15]
+	    );
+		return dest;
+	}
+
+	/**
+	 * Multiplies this matrix with another matrix
+	 * @param m
+	 * @return this matrix
+	 */
+	public Matrix4x4 multiply(Matrix4x4 m) {
+		_data[0] = data[0] * m.data[0]  + data[1] * m.data[4]  + data[2] * m.data[8]  + data[3] * m.data[12];
+		_data[1] = data[0] * m.data[1]  + data[1] * m.data[5]  + data[2] * m.data[9]  + data[3] * m.data[13];
+		_data[2] = data[0] * m.data[2]  + data[1] * m.data[6]  + data[2] * m.data[10] + data[3] * m.data[14];
+		_data[3] = data[0] * m.data[3]  + data[1] * m.data[7]  + data[2] * m.data[11] + data[3] * m.data[15];
+		_data[4] = data[4] * m.data[0]  + data[5] * m.data[4]  + data[6] * m.data[8]  + data[7] * m.data[12];
+		_data[5] = data[4] * m.data[1]  + data[5] * m.data[5]  + data[6] * m.data[9]  + data[7] * m.data[13];
+		_data[6] = data[4] * m.data[2]  + data[5] * m.data[6]  + data[6] * m.data[10]  + data[7] * m.data[14];
+		_data[7] = data[4] * m.data[3]  + data[5] * m.data[7]  + data[6] * m.data[11]  + data[7] * m.data[15];
+		_data[8] = data[8] * m.data[0]  + data[9] * m.data[4]  + data[10] * m.data[8] + data[11] * m.data[12];
+		_data[9] = data[8] * m.data[1]  + data[9] * m.data[5]  + data[10] * m.data[9] + data[11] * m.data[13];
+		_data[10] = data[8] * m.data[2]  + data[9] * m.data[6]  + data[10] * m.data[10] + data[11] * m.data[14];
+		_data[11] = data[8] * m.data[3]  + data[9] * m.data[7]  + data[10] * m.data[11] + data[11] * m.data[15];
+		_data[12] = data[12] * m.data[0] + data[13] * m.data[4] + data[14] * m.data[8] + data[15] * m.data[12];
+		_data[13] = data[12] * m.data[1] + data[13] * m.data[5] + data[14] * m.data[9] + data[15] * m.data[13];
+		_data[14] = data[12] * m.data[2] + data[13] * m.data[6] + data[14] * m.data[10] + data[15] * m.data[14];
+		_data[15] = data[12] * m.data[3] + data[13] * m.data[7] + data[14] * m.data[11] + data[15] * m.data[15];
+
+		// set up new matrix data
+		System.arraycopy(_data, 0, data, 0, data.length);
+		return this;
+	}
+
+	/**
+	 * Scales this matrix
+	 * @param s
+	 * @returns this matrix
+	 */
+	public Matrix4x4 scale(float s) {
+		data[0]*= s;
+		data[1]*= s;
+		data[2]*= s;
+		data[3]*= s;
+		data[4]*= s;
+		data[5]*= s;
+		data[6]*= s;
+		data[7]*= s;
+		data[8]*= s;
+		data[9]*= s;
+		data[10]*= s;
+		data[11]*= s;
+		return this;
+	}
+
+	/**
+	 * Scales this matrix by given vector
+	 * @param v
+	 * @return this matrix
+	 */
+	public Matrix4x4 scale(Vector3 v) {
+		data[0] *= v.data[0];
+		data[1] *= v.data[0];
+		data[2] *= v.data[0];
+		data[3] *= v.data[0];
+		data[4] *= v.data[1];
+		data[5] *= v.data[1];
+		data[6] *= v.data[1];
+		data[7] *= v.data[1];
+		data[8] *= v.data[2];
+		data[9] *= v.data[2];
+		data[10] *= v.data[2];
+		data[11] *= v.data[2];
+		return this;
+	}
+
+	/**
+	 * Sets up a translation matrix
+	 * @param v
+	 * @return this matrix
+	 */
+	public Matrix4x4 translate(Vector3 v) {
+		data[12] += v.data[0] * data[0] + v.data[1] * data[4] + v.data[2] * data[8];
+		data[13] += v.data[0] * data[1] + v.data[1] * data[5] + v.data[2] * data[9];
+		data[14] += v.data[0] * data[2] + v.data[1] * data[6] + v.data[2] * data[10];
+		return this;
+	}
+
+	/**
+	 * Creates a rotation matrix
+	 * @param angle
+	 * @param vector v
+	 * @return this matrix
+	 */
+	public Matrix4x4 rotate(float angle, Vector3 v) {
+		set(
+			new Quaternion().
+			identity().
+			rotate(angle, v).
+			computeMatrix(this)
+		);
+		return this;
+	}
+
+	/**
+	 * Transposes this matrix
+	 * @return this matrix
+	 */
+	public Matrix4x4 transpose() {
+		_data[0] = data[0];
+		_data[1] = data[4];
+		_data[2] = data[8];
+		_data[3] = data[12];
+		_data[4] = data[1];
+		_data[5] = data[5];
+		_data[6] = data[9];
+		_data[7] = data[13];
+		_data[8] = data[2];
+		_data[9] = data[6];
+		_data[10] = data[10];
+		_data[11] = data[14];
+		_data[12] = data[3];
+		_data[13] = data[7];
+		_data[14] = data[11];
+		_data[15] = data[15];
+		// set up new matrix data
+		System.arraycopy(_data, 0, data, 0, data.length);
+		return this;
+	}
+
+	/**
+	 * Inverts the matrix
+	 * @return this matrix
+	 */
+	public Matrix4x4 invert() {
+		/*
+		 * Taken from MESA GLU implementation
+		 * 
+		 *	Copyright (C) 1999-2007  Brian Paul   All Rights Reserved. 
+		 * 	Permission is hereby granted, free of charge, to any person obtaining a
+		 * 	copy of this software and associated documentation files (the "Software"),
+		 * 	to deal in the Software without restriction, including without limitation
+		 * 	the rights to use, copy, modify, merge, publish, distribute, sublicense,
+		 * 	and/or sell copies of the Software, and to permit persons to whom the
+		 * 	Software is furnished to do so, subject to the following conditions:
+		 * 
+		 * 	The above copyright notice and this permission notice shall be included
+		 * 	in all copies or substantial portions of the Software.
+		 * 
+		 * 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+		 * 	OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		 * 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+		 * 	BRIAN PAUL BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+		 * 	AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+		 * 	CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+		 */
+		_data[0] = data[5] * data[10] * data[15] - data[5] * data[11]
+				* data[14] - data[9] * data[6] * data[15] + data[9] * data[7]
+				* data[14] + data[13] * data[6] * data[11] - data[13] * data[7]
+				* data[10];
+		_data[4] = -data[4] * data[10] * data[15] + data[4] * data[11]
+				* data[14] + data[8] * data[6] * data[15] - data[8] * data[7]
+				* data[14] - data[12] * data[6] * data[11] + data[12] * data[7]
+				* data[10];
+		_data[8] = data[4] * data[9] * data[15] - data[4] * data[11] * data[13]
+				- data[8] * data[5] * data[15] + data[8] * data[7] * data[13]
+				+ data[12] * data[5] * data[11] - data[12] * data[7] * data[9];
+		_data[12] = -data[4] * data[9] * data[14] + data[4] * data[10]
+				* data[13] + data[8] * data[5] * data[14] - data[8] * data[6]
+				* data[13] - data[12] * data[5] * data[10] + data[12] * data[6]
+				* data[9];
+		_data[1] = -data[1] * data[10] * data[15] + data[1] * data[11]
+				* data[14] + data[9] * data[2] * data[15] - data[9] * data[3]
+				* data[14] - data[13] * data[2] * data[11] + data[13] * data[3]
+				* data[10];
+		_data[5] = data[0] * data[10] * data[15] - data[0] * data[11]
+				* data[14] - data[8] * data[2] * data[15] + data[8] * data[3]
+				* data[14] + data[12] * data[2] * data[11] - data[12] * data[3]
+				* data[10];
+		_data[9] = -data[0] * data[9] * data[15] + data[0] * data[11]
+				* data[13] + data[8] * data[1] * data[15] - data[8] * data[3]
+				* data[13] - data[12] * data[1] * data[11] + data[12] * data[3]
+				* data[9];
+		_data[13] = data[0] * data[9] * data[14] - data[0] * data[10]
+				* data[13] - data[8] * data[1] * data[14] + data[8] * data[2]
+				* data[13] + data[12] * data[1] * data[10] - data[12] * data[2]
+				* data[9];
+		_data[2] = data[1] * data[6] * data[15] - data[1] * data[7] * data[14]
+				- data[5] * data[2] * data[15] + data[5] * data[3] * data[14]
+				+ data[13] * data[2] * data[7] - data[13] * data[3] * data[6];
+		_data[6] = -data[0] * data[6] * data[15] + data[0] * data[7] * data[14]
+				+ data[4] * data[2] * data[15] - data[4] * data[3] * data[14]
+				- data[12] * data[2] * data[7] + data[12] * data[3] * data[6];
+		_data[10] = data[0] * data[5] * data[15] - data[0] * data[7] * data[13]
+				- data[4] * data[1] * data[15] + data[4] * data[3] * data[13]
+				+ data[12] * data[1] * data[7] - data[12] * data[3] * data[5];
+		_data[14] = -data[0] * data[5] * data[14] + data[0] * data[6]
+				* data[13] + data[4] * data[1] * data[14] - data[4] * data[2]
+				* data[13] - data[12] * data[1] * data[6] + data[12] * data[2]
+				* data[5];
+		_data[3] = -data[1] * data[6] * data[11] + data[1] * data[7] * data[10]
+				+ data[5] * data[2] * data[11] - data[5] * data[3] * data[10]
+				- data[9] * data[2] * data[7] + data[9] * data[3] * data[6];
+		_data[7] = data[0] * data[6] * data[11] - data[0] * data[7] * data[10]
+				- data[4] * data[2] * data[11] + data[4] * data[3] * data[10]
+				+ data[8] * data[2] * data[7] - data[8] * data[3] * data[6];
+		_data[11] = -data[0] * data[5] * data[11] + data[0] * data[7] * data[9]
+				+ data[4] * data[1] * data[11] - data[4] * data[3] * data[9]
+				- data[8] * data[1] * data[7] + data[8] * data[3] * data[5];
+		_data[15] = data[0] * data[5] * data[10] - data[0] * data[6] * data[9]
+				- data[4] * data[1] * data[10] + data[4] * data[2] * data[9]
+				+ data[8] * data[1] * data[6] - data[8] * data[2] * data[5];
+
+		//
+		float determinant = data[0] * _data[0] + data[1] * _data[4] + data[2]
+				* _data[8] + data[3] * _data[12];
+
+		//
+		if (determinant == 0f) {
+			identity();
+			return this;
+		}
+
+		//
+		determinant = 1.0f / determinant;
+		for (int i = 0; i < _data.length; i++)
+			_data[i] = _data[i] * determinant;
+
+		// set up new matrix data
+		System.arraycopy(_data, 0, data, 0, data.length);
+
+		// done
+		return this;
+	}
+
+	/**
+	 * Returns if this matrix equals m
+	 * @param m
+	 * @return equals
+	 */
+	public boolean equals(Matrix4x4 m) {
+		return
+			data[0] == m.data[0] &&
+			data[1] == m.data[1] &&
+			data[2] == m.data[2] &&
+			data[3] == m.data[3] &&
+			data[4] == m.data[4] &&
+			data[5] == m.data[5] &&
+			data[6] == m.data[6] &&
+			data[7] == m.data[7] &&
+			data[8] == m.data[8] &&
+			data[9] == m.data[9] &&
+			data[10] == m.data[10] &&
+			data[11] == m.data[11] &&
+			data[12] == m.data[12] &&
+			data[13] == m.data[13] &&
+			data[14] == m.data[14] &&
+			data[15] == m.data[15];
+	}
+
+	/**
+	 * Returns array data
+	 * @return array data
+	 */
+	public float[] getArray() {
+		return data;
+	}
+
+	/**
+	 * Clones this matrix
+	 * @return new cloned matrix
+	 */
+	public Matrix4x4 clone() {
+		return new Matrix4x4(
+			data
+		);
+	}
+
+	/**
+	 * Interpolates between matrix 1 and matrix 2 by 0f<=t<=1f linearly 
+	 * @param matrix 1
+	 * @param matrix 2
+	 * @param t
+	 * @param destination matrix
+	 * @return interpolated matrix
+	 */
+	public static Matrix4x4 interpolateLinear(Matrix4x4 m1, Matrix4x4 m2, float t, Matrix4x4 dest) {
+		return dest.set(
+			(m2.data[0] * t) + ((1f - t) * m1.data[0]),
+			(m2.data[1] * t) + ((1f - t) * m1.data[1]),
+			(m2.data[2] * t) + ((1f - t) * m1.data[2]),
+			(m2.data[3] * t) + ((1f - t) * m1.data[3]),
+			(m2.data[4] * t) + ((1f - t) * m1.data[4]),
+			(m2.data[5] * t) + ((1f - t) * m1.data[5]),
+			(m2.data[6] * t) + ((1f - t) * m1.data[6]),
+			(m2.data[7] * t) + ((1f - t) * m1.data[7]),
+			(m2.data[8] * t) + ((1f - t) * m1.data[8]),
+			(m2.data[9] * t) + ((1f - t) * m1.data[9]),
+			(m2.data[10] * t) + ((1f - t) * m1.data[10]),
+			(m2.data[11] * t) + ((1f - t) * m1.data[11]),
+			(m2.data[12] * t) + ((1f - t) * m1.data[12]),
+			(m2.data[13] * t) + ((1f - t) * m1.data[13]),
+			(m2.data[14] * t) + ((1f - t) * m1.data[14]),
+			(m2.data[15] * t) + ((1f - t) * m1.data[15])
+		);		
+	}
+
+	/**
+	 * @return string representation
+	 */
+	public String toString() {
+		return Arrays.toString(data);
+	}
+
+}
