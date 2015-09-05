@@ -28,7 +28,7 @@ TDME
             - lighting via shaders
             	- supports phong lighting
             	- supports phong shading on GL3, GL2
-            	- supports gouraud shading shading on GLES2
+            	- supports gouraud shading on GLES2
             	- supports normal mapping on GL3
             - dynamic shadows via shaders
             - particle system which
@@ -73,7 +73,7 @@ TDME
               - sleeping technology
 
     - What does it (maybe still) lack
-    	- own more efficient file format
+    	- own more efficient model file format
         - animation blending
         - physics
           - multiple bounding volumes for a rigid body
@@ -105,3 +105,9 @@ TDME
         - "real-time collision detection" / Ericson
         - "ReactPhysics3D" physics library, http://www.reactphysics3d.com 
         - the world wide web! thank you for sharing
+
+    - Other credits
+        - Dominik Hepp
+        - Mathias Wenzel
+        - Sergiu Crăiţoiu
+       
