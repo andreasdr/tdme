@@ -40,6 +40,7 @@ public final class PrimitiveModel {
 		Material material = new Material("tdme.primitive.material");
 		material.getAmbientColor().set(0.5f, 0.5f, 0.5f, 1.0f);
 		material.getDiffuseColor().set(1.0f, 0.5f, 0.5f, 0.5f);
+		material.getSpecularColor().set(0f,0f,0f,1f);
 		model.getMaterials().put(material.getId(), material);
 
 		// group
@@ -128,6 +129,7 @@ public final class PrimitiveModel {
 		Material material = new Material("tdme.primitive.material");
 		material.getAmbientColor().set(0.5f, 0.5f, 0.5f, 1.0f);
 		material.getDiffuseColor().set(1.0f, 0.5f, 0.5f, 0.5f);
+		material.getSpecularColor().set(0f,0f,0f,1f);
 		model.getMaterials().put(material.getId(), material);
 
 		// group
@@ -224,6 +226,7 @@ public final class PrimitiveModel {
 		Material material = new Material("tdme.primitive.material");
 		material.getAmbientColor().set(0.5f, 0.5f, 0.5f, 1.0f);
 		material.getDiffuseColor().set(1.0f, 0.5f, 0.5f, 0.5f);
+		material.getSpecularColor().set(0f,0f,0f,1f);
 		model.getMaterials().put(material.getId(), material);
 
 		// group
@@ -341,6 +344,7 @@ public final class PrimitiveModel {
 		Material material = new Material("tdme.primitive.material");
 		material.getAmbientColor().set(0.5f, 0.5f, 0.5f, 1.0f);
 		material.getDiffuseColor().set(1.0f, 0.5f, 0.5f, 0.5f);
+		material.getSpecularColor().set(0f,0f,0f,1f);
 		model.getMaterials().put(material.getId(), material);
 
 		// group
@@ -451,6 +455,7 @@ public final class PrimitiveModel {
 		Material material = new Material("tdme.primitive.material");
 		material.getAmbientColor().set(0.5f, 0.5f, 0.5f, 1.0f);
 		material.getDiffuseColor().set(1.0f, 0.5f, 0.5f, 0.5f);
+		material.getSpecularColor().set(0f,0f,0f,1f);
 		model.getMaterials().put(material.getId(), material);
 		setupConvexMeshMaterial(model.getSubGroups(), material);
 	}
