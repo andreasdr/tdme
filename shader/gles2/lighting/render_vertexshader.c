@@ -93,36 +93,36 @@ varying vec2 fragTextureUV;
 varying vec4 fragColor;
 
 void computeLight(in int i, in vec3 normal, in vec3 position) {
-	vec3 L = lights[i].position.xyz - position;
-	float d = length(L);
-	L = normalize(L);
-	vec3 E = normalize(-position);
-	vec3 R = normalize(-reflect(L,normal));
+	vec3 lightDirection = lights[i].position.xyz - position.xyz;
+	float lightDistance = length(lightDirection);
+	lightDirection = normalize(lightDirection);
+	vec3 eyeDirection = normalize(-position);
+	vec3 reflectionDirection = normalize(reflect(-lightDirection, normal));
 
 	// compute attenuation
-	float attenuation =
+	float lightAttenuation =
 		1.0 /
 		(
 			lights[i].constantAttenuation +
-			lights[i].linearAttenuation * d +
-			lights[i].quadraticAttenuation * d * d
+			lights[i].linearAttenuation * lightDistance +
+			lights[i].quadraticAttenuation * lightDistance * lightDistance
 		);
  
 	// see if point on surface is inside cone of illumination
-	float spotDot = dot(-L, normalize(lights[i].spotDirection));
-	float spotAttenuation = 0.0;
-	if (spotDot >= lights[i].spotCosCutoff) {
-		spotAttenuation = pow(spotDot, lights[i].spotExponent);
+	float lightSpotDot = dot(-lightDirection, normalize(lights[i].spotDirection));
+	float lightSpotAttenuation = 0.0;
+	if (lightSpotDot >= lights[i].spotCosCutoff) {
+		lightSpotAttenuation = pow(lightSpotDot, lights[i].spotExponent);
 	}
 
 	// Combine the spotlight and distance attenuation.
-	attenuation *= spotAttenuation;
+	lightAttenuation *= lightSpotAttenuation;
 
 	// add color components to fragment color
 	fragColor+=
 		clamp(lights[i].ambient * material.ambient, 0.0, 1.0) +
-		clamp(lights[i].diffuse * material.diffuse * max(dot(normal,L), 0.0) * attenuation, 0.0, 1.0) +
-		clamp(lights[i].specular * material.specular * pow(max(dot(R,E), 0.0), 0.3 * material.shininess) * attenuation, 0.0, 1.0);
+		clamp(lights[i].diffuse * material.diffuse * max(dot(normal, lightDirection), 0.0) * lightAttenuation, 0.0, 1.0) +
+		clamp(lights[i].specular * material.specular * pow(max(dot(reflectionDirection, eyeDirection), 0.0), 0.3 * material.shininess) * lightAttenuation, 0.0, 1.0);
 }
 
 void computeLights(in vec3 normal, in vec3 position) {
