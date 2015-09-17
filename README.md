@@ -96,9 +96,9 @@ TDME
 
     - Links
         - <youtube link here>
-		- TDME Level Editor, <link here>
-		- TDME Model Viewer, <link here>
-		- TDME Android, <link here>
+		- TDME Level Editor, https://github.com/andreasdr/tdme-leveleditor
+		- TDME Model Viewer, https://github.com/andreasdr/tdme-viewer
+		- TDME Android, https://github.com/andreasdr/tdme-android
 
     - References
         - "game physics - a practical introduction" / Kenwright
@@ -110,4 +110,5 @@ TDME
         - Dominik Hepp
         - Mathias Wenzel
         - Sergiu Crăiţoiu
+        - others
        
