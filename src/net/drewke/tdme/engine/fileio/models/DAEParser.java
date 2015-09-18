@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -703,6 +704,11 @@ public final class DAEParser {
 					xmlPolygonsList.add(xmlPolyListElement);
 				}
 
+				// try to read from polygons
+				for (Element xmlPolygonsElement: getChildrenByTagName(xmlMesh, "polygons")) {
+					xmlPolygonsList.add(xmlPolygonsElement);
+				}
+
 				// parse from xml polygons elements
 				for(Element xmlPolygons: xmlPolygonsList) {
 					ArrayList<Face>faces = new ArrayList<Face>();
@@ -741,25 +747,29 @@ public final class DAEParser {
 						facesEntity.setMaterial(material);
 					}
 
-					List<Element> xmlTrianglesInputs = getChildrenByTagName(xmlPolygons, "input");
-					xmlInputs = xmlTrianglesInputs.size();
-					for (Element xmlTrianglesInput: xmlTrianglesInputs) {
+					// parse input sources
+					HashSet<Integer> xmlInputSet = new HashSet<Integer>();
+					for (Element xmlTrianglesInput: getChildrenByTagName(xmlPolygons, "input")) {
 						// check for vertices sources
 						if (xmlTrianglesInput.getAttribute("semantic").equals("VERTEX")) {
 							xmlVerticesOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
 							xmlVerticesSource = xmlTrianglesInput.getAttribute("source").substring(1);
+							xmlInputSet.add(xmlVerticesOffset);
 						} else
 						// check for normals sources
 						if (xmlTrianglesInput.getAttribute("semantic").equals("NORMAL")) {
 							xmlNormalsOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
 							xmlNormalsSource = xmlTrianglesInput.getAttribute("source").substring(1);
+							xmlInputSet.add(xmlNormalsOffset);
 						}
 						// check for texture coordinate sources
 						if (xmlTrianglesInput.getAttribute("semantic").equals("TEXCOORD")) {
 							xmlTexCoordOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
 							xmlTexCoordSource = xmlTrianglesInput.getAttribute("source").substring(1);
+							xmlInputSet.add(xmlTexCoordOffset);
 						}
 					}
+					xmlInputs = xmlInputSet.size();
 
 					// get vertices source
 					for (Element xmlVertices: getChildrenByTagName(xmlMesh, "vertices")) {
@@ -833,81 +843,77 @@ public final class DAEParser {
 					}
 
 					// load faces
-					String valueString = getChildrenByTagName(xmlPolygons, "p").get(0).getTextContent();
-					t = new StringTokenizer(valueString, " \n\r");
-					int vi[] = new int[3];
-					int viIdx = 0;
-					int ni[] = new int[3];
-					int niIdx = 0;
-					int ti[] = xmlTexCoordSource == null?null:new int[3];
-					int tiIdx = 0;
-					int valueIdx = 0;
-					while (t.hasMoreTokens()) {
-						boolean valid = true;
-						int value = Integer.parseInt(t.nextToken());
-						if (valueIdx % xmlInputs == xmlVerticesOffset) {
-							vi[viIdx++] = value;
-							// validate
-							if (value < 0 || value >= vertices.size() - verticesOffset) {
-								valid = false;
+					for(Element xmlPolygon: getChildrenByTagName(xmlPolygons, "p")) {
+						String valueString = xmlPolygon.getTextContent();
+						t = new StringTokenizer(valueString, " \n\r");
+						int vi[] = new int[3];
+						int viIdx = 0;
+						int ni[] = new int[3];
+						int niIdx = 0;
+						int ti[] = xmlTexCoordSource == null?null:new int[3];
+						int tiIdx = 0;
+						int valueIdx = 0;
+						while (t.hasMoreTokens()) {
+							boolean valid = true;
+							int value = Integer.parseInt(t.nextToken());
+							if (valueIdx % xmlInputs == xmlVerticesOffset) {
+								vi[viIdx++] = value;
+								// validate
+								if (value < 0 || value >= vertices.size() - verticesOffset) {
+									valid = false;
+								}
+								// fix for some strange models
+								if (xmlNormalsSource != null && xmlNormalsOffset == -1) {
+									ni[niIdx++] = value;
+									// validate
+									if (value < 0 || value >= normals.size() - normalsOffset) {
+										valid = false;
+									}
+								}
 							}
-							// fix for some strange models
-							if (xmlNormalsSource != null && xmlNormalsOffset == -1) {
+							if (xmlNormalsOffset != -1 && valueIdx % xmlInputs == xmlNormalsOffset) {
 								ni[niIdx++] = value;
 								// validate
 								if (value < 0 || value >= normals.size() - normalsOffset) {
 									valid = false;
 								}
 							}
-						}
-						if (xmlNormalsOffset != -1 && valueIdx % xmlInputs == xmlNormalsOffset) {
-							ni[niIdx++] = value;
-							// validate
-							if (value < 0 || value >= normals.size() - normalsOffset) {
-								valid = false;
-							}
-						}
-						if (xmlTexCoordOffset != -1 && valueIdx % xmlInputs == xmlTexCoordOffset) {
-							ti[tiIdx++] = value;
-							// validate
-							if (value < 0 || value >= textureCoordinates.size() - textureCoordinatesOffset) {
-								valid = false;
-							}
-						}
-						if (viIdx == 3 && niIdx == 3 && (ti == null || tiIdx == 3)) {
-							// only add valid faces
-							if (valid) {
-								// assign normals to vertices
-								for (int i = 0; i < 3; i++) {
-									int vertexIndex = vi[i] + verticesOffset;
-									Integer normalIndex = ni[i] + normalsOffset;
+							if (xmlTexCoordOffset != -1 && valueIdx % xmlInputs == xmlTexCoordOffset) {
+								ti[tiIdx++] = value;
+								// validate
+								if (value < 0 || value >= textureCoordinates.size() - textureCoordinatesOffset) {
+									valid = false;
 								}
-								// add face
-								Face f = new Face(
-									group,
-									vi[0] + verticesOffset,
-									vi[1] + verticesOffset,
-									vi[2] + verticesOffset,
-									ni[0] + normalsOffset,
-									ni[1] + normalsOffset,
-									ni[2] + normalsOffset
-								);
-								if (ti != null) {
-									f.setTextureCoordinateIndices(
-										ti[0] + textureCoordinatesOffset,
-										ti[1] + textureCoordinatesOffset,
-										ti[2] + textureCoordinatesOffset
+							}
+							if (viIdx == 3 && niIdx == 3 && (ti == null || tiIdx == 3)) {
+								// only add valid faces
+								if (valid) {
+									// add face
+									Face f = new Face(
+										group,
+										vi[0] + verticesOffset,
+										vi[1] + verticesOffset,
+										vi[2] + verticesOffset,
+										ni[0] + normalsOffset,
+										ni[1] + normalsOffset,
+										ni[2] + normalsOffset
 									);
+									if (ti != null) {
+										f.setTextureCoordinateIndices(
+											ti[0] + textureCoordinatesOffset,
+											ti[1] + textureCoordinatesOffset,
+											ti[2] + textureCoordinatesOffset
+										);
+									}
+									faces.add(f);
 								}
-								faces.add(f);
+								viIdx = 0;
+								niIdx = 0;
+								tiIdx = 0;
 							}
-							viIdx = 0;
-							niIdx = 0;
-							tiIdx = 0;
+							valueIdx++;
 						}
-						valueIdx++;
 					}
-
 					// add faces entities if we have any
 					if (faces.isEmpty() == false) {
 						facesEntity.setFaces(faces);
