@@ -32,6 +32,7 @@ public final class Object3DGroup {
 	protected boolean animated;
 	protected int[] materialDiffuseTextureIdsByEntities = null;
 	protected int[] dynamicDiffuseTextureIdsByEntities = null;
+	protected int[] materialSpecularTextureIdsByEntities = null;
 	protected int[] materialDisplacementTextureIdsByEntities = null;
 	protected int[] materialNormalTextureIdsByEntities = null;
 	protected Object3DGroupVBORenderer renderer;
@@ -105,11 +106,13 @@ public final class Object3DGroup {
 				}
 				object3DGroup.materialDiffuseTextureIdsByEntities = new int[group.getFacesEntities().length];
 				object3DGroup.dynamicDiffuseTextureIdsByEntities = new int[group.getFacesEntities().length];
+				object3DGroup.materialSpecularTextureIdsByEntities = new int[group.getFacesEntities().length];
 				object3DGroup.materialDisplacementTextureIdsByEntities = new int[group.getFacesEntities().length];
 				object3DGroup.materialNormalTextureIdsByEntities = new int[group.getFacesEntities().length];
 				for (int j = 0; j < group.getFacesEntities().length; j++) {
 					object3DGroup.materialDiffuseTextureIdsByEntities[j] = GLTEXTUREID_NONE;
 					object3DGroup.dynamicDiffuseTextureIdsByEntities[j] = GLTEXTUREID_NONE;
+					object3DGroup.materialSpecularTextureIdsByEntities[j] = GLTEXTUREID_NONE;
 					object3DGroup.materialDisplacementTextureIdsByEntities[j] = GLTEXTUREID_NONE;
 					object3DGroup.materialNormalTextureIdsByEntities[j] = GLTEXTUREID_NONE;
 				}
@@ -167,6 +170,16 @@ public final class Object3DGroup {
 				object3DGroup.materialDiffuseTextureIdsByEntities[facesEntityIdx] = Engine.getInstance().getTextureManager().addTexture(material.getDiffuseTexture());
 			} else {
 				object3DGroup.materialDiffuseTextureIdsByEntities[facesEntityIdx] = GLTEXTUREID_NOTUSED;
+			}
+		}
+
+		// load specular texture
+		if (object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
+			if (material.getSpecularTexture() != null) {
+				//
+				object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx] = Engine.getInstance().getTextureManager().addTexture(material.getSpecularTexture());
+			} else {
+				object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx] = GLTEXTUREID_NOTUSED;
 			}
 		}
 

@@ -16,8 +16,9 @@ public final class LightingShader {
 	public final static int MAX_LIGHTS = 8;
 
 	public final static int TEXTUREUNIT_DIFFUSE = 0;
-	public final static int TEXTUREUNIT_DISPLACEMENT = 1;
-	public final static int TEXTUREUNIT_NORMAL = 2;
+	public final static int TEXTUREUNIT_SPECULAR = 1;
+	public final static int TEXTUREUNIT_DISPLACEMENT = 2;
+	public final static int TEXTUREUNIT_NORMAL = 3;
 
 	private int renderLightingProgramId;
 	private int renderLightingFragmentShaderId;
@@ -61,6 +62,8 @@ public final class LightingShader {
 
 	private int uniformDiffuseTextureUnit;
 	private int uniformDiffuseTextureAvailable;
+	private int uniformSpecularTextureUnit;
+	private int uniformSpecularTextureAvailable;
 	private int uniformNormalTextureUnit;
 	private int uniformNormalTextureAvailable;
 	private int uniformDisplacementTextureUnit;
@@ -189,6 +192,12 @@ public final class LightingShader {
 			uniformDisplacementTextureAvailable = renderer.getProgramUniformLocation(renderLightingProgramId, "displacementTextureAvailable");
 			if (uniformDisplacementTextureAvailable == -1) return;
 		}
+		if (renderer.isSpecularMappingAvailable()) {
+			uniformSpecularTextureUnit = renderer.getProgramUniformLocation(renderLightingProgramId, "specularTextureUnit");
+			if (uniformSpecularTextureUnit == -1) return;
+			uniformSpecularTextureAvailable = renderer.getProgramUniformLocation(renderLightingProgramId, "specularTextureAvailable");
+			if (uniformSpecularTextureAvailable == -1) return;
+		}
 		if (renderer.isNormalMappingAvailable()) {
 			uniformNormalTextureUnit = renderer.getProgramUniformLocation(renderLightingProgramId, "normalTextureUnit");
 			if (uniformNormalTextureUnit == -1) return;
@@ -269,13 +278,16 @@ public final class LightingShader {
 		renderer.useProgram(renderLightingProgramId);
 		// initialize static uniforms
 		renderer.setProgramUniformInteger(uniformDiffuseTextureUnit, TEXTUREUNIT_DIFFUSE);
-		if (renderer.isDisplacementMappingAvailable() == true) {
-			renderer.setProgramUniformInteger(uniformDisplacementTextureUnit, TEXTUREUNIT_DISPLACEMENT);
+		if (renderer.isSpecularMappingAvailable() == true) {
+			renderer.setProgramUniformInteger(uniformSpecularTextureUnit, TEXTUREUNIT_SPECULAR);
 		}
 		if (renderer.isNormalMappingAvailable() == true) {
 			renderer.setProgramUniformInteger(uniformNormalTextureUnit, TEXTUREUNIT_NORMAL);
-			renderer.setProgramUniformFloatVec4(uniformSceneColor, defaultSceneColor);
 		}
+		if (renderer.isDisplacementMappingAvailable() == true) {
+			renderer.setProgramUniformInteger(uniformDisplacementTextureUnit, TEXTUREUNIT_DISPLACEMENT);
+		}
+		renderer.setProgramUniformFloatVec4(uniformSceneColor, defaultSceneColor);
 		// initialize dynamic uniforms
 		updateEffect(renderer);
 		updateMaterial(renderer);
@@ -411,13 +423,17 @@ public final class LightingShader {
 			case TEXTUREUNIT_DIFFUSE:
 				renderer.setProgramUniformInteger(uniformDiffuseTextureAvailable, textureId == 0?0:1);
 				break;
-			case TEXTUREUNIT_DISPLACEMENT:
-				if (renderer.isDisplacementMappingAvailable() == false) break;
-				renderer.setProgramUniformInteger(uniformDisplacementTextureAvailable, textureId == 0?0:1);
+			case TEXTUREUNIT_SPECULAR:
+				if (renderer.isSpecularMappingAvailable() == false) break;
+				renderer.setProgramUniformInteger(uniformSpecularTextureAvailable, textureId == 0?0:1);
 				break;
 			case TEXTUREUNIT_NORMAL:
 				if (renderer.isNormalMappingAvailable() == false) break;
 				renderer.setProgramUniformInteger(uniformNormalTextureAvailable, textureId == 0?0:1);
+				break;
+			case TEXTUREUNIT_DISPLACEMENT:
+				if (renderer.isDisplacementMappingAvailable() == false) break;
+				renderer.setProgramUniformInteger(uniformDisplacementTextureAvailable, textureId == 0?0:1);
 				break;
 		}
 	}

@@ -174,6 +174,11 @@ abstract public class GLRenderer {
 	abstract public boolean isUsingProgramAttributeLocation();
 
 	/**
+	 * @return if specular mapping is supported
+	 */
+	abstract public boolean isSpecularMappingAvailable();
+
+	/**
 	 * @return if normal mapping is supported
 	 */
 	abstract public boolean isNormalMappingAvailable();

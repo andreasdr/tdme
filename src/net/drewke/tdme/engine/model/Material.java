@@ -31,6 +31,7 @@ public final class Material {
 	private float shininess;
 	private Texture diffuseTexture;
 	private boolean diffuseTextureTransparency;
+	private Texture specularTexture;
 	private Texture normalTexture;
 	private Texture displacementTexture;
 
@@ -47,6 +48,7 @@ public final class Material {
 		shininess = 0.0f;
 		diffuseTexture = null;
 		diffuseTextureTransparency = false;
+		specularTexture = null;
 		normalTexture = null;
 		displacementTexture = null;
 	}
@@ -144,6 +146,30 @@ public final class Material {
 	}
 
 	/**
+	 * Set up a specular texture
+	 * @param path name
+	 * @param file name
+	 * @throws IOException
+	 */
+	public void setSpecularTexture(String pathName, String fileName) {
+		specularTexture = net.drewke.tdme.engine.fileio.textures.TextureLoader.loadTexture(pathName, fileName);
+	}
+
+	/**
+	 * @return if material has a specular texture
+	 */
+	public boolean hasSpecularTexture() {
+		return specularTexture != null;
+	}
+
+	/**
+	 * @return the material's specular texture
+	 */
+	public Texture getSpecularTexture() {
+		return specularTexture;
+	}
+
+	/**
 	 * Set up a normal texture
 	 * @param path name
 	 * @param file name
@@ -210,9 +236,9 @@ public final class Material {
 				+ specularColor + ", emissionColor=" + emissionColor
 				+ ", shininess=" + shininess + ", diffuseTexture="
 				+ diffuseTexture + ", diffuseTextureTransparency="
-				+ diffuseTextureTransparency + ", normalTexture="
-				+ normalTexture + ", displacementTexture="
-				+ displacementTexture + "]";
+				+ diffuseTextureTransparency + ", specularTexture="
+				+ specularTexture + ", normalTexture=" + normalTexture
+				+ ", displacementTexture=" + displacementTexture + "]";
 	}
 
 }

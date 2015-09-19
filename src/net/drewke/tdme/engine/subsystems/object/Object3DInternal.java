@@ -255,7 +255,19 @@ public class Object3DInternal extends Object3DBase {
 					object3DGroup.materialDiffuseTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
 				}
 
-				// diffuse texture
+				// specular texture
+				int glSpecularTextureId = object3DGroup.materialSpecularTextureIdsByEntities[j];
+				if (glSpecularTextureId != Object3DGroup.GLTEXTUREID_NONE &&
+					glSpecularTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
+
+					// remove texture from texture manager
+					if (material.getDiffuseTexture() != null) textureManager.removeTexture(material.getSpecularTexture().getId());
+	
+					// mark as removed
+					object3DGroup.materialSpecularTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
+				}
+
+				// displacement texture
 				int glDisplacementTextureId = object3DGroup.materialDisplacementTextureIdsByEntities[j];
 				if (glDisplacementTextureId != Object3DGroup.GLTEXTUREID_NONE &&
 					glDisplacementTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
@@ -267,7 +279,7 @@ public class Object3DInternal extends Object3DBase {
 					object3DGroup.materialDisplacementTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
 				}
 
-				// diffuse texture
+				// normal texture
 				int glNormalTextureId = object3DGroup.materialNormalTextureIdsByEntities[j];
 				if (glNormalTextureId != Object3DGroup.GLTEXTUREID_NONE &&
 					glNormalTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {

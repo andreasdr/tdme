@@ -116,6 +116,14 @@ public abstract class GLES2Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isSpecularMappingAvailable()
+	 */
+	final public boolean isSpecularMappingAvailable() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isNormalMappingAvailable()
 	 */
 	final public boolean isNormalMappingAvailable() {

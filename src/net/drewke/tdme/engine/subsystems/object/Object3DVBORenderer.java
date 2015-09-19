@@ -619,6 +619,14 @@ public final class Object3DVBORenderer {
 			object3DGroup.materialDiffuseTextureIdsByEntities[facesEntityIdx]
 		);
 
+		// bind specular texture
+		if (renderer.isSpecularMappingAvailable() == true) {
+			renderer.setTextureUnit(LightingShader.TEXTUREUNIT_SPECULAR);
+			renderer.bindTexture(
+				object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx]
+			);
+		}
+
 		// bind displacement texture
 		if (renderer.isDisplacementMappingAvailable() == true) {
 			renderer.setTextureUnit(LightingShader.TEXTUREUNIT_DISPLACEMENT);
@@ -645,8 +653,20 @@ public final class Object3DVBORenderer {
 	 * @param material
 	 */
 	protected void clearMaterial() {
-		// unbind texture
+		// unbind diffuse texture
+		renderer.setTextureUnit(LightingShader.TEXTUREUNIT_DIFFUSE);
 		renderer.bindTexture(renderer.ID_NONE);
+		// unbind specular texture
+		renderer.setTextureUnit(LightingShader.TEXTUREUNIT_SPECULAR);
+		renderer.bindTexture(renderer.ID_NONE);
+		// unbind displacement texture
+		renderer.setTextureUnit(LightingShader.TEXTUREUNIT_DISPLACEMENT);
+		renderer.bindTexture(renderer.ID_NONE);
+		// unbind normal texture
+		renderer.setTextureUnit(LightingShader.TEXTUREUNIT_NORMAL);
+		renderer.bindTexture(renderer.ID_NONE);
+		// set diffuse texture unit
+		renderer.setTextureUnit(LightingShader.TEXTUREUNIT_DIFFUSE);
 	}
 
 	/**

@@ -963,6 +963,7 @@ public final class DAEParser {
 		// parse effect
 		Material material = new Material(xmlNodeId);
 		String xmlDiffuseTextureId = null;
+		String xmlSpecularTextureId = null;
 		String xmlBumpTextureId = null;
 		Element xmlLibraryEffects = getChildrenByTagName(xmlRoot, "library_effects").get(0);
 		for (Element xmlEffect: getChildrenByTagName(xmlLibraryEffects, "effect")) {
@@ -1040,7 +1041,18 @@ public final class DAEParser {
 							}
 						}
 						// specular
+						boolean hasSpecularMap = false;
+						boolean hasSpecularColor = false;
 						for (Element xmlSpecular: getChildrenByTagName((Element)xmlTechniqueNode, "specular")) {
+							// texture
+							for (Element xmlTexture: getChildrenByTagName(xmlSpecular, "texture")) {
+								xmlSpecularTextureId = xmlTexture.getAttribute("texture");
+								String sample2Surface = samplerSurfaceMapping.get(xmlSpecularTextureId);
+								String surface2Image = null;
+								if (sample2Surface != null) surface2Image = surfaceImageMapping.get(sample2Surface);
+								if (surface2Image != null) xmlSpecularTextureId = surface2Image; 
+								hasSpecularMap = true;
+							}
 							// color
 							for (Element xmlColor: getChildrenByTagName(xmlSpecular, "color")) {
 								StringTokenizer t = new StringTokenizer(xmlColor.getTextContent(), " ");
@@ -1050,7 +1062,12 @@ public final class DAEParser {
 									Float.parseFloat(t.nextToken()),
 									Float.parseFloat(t.nextToken())
 								);
+								hasSpecularColor = true;
 							}
+						}
+						// set up specular color if not yet done but spec maps is available
+						if (hasSpecularMap == true && hasSpecularColor == false) {
+							material.getSpecularColor().set(1f,1f,1f,1f);
 						}
 						// shininess
 						for (Element xmlShininess: getChildrenByTagName((Element)xmlTechniqueNode, "shininess")) {
@@ -1086,6 +1103,18 @@ public final class DAEParser {
 				xmlDiffuseTextureFilename = makeFileNameRelative(xmlDiffuseTextureFilename); 
 				// add texture
 				material.setDiffuseTexture(pathName, xmlDiffuseTextureFilename);
+			}
+		}
+
+		// specular texture
+		String xmlSpecularTextureFilename = null;
+		if (xmlSpecularTextureId != null) {
+			xmlSpecularTextureFilename = getTextureFileNameById(xmlRoot, xmlSpecularTextureId);
+			// do we have a file name
+			if (xmlSpecularTextureFilename != null) {
+				xmlSpecularTextureFilename = makeFileNameRelative(xmlSpecularTextureFilename); 
+				// add texture
+				material.setSpecularTexture(pathName, xmlSpecularTextureFilename);
 			}
 		}
 

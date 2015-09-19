@@ -75,10 +75,16 @@ uniform vec4 effectColorMul;
 uniform sampler2D diffuseTextureUnit;
 uniform int diffuseTextureAvailable;
 
+uniform sampler2D specularTextureUnit;
+uniform int specularTextureAvailable;
+
 uniform sampler2D normalTextureUnit;
 uniform int normalTextureAvailable;
 
 uniform vec4 effectColorAdd;
+
+// material shininess
+float materialShininess;
 
 // passed from vertex shader
 in vec2 vsFragTextureUV;
@@ -121,7 +127,7 @@ void computeLight(in int i, in vec3 normal, in vec3 position) {
 	fragColor+=
 		clamp(lights[i].ambient * material.ambient, 0.0, 1.0) +
 		clamp(lights[i].diffuse * material.diffuse * max(dot(normal, lightDirection), 0.0) * lightAttenuation, 0.0, 1.0) +
-		clamp(lights[i].specular * material.specular * pow(max(dot(reflectionDirection, eyeDirection), 0.0), 0.3 * material.shininess) * lightAttenuation, 0.0, 1.0);
+		clamp(lights[i].specular * material.specular * pow(max(dot(reflectionDirection, eyeDirection), 0.0), 0.3 * materialShininess) * lightAttenuation, 0.0, 1.0);
 }
 
 void computeLights(in vec3 normal, in vec3 position) {
@@ -142,6 +148,16 @@ void main (void) {
 	fragColor+= clamp(material.emission, 0.0, 1.0);
 
 	vec3 normal = vsNormal;
+
+	// specular
+	materialShininess = material.shininess;
+	if (specularTextureAvailable == 1) {
+		vec3 specularTextureValue = texture(specularTextureUnit, vsFragTextureUV).rgb;
+		materialShininess =
+			((0.33 * specularTextureValue.r) +
+			(0.33 * specularTextureValue.g) +
+			(0.33 * specularTextureValue.b)) * 255.0;
+	}
 
 	// compute normal
 	if (normalTextureAvailable == 1) {

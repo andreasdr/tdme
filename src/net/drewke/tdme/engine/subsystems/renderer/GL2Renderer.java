@@ -153,7 +153,15 @@ public abstract class GL2Renderer extends GLRenderer {
 	final public boolean isUsingProgramAttributeLocation() {
 		return false;
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isSpecularMappingAvailable()
+	 */
+	final public boolean isSpecularMappingAvailable() {
+		return false;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isNormalMappingAvailable()
