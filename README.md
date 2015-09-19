@@ -29,6 +29,8 @@ TDME
             	- supports phong lighting
             	- supports phong shading on GL3, GL2
             	- supports gouraud shading on GLES2
+            	- supports diffuse mapping on GL3, GL2, GLES2
+            	- supports specular shininess mapping on GL3
             	- supports normal mapping on GL3
             - dynamic shadows via shaders
             - particle system which
