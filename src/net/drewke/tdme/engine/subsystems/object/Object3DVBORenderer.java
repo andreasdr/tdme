@@ -412,7 +412,7 @@ public final class Object3DVBORenderer {
 						Object3DGroup _object3DGroup = object.object3dGroups[object3DGroupIdx];
 
 						// set up textures
-						Object3DGroup.setupTextures(object3DGroup, faceEntityIdx);
+						Object3DGroup.setupTextures(renderer, object3DGroup, faceEntityIdx);
 
 						// set up transparent render faces
 						if (collectTransparentFaces == true) {
@@ -464,7 +464,7 @@ public final class Object3DVBORenderer {
 						setupMaterial(_object3DGroup, faceEntityIdx);						
 					} else {
 						// only set up textures
-						Object3DGroup.setupTextures(_object3DGroup, faceEntityIdx);
+						Object3DGroup.setupTextures(renderer, _object3DGroup, faceEntityIdx);
 					}
 
 					//	check transparency via effect
@@ -601,7 +601,7 @@ public final class Object3DVBORenderer {
 		if (material == null) material = Material.getDefaultMaterial();
 
 		// setup textures
-		Object3DGroup.setupTextures(object3DGroup, facesEntityIdx);
+		Object3DGroup.setupTextures(renderer, object3DGroup, facesEntityIdx);
 
 		// apply materials
 		renderer.setMaterialAmbient(material.getAmbientColor().getArray());

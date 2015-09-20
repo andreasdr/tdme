@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Engine.AnimationProcessingTarget;
-import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Joint;
@@ -12,6 +11,8 @@ import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.subsystems.manager.MeshManager;
+import net.drewke.tdme.engine.subsystems.manager.TextureManager;
+import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.utils.HashMap;
 
@@ -153,10 +154,11 @@ public final class Object3DGroup {
 
 	/**
 	 * Set up textures for given object3d group and faces entity
+	 * @param renderer
 	 * @param object 3D group
 	 * @param faces entity idx
 	 */
-	protected static void setupTextures(Object3DGroup object3DGroup, int facesEntityIdx) {
+	protected static void setupTextures(GLRenderer renderer, Object3DGroup object3DGroup, int facesEntityIdx) {
 		FacesEntity[] facesEntities = object3DGroup.group.getFacesEntities(); 
 		Material material = facesEntities[facesEntityIdx].getMaterial();
 
@@ -174,7 +176,9 @@ public final class Object3DGroup {
 		}
 
 		// load specular texture
-		if (object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
+		if (renderer.isSpecularMappingAvailable() == true &&
+			object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
+			//
 			if (material.getSpecularTexture() != null) {
 				//
 				object3DGroup.materialSpecularTextureIdsByEntities[facesEntityIdx] = Engine.getInstance().getTextureManager().addTexture(material.getSpecularTexture());
@@ -184,7 +188,9 @@ public final class Object3DGroup {
 		}
 
 		// load displacement texture
-		if (object3DGroup.materialDisplacementTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
+		if (renderer.isDisplacementMappingAvailable() == true &&
+			object3DGroup.materialDisplacementTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
+			//
 			if (material.getDisplacementTexture() != null) {
 				object3DGroup.materialDisplacementTextureIdsByEntities[facesEntityIdx] = Engine.getInstance().getTextureManager().addTexture(material.getDisplacementTexture());
 			} else {
@@ -193,11 +199,79 @@ public final class Object3DGroup {
 		}
 
 		// load normal texture
-		if (object3DGroup.materialNormalTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
+		if (renderer.isNormalMappingAvailable() == true &&
+			object3DGroup.materialNormalTextureIdsByEntities[facesEntityIdx] == GLTEXTUREID_NONE) {
 			if (material.getNormalTexture() != null) {
 				object3DGroup.materialNormalTextureIdsByEntities[facesEntityIdx] = Engine.getInstance().getTextureManager().addTexture(material.getNormalTexture());
 			} else {
 				object3DGroup.materialNormalTextureIdsByEntities[facesEntityIdx] = GLTEXTUREID_NOTUSED;
+			}
+		}
+	}
+
+	/**
+	 * Dispose
+	 */
+	protected void dispose() {
+		// dispose text
+		Engine engine = Engine.getInstance();
+		TextureManager textureManager = engine.getTextureManager();
+
+		// dispose textures
+		FacesEntity[] facesEntities = group.getFacesEntities();
+		for (int j = 0; j < facesEntities.length; j++) {
+			// get entity's material
+			Material material = facesEntities[j].getMaterial();
+
+			//	skip if no material was set up
+			if (material == null) continue;
+
+			// diffuse texture
+			int glDiffuseTextureId = materialDiffuseTextureIdsByEntities[j];
+			if (glDiffuseTextureId != Object3DGroup.GLTEXTUREID_NONE &&
+				glDiffuseTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
+
+				// remove texture from texture manager
+				if (material.getDiffuseTexture() != null) textureManager.removeTexture(material.getDiffuseTexture().getId());
+
+				// mark as removed
+				materialDiffuseTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
+			}
+
+			// specular texture
+			int glSpecularTextureId = materialSpecularTextureIdsByEntities[j];
+			if (glSpecularTextureId != Object3DGroup.GLTEXTUREID_NONE &&
+				glSpecularTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
+
+				// remove texture from texture manager
+				if (material.getDiffuseTexture() != null) textureManager.removeTexture(material.getSpecularTexture().getId());
+
+				// mark as removed
+				materialSpecularTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
+			}
+
+			// displacement texture
+			int glDisplacementTextureId = materialDisplacementTextureIdsByEntities[j];
+			if (glDisplacementTextureId != Object3DGroup.GLTEXTUREID_NONE &&
+				glDisplacementTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
+
+				// remove texture from texture manager
+				if (material.getDisplacementTexture() != null) textureManager.removeTexture(material.getDisplacementTexture().getId());
+
+				// mark as removed
+				materialDisplacementTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
+			}
+
+			// normal texture
+			int glNormalTextureId = materialNormalTextureIdsByEntities[j];
+			if (glNormalTextureId != Object3DGroup.GLTEXTUREID_NONE &&
+				glNormalTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
+
+				// remove texture from texture manager
+				if (material.getNormalTexture() != null) textureManager.removeTexture(material.getNormalTexture().getId());
+
+				// mark as removed
+				materialNormalTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
 			}
 		}
 	}

@@ -21,7 +21,6 @@ public class Object3DInternal extends Object3DBase {
 	private boolean enabled;
 	private boolean pickable;
 	private boolean dynamicShadowing;
-	private boolean showVisibilityVolume;
 	protected Color4 effectColorMul;
 	protected Color4 effectColorAdd;
 	private BoundingBox boundingBox;
@@ -36,7 +35,6 @@ public class Object3DInternal extends Object3DBase {
 		this.id = id;
 		enabled = true;
 		pickable = false;
-		showVisibilityVolume = false;
 		dynamicShadowing = false;
 		effectColorMul = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
 		effectColorAdd = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -222,10 +220,6 @@ public class Object3DInternal extends Object3DBase {
 	 */
 	public void dispose() {
 		super.dispose();
-
-		// dispose text
-		Engine engine = Engine.getInstance();
-		TextureManager textureManager = engine.getTextureManager();
 		
 		// delete textures
 		for(int i = 0; i < object3dGroups.length; i++) {
@@ -233,64 +227,9 @@ public class Object3DInternal extends Object3DBase {
 
 			// dispose renderer
 			object3DGroup.renderer.dispose();
-
-			// dispose textures
-			FacesEntity[] facesEntities = object3DGroup.group.getFacesEntities();
-			for (int j = 0; j < facesEntities.length; j++) {
-				// get entity's material
-				Material material = facesEntities[j].getMaterial();
-
-				//	skip if no material was set up
-				if (material == null) continue;
-
-				// diffuse texture
-				int glDiffuseTextureId = object3DGroup.materialDiffuseTextureIdsByEntities[j];
-				if (glDiffuseTextureId != Object3DGroup.GLTEXTUREID_NONE &&
-					glDiffuseTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
-
-					// remove texture from texture manager
-					if (material.getDiffuseTexture() != null) textureManager.removeTexture(material.getDiffuseTexture().getId());
-	
-					// mark as removed
-					object3DGroup.materialDiffuseTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
-				}
-
-				// specular texture
-				int glSpecularTextureId = object3DGroup.materialSpecularTextureIdsByEntities[j];
-				if (glSpecularTextureId != Object3DGroup.GLTEXTUREID_NONE &&
-					glSpecularTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
-
-					// remove texture from texture manager
-					if (material.getDiffuseTexture() != null) textureManager.removeTexture(material.getSpecularTexture().getId());
-	
-					// mark as removed
-					object3DGroup.materialSpecularTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
-				}
-
-				// displacement texture
-				int glDisplacementTextureId = object3DGroup.materialDisplacementTextureIdsByEntities[j];
-				if (glDisplacementTextureId != Object3DGroup.GLTEXTUREID_NONE &&
-					glDisplacementTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
-
-					// remove texture from texture manager
-					if (material.getDisplacementTexture() != null) textureManager.removeTexture(material.getDisplacementTexture().getId());
-	
-					// mark as removed
-					object3DGroup.materialDisplacementTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
-				}
-
-				// normal texture
-				int glNormalTextureId = object3DGroup.materialNormalTextureIdsByEntities[j];
-				if (glNormalTextureId != Object3DGroup.GLTEXTUREID_NONE &&
-					glNormalTextureId != Object3DGroup.GLTEXTUREID_NOTUSED) {
-
-					// remove texture from texture manager
-					if (material.getNormalTexture() != null) textureManager.removeTexture(material.getNormalTexture().getId());
-	
-					// mark as removed
-					object3DGroup.materialNormalTextureIdsByEntities[j] = Object3DGroup.GLTEXTUREID_NONE;
-				}
-			}
+			
+			// dispose object3d group
+			object3DGroup.dispose();
 		}
 	}
 
