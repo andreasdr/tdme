@@ -733,6 +733,9 @@ public final class DAEParser {
 					int xmlTexCoordOffset = -1;
 					String xmlTexCoordSource = null;
 
+					int xmlColorOffset = -1;
+					String xmlColorSource = null;
+
 					// material
 					String xmlMaterialId = xmlPolygons.getAttribute("material");
 					String materialSymbol = materialSymbols.get(xmlMaterialId);
@@ -767,6 +770,12 @@ public final class DAEParser {
 							xmlTexCoordOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
 							xmlTexCoordSource = xmlTrianglesInput.getAttribute("source").substring(1);
 							xmlInputSet.add(xmlTexCoordOffset);
+						}
+						// check for color coordinate sources
+						if (xmlTrianglesInput.getAttribute("semantic").equals("COLOR")) {
+							xmlColorOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
+							xmlColorSource = xmlTrianglesInput.getAttribute("source").substring(1);
+							xmlInputSet.add(xmlColorOffset);
 						}
 					}
 					xmlInputs = xmlInputSet.size();
@@ -853,8 +862,8 @@ public final class DAEParser {
 						int ti[] = xmlTexCoordSource == null?null:new int[3];
 						int tiIdx = 0;
 						int valueIdx = 0;
+						boolean valid = true;
 						while (t.hasMoreTokens()) {
-							boolean valid = true;
 							int value = Integer.parseInt(t.nextToken());
 							if (valueIdx % xmlInputs == xmlVerticesOffset) {
 								vi[viIdx++] = value;
@@ -910,6 +919,7 @@ public final class DAEParser {
 								viIdx = 0;
 								niIdx = 0;
 								tiIdx = 0;
+								valid = true;
 							}
 							valueIdx++;
 						}
