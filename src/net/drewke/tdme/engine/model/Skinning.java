@@ -1,6 +1,7 @@
 package net.drewke.tdme.engine.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Skinning definition for groups
@@ -93,9 +94,9 @@ public final class Skinning {
 	 * @return string representation
 	 */
 	public String toString() {
-		return "Skinning [joints="
-				+ joints + ", vertextJointsWeights=" + verticesJointsWeights
-				+ "]";
+		return "Skinning [weights=" + Arrays.toString(weights) + ", joints="
+				+ Arrays.toString(joints) + ", verticesJointsWeights="
+				+ Arrays.toString(verticesJointsWeights) + "]";
 	}
 
 }

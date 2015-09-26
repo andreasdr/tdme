@@ -269,15 +269,15 @@ public final class DAEParser {
 				// find sampler source
 				String xmlSamplerSource = null;
 				Element xmlChannel = getChildrenByTagName(xmlAnimation, "channel").get(0);
-				if (xmlChannel.getAttribute("target").equals(xmlNodeId + "/matrix")) {
+				if (xmlChannel.getAttribute("target").startsWith(xmlNodeId + "/")) {
 					xmlSamplerSource = xmlChannel.getAttribute("source").substring(1);
 				}
-	
+
 				// check for sampler source
 				if (xmlSamplerSource == null) {
 					continue;
 				}
-	
+
 				// parse animation output matrices
 				String xmlSamplerOutputSource = null;
 				Element xmlSampler = getChildrenByTagName(xmlAnimation, "sampler").get(0);
@@ -286,7 +286,7 @@ public final class DAEParser {
 						xmlSamplerOutputSource = xmlSamplerInput.getAttribute("source").substring(1);
 					}
 				}
-	
+
 				// check for sampler source
 				if (xmlSamplerOutputSource == null) {
 					throw new ParserException("Could not fid xml sampler output source for animation for " + xmlNodeId);
@@ -297,7 +297,6 @@ public final class DAEParser {
 					if (xmlAnimationSource.getAttribute("id").equals(xmlSamplerOutputSource)) {
 						Element xmlFloatArray = getChildrenByTagName(xmlAnimationSource, "float_array").get(0);
 						int frames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16 - 1;
-
 						// some models have animations without frames
 						if (frames > 0) {
 
@@ -653,7 +652,6 @@ public final class DAEParser {
 			verticesJointsWeights.add(vertexJointsWeights);
 		}
 		skinning.setVerticesJointsWeights(verticesJointsWeights);
-
 		return group;
 	}
 
