@@ -280,48 +280,54 @@ public final class DAEParser {
 
 				// parse animation output matrices
 				String xmlSamplerOutputSource = null;
+				String xmlSamplerInputSource = null;
 				Element xmlSampler = getChildrenByTagName(xmlAnimation, "sampler").get(0);
 				for (Element xmlSamplerInput: getChildrenByTagName(xmlSampler, "input")) {
 					if (xmlSamplerInput.getAttribute("semantic").equals("OUTPUT")) {
 						xmlSamplerOutputSource = xmlSamplerInput.getAttribute("source").substring(1);
+					} else
+					if (xmlSamplerInput.getAttribute("semantic").equals("INPUT")) {
+						xmlSamplerInputSource = xmlSamplerInput.getAttribute("source").substring(1);
 					}
+
 				}
 
 				// check for sampler source
 				if (xmlSamplerOutputSource == null) {
 					throw new ParserException("Could not fid xml sampler output source for animation for " + xmlNodeId);
 				}
-	
+
+				// load animation input matrices
+				// TODO: check accessor "time"
+				float keyFrameTimes[] = null;
+				for(Element xmlAnimationSource: getChildrenByTagName(xmlAnimation, "source")) {
+					if (xmlAnimationSource.getAttribute("id").equals(xmlSamplerInputSource)) {
+						Element xmlFloatArray = getChildrenByTagName(xmlAnimationSource, "float_array").get(0);
+						int frames = Integer.parseInt(xmlFloatArray.getAttribute("count"));
+						String valueString = xmlFloatArray.getTextContent();
+						int keyFrameIdx = 0;
+						keyFrameTimes = new float[frames];
+						t = new StringTokenizer(valueString, " \n\r");
+						while (t.hasMoreTokens()) {
+							keyFrameTimes[keyFrameIdx++] = Float.parseFloat(t.nextToken());
+						}
+					}
+				}
+
 				// load animation output matrices
+				// TODO: check accessor "transform"
+				Matrix4x4[] keyFrameMatrices = null; 
 				for(Element xmlAnimationSource: getChildrenByTagName(xmlAnimation, "source")) {
 					if (xmlAnimationSource.getAttribute("id").equals(xmlSamplerOutputSource)) {
 						Element xmlFloatArray = getChildrenByTagName(xmlAnimationSource, "float_array").get(0);
-						int frames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16 - 1;
+						int keyFrames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16 - 1;
 						// some models have animations without frames
-						if (frames > 0) {
-
-							// add default model animation setup
-							AnimationSetup defaultAnimation = model.getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
-							if (defaultAnimation == null) {
-								model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
-							} else {
-								// check default animation setup
-								if (defaultAnimation.getStartFrame() != 0 || defaultAnimation.getEndFrame() != frames - 1) {
-									System.out.println("Warning: default animation mismatch");
-								}
-								if (frames - 1 > defaultAnimation.getEndFrame()) {
-									System.out.println("Warning: default animation mismatch, will be fixed");
-									model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
-								}
-							}
-	
-							//
-							Animation animation = group.createAnimation(frames);
+						if (keyFrames > 0) {
 							String valueString = xmlFloatArray.getTextContent();
 							t = new StringTokenizer(valueString, " \n\r");
 		
 							// first frame is not a animation matrix
-							Matrix4x4 frame0Matrix = new Matrix4x4(
+							Matrix4x4 keyFrame0Matrix = new Matrix4x4(
 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
@@ -332,11 +338,12 @@ public final class DAEParser {
 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
 							).transpose().invert();
 		
-							int frame = 0;
-							Matrix4x4[] transformationsMatrices = animation.getTransformationsMatrices();
+							// parse key frame
+							int keyFrameIdx = 0;
+							keyFrameMatrices = new Matrix4x4[keyFrames];
 							while (t.hasMoreTokens()) {
 								// set animation transformation matrix at frame
-								transformationsMatrices[frame].set(
+								keyFrameMatrices[keyFrameIdx] = new Matrix4x4(
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
@@ -345,10 +352,59 @@ public final class DAEParser {
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
-								).transpose().multiply(frame0Matrix);
-								frame++;
+								).transpose().multiply(keyFrame0Matrix);
+								keyFrameIdx++;
 							}
 						}
+					}
+				}
+
+				// create linear animation by key frame times and key frames
+				if (keyFrameTimes != null && keyFrameMatrices != null) {
+					int frames = (int)Math.ceil(keyFrameTimes[keyFrameTimes.length - 1] * fps) + 1;
+
+					// add default model animation setup
+					AnimationSetup defaultAnimation = model.getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
+					if (defaultAnimation == null) {
+						model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
+					} else {
+						// check default animation setup
+						if (defaultAnimation.getStartFrame() != 0 || defaultAnimation.getEndFrame() != frames - 1) {
+							System.out.println("Warning: default animation mismatch");
+						}
+						if (frames - 1 > defaultAnimation.getEndFrame()) {
+							System.out.println("Warning: default animation mismatch, will be fixed");
+							model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
+						}
+					}
+
+					//
+					Animation animation = group.createAnimation(frames);
+					Matrix4x4[] transformationsMatrices = animation.getTransformationsMatrices();
+					Matrix4x4 tansformationsMatrixLast = keyFrameMatrices[0];
+					int keyFrameIdx = 0;
+					int frameIdx = 0;
+					float timeStampLast = 0.0f;
+					for (float keyFrameTime: keyFrameTimes) {
+						Matrix4x4 transformationsMatrixCurrent = keyFrameMatrices[(keyFrameIdx) % keyFrameMatrices.length];
+						float timeStamp;
+						for (timeStamp = timeStampLast; timeStamp < keyFrameTime; timeStamp+= 1.0f / fps) {
+							if (frameIdx >= frames) {
+								System.out.println("Warning: skipping frame: " + frameIdx);
+								frameIdx++;
+								continue;
+							}
+							Matrix4x4.interpolateLinear(
+								tansformationsMatrixLast,
+								transformationsMatrixCurrent,
+								(timeStamp - timeStampLast) / (keyFrameTime - timeStampLast),
+								transformationsMatrices[frameIdx]
+							);
+							frameIdx++;
+						}
+						timeStampLast = timeStamp;
+						tansformationsMatrixLast = transformationsMatrixCurrent; 
+						keyFrameIdx++;
 					}
 				}
 			}
