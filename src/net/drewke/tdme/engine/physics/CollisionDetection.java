@@ -1,7 +1,6 @@
 package net.drewke.tdme.engine.physics;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -24,7 +23,6 @@ import net.drewke.tdme.math.Vector3;
 public final class CollisionDetection {
 
 	private final static boolean VERBOSE = false;
-	private final static float HITPOINT_TOLERANCE = 0.1f;
 	private final static int SAT_AXES_TEST_MAX = 20;
 	private final static int TRIANGLES_TEST_MAX = 10000;
 
@@ -99,15 +97,6 @@ public final class CollisionDetection {
 	private Vector3 hitPointTriangle2 = new Vector3();
 
 	private CollisionResponse collision1 = new CollisionResponse();
-	private CollisionResponse collision2 = new CollisionResponse();
-	private Comparator<CollisionResponse> collisionResponseComparator = new Comparator<CollisionResponse>() {
-		public int compare(CollisionResponse r1, CollisionResponse r2) {
-			if (r1.getPenetration() > r2.getPenetration()) return -1; else
-			if (r1.getPenetration() < r2.getPenetration()) return +1; else
-				return 0;
-		}
-	};
-	// private ArrayList<CollisionResponse> collisions = new ArrayList<CollisionResponse>();
 	
 
 	private final static boolean CHECK_COLLISIONRESPONSE = false;
@@ -682,30 +671,6 @@ public final class CollisionDetection {
 		//
 		float r = capsule.getRadius();
 
-		/*
-		// test capsule A against obb
-		doCollide(
-			obb,
-			sphere1.set(
-				capsule.getA(),
-				r
-			),
-			movement,
-			collision1
-		);
-
-		// test capsule B against obb
-		doCollide(
-			obb,
-			sphere1.set(
-				capsule.getB(),
-				r
-			),
-			movement,
-			collision2
-		);
-		*/
-
 		// clone obb into obb extended
 		obbExtended.fromOrientedBoundingBox(obb);
 
@@ -751,23 +716,6 @@ public final class CollisionDetection {
 			);
 			if (collision.hasEntitySelected() == true) return true;
 		}
-
-		// we have 3 collision response, chose the one with max penetration
-		/*
-		collisions.clear();
-		if (collision1.hasEntitySelected()) collisions.add(collision1);
-		if (collision2.hasEntitySelected()) collisions.add(collision2);
-		if (collision.hasEntitySelected()) collisions.add(collision);
-		if (collisions.size() > 0) {
-			QuickSort.sort(collisions, collisionResponseComparator);
-			if (collisions.get(0) == collision) {
-				return true;
-			} else {
-				collision.fromResponse(collisions.get(0));
-				return true;
-			}
-		}
-		*/
 
 		// no collision
 		return false;
@@ -1543,9 +1491,9 @@ public final class CollisionDetection {
 	 */
 	public void computeHitPoints(OrientedBoundingBox obb1, OrientedBoundingBox obb2, CollisionResponse.Entity collisionEntity) {
 		Vector3[] obb1Vertices = obb1.getVertices();
-		int[][] obb1FacesVerticesIndexes = obb1.getFacesVerticesIndexes(); 
+		int[][] obb1FacesVerticesIndexes = OrientedBoundingBox.getFacesVerticesIndexes(); 
 		Vector3[] obb2Vertices = obb2.getVertices();
-		int[][] obb2FacesVerticesIndexes = obb2.getFacesVerticesIndexes();
+		int[][] obb2FacesVerticesIndexes = OrientedBoundingBox.getFacesVerticesIndexes();
 		for (int triangleObb1Idx = 0; triangleObb1Idx < obb1FacesVerticesIndexes.length; triangleObb1Idx++)
 		for (int triangleObb2Idx = 0; triangleObb2Idx < obb2FacesVerticesIndexes.length; triangleObb2Idx++) {
 			TriangleTriangleIntersection.ReturnValue tritriReturn = triangleTriangleIntersection.computeTriangleTriangleIntersection(
@@ -1598,7 +1546,7 @@ public final class CollisionDetection {
 	public void computeHitPoints(Triangle triangle, OrientedBoundingBox obb, CollisionResponse.Entity collisionEntity) {
 		Vector3[] triangleVertices = triangle.getVertices(); 
 		Vector3[] obbVertices = obb.getVertices();
-		int[][] obbFacesVerticesIndexes = obb.getFacesVerticesIndexes(); 
+		int[][] obbFacesVerticesIndexes = OrientedBoundingBox.getFacesVerticesIndexes(); 
 		for (int triangleObbIdx = 0; triangleObbIdx < obbFacesVerticesIndexes.length; triangleObbIdx++) {
 			TriangleTriangleIntersection.ReturnValue tritriReturn = triangleTriangleIntersection.computeTriangleTriangleIntersection(
 				triangleVertices[0],
