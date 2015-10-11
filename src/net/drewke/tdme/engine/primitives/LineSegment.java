@@ -15,6 +15,27 @@ public final class LineSegment {
 	private Vector3 d1 = new Vector3();
 	private Vector3 d2 = new Vector3();
 	private Vector3 r = new Vector3();
+	private Vector3 c1 = new Vector3();
+	private Vector3 c2 = new Vector3();
+
+	/**
+	 * Does line segments collide
+	 * @param p1 line 1 point 1
+	 * @param q1 line 1 point 2
+	 * @param p2 line 2 point 1
+	 * @param q2 line 2 point 2
+	 * @param p intersection point
+	 * @return if collides or not
+	 */
+	public boolean doesLineSegmentsCollide(Vector3 p1, Vector3 q1, Vector3 p2, Vector3 q2, Vector3 p) {
+		computeClosestPointsOnLineSegments(p1, q1, p2, q2, c1, c2);
+		if (c1.sub(c2).computeLength() < MathTools.EPSILON) {
+			p.set(c2);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Computes closest points c1, c2 on line segment p1->q1, p2->q2

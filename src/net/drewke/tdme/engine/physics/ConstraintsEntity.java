@@ -103,12 +103,6 @@ public final class ConstraintsEntity {
 
 		// compute second friction vector
 		computeCrossProduct(collision.getNormal(), this.frictionVectors[0], this.frictionVectors[1]);
-
-		// work around falling stacks
-		// 	check if to compact hit points
-		if (rb2.angularVelocity.computeLength() < HITPOINT_TOLERANCE) {
-			CollisionDetection.getInstance().compactHitPoints(collision);
-		}
 	}
 
 	/**

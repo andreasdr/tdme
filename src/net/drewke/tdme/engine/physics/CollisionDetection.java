@@ -1,6 +1,7 @@
 package net.drewke.tdme.engine.physics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -35,6 +36,8 @@ public final class CollisionDetection {
 	private static Object synchronizeObject = new Object();
 
 	private static Vector3 zeroVector = new Vector3();
+	private static int[] lineSegmentsTriangleIndices = {0, 1, 1, 2, 2, 0};
+
 	private LineSegment lineSegment = new LineSegment();
 	private Vector3 closestPointOnCapsule1 = new Vector3();
 	private Vector3 closestPointOnCapsule2 = new Vector3();
@@ -1514,24 +1517,18 @@ public final class CollisionDetection {
 					collisionEntity.addHitPoint(hitPointTriangle2);
 					break;
 				case COPLANAR_INTERSECTION:
-					triangle1.getVertices()[0].set(obb1Vertices[obb1FacesVerticesIndexes[triangleObb1Idx][0]]);
-					triangle1.getVertices()[1].set(obb1Vertices[obb1FacesVerticesIndexes[triangleObb1Idx][1]]);
-					triangle1.getVertices()[2].set(obb1Vertices[obb1FacesVerticesIndexes[triangleObb1Idx][2]]);
+					Vector3[] _triangle1Vertices = triangle1.getVertices();
+					Vector3[] _triangle2Vertices = triangle2.getVertices();
+					_triangle1Vertices[0].set(obb1Vertices[obb1FacesVerticesIndexes[triangleObb1Idx][0]]);
+					_triangle1Vertices[1].set(obb1Vertices[obb1FacesVerticesIndexes[triangleObb1Idx][1]]);
+					_triangle1Vertices[2].set(obb1Vertices[obb1FacesVerticesIndexes[triangleObb1Idx][2]]);
 					triangle1.update();
-					triangle2.getVertices()[0].set(obb2Vertices[obb1FacesVerticesIndexes[triangleObb2Idx][0]]);
-					triangle2.getVertices()[1].set(obb2Vertices[obb1FacesVerticesIndexes[triangleObb2Idx][1]]);
-					triangle2.getVertices()[2].set(obb2Vertices[obb1FacesVerticesIndexes[triangleObb2Idx][2]]);
+					_triangle2Vertices[0].set(obb2Vertices[obb1FacesVerticesIndexes[triangleObb2Idx][0]]);
+					_triangle2Vertices[1].set(obb2Vertices[obb1FacesVerticesIndexes[triangleObb2Idx][1]]);
+					_triangle2Vertices[2].set(obb2Vertices[obb1FacesVerticesIndexes[triangleObb2Idx][2]]);
 					triangle2.update();
-					for (int i = 0; i < 3; i++) {
-						triangle1.computeClosestPointOnBoundingVolume(triangle2.getVertices()[i], hitPoint);
-						collisionEntity.addHitPoint(hitPoint);
-					}
-					/*
-					for (int i = 0; i < 3; i++) {
-						triangle2.computeClosestPointOnBoundingVolume(triangle1.getVertices()[i], hitPoint);
-						collisionEntity.addHitPoint(hitPoint);
-					}
-					*/
+					//
+					computeCoplanarTrianglesHitPoints(triangle1, triangle2, collisionEntity);
 					break;
 			}
 		}
@@ -1566,24 +1563,18 @@ public final class CollisionDetection {
 					collisionEntity.addHitPoint(hitPointTriangle2);
 					break;
 				case COPLANAR_INTERSECTION:
-					triangle1.getVertices()[0].set(triangleVertices[0]);
-					triangle1.getVertices()[1].set(triangleVertices[1]);
-					triangle1.getVertices()[2].set(triangleVertices[2]);
+					Vector3[] _triangle1Vertices = triangle1.getVertices();
+					Vector3[] _triangle2Vertices = triangle2.getVertices();
+					_triangle1Vertices[0].set(triangleVertices[0]);
+					_triangle1Vertices[1].set(triangleVertices[1]);
+					_triangle1Vertices[2].set(triangleVertices[2]);
 					triangle1.update();
-					triangle2.getVertices()[0].set(obbVertices[obbFacesVerticesIndexes[triangleObbIdx][0]]);
-					triangle2.getVertices()[1].set(obbVertices[obbFacesVerticesIndexes[triangleObbIdx][1]]);
-					triangle2.getVertices()[2].set(obbVertices[obbFacesVerticesIndexes[triangleObbIdx][2]]);
+					_triangle2Vertices[0].set(obbVertices[obbFacesVerticesIndexes[triangleObbIdx][0]]);
+					_triangle2Vertices[1].set(obbVertices[obbFacesVerticesIndexes[triangleObbIdx][1]]);
+					_triangle2Vertices[2].set(obbVertices[obbFacesVerticesIndexes[triangleObbIdx][2]]);
 					triangle2.update();
-					for (int i = 0; i < 3; i++) {
-						triangle1.computeClosestPointOnBoundingVolume(triangle2.getVertices()[i], hitPoint);
-						collisionEntity.addHitPoint(hitPoint);
-					}
-					/*
-					for (int i = 0; i < 3; i++) {
-						triangle2.computeClosestPointOnBoundingVolume(triangle1.getVertices()[i], hitPoint);
-						collisionEntity.addHitPoint(hitPoint);
-					}
-					*/
+					//
+					computeCoplanarTrianglesHitPoints(triangle1, triangle2, collisionEntity);
 					break;
 			}
 		}
@@ -1616,50 +1607,59 @@ public final class CollisionDetection {
 				collisionEntity.addHitPoint(hitPointTriangle2);
 				break;
 			case COPLANAR_INTERSECTION:
-				triangle1.getVertices()[0].set(triangle1Vertices[0]);
-				triangle1.getVertices()[1].set(triangle1Vertices[1]);
-				triangle1.getVertices()[2].set(triangle1Vertices[2]);
+				Vector3[] _triangle1Vertices = triangle1.getVertices();
+				Vector3[] _triangle2Vertices = triangle2.getVertices();
+				_triangle1Vertices[0].set(triangle1Vertices[0]);
+				_triangle1Vertices[1].set(triangle1Vertices[1]);
+				_triangle1Vertices[2].set(triangle1Vertices[2]);
 				triangle1.update();
-				triangle2.getVertices()[0].set(triangle2Vertices[0]);
-				triangle2.getVertices()[1].set(triangle2Vertices[1]);
-				triangle2.getVertices()[2].set(triangle2Vertices[2]);
+				_triangle2Vertices[0].set(triangle2Vertices[0]);
+				_triangle2Vertices[1].set(triangle2Vertices[1]);
+				_triangle2Vertices[2].set(triangle2Vertices[2]);
 				triangle2.update();
-				for (int i = 0; i < 3; i++) {
-					triangle1.computeClosestPointOnBoundingVolume(triangle2.getVertices()[i], hitPoint);
-					collisionEntity.addHitPoint(hitPoint);
-				}
-				/*
-				for (int i = 0; i < 3; i++) {
-					triangle2.computeClosestPointOnBoundingVolume(triangle1.getVertices()[i], hitPoint);
-					collisionEntity.addHitPoint(hitPoint);
-				}
-				*/
+				//
+				computeCoplanarTrianglesHitPoints(triangle1, triangle2, collisionEntity);
 				break;
 		}
 	}
 
 	/**
-	 * Compact hit points
-	 * @param collision response entity
+	 * Compute coplanar triangles hit points
+	 * @param triangle 1
+	 * @param triangle 2
+	 * @param collision entity
 	 */
-	public void compactHitPoints(CollisionResponse collision) {
-		/*
-		CollisionResponse.Entity entity = collision.selectedEntity;
-		if (entity == null) return;
-		if (entity.hitPointsCount < 2) return;
-		hitPoint.set(entity.hitPoints.get(0));
-		float y = hitPoint.getY();
-		for (int i = 1; i < entity.hitPointsCount; i++) {
-			Vector3 currentHitPoint = entity.hitPoints.get(i); 
-			if (Math.abs(currentHitPoint.getY() - y) > HITPOINT_TOLERANCE) {
-				return;
+	private void computeCoplanarTrianglesHitPoints(Triangle triangle1, Triangle triangle2, CollisionResponse.Entity collisionEntity) {
+		// we can have two triangles which do intersect
+		Vector3[] triangle1Vertices = triangle1.getVertices();
+		Vector3[] triangle2Vertices = triangle2.getVertices();
+		int lineSegmentsIntersections = 0;
+		for (int i = 0; i < lineSegmentsTriangleIndices.length; i+=2)
+		for (int j = 0; j < lineSegmentsTriangleIndices.length; j+=2) {
+			if (lineSegment.doesLineSegmentsCollide(
+					triangle1Vertices[lineSegmentsTriangleIndices[i + 0]],
+					triangle1Vertices[lineSegmentsTriangleIndices[i + 1]],
+					triangle2Vertices[lineSegmentsTriangleIndices[j + 0]],
+					triangle2Vertices[lineSegmentsTriangleIndices[j + 1]],
+					hitPoint
+				) == true) {
+				lineSegmentsIntersections++;
+				collisionEntity.addHitPoint(hitPoint);
 			}
-			hitPoint.add(currentHitPoint);
 		}
-		hitPoint.scale(1f / entity.hitPointsCount);
-		entity.hitPointsCount = 1;
-		entity.hitPoints.get(0).set(hitPoint);
-		*/
+		// or one triangle in another
+		if (lineSegmentsIntersections == 0) {
+			for (int i = 0; i < triangle1Vertices.length; i++) {
+				if (triangle2.containsPoint(triangle1Vertices[i]) == true) {
+					collisionEntity.addHitPoint(triangle1Vertices[i]);
+				}
+			}
+			for (int i = 0; i < triangle2Vertices.length; i++) {
+				if (triangle1.containsPoint(triangle2Vertices[i]) == true) {
+					collisionEntity.addHitPoint(triangle2Vertices[i]);
+				}
+			}
+		}
 	}
 
 	/**
