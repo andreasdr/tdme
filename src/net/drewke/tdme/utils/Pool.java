@@ -16,20 +16,15 @@ abstract public class Pool<E> {
 	 * @version $Id$
 	 * @param <E>
 	 */
-	private static class PoolElement<E> {
-		private boolean inUse;
-		private E element;
-	}
-
-	private ArrayList<PoolElement<E>> elements;
-	private int elementCount;
+	private ArrayList<E> freeElements;
+	private ArrayList<E> usedElements;
 
 	/**
 	 * Public constructor
 	 */
 	public Pool() {
-		elements = new ArrayList<PoolElement<E>>();
-		elementCount = 0;
+		freeElements = new ArrayList<E>();
+		usedElements = new ArrayList<E>();
 	}
 
 	/**
@@ -37,24 +32,14 @@ abstract public class Pool<E> {
 	 * @return element
 	 */
 	final public E allocate() {
-		// try to find free element in pool
-		for (int i = 0; i < elements.size(); i++) {
-			PoolElement<E> element = elements.get(i);
-			// do we have one?
-			if (element.inUse == false) {
-				// yes
-				element.inUse = true;
-				elementCount++;
-				return element.element;
-			}
+		if (freeElements.isEmpty() == false) {
+			E element = freeElements.remove(freeElements.size() - 1);
+			usedElements.add(element);
+			return element;
 		}
-		// otherwise add new element
-		elements.add(new PoolElement<E>());
-		PoolElement<E> element = elements.get(elements.size() - 1);
-		element.inUse = true;
-		element.element = instantiate();
-		elementCount++;
-		return element.element;
+		E element = instantiate();
+		usedElements.add(element);
+		return element;
 	}
 
 	/**
@@ -67,11 +52,10 @@ abstract public class Pool<E> {
 	 * @param element
 	 */
 	final public void release(E element) {
-		for (int i = 0; i < elements.size(); i++) {
-			PoolElement<E> _element = elements.get(i);
-			if (_element.inUse == true && _element.element == element) {
-				_element.inUse = false;
-				elementCount--;
+		for (int i = 0; i < usedElements.size(); i++) {
+			if (usedElements.get(i) == element) {
+				usedElements.remove(i);
+				freeElements.add(element);				
 				return;
 			}
 		}
@@ -82,25 +66,22 @@ abstract public class Pool<E> {
 	 * @return element capacity
 	 */
 	final public int capacity() {
-		return elements.size();
+		return usedElements.size() + freeElements.size();
 	}
 
 	/**
 	 * @return elements in use
 	 */
 	final public int size() {
-		return elementCount;
+		return usedElements.size();
 	}
 
 	/**
 	 * Reset this pool
 	 */
 	final public void reset() {
-		elementCount = 0;
-		for (int i = 0; i < elements.size(); i++) {
-			PoolElement<E> _element = elements.get(i);
-			_element.inUse = false;
-		}
+		usedElements.clear();
+		freeElements.clear();
 	}
 
 	/*
@@ -108,7 +89,7 @@ abstract public class Pool<E> {
 	 * @see java.lang.Object#toString()
 	 */
 	final public String toString() {
-		return "Pool [elements=" + elements + "]";
+		return "Pool [size=" + size() + ", capacity=" + capacity() + "]";
 	}
 
 }
