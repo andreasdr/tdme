@@ -10,12 +10,6 @@ import java.util.ArrayList;
  */
 abstract public class Pool<E> {
 
-	/**
-	 * Pool element
-	 * @author Andreas Drewke
-	 * @version $Id$
-	 * @param <E>
-	 */
 	private ArrayList<E> freeElements;
 	private ArrayList<E> usedElements;
 
