@@ -41,6 +41,7 @@ public final class Object3DVBORenderer {
 
 	private HashMap<String, ArrayList<Object3D>> visibleObjectsByModels = null;
 	private Pool<Key> keyPool = null;
+	private ArrayList<TransparentRenderFace> groupTransparentRenderFaces = null;
 	private Pool<TransparentRenderFacesGroup> transparentRenderFacesGroupPool;
 	private TransparentRenderFacesPool transparentRenderFacesPool = null;
 	private HashMap<Key, TransparentRenderFacesGroup> transparentRenderFacesGroups = null;
@@ -74,6 +75,7 @@ public final class Object3DVBORenderer {
 				return new Key();
 			}
 		};
+		groupTransparentRenderFaces = new ArrayList<TransparentRenderFace>();
 		transparentRenderFacesGroupPool = new Pool<TransparentRenderFacesGroup>() {
 			public TransparentRenderFacesGroup instantiate() {
 				return new TransparentRenderFacesGroup();
@@ -180,7 +182,6 @@ public final class Object3DVBORenderer {
 			renderer.enableBlending();
 
 			//
-			ArrayList<TransparentRenderFace> groupTransparentRenderFaces = new ArrayList<TransparentRenderFace>();
 			for (TransparentRenderFace transparentRenderFace: transparentRenderFacesPool.getTransparentRenderFacesIterator()) {
 
 				// skip if face is not in use
