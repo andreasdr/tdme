@@ -49,7 +49,7 @@ abstract public class Pool<E> {
 		for (int i = 0; i < usedElements.size(); i++) {
 			if (usedElements.get(i) == element) {
 				usedElements.remove(i);
-				freeElements.add(element);				
+				freeElements.add(element);
 				return;
 			}
 		}
@@ -74,8 +74,10 @@ abstract public class Pool<E> {
 	 * Reset this pool
 	 */
 	final public void reset() {
+		for (int i = 0; i < usedElements.size(); i++) {
+			freeElements.add(usedElements.get(i));
+		}
 		usedElements.clear();
-		freeElements.clear();
 	}
 
 	/*
