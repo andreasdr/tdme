@@ -18,8 +18,6 @@ import net.drewke.tdme.math.Vector3;
  */
 public class PointsParticleSystemEntityInternal extends Transformations implements ParticleSystemEntity {
 
-	private final static float PARTICLETEST_TOLERANCE = 0.2f;
-
 	private String id;
 	protected Engine engine;
 	private GLRenderer renderer;
@@ -33,8 +31,6 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 
 	private Vector3 velocityForTime;
 	private Vector3 point;
-	private Vector3 particleTest;
-	private Vector3 particleTestLength;
 
 	protected BoundingBox boundingBox;
 	protected BoundingBox boundingBoxTransformed;
@@ -68,8 +64,6 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 		this.maxPoints = maxPoints;
 		velocityForTime = new Vector3();
 		point = new Vector3();
-		particleTest = new Vector3();
-		particleTestLength = new Vector3();
 		boundingBox = new BoundingBox();
 		boundingBoxTransformed = new BoundingBox();
 		inverseTransformation = new Transformations();
@@ -193,8 +187,8 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 
 		//
 		boolean haveBoundingBox = false;
-		int particleTestMin = -1;
 
+		//
 		float distanceFromCamera;
 		Matrix4x4 modelViewMatrix = renderer.getModelViewMatrix();
 
@@ -217,7 +211,7 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 				continue;
 			}
 
-			// add gravity if our particle have a noticable mass
+			// add gravity if our particle have a noticeable mass
 			if (particle.mass > MathTools.EPSILON) particle.velocity.subY(0.5f * MathTools.g * (float)timeDelta/1000f);
 
 			// TODO:
@@ -226,13 +220,6 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 
 			// translation
 			particle.position.add(velocityForTime.set(particle.velocity).scale((float)timeDelta/1000f));
-
-			// set up particle collision test min
-			if (doCollisionTests == true &&
-				particleTestMin == -1) {
-				particleTestMin = i;
-				particleTest.set(particle.position);
-			}
 
 			// color
 			float[] color = particle.color.getArray();
@@ -246,10 +233,7 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 			modelViewMatrix.multiply(particle.position, point);
 
 			// check for collision
-			if (doCollisionTests == true &&
-				particleTestLength.set(particleTest).sub(particle.position).computeLength() > PARTICLETEST_TOLERANCE) {
-				boolean continueOnNextParticle = false;
-				// check for collision
+			if (doCollisionTests == true) {
 				for(Entity entity: engine.getPartition().getObjectsNearTo(particle.position)) {
 					// skip on our self
 					if (entity == this) continue;
@@ -259,25 +243,10 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 			
 					// do we have a collision?
 					if (entity.getBoundingBoxTransformed().containsPoint(particle.position)) {
-						// skip
-						for (int j = particleTestMin; j <= i; j++) {
-							particles[j].active = false;
-						}
-						int particlesToDisable = i - particleTestMin + 1;
-						activeParticles-= particlesToDisable;
-						particleTestMin = -1;
-						continueOnNextParticle = true;
-
-						//
-						break;
+						particle.active = false;
+						continue;
 					}
 				}
-
-				// reset particles collision test lower bound
-				particleTestMin = -1;
-
-				// continue on next particle
-				if (continueOnNextParticle == true) continue;
 			}
 
 			// 
