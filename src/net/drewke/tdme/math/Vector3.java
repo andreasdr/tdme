@@ -279,7 +279,7 @@ public final class Vector3 {
 	 * Computes angle between a and b 
 	 * @param vector a, must be normalized
 	 * @param vector b, must be normalized
-	 * @param plane n normal where a and b live in, must be normalized
+	 * @param plane normal n where a and b live in, must be normalized
 	 * @return
 	 */
 	public static float computeAngle(Vector3 a, Vector3 b, Vector3 n) {
