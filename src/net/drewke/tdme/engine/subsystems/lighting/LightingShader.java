@@ -1,9 +1,8 @@
 package net.drewke.tdme.engine.subsystems.lighting;
 
-import java.util.Arrays;
-
 import net.drewke.tdme.engine.subsystems.object.Object3DGroupMesh;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
+import net.drewke.tdme.engine.subsystems.shader.SkinningShader;
 import net.drewke.tdme.math.Matrix4x4;
 
 /**
@@ -11,7 +10,7 @@ import net.drewke.tdme.math.Matrix4x4;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class LightingShader {
+public final class LightingShader implements SkinningShader {
 
 	public final static int MAX_LIGHTS = 8;
 

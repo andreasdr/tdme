@@ -211,7 +211,7 @@ public final class ShadowMapping {
 			renderer.enableBlending();
 
 			// 	only opaque face entities as shadows will not be produced on transparent faces
-			object3DVBORenderer.render(visibleObjects, true, DepthBufferMode.IGNORE);
+			object3DVBORenderer.render(visibleObjects, true, DepthBufferMode.IGNORE, null);
 
 			// disable blending
 			renderer.disableBlending();
