@@ -127,14 +127,14 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isNormalMappingAvailable()
 	 */
 	final public boolean isNormalMappingAvailable() {
-		return true;
+		return false;
 	}
 
 	/**
 	 * @return if displacement mapping is supported
 	 */
 	final public boolean isDisplacementMappingAvailable() {
-		return true;
+		return false;
 	}
 
 	/*
