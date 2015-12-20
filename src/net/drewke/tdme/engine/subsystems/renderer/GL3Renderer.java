@@ -145,7 +145,7 @@ public abstract class GL3Renderer extends GLRenderer {
 	 * @return if displacement mapping is supported
 	 */
 	final public boolean isDisplacementMappingAvailable() {
-		return true;
+		return false;
 	}
 
 	/*
