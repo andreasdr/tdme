@@ -309,7 +309,7 @@ public final class ConvexMesh implements BoundingVolume {
 	 */
 	public String toString() {
 		return
-			"Mesh [center=" + center +
+			"ConvexMesh [center=" + center +
 			", sphereRadius=" + sphereRadius +
 			", triangles=" + Arrays.toString(triangles) + 
 			"]";

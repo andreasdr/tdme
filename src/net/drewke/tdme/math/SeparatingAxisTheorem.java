@@ -40,6 +40,32 @@ public final class SeparatingAxisTheorem {
 	}
 
 	/**
+	 * Check axix
+	 * @param axis
+	 * @return valididy
+	 */
+	public boolean checkAxis(Vector3 axis) {
+		float[] axisXYZ = axis.getArray();
+
+		// return if axis contains NaN component
+		if (Float.isNaN(axisXYZ[0]) ||
+			Float.isNaN(axisXYZ[1]) ||
+			Float.isNaN(axisXYZ[2])) {
+			return false;
+		}
+
+		// check if axis has no length
+		if (Math.abs(axisXYZ[0]) < MathTools.EPSILON &&
+			Math.abs(axisXYZ[1]) < MathTools.EPSILON &&
+			Math.abs(axisXYZ[2]) < MathTools.EPSILON) {
+			return false;
+		}
+
+		// valid
+		return true;
+	}
+
+	/**
 	 * Projects the point on given axis and returns its value
 	 * @param point
 	 * @param axis
@@ -80,6 +106,7 @@ public final class SeparatingAxisTheorem {
 	 * @return point in vertices
 	 */
 	public boolean checkPointInVerticesOnAxis(Vector3[] vertices, Vector3 point, Vector3 axis) {
+		if (checkAxis(axis) == false) return true;
 		doCalculateInterval(vertices, axis, minMax1);
 		float pOnAxis = doCalculatePoint(point, axis);
 		return pOnAxis >= minMax1[0] && pOnAxis <= minMax1[1];
