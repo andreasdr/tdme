@@ -175,12 +175,14 @@ public final class ConvexMesh implements BoundingVolume {
 		if (triangles.length == 0) {
 			return;
 		}
-		triangles[0].computeClosestPointOnBoundingVolume(point, closestsPoint);
-		float distance = distanceVector.set(point).sub(closestsPoint).computeLength();
+		triangles[0].computeClosestPointOnBoundingVolume(point, this.closestsPoint);
+		float distance = distanceVector.set(point).sub(this.closestsPoint).computeLength();
+		closestsPoint.set(this.closestsPoint);
 		for (int i = 1; i < triangles.length; i++) {
 			triangles[i].computeClosestPointOnBoundingVolume(point, this.closestsPoint);
 			float _distance = distanceVector.set(point).sub(this.closestsPoint).computeLength();
 			if (_distance < distance) {
+				distance = _distance; 
 				closestsPoint.set(this.closestsPoint);
 			}
 		}
