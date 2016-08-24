@@ -124,6 +124,20 @@ public final class Key {
 		System.arraycopy(data, 0, key2.data, 0, length);
 	}
 
+	/**
+	 * @return key data
+	 */
+	public char[] getData() {
+		return data;
+	}
+
+	/**
+	 * @return key length
+	 */
+	public int getLength() {
+		return length;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()

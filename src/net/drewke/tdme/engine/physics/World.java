@@ -43,6 +43,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
+import net.drewke.tdme.utils.Pool;
 
 /**
  * Physics
@@ -57,6 +58,20 @@ public final class World {
 	private HashMap<String, RigidBody> rigidBodiesById = new HashMap<String, RigidBody>();
 
 	private HashMap<Key, Key> rigidBodyTestedCollisions = new HashMap<Key, Key>();
+
+	private Pool<Key> rigidBodyCollisionsKeyPoolCurrentFrame = new Pool<Key>() {
+		public Key instantiate() {
+			return new Key();
+		}
+	};
+	private HashMap<Key, Key> rigidBodyCollisionsCurrentFrame = new HashMap<Key, Key>();
+
+	private Pool<Key> rigidBodyCollisionsKeyPoolLastFrame = new Pool<Key>() {
+		public Key instantiate() {
+			return new Key();
+		}
+	};
+	private HashMap<Key, Key> rigidBodyCollisionsLastFrame = new HashMap<Key, Key>();
 
 	private Partition partition = new Partition();
 
@@ -252,9 +267,9 @@ public final class World {
 				// create rigidBody12 key
 				Key rigidBodyKey = constraintsSolver.allocateKey();
 				rigidBodyKey.reset();
-				rigidBodyKey.append(rigidBody1.id);
+				rigidBodyKey.append(rigidBody1.idx);
 				rigidBodyKey.append(",");
-				rigidBodyKey.append(rigidBody2.id);
+				rigidBodyKey.append(rigidBody2.idx);
 
 				// check if collision has been tested already
 				if (rigidBodyTestedCollisions.get(rigidBodyKey) != null) {
@@ -265,9 +280,9 @@ public final class World {
 				/*
 				// create rigidbody21 key
 				rigidBodyKey.reset();
-				rigidBodyKey.append(rigidBody2.id);
+				rigidBodyKey.append(rigidBody2.idx);
 				rigidBodyKey.append(",");
-				rigidBodyKey.append(rigidBody1.id);
+				rigidBodyKey.append(rigidBody1.idx);
 
 				if (rigidBodyTestedCollisions.get(rigidBodyKey) != null) {
 					constraintsSolver.releaseKey();
@@ -295,6 +310,22 @@ public final class World {
 					// check for hit point count
 					if (collision.getHitPointsCount() == 0) continue;
 
+					// we have a collision, so register it
+					Key rigidBodyCollisionKey = rigidBodyCollisionsKeyPoolCurrentFrame.allocate();
+					rigidBodyCollisionKey.reset();
+					rigidBodyCollisionKey.append(rigidBody1.idx);
+					rigidBodyCollisionKey.append(",");
+					rigidBodyCollisionKey.append(rigidBody2.idx);
+					rigidBodyCollisionsCurrentFrame.put(rigidBodyCollisionKey, rigidBodyCollisionKey);
+
+					// fire collision events
+					// 	on collision begin
+					if (rigidBodyCollisionsLastFrame.get(rigidBodyCollisionKey) == null) {
+						rigidBody1.fireOnCollisionBegin(rigidBody2, collision);
+					}
+					// 	on collision
+					rigidBody1.fireOnCollision(rigidBody2, collision);
+
 					// unset sleeping if both non static and colliding
 					if (rigidBody1.isStatic == false &&
 						rigidBody2.isStatic == false) {
@@ -305,10 +336,43 @@ public final class World {
 					// add constraint entity
 					constraintsSolver.allocateConstraintsEntity().set(rigidBody1, rigidBody2, constraintsSolver.allocateCollision().fromResponse(collision));
 				}
-				
 			}
 			// System.out.println(rigidBody1.id + ":" + nearObjects);
 		}
+
+		// fire on collision end
+		//	check each collision last frame that disappeared in current frame
+		for (Key key: rigidBodyCollisionsLastFrame.getKeysIterator()) {
+			Key rigidBodyCollisionKey = rigidBodyCollisionsCurrentFrame.get(key);
+			if (rigidBodyCollisionKey == null) {
+				char[] keyData = key.getData();
+				int rigidBodyIdx1 = 0;
+				int rigidBodyIdx2 = 0;
+				rigidBodyIdx1+= (int)keyData[0] << 0;
+				rigidBodyIdx1+= (int)keyData[1] << 8;
+				rigidBodyIdx1+= (int)keyData[2] << 16;
+				rigidBodyIdx1+= (int)keyData[3] << 24;
+				rigidBodyIdx2+= (int)keyData[5] << 0;
+				rigidBodyIdx2+= (int)keyData[6] << 8;
+				rigidBodyIdx2+= (int)keyData[7] << 16;
+				rigidBodyIdx2+= (int)keyData[8] << 24;
+				RigidBody rigidBody1 = rigidBodies.get(rigidBodyIdx1);
+				RigidBody rigidBody2 = rigidBodies.get(rigidBodyIdx2);
+				rigidBody1.fireOnCollisionEnd(rigidBody2);
+			}
+		}
+
+		// swap rigid body collisions current and last frame
+		Pool<Key> rigidBodyCollisionsKeyPoolTmp = rigidBodyCollisionsKeyPoolLastFrame;
+		HashMap<Key, Key> rigidBodyCollisionsTmp = rigidBodyCollisionsLastFrame;
+		rigidBodyCollisionsLastFrame = rigidBodyCollisionsCurrentFrame;
+		rigidBodyCollisionsKeyPoolLastFrame = rigidBodyCollisionsKeyPoolCurrentFrame;
+		rigidBodyCollisionsCurrentFrame = rigidBodyCollisionsTmp;
+		rigidBodyCollisionsKeyPoolCurrentFrame = rigidBodyCollisionsKeyPoolTmp;
+
+		// reset current frame
+		rigidBodyCollisionsCurrentFrame.clear();
+		rigidBodyCollisionsKeyPoolCurrentFrame.reset();
 
 		// do the solving
 		constraintsSolver.compute(dt);

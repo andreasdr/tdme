@@ -26,6 +26,8 @@
 
 package net.drewke.tdme.engine.physics;
 
+import java.util.ArrayList;
+
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -97,6 +99,9 @@ public final class RigidBody {
 	private Matrix4x4 orientationMatrix = new Matrix4x4().identity();
 	protected Matrix4x4 worldInverseInertia = new Matrix4x4().identity();
 	private Vector3 distance = new Vector3();
+
+	// collision listener
+	private ArrayList<CollisionListener> collisionListener = new ArrayList<CollisionListener>();
 
 	//
 	private Quaternion tmpQuaternion1 = new Quaternion();
@@ -513,6 +518,55 @@ public final class RigidBody {
 		if (tmpVector3.set(linearVelocity).sub(linearVelocityLast).computeLength() > VELOCITY_SLEEPTOLERANCE) return true;
 		if (tmpVector3.set(angularVelocity).sub(angularVelocityLast).computeLength() > VELOCITY_SLEEPTOLERANCE) return true;
 		return false;
+	}
+
+	/**
+	 * Add a collision listener to this rigid body
+	 * @param listener
+	 */
+	public void addCollisionListener(CollisionListener listener) {
+		collisionListener.add(listener);
+	}
+
+	/**
+	 * Remove a collision listener to this rigid body
+	 * @param listener
+	 */
+	public void removeCollisionListener(CollisionListener listener) {
+		collisionListener.remove(listener);
+	}
+
+	/**
+	 * Fire on collision 
+	 * @param other
+	 * @param collision response
+	 */
+	protected void fireOnCollision(RigidBody other, CollisionResponse collisionResponse) {
+		for (int i = 0; i < collisionListener.size(); i++) {
+			collisionListener.get(i).onCollision(this, other, collisionResponse);
+		}
+	}
+
+	/**
+	 * Fire on collision begin
+	 * @param other
+	 * @param collision response
+	 */
+	protected void fireOnCollisionBegin(RigidBody other, CollisionResponse collisionResponse) {
+		for (int i = 0; i < collisionListener.size(); i++) {
+			collisionListener.get(i).onCollisionBegin(this, other, collisionResponse);
+		}
+	}
+
+	/**
+	 * Fire on collision end
+	 * @param other
+	 * @param collision response
+	 */
+	protected void fireOnCollisionEnd(RigidBody other) {
+		for (int i = 0; i < collisionListener.size(); i++) {
+			collisionListener.get(i).onCollisionEnd(this, other);
+		}
 	}
 
 	/*
