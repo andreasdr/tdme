@@ -40,8 +40,13 @@ public class GUILayoutNode extends GUIParentNode {
 				width+= guiSubNode.getContentWidth();
 			}
 		} else {
-			GUINode guiSubNode = subNodes.get(0);
-			width = guiSubNode.getContentWidth();
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode guiSubNode = subNodes.get(i);
+				int contentWidth = guiSubNode.getContentWidth();
+				if (contentWidth > width) {
+					width = contentWidth;
+				}
+			}
 		}
 		return width;
 	}
@@ -58,8 +63,13 @@ public class GUILayoutNode extends GUIParentNode {
 				height+= guiSubNode.getContentHeight();
 			}
 		} else {
-			GUINode guiSubNode = subNodes.get(0);
-			height = guiSubNode.getContentHeight();
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode guiSubNode = subNodes.get(i);
+				int contentHeight = guiSubNode.getContentHeight();
+				if (contentHeight > height) {
+					height = contentHeight;
+				}
+			}
 		}
 		return height;
 	}
@@ -76,8 +86,13 @@ public class GUILayoutNode extends GUIParentNode {
 				width+= guiSubNode.getAutoWidth();
 			}
 		} else {
-			GUINode guiSubNode = subNodes.get(0);
-			width = guiSubNode.getAutoWidth();
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode guiSubNode = subNodes.get(i);
+				int autoWidth = guiSubNode.getAutoWidth();
+				if (autoWidth > width) {
+					width = autoWidth;
+				}
+			}
 		}
 		return width;
 	}
@@ -94,8 +109,13 @@ public class GUILayoutNode extends GUIParentNode {
 				height+= guiSubNode.getAutoHeight();
 			}
 		} else {
-			GUINode guiSubNode = subNodes.get(0);
-			height = guiSubNode.getAutoHeight();
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode guiSubNode = subNodes.get(i);
+				int autoHeight = guiSubNode.getAutoHeight();
+				if (autoHeight > height) {
+					height = autoHeight;
+				}
+			}
 		}
 		return height;
 	}

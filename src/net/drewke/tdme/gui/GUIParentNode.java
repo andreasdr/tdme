@@ -46,10 +46,10 @@ public abstract class GUIParentNode extends GUINode {
 		constraints.left = getRequestedConstraintsValue(left.trim(), 0);
 		constraints.topType = getRequestedConstraintsType(top.trim(), RequestedConstraintsType.PIXEL);
 		constraints.top = getRequestedConstraintsValue(top.trim(), 0);
-		constraints.widthType = getRequestedConstraintsType(width.trim(), RequestedConstraintsType.PERCENT);
-		constraints.width = getRequestedConstraintsValue(width.trim(), 100);
-		constraints.heightType = getRequestedConstraintsType(height.trim(), RequestedConstraintsType.PERCENT);
-		constraints.height = getRequestedConstraintsValue(height.trim(), 100);
+		constraints.widthType = getRequestedConstraintsType(width.trim(), RequestedConstraintsType.AUTO);
+		constraints.width = getRequestedConstraintsValue(width.trim(), -1);
+		constraints.heightType = getRequestedConstraintsType(height.trim(), RequestedConstraintsType.AUTO);
+		constraints.height = getRequestedConstraintsValue(height.trim(), -1);
 		return constraints;
 	}
 

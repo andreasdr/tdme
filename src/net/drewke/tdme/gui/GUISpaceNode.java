@@ -27,18 +27,20 @@ public class GUISpaceNode extends GUINode {
 		return "space";
 	}
 
-	/**
-	 * @return content width
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return -1;
+		return 0;
 	}
 
-	/**
-	 * @return content height
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return -1;
+		return 0;
 	}
 
 	/**

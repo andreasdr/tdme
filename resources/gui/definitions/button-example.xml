@@ -1,12 +1,12 @@
 <screen id="test">
 	<panel left="64" top="48" width="512" height="384" alignment="vertical" background-color="#a0a0a0" horizontal-align="center">
 	    <space height="*" />
-	 	<element id="xxx" horizontal-align="center" vertical-align="center">
+	 	<element id="xxx" horizontal-align="center">
 	        <image id="img" show-on="always" src="resources/test.png" width="200" />
 	        <text id="text0" show-on="always" font="resources/font.fnt" text="text0" color="#ffffff" />
 	 	</element>
 	 	<element id="yyy">
-	 		<layout alignment="vertical" horizontal-align="center" vertical-align="center">
+	 		<layout alignment="vertical" horizontal-align="center">
 	        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
 	        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
         	</layout>
