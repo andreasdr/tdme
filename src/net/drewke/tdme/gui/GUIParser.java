@@ -41,6 +41,10 @@ public class GUIParser {
 		guiScreenNode = new GUIScreenNode(
 			null, 
 			xmlRoot.getAttribute("id"), 
+			GUINode.createAlignments(
+				xmlRoot.getAttribute("horizontal-align"), 
+				xmlRoot.getAttribute("vertical-align")							
+			),
 			GUINode.createRequestedConstraints(
 				xmlRoot.getAttribute("left"), 
 				xmlRoot.getAttribute("top"), 
@@ -69,6 +73,10 @@ public class GUIParser {
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
 					GUIParentNode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
@@ -83,7 +91,11 @@ public class GUIParser {
 				// TODO: validate root node
 				GUISpaceNode guiSpaceNode = new GUISpaceNode(
 					guiParentNode, 
-					node.getAttribute("id"), 
+					node.getAttribute("id"),
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
 					GUISpaceNode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
@@ -98,6 +110,10 @@ public class GUIParser {
 				GUIPanelNode guiPanelNode = new GUIPanelNode(
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
 					GUIParentNode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
@@ -115,6 +131,10 @@ public class GUIParser {
 				GUIElementNode guiElementNode = new GUIElementNode(
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
@@ -129,7 +149,11 @@ public class GUIParser {
 				// TODO: validate root node
 				GUIImageNode guiImageNode = new GUIImageNode(
 					guiParentNode, 
-					node.getAttribute("id"), 
+					node.getAttribute("id"),
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
@@ -146,6 +170,10 @@ public class GUIParser {
 				GUITextNode guiTextNode = new GUITextNode(
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 

@@ -13,10 +13,11 @@ public class GUIElementNode extends GUIParentNode {
 	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
 	 */
-	protected GUIElementNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints) {
-		super(parentNode, id, requestedConstraints);
+	protected GUIElementNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
+		super(parentNode, id, alignments, requestedConstraints);
 	}
 
 	/**
@@ -98,6 +99,10 @@ public class GUIElementNode extends GUIParentNode {
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).layout();
 		}
+
+		// compute children alignments
+		computeHorizontalChildrenAlignment();
+		computeVerticalChildrenAlignment();
 	}
 
 }

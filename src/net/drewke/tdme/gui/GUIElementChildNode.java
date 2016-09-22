@@ -3,8 +3,6 @@ package net.drewke.tdme.gui;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import sun.util.locale.StringTokenIterator;
-
 /**
  * GUI element child node
  * 
@@ -19,10 +17,12 @@ public abstract class GUIElementChildNode extends GUINode {
 	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
+	 * @param show on
 	 */
-	protected GUIElementChildNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints, String[] showOn) {
-		super(parentNode, id, requestedConstraints);
+	protected GUIElementChildNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn) {
+		super(parentNode, id, alignments, requestedConstraints);
 	}
 
 	/**

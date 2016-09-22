@@ -9,13 +9,15 @@ public class GUILayoutNode extends GUIParentNode {
 	private Alignment alignment; 
 
 	/**
-	 * GUI layout node
+	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
+	 * @param alignment
 	 */
-	protected GUILayoutNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints, String alignment) {
-		super(parentNode, id, requestedConstraints);
+	protected GUILayoutNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String alignment) {
+		super(parentNode, id, alignments, requestedConstraints);
 		this.alignment = Alignment.valueOf(alignment.toUpperCase());
 	}
 
@@ -68,10 +70,11 @@ public class GUILayoutNode extends GUIParentNode {
 		// GUI parent node layout
 		super.layout();
 
-		// determine vertical stars
+		//
 		switch (alignment) {
 			case VERTICAL:
 				{
+					// determine vertical stars
 					int starCount = 0;
 					int height = computedConstraints.height;
 					int nodesHeight = 0;
@@ -89,10 +92,22 @@ public class GUILayoutNode extends GUIParentNode {
 							guiSubNode.computedConstraints.height = (height - nodesHeight) / starCount;
 						}
 					}
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
+							guiSubNode.computedConstraints.height = (height - nodesHeight) / starCount;
+						}
+					}
+
+					// compute children alignments
+					computeHorizontalChildrenAlignment();
+
+					//
 					break;
 				}
 			case HORIZONTAL:
 				{
+					// determine horizontal stars
 					int starCount = 0;
 					int width = computedConstraints.width;
 					int nodesWidth = 0;
@@ -110,6 +125,11 @@ public class GUILayoutNode extends GUIParentNode {
 							guiSubNode.computedConstraints.width = (width - nodesWidth) / starCount;
 						}
 					}
+					
+					// compute children alignments
+					computeVerticalChildrenAlignment();
+					
+					//
 					break;
 				}
 		}

@@ -1,6 +1,5 @@
 package net.drewke.tdme.gui;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints;
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
@@ -11,13 +10,14 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
 public class GUISpaceNode extends GUINode {
 
 	/**
-	 * GUI space node
-	 * @param parentNode
+	 * Constructor
+	 * @param parent node
 	 * @param id
-	 * @param requestedConstraints
+	 * @param alignments
+	 * @param requested constraints
 	 */
-	protected GUISpaceNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints) {
-		super(parentNode, id, requestedConstraints);
+	protected GUISpaceNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
+		super(parentNode, id, alignments, requestedConstraints);
 	}
 
 	/**

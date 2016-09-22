@@ -9,6 +9,22 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
  */
 public abstract class GUINode {
 
+	enum AlignmentHorizontal {LEFT, CENTER, RIGHT};
+	enum AlignmentVertical {TOP, CENTER, BOTTOM};
+
+	/**
+	 * Alignments
+	 * @author Andreas Drewke
+	 * @version $Id$
+	 */
+	static class Alignments {
+		protected AlignmentHorizontal horizontal; 
+		protected AlignmentVertical vertical;
+		public String toString() {
+			return horizontal.toString().toLowerCase() + ", " + vertical.toString().toLowerCase();
+		}
+	}
+
 	/**
 	 * Requested constraints for this node
 	 * @author Andreas Drewke
@@ -43,32 +59,38 @@ public abstract class GUINode {
 		protected int top;
 		protected int width; 
 		protected int height;
+		protected int alignmentLeft;
+		protected int alignmentTop;
 		public String toString() {
 			return 
 				left + ", " +
 				top + ", " +
 				width + ", " +
-				height;
+				height + 
+				(alignmentLeft != 0 || alignmentTop != 0?
+					" +(" + alignmentLeft + ", " + alignmentTop + ")":
+					""
+				);
 		}
-	}
+	} 
 
 	protected GUINode parentNode;
 	protected String id;
+	protected Alignments alignments;
 	protected RequestedConstraints requestedConstraints;
 	protected ComputedConstraints computedConstraints;
 
 	/**
-	 * Public constructor
-	 * @param parentNode
+	 * Constructor
+	 * @param parent node
 	 * @param id
-	 * @param left
-	 * @param right
-	 * @param width
-	 * @param height
+	 * @param alignments
+	 * @param requested constraints
 	 */
-	protected GUINode(GUINode parentNode, String id, RequestedConstraints requestedConstraints) {
+	protected GUINode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
 		this.parentNode = parentNode;
 		this.id = id;
+		this.alignments = alignments;
 		this.requestedConstraints = requestedConstraints;
 		this.computedConstraints = new ComputedConstraints();
 	}
@@ -197,6 +219,21 @@ public abstract class GUINode {
 	 * @param height
 	 * @return requested constraints
 	 */
+	protected static Alignments createAlignments(String horizontal, String vertical) {
+		Alignments alignments = new Alignments();
+		alignments.horizontal = AlignmentHorizontal.valueOf(horizontal != null && horizontal.length() > 0?horizontal.toUpperCase():"LEFT");
+		alignments.vertical = AlignmentVertical.valueOf(vertical != null && vertical.length() > 0?vertical.toUpperCase():"TOP");
+		return alignments;
+	}
+
+	/**
+	 * Create requested constraints
+	 * @param left
+	 * @param top
+	 * @param width
+	 * @param height
+	 * @return requested constraints
+	 */
 	protected static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
 		RequestedConstraints constraints = new RequestedConstraints();
 		constraints.leftType = getRequestedConstraintsType(left.trim(), RequestedConstraintsType.PIXEL);
@@ -272,9 +309,10 @@ public abstract class GUINode {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "GUINode [id=" + id
-				+ ", requestedConstraints=" + requestedConstraints
-				+ ", computedConstraints=" + computedConstraints + "]";
+		return "GUINode [id=" + id +
+				", alignments=" + alignments +
+				", requestedConstraints=" + requestedConstraints +
+				", computedConstraints=" + computedConstraints + "]";
 	}
 
 	/**
@@ -286,6 +324,7 @@ public abstract class GUINode {
 		return 
 			indent(indent) +
 			"GUINode [type=" + getNodeType() + ", id=" + id +
+			", alignments=" + alignments +
 			", requestedConstraints=" + requestedConstraints +
 			", computedConstraints=" + computedConstraints + "]";
 	}

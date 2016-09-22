@@ -16,14 +16,15 @@ public class GUITextNode extends GUIElementChildNode {
 	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
 	 * @param show on
 	 * @param font
 	 * @param color
 	 * @param text
 	 */
-	protected GUITextNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints, String[] showOn, String font, String color, String text) {
-		super(parentNode, id, requestedConstraints, showOn);
+	protected GUITextNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn, String font, String color, String text) {
+		super(parentNode, id, alignments, requestedConstraints, showOn);
 		this.font = font;
 		this.color = color;
 		this.text = text;

@@ -2,7 +2,6 @@ package net.drewke.tdme.gui;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints;
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
@@ -18,10 +17,11 @@ public abstract class GUIParentNode extends GUINode {
 	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
 	 */
-	protected GUIParentNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints) {
-		super(parentNode, id, requestedConstraints);
+	protected GUIParentNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
+		super(parentNode, id, alignments, requestedConstraints);
 		subNodes = new ArrayList<GUINode>();
 	}
 
@@ -63,6 +63,72 @@ public abstract class GUIParentNode extends GUINode {
 		}
 	}
 
+	/**
+	 * Compute horizontal children alignment
+	 */
+	protected void computeHorizontalChildrenAlignment() {
+		switch (alignments.horizontal) {
+			case LEFT: 
+				{
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						guiSubNode.computedConstraints.alignmentLeft = 0; 
+					}
+					break;
+				}
+			case CENTER: 
+				{
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						guiSubNode.computedConstraints.alignmentLeft = (computedConstraints.width - guiSubNode.computedConstraints.width) / 2; 
+					}
+					break;
+				}
+			case RIGHT: {
+				{
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						guiSubNode.computedConstraints.alignmentLeft = (computedConstraints.width - guiSubNode.computedConstraints.width); 
+					}
+					break;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Compute vertical children alignment
+	 */
+	protected void computeVerticalChildrenAlignment() {
+		switch (alignments.vertical) {
+			case TOP: 
+				{
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						guiSubNode.computedConstraints.alignmentTop = 0; 
+					}
+					break;
+				}
+			case CENTER: 
+				{
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						guiSubNode.computedConstraints.alignmentTop = (computedConstraints.height - guiSubNode.computedConstraints.height) / 2; 
+					}
+					break;
+				}
+			case BOTTOM: {
+				{
+					for (int i = 0; i < subNodes.size(); i++) {
+						GUINode guiSubNode = subNodes.get(i);
+						guiSubNode.computedConstraints.alignmentTop = (computedConstraints.height - guiSubNode.computedConstraints.height); 
+					}
+					break;
+				}
+			}
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#toString()
@@ -78,9 +144,13 @@ public abstract class GUIParentNode extends GUINode {
 	protected String toString(int indent) {
 		String tmp =
 				indent(indent) +
-				"GUIParentNode [type=" + getNodeType() + ", id=" + id + ", requestedConstraints="
-				+ requestedConstraints + ", computedConstraints="
-				+ computedConstraints + "]" + "\n";
+				"GUIParentNode ["
+				+ "type=" + getNodeType() 
+				+ ", id=" + id 
+				+ ", alignments=" + alignments
+				+ ", requestedConstraints=" + requestedConstraints 
+				+ ", computedConstraints=" + computedConstraints + 
+				"]" + "\n";
 		for (int i = 0; i < subNodes.size(); i++) {
 			tmp+= subNodes.get(i).toString(indent + 1) + (i == subNodes.size() - 1?"":"\n");
 		}

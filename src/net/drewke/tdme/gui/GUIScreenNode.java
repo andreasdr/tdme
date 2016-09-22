@@ -13,10 +13,11 @@ public class GUIScreenNode extends GUIParentNode {
 	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
 	 */
-	protected GUIScreenNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints) {
-		super(parentNode, id, requestedConstraints);
+	protected GUIScreenNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
+		super(parentNode, id, alignments, requestedConstraints);
 	}
 
 	/**

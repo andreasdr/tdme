@@ -1,5 +1,6 @@
 package net.drewke.tdme.gui;
 
+
 /**
  * GUI image node
  * 
@@ -11,15 +12,16 @@ public class GUIImageNode extends GUIElementChildNode {
 	private String src;
 
 	/**
-	 * GUI image node
+	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param alignments
 	 * @param requested constraints
 	 * @param show on
 	 * @param src
 	 */
-	protected GUIImageNode(GUINode parentNode, String id, RequestedConstraints requestedConstraints, String[] showOn, String src) {
-		super(parentNode, id, requestedConstraints, showOn);
+	protected GUIImageNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn, String src) {
+		super(parentNode, id, alignments, requestedConstraints, showOn);
 		this.src = src;
 	}
 
