@@ -71,25 +71,25 @@ public class GUIElementNode extends GUIParentNode {
 		// super layout
 		super.layout();
 
-		// width type AUTO means we determine width by max content width
+		// width type AUTO means we determine children width by content width or overridden width
 		if (requestedConstraints.widthType.equals(RequestedConstraintsType.AUTO)) {
 			int widthMax = 0;
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiElementNode = subNodes.get(i);
-				if (guiElementNode.getContentWidth() > widthMax) {
-					widthMax = guiElementNode.getContentWidth();
+				if (guiElementNode.getAutoWidth() > widthMax) {
+					widthMax = guiElementNode.getAutoWidth();
 				}
 			}
 			computedConstraints.width = widthMax;
 		}
 
-		// height type AUTO means we determine width by max content height
+		// width type AUTO means we determine children width by content height or overridden height
 		if (requestedConstraints.widthType.equals(RequestedConstraintsType.AUTO)) {
 			int heightMax = 0;
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiElementNode = subNodes.get(i);
-				if (guiElementNode.getContentHeight() > heightMax) {
-					heightMax = guiElementNode.getContentHeight();
+				if (guiElementNode.getAutoHeight() > heightMax) {
+					heightMax = guiElementNode.getAutoHeight();
 				}
 			}
 			computedConstraints.height = heightMax;

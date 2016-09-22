@@ -125,6 +125,28 @@ public abstract class GUINode {
 	protected abstract int getContentHeight();
 
 	/**
+	 * @return int
+	 */
+	protected int getAutoWidth() {
+		if (requestedConstraints.widthType == RequestedConstraintsType.AUTO) {
+			return getContentWidth();
+		} else {
+			return computedConstraints.width;
+		}
+	}
+
+	/**
+	 * @return int
+	 */
+	protected int getAutoHeight() {
+		if (requestedConstraints.widthType == RequestedConstraintsType.AUTO) {
+			return getContentHeight();
+		} else {
+			return computedConstraints.height;
+		}
+	}
+
+	/**
 	 * @return requested constraints
 	 */
 	protected RequestedConstraints getRequestsConstraints() {
@@ -158,6 +180,7 @@ public abstract class GUINode {
 	 * Layout
 	 */
 	protected void layout() {
+		// compute constraints
 		computedConstraints.left =
 			parentNode.computedConstraints.left + 
 			layoutConstraintPixel(
