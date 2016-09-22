@@ -198,7 +198,7 @@ public abstract class GUINode {
 	 * @param value
 	 * @return pixel
 	 */
-	public int layoutConstraintPixel(RequestedConstraintsType type, int autoValue, int parentValue, int value) {
+	protected int layoutConstraintPixel(RequestedConstraintsType type, int autoValue, int parentValue, int value) {
 		if (type.equals(RequestedConstraintsType.PIXEL)) {
 			return value; 
 		} else
@@ -298,7 +298,7 @@ public abstract class GUINode {
 	 * @param ident
 	 * @return indented string
 	 */
-	public String indent(int indent) {
+	protected String indent(int indent) {
 		String tmp = "";
 		for (int i = 0; i < indent; i++) tmp+= "\t";
 		return tmp;
