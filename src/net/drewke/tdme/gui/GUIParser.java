@@ -69,7 +69,7 @@ public class GUIParser {
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(
 					guiParentNode, 
 					node.getAttribute("id"), 
-					GUINode.createRequestedConstraints(
+					GUIParentNode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
 						node.getAttribute("width"), 
@@ -84,7 +84,7 @@ public class GUIParser {
 				GUISpaceNode guiSpaceNode = new GUISpaceNode(
 					guiParentNode, 
 					node.getAttribute("id"), 
-					GUINode.createRequestedConstraints(
+					GUISpaceNode.createRequestedConstraints(
 						node.getAttribute("left"), 
 						node.getAttribute("top"), 
 						node.getAttribute("width"), 
@@ -92,6 +92,23 @@ public class GUIParser {
 					)
 				);
 				guiParentNode.getSubNodes().add(guiSpaceNode);
+			} else
+			if (node.getNodeName().equals("panel")) {
+				// TODO: validate root node
+				GUIPanelNode guiPanelNode = new GUIPanelNode(
+					guiParentNode, 
+					node.getAttribute("id"), 
+					GUIParentNode.createRequestedConstraints(
+						node.getAttribute("left"), 
+						node.getAttribute("top"), 
+						node.getAttribute("width"), 
+						node.getAttribute("height")
+					),
+					node.getAttribute("alignment"),
+					node.getAttribute("background-color"),
+					node.getAttribute("background-image"));
+				guiParentNode.getSubNodes().add(guiPanelNode);
+				parseGUINode(guiPanelNode, node);	
 			} else
 			if (node.getNodeName().equals("element")) {
 				// TODO: validate root node

@@ -1,0 +1,16 @@
+<screen id="test">
+	<panel left="64" top="48" width="512" height="384" alignment="vertical" background-color="#a0a0a0">
+	    <space height="*" />
+	 	<element id="xxx">
+	        <image id="img" show-on="always" src="resources/test.png" horizontal-align="middle" vertical-align="middle" />
+	        <text id="text0" show-on="always" font="resources/font.fnt" text="text0" color="#ffffff" horizontal-align="middle" vertical-align="middle" />
+	 	</element>
+	 	<element id="yyy">
+	 		<layout alignment="vertical">
+	        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" horizontal-align="middle" vertical-align="middle" />
+	        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" horizontal-align="middle" vertical-align="middle" />
+        	</layout>
+	 	</element>
+	    <space height="*" />
+	</panel>
+</screen>

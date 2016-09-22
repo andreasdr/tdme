@@ -26,19 +26,38 @@ public class GUILayoutNode extends GUIParentNode {
 		return "layout";
 	}
 
-
 	/**
 	 * @return content width
 	 */
 	protected int getContentWidth() {
-		return -1;
+		int width = 0;
+		if (alignment == Alignment.HORIZONTAL) {
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode guiSubNode = subNodes.get(i);
+				width+= guiSubNode.getContentWidth();
+			}
+		} else {
+			GUINode guiSubNode = subNodes.get(0);
+			width = guiSubNode.getContentWidth();
+		}
+		return width;
 	}
 
 	/**
 	 * @return content height
 	 */
 	protected int getContentHeight() {
-		return -1;
+		int height = 0;
+		if (alignment == Alignment.VERTICAL) {
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode guiSubNode = subNodes.get(i);
+				height+= guiSubNode.getContentHeight();
+			}
+		} else {
+			GUINode guiSubNode = subNodes.get(0);
+			height = guiSubNode.getContentHeight();
+		}
+		return height;
 	}
 
 	/*
@@ -106,7 +125,6 @@ public class GUILayoutNode extends GUIParentNode {
 	 */
 	protected void setTop(int top) {
 		super.setTop(top);
-		// do left, top
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode guiSubNode = subNodes.get(i);
 			guiSubNode.setTop(top);

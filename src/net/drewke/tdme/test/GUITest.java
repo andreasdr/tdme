@@ -16,7 +16,7 @@ public class GUITest {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		GUIScreenNode screen = GUIParser.parse("resources/gui", "button-example.xml");
+		GUIScreenNode screen = GUIParser.parse("resources/gui/definitions", "button-example.xml");
 		screen.setScreenSize(640, 480);
 		screen.layout();
 		System.out.println(screen);

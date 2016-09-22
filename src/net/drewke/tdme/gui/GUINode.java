@@ -138,29 +138,54 @@ public abstract class GUINode {
 	protected void layout() {
 		computedConstraints.left =
 			parentNode.computedConstraints.left + 
-			layoutConstraintPixel(requestedConstraints.leftType, parentNode.computedConstraints.width, requestedConstraints.left);
+			layoutConstraintPixel(
+				requestedConstraints.leftType,
+				0,
+				parentNode.computedConstraints.width, 
+				requestedConstraints.left
+			);
 		computedConstraints.top = 
 			parentNode.computedConstraints.top +
-			layoutConstraintPixel(requestedConstraints.topType, parentNode.computedConstraints.height, requestedConstraints.top);
+			layoutConstraintPixel(
+				requestedConstraints.topType,
+				0,
+				parentNode.computedConstraints.height, 
+				requestedConstraints.top
+			);
 		computedConstraints.width = 
-			layoutConstraintPixel(requestedConstraints.widthType, parentNode.computedConstraints.width, requestedConstraints.width);
+			layoutConstraintPixel(
+				requestedConstraints.widthType,
+				getContentWidth(),
+				parentNode.computedConstraints.width, 
+				requestedConstraints.width
+			);
 		computedConstraints.height = 
-			layoutConstraintPixel(requestedConstraints.heightType, parentNode.computedConstraints.height, requestedConstraints.height);
+			layoutConstraintPixel(
+				requestedConstraints.heightType,
+				getContentHeight(),
+				parentNode.computedConstraints.height, 
+				requestedConstraints.height
+			);
 	}
 
 	/**
 	 * Layout constraint
 	 * @param type
+	 * @param auto value
+	 * @param parent value
 	 * @param value
 	 * @return pixel
 	 */
-	public int layoutConstraintPixel(RequestedConstraintsType type, int parentValue, int value) {
+	public int layoutConstraintPixel(RequestedConstraintsType type, int autoValue, int parentValue, int value) {
 		if (type.equals(RequestedConstraintsType.PIXEL)) {
 			return value; 
 		} else
 		if (type.equals(RequestedConstraintsType.PERCENT)) {
 			return (int)(parentValue / 100.0 * value); 
-		}		
+		} else 
+		if (type.equals(RequestedConstraintsType.AUTO)) {
+			return autoValue; 
+		}
 		return -1;
 	}
 
@@ -178,10 +203,10 @@ public abstract class GUINode {
 		constraints.left = getRequestedConstraintsValue(left.trim(), 0);
 		constraints.topType = getRequestedConstraintsType(top.trim(), RequestedConstraintsType.PIXEL);
 		constraints.top = getRequestedConstraintsValue(top.trim(), 0);
-		constraints.widthType = getRequestedConstraintsType(width.trim(), RequestedConstraintsType.PERCENT);
-		constraints.width = getRequestedConstraintsValue(width.trim(), 100);
-		constraints.heightType = getRequestedConstraintsType(height.trim(), RequestedConstraintsType.PERCENT);
-		constraints.height = getRequestedConstraintsValue(height.trim(), 100);
+		constraints.widthType = getRequestedConstraintsType(width.trim(), RequestedConstraintsType.AUTO);
+		constraints.width = getRequestedConstraintsValue(width.trim(), -1);
+		constraints.heightType = getRequestedConstraintsType(height.trim(), RequestedConstraintsType.AUTO);
+		constraints.height = getRequestedConstraintsValue(height.trim(), -1);
 		return constraints;
 	}
 
