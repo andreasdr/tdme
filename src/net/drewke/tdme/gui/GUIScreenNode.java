@@ -52,7 +52,7 @@ public class GUIScreenNode extends GUIParentNode {
 		this.requestedConstraints.widthType = RequestedConstraintsType.PIXEL;
 		this.requestedConstraints.width = width;
 		this.requestedConstraints.heightType = RequestedConstraintsType.PIXEL;
-		this.requestedConstraints.height = width;
+		this.requestedConstraints.height = height;
 		this.computedConstraints.left = 0;
 		this.computedConstraints.top = 0;
 		this.computedConstraints.width = width;
