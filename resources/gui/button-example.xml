@@ -1,0 +1,16 @@
+<screen id="test">
+    <layout left="10%" top="10%" width="80%" height="80%" alignment="vertical">
+        <space height="*" />
+        <element id="xxx"  width="auto" height="auto">
+               <image id="img" show-on="always" src="resources/test.png" horizontal-align="middle" vertical-align="middle" />
+               <text id="text" show-on="always" font="resources/font.fnt" text="text" color="#ffffff" horizontal-align="middle" vertical-align="middle" />
+        </element>
+        <layout id="yyy" alignment="horizontal" height="10">
+        	<space width="10" />
+        	<space width="10" />
+        	<space width="10" />
+        	<space width="*" />
+        </layout>
+        <space height="*" />
+    </layout>
+</screen>

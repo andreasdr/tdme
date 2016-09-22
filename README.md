@@ -75,6 +75,7 @@ TDME
               - sleeping technology
 
     - What does it (maybe still) lack
+        - GUI system
     	- own more efficient model file format
         - animation blending
         - physics
@@ -83,6 +84,7 @@ TDME
         - example games
 
     - What is WIP
+        - GUI system
         - rigid body simulator(needs to be updated to newer "ReactPhysics3D 0.5")
 
     - Technology
