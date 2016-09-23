@@ -47,6 +47,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 */
 	protected void setLeft(int left) {
 		super.setLeft(left);
+		left+= computedConstraints.alignmentLeft;
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).setLeft(left);
 		}
@@ -58,6 +59,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 */
 	protected void setTop(int top) {
 		super.setTop(top);
+		top+= computedConstraints.alignmentTop;
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).setTop(top);
 		}

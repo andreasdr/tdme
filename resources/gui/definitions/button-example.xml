@@ -11,6 +11,10 @@
 	        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
         	</panel>
 	 	</element>
+ 		<panel alignment="vertical" horizontal-align="center" background-color="#fff0f0">
+        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
+        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
+       	</panel>
 	    <space height="*" />
 	</panel>
 </screen>

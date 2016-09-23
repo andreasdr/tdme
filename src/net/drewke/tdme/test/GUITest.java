@@ -20,6 +20,9 @@ public class GUITest {
 		screen.setScreenSize(640, 480);
 		screen.layout();
 		System.out.println(screen);
+		screen.setScreenSize(640, 480);
+		screen.layout();
+		System.out.println(screen);
 	}
 
 }

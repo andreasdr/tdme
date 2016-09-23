@@ -30,7 +30,7 @@ public final class GUIImageNode extends GUIElementChildNode {
 		super(parentNode, id, alignments, requestedConstraints, showOn);
 		this.src = src;
 		this.texture = TextureLoader.loadTexture(".", src);
-		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
+		// this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
 
 	/**
