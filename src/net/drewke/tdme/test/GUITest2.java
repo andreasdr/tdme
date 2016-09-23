@@ -96,6 +96,7 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 		engine.init(drawable);
 		try {
 			engine.getGUI().addScreen("test", GUIParser.parse("resources/gui/definitions", "button-example.xml"));
+			engine.getGUI().getScreen("test").setScreenSize(640, 480);
 			engine.getGUI().getScreen("test").layout();
 			System.out.println(engine.getGUI().getScreen("test").toString());
 		} catch (Exception exception) {

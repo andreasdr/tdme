@@ -78,23 +78,19 @@ public final class GUIImageNode extends GUIElementChildNode {
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.addQuad(
 			((left) / (screenWidth / 2f)) - 1f, 
-			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
-			0f, 
+			((screenHeight - top) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
 			0f, 1f, 
 			((left + width) / (screenWidth / 2f)) - 1f, 
-			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
-			0f, 
+			((screenHeight - top) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
 			1f, 1f, 
 			((left + width) / (screenWidth / 2f)) - 1f, 
-			((screenHeight - top - height) / (screenHeight / 2f)) - 1f, 
-			0f, 
+			((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
 			1f, 0f, 
 			((left) / (screenWidth / 2f)) - 1f, 
-			((screenHeight - top - height) / (screenHeight / 2f)) - 1f, 
-			0f, 
+			((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
 			0f, 0f
 		);

@@ -96,7 +96,6 @@ public final class GUIRenderer {
 	 * 
 	 * @param x 1
 	 * @param y 1
-	 * @param z 1
 	 * @param color red 1
 	 * @param color green 1
 	 * @param color blue 1
@@ -105,7 +104,6 @@ public final class GUIRenderer {
 	 * @param texture v 1
 	 * @param x 2
 	 * @param y 2
-	 * @param z 2
 	 * @param color red 2
 	 * @param color green 2
 	 * @param color blue 2
@@ -114,7 +112,6 @@ public final class GUIRenderer {
 	 * @param texture v 2
 	 * @param x 3
 	 * @param y 3
-	 * @param z 3
 	 * @param color red 3
 	 * @param color green 3
 	 * @param color blue 3
@@ -123,7 +120,6 @@ public final class GUIRenderer {
 	 * @param texture v 3
 	 * @param x 4
 	 * @param y 4
-	 * @param z 4
 	 * @param color red 4
 	 * @param color green 4
 	 * @param color blue 4
@@ -132,16 +128,16 @@ public final class GUIRenderer {
 	 * @param texture v 4
 	 */
 	protected void addQuad(
-		float x1, float y1, float z1,
+		float x1, float y1,
 		float colorR1, float colorG1, float colorB1, float colorA1,
 		float tu1, float tv1,
-		float x2, float y2, float z2,
+		float x2, float y2,
 		float colorR2, float colorG2, float colorB2, float colorA2,
 		float tu2, float tv2,
-		float x3, float y3, float z3,
+		float x3, float y3,
 		float colorR3, float colorG3, float colorB3, float colorA3,
 		float tu3, float tv3,
-		float x4, float y4, float z4,
+		float x4, float y4,
 		float colorR4, float colorG4, float colorB4, float colorA4,
 		float tu4, float tv4
 	) {
@@ -182,7 +178,7 @@ public final class GUIRenderer {
 		// quad component 1
 		fbVertices.put(x1);
 		fbVertices.put(y1);
-		fbVertices.put(z1);
+		fbVertices.put(0.0f);
 		fbColors.put(colorR1);
 		fbColors.put(colorG1);
 		fbColors.put(colorB1);
@@ -193,7 +189,7 @@ public final class GUIRenderer {
 		// quad component 2
 		fbVertices.put(x2);
 		fbVertices.put(y2);
-		fbVertices.put(z2);
+		fbVertices.put(0.0f);
 		fbColors.put(colorR2);
 		fbColors.put(colorG2);
 		fbColors.put(colorB2);
@@ -204,7 +200,7 @@ public final class GUIRenderer {
 		// quad component 3
 		fbVertices.put(x3);
 		fbVertices.put(y3);
-		fbVertices.put(z3);
+		fbVertices.put(0.0f);
 		fbColors.put(colorR3);
 		fbColors.put(colorG3);
 		fbColors.put(colorB3);
@@ -215,7 +211,7 @@ public final class GUIRenderer {
 		// quad component 3
 		fbVertices.put(x3);
 		fbVertices.put(y3);
-		fbVertices.put(z3);
+		fbVertices.put(0.0f);
 		fbColors.put(colorR3);
 		fbColors.put(colorG3);
 		fbColors.put(colorB3);
@@ -226,7 +222,7 @@ public final class GUIRenderer {
 		// quad component 4
 		fbVertices.put(x4);
 		fbVertices.put(y4);
-		fbVertices.put(z4);
+		fbVertices.put(0.0f);
 		fbColors.put(colorR4);
 		fbColors.put(colorG4);
 		fbColors.put(colorB4);
@@ -237,7 +233,7 @@ public final class GUIRenderer {
 		// quad component 1
 		fbVertices.put(x1);
 		fbVertices.put(y1);
-		fbVertices.put(z1);
+		fbVertices.put(0.0f);
 		fbColors.put(colorR1);
 		fbColors.put(colorG1);
 		fbColors.put(colorB1);
