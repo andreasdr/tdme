@@ -73,22 +73,22 @@ public final class GUIPanelNode extends GUILayoutNode {
 			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
 			0f, 
 			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-			0f, 0f, 
+			0f, 1f, 
 			((left + width) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
 			0f, 
 			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-			1f, 0f, 
+			1f, 1f, 
 			((left + width) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top - height) / (screenHeight / 2f)) - 1f, 
 			0f, 
 			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-			1f, 1f, 
+			1f, 0f, 
 			((left) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top - height) / (screenHeight / 2f)) - 1f, 
 			0f, 
 			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-			0f, 1f
+			0f, 0f
 		);
 		guiRenderer.render();
 
