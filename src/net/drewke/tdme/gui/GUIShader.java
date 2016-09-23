@@ -82,13 +82,14 @@ public final class GUIShader {
 		uniformEffectColorMul = renderer.getProgramUniformLocation(programGlId, "effectColorMul");
 		if (uniformEffectColorMul == -1) return;
 		uniformEffectColorAdd = renderer.getProgramUniformLocation(programGlId, "effectColorAdd");
+		if (uniformEffectColorAdd == -1) return;
 
 		//
 		initialized = true;
 	}
 
 	/**
-	 * Use render shadow mapping program
+	 * Use render GUI program
 	 */
 	public void useProgram() {
 		// yep, use program
@@ -97,6 +98,14 @@ public final class GUIShader {
 		renderer.setProgramUniformInteger(uniformDiffuseTextureUnit, 0);
 		// we are running
 		isRunning = true;
+	}
+
+	/**
+	 * Un use render GUI program
+	 */
+	public void unUseProgram() {
+		// we are not running
+		isRunning = false;
 	}
 
 	/**

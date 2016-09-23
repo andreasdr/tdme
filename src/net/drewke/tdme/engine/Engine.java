@@ -668,6 +668,7 @@ public final class Engine {
 
 		// create GUI
 		gui = new GUI(renderer);
+		gui.init();
 
 		// create camera
 		camera = new Camera(renderer);
@@ -721,6 +722,7 @@ public final class Engine {
 		initialized&= shadowMappingShader == null?true:shadowMappingShader.isInitialized();
 		initialized&= lightingShader.isInitialized();
 		initialized&= particlesShader.isInitialized();
+		initialized&= guiShader.isInitialized();
 
 		//
 		System.out.println("TDME::initialized & ready: " + initialized);
@@ -751,6 +753,9 @@ public final class Engine {
 		if (shadowMapping != null) {
 			shadowMapping.reshape(width, height);
 		}
+
+		// update GUI system
+		gui.reshape(width, height);
 	}
 
 	/**
@@ -1015,15 +1020,20 @@ public final class Engine {
 			removeEntity(entitiesToRemove.get(i));
 		}
 
-		//
+		// dispose shadow mapping
 		if (shadowMapping != null) {
 			shadowMapping.dispose();
 			shadowMapping = null;
 		}
+
+		// dispose frame buffer
 		if (frameBuffer != null) {
 			frameBuffer.dispose();
 			frameBuffer = null;
 		}
+
+		// dispose GUI
+		gui.dispose();
 	}
 
 	/**

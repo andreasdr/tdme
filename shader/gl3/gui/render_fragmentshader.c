@@ -17,7 +17,7 @@ out vec4 outColor;
 void main (void) {
 	//
 	if (diffuseTextureAvailable == 1) {
-		outColor = clamp((effectColorAdd + (texture(diffuseTextureUnit, vsFragTextureUV)) * vsFragColor), 0.0, 1.0);
+		outColor = clamp((effectColorAdd + (texture(diffuseTextureUnit, vsFragTextureUV)) * vsFragColor * effectColorMul), 0.0, 1.0);
 	} else {
 		outColor = clamp(effectColorAdd + vsFragColor, 0.0, 1.0);
 	}

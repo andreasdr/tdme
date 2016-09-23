@@ -50,6 +50,49 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {
+		// screen dimension
+		float screenWidth = guiRenderer.gui.width;
+		float screenHeight = guiRenderer.gui.height;
+
+		// System.out.println(this);
+
+		// element location and dimensions
+		float left = computedConstraints.left + computedConstraints.alignmentLeft;
+		float top = computedConstraints.top + computedConstraints.alignmentTop;
+		float width = computedConstraints.width;
+		float height = computedConstraints.height;
+
+		// background color
+		float[] bgColorData = backgroundColor.getData();
+
+		// render panel background
+		guiRenderer.clear();
+		guiRenderer.bindTexture(0);
+		guiRenderer.addQuad(
+			((left) / (screenWidth / 2f)) - 1f, 
+			((top + height) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+			0f, 0f, 
+			((left + width) / (screenWidth / 2f)) - 1f, 
+			((top + height) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+			1f, 0f, 
+			((left + width) / (screenWidth / 2f)) - 1f, 
+			((top) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+			1f, 1f, 
+			((left) / (screenWidth / 2f)) - 1f, 
+			((top) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+			0f, 1f
+		);
+		guiRenderer.render();
+
+		// render children
 		super.render(guiRenderer);
 	}
 

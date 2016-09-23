@@ -5,11 +5,11 @@
 	        <image id="img" show-on="always" src="resources/gui/images/button_normal.png" width="200" height="200" horizontal-align="center" vertical-align="center" />
 	        <text id="text0" show-on="always" font="resources/font.fnt" text="text0" color="#ffffff" />
 	 	</element>
-	 	<element id="yyy">
-	 		<layout alignment="vertical" horizontal-align="center">
+	 	<element id="yyy" horizontal-align="center">
+	 		<panel alignment="vertical" horizontal-align="center" background-color="#f0f0f0">
 	        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
 	        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
-        	</layout>
+        	</panel>
 	 	</element>
 	    <space height="*" />
 	</panel>

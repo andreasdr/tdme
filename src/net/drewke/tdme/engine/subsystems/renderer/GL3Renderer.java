@@ -966,7 +966,6 @@ public abstract class GL3Renderer extends GLRenderer {
 	final public void initGuiMode(int width, int height) {
 		setTextureUnit(0);
 		gl.glBindTexture(GL3.GL_TEXTURE_2D, ID_NONE);
-		gl.glBindVertexArray(0);
 		gl.glEnable(GL3.GL_BLEND);
 		gl.glDisable(GL3.GL_DEPTH_TEST);
 		gl.glDisable(GL3.GL_CULL_FACE);
@@ -980,7 +979,6 @@ public abstract class GL3Renderer extends GLRenderer {
 	final public void doneGuiMode() {
 		gl.glGetError();
 		gl.glBindTexture(GL3.GL_TEXTURE_2D, ID_NONE);
-		gl.glBindVertexArray(engineVAO);
 		gl.glDisable(GL3.GL_BLEND);
 		gl.glEnable(GL3.GL_DEPTH_TEST);
 		gl.glEnable(GL3.GL_CULL_FACE);

@@ -3,6 +3,7 @@ package net.drewke.tdme.gui;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
@@ -18,20 +19,27 @@ public final class GUIRenderer {
 
 	private final static int QUAD_COUNT = 16384; 
 
+	//
+	protected GUI gui;
 	private GLRenderer renderer;
-
 	private int[] vboIds;
-
 	private int quadCount;
-	private FloatBuffer fbVertices = ByteBuffer.allocateDirect(QUAD_COUNT * 4 * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-	private FloatBuffer fbColors = ByteBuffer.allocateDirect(QUAD_COUNT * 4 * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 4 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+	// buffers
+	private FloatBuffer fbVertices = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+	private FloatBuffer fbColors = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+	// effect colors
+	private float[] effectColorMul = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
+	private float[] effectColorAdd = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
 
 	/**
 	 * Constructor
 	 * @param renderer
 	 */
-	protected GUIRenderer(GLRenderer renderer) {
+	protected GUIRenderer(GUI gui, GLRenderer renderer) {
+		this.gui = gui;
 		this.renderer = renderer;
 	}
 
@@ -55,6 +63,22 @@ public final class GUIRenderer {
 			Engine.getInstance().getVBOManager().removeVBO("tdme.guirenderer");
 			vboIds = null;
 		}
+	}
+
+	/**
+	 * Init rendering
+	 */
+	protected void initRendering() {
+		Engine.getGUIShader().useProgram();
+		renderer.initGuiMode(640, 480);
+	}
+
+	/**
+	 * Init rendering
+	 */
+	protected void doneRendering() {
+		Engine.getGUIShader().unUseProgram();
+		renderer.doneGuiMode();
 	}
 
 	/**
@@ -121,11 +145,39 @@ public final class GUIRenderer {
 		float colorR4, float colorG4, float colorB4, float colorA4,
 		float tu4, float tv4
 	) {
+		/*
+		System.out.println(
+			"1: " +
+			 x1 + ", " +  y1 + ", " +  z1 + ", " +
+			 colorR1 + ", " +  colorG1 + ", " +  colorB1 + ", " +  colorA1 + ", " +
+			 tu1 + ", " +  tv1
+		);
+		System.out.println(
+			"2: " 	+
+			 x2 + ", " +  y2 + ", " +  z2 + ", " +
+			 colorR2 + ", " +  colorG2 + ", " +  colorB2 + ", " +  colorA2 + ", " +
+			 tu2 + ", " +  tv2
+		);
+		System.out.println(
+			"3: " +
+			 x3 + ", " +  y3 + ", " +  z3 + ", " +
+			 colorR3 + ", " +  colorG3 + ", " +  colorB3 + ", " +  colorA3 + ", " +
+			 tu3 + ", " +  tv3
+		);
+		System.out.println(
+			"4: " +
+			 x4 + ", " +  y4 + ", " +  z4 + ", " +
+			 colorR4 + ", " +  colorG4 + ", " +  colorB4 + ", " +  colorA4 + ", " +
+			 tu4 + ", " +  tv4
+		);
+		*/
 		// check quad count limit
 		if (quadCount > QUAD_COUNT) {
 			System.out.println("GUIRenderer::addQuad()::too many quads");
 			return;
 		}
+
+		// TODO: check if its better to use indexed rendering
 
 		// quad component 1
 		fbVertices.put(x1);
@@ -160,6 +212,17 @@ public final class GUIRenderer {
 		fbTextureCoordinates.put(tu3);
 		fbTextureCoordinates.put(tv3);
 
+		// quad component 3
+		fbVertices.put(x3);
+		fbVertices.put(y3);
+		fbVertices.put(z3);
+		fbColors.put(colorR3);
+		fbColors.put(colorG3);
+		fbColors.put(colorB3);
+		fbColors.put(colorA3);
+		fbTextureCoordinates.put(tu3);
+		fbTextureCoordinates.put(tv3);
+
 		// quad component 4
 		fbVertices.put(x4);
 		fbVertices.put(y4);
@@ -170,6 +233,17 @@ public final class GUIRenderer {
 		fbColors.put(colorA4);
 		fbTextureCoordinates.put(tu4);
 		fbTextureCoordinates.put(tv4);
+
+		// quad component 1
+		fbVertices.put(x1);
+		fbVertices.put(y1);
+		fbVertices.put(z1);
+		fbColors.put(colorR1);
+		fbColors.put(colorG1);
+		fbColors.put(colorB1);
+		fbColors.put(colorA1);
+		fbTextureCoordinates.put(tu1);
+		fbTextureCoordinates.put(tv1);
 
 		//
 		quadCount++;
@@ -221,11 +295,16 @@ public final class GUIRenderer {
 		// vertices
 		renderer.bindVerticesBufferObject(vboIds[0]);
 
-		// normals
+		// colors
 		renderer.bindColorsBufferObject(vboIds[1]);
 
 		// texture coordinates
 		renderer.bindTextureCoordinatesBufferObject(vboIds[2]);
+
+		// effect
+		renderer.setEffectColorMul(effectColorMul);
+		renderer.setEffectColorAdd(effectColorAdd);
+		renderer.onUpdateEffect();
 
 		// draw
 		renderer.drawTrianglesFromBufferObjects(triangles, 0);
