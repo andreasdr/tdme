@@ -6,12 +6,12 @@
 	        <text id="text0" show-on="always" font="resources/font.fnt" text="text0" color="#ffffff" />
 	 	</element>
 	 	<element id="yyy" horizontal-align="center">
-	 		<panel alignment="vertical" horizontal-align="center" background-color="#f0f0f0">
+	 		<panel alignment="vertical" horizontal-align="center" background-color="#ff0000">
 	        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
 	        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
         	</panel>
 	 	</element>
- 		<panel alignment="vertical" horizontal-align="center" background-color="#fff0f0">
+ 		<panel alignment="vertical" horizontal-align="center" background-color="#00ff00">
         	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
         	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
        	</panel>
