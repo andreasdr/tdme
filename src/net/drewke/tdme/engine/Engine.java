@@ -27,6 +27,7 @@ import net.drewke.tdme.engine.subsystems.renderer.GLES2Renderer;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMapping;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMappingShader;
+import net.drewke.tdme.gui.GUIShader;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector2;
 import net.drewke.tdme.math.Vector3;
@@ -66,6 +67,7 @@ public final class Engine {
 	private static ShadowMappingShader shadowMappingShader = null;
 	protected static LightingShader lightingShader = null;
 	protected static ParticlesShader particlesShader = null;
+	protected static GUIShader guiShader = null;
 
 	private int width;
 	private int height;
@@ -360,6 +362,13 @@ public final class Engine {
 	}
 
 	/**
+	 * @return GUI shader
+	 */
+	public static GUIShader getGUIShader() {
+		return guiShader;
+	}
+
+	/**
 	 * @return object 3d vbo renderer
 	 */
 	public Object3DVBORenderer getObject3DVBORenderer() {
@@ -504,6 +513,7 @@ public final class Engine {
 				}
 				final public void onBindTexture(int textureId) {
 					if (lightingShader != null) lightingShader.bindTexture(this, textureId);
+					if (guiShader != null) guiShader.bindTexture(this, textureId);
 				}
 				final public void onUpdateTextureMatrix() {
 					// no op
@@ -511,6 +521,7 @@ public final class Engine {
 				final public void onUpdateEffect() {
 					if (lightingShader != null) lightingShader.updateEffect(this);
 					if (particlesShader != null) particlesShader.updateEffect(this);
+					if (guiShader != null) guiShader.updateEffect(this);
 				}
 				final public void onUpdateLight(int lightId) {
 					if (lightingShader != null) lightingShader.updateLight(this, lightId);
@@ -552,6 +563,7 @@ public final class Engine {
 				}
 				final public void onBindTexture(int textureId) {
 					if (lightingShader != null) lightingShader.bindTexture(this, textureId);
+					if (guiShader != null) guiShader.bindTexture(this, textureId);
 				}
 				final public void onUpdateTextureMatrix() {
 					// no op
@@ -559,6 +571,7 @@ public final class Engine {
 				final public void onUpdateEffect() {
 					if (lightingShader != null) lightingShader.updateEffect(this);
 					if (particlesShader != null) particlesShader.updateEffect(this);
+					if (guiShader != null) guiShader.updateEffect(this);
 				}
 				final public void onUpdateLight(int lightId) {
 					if (lightingShader != null) lightingShader.updateLight(this, lightId);
@@ -600,6 +613,7 @@ public final class Engine {
 				}
 				final public void onBindTexture(int textureId) {
 					if (lightingShader != null) lightingShader.bindTexture(this, textureId);
+					if (guiShader != null) guiShader.bindTexture(this, textureId);
 				}
 				final public void onUpdateTextureMatrix() {
 					// no op
@@ -607,6 +621,7 @@ public final class Engine {
 				final public void onUpdateEffect() {
 					if (lightingShader != null) lightingShader.updateEffect(this);
 					if (particlesShader != null) particlesShader.updateEffect(this);
+					if (guiShader != null) guiShader.updateEffect(this);
 				}
 				final public void onUpdateLight(int lightId) {
 					if (lightingShader != null) lightingShader.updateLight(this, lightId);
@@ -653,9 +668,13 @@ public final class Engine {
 		lightingShader = new LightingShader(renderer);
 		lightingShader.init();
 
-		// create lighting shader
+		// create particles shader
 		particlesShader = new ParticlesShader(this, renderer);
 		particlesShader.init();
+
+		// create GUI shader
+		guiShader = new GUIShader(renderer);
+		guiShader.init();
 
 		// check if VBOs are available
 		if (renderer.isBufferObjectsAvailable()) {
