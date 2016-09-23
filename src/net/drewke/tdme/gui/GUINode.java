@@ -363,6 +363,13 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * Render
+	 * 
+	 * @param gui renderer
+	 */
+	protected abstract void render(GUIRenderer guiRenderer);
+
+	/**
 	 * Compute indent string
 	 * @param ident
 	 * @return indented string

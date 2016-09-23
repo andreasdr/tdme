@@ -27,6 +27,7 @@ import net.drewke.tdme.engine.subsystems.renderer.GLES2Renderer;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMapping;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMappingShader;
+import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.GUIShader;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector2;
@@ -72,6 +73,7 @@ public final class Engine {
 	private int width;
 	private int height;
 
+	private GUI gui;
 	private Timing timing;
 	private Camera camera;
 	protected Partition partition;
@@ -272,6 +274,13 @@ public final class Engine {
 	 */
 	public ShadowMapping getShadowMapping() {
 		return shadowMapping;
+	}
+
+	/**
+	 * @return GUI
+	 */
+	public GUI getGUI() {
+		return gui;
 	}
 
 	/**
@@ -656,6 +665,9 @@ public final class Engine {
 		// create object 3d vbo renderer
 		object3DVBORenderer = new Object3DVBORenderer(this, renderer);
 		object3DVBORenderer.init();
+
+		// create GUI
+		gui = new GUI(renderer);
 
 		// create camera
 		camera = new Camera(renderer);

@@ -7,7 +7,7 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUISpaceNode extends GUINode {
+public final class GUISpaceNode extends GUINode {
 
 	/**
 	 * Constructor
@@ -63,4 +63,13 @@ public class GUISpaceNode extends GUINode {
 		constraints.height = getRequestedConstraintsValue(height.trim(), 100);
 		return constraints;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
+	 */
+	protected void render(GUIRenderer guiRenderer) {
+		// no op
+	}
+
 }

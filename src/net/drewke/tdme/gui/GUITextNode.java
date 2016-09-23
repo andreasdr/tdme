@@ -6,7 +6,7 @@ package net.drewke.tdme.gui;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUITextNode extends GUIElementChildNode {
+public final class GUITextNode extends GUIElementChildNode {
 
 	private String font;
 	private String color;
@@ -51,6 +51,14 @@ public class GUITextNode extends GUIElementChildNode {
 	 */
 	protected int getContentHeight() {
 		return 30; // TODO: implement me
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
+	 */
+	protected void render(GUIRenderer guiRenderer) {
+		// no op
 	}
 
 }

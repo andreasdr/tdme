@@ -1,5 +1,6 @@
 package net.drewke.tdme.gui;
 
+import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
 
@@ -10,10 +11,11 @@ import net.drewke.tdme.engine.fileio.textures.TextureLoader;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIImageNode extends GUIElementChildNode {
+public final class GUIImageNode extends GUIElementChildNode {
 
 	private String src;
 	private Texture texture;
+	private int textureId;
 
 	/**
 	 * Constructor
@@ -28,6 +30,7 @@ public class GUIImageNode extends GUIElementChildNode {
 		super(parentNode, id, alignments, requestedConstraints, showOn);
 		this.src = src;
 		this.texture = TextureLoader.loadTexture(".", src);
+		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
 
 	/**
@@ -51,6 +54,14 @@ public class GUIImageNode extends GUIElementChildNode {
 	 */
 	protected int getContentHeight() {
 		return texture != null?texture.getHeight():0;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
+	 */
+	protected void render(GUIRenderer guiRenderer) {
+		// no op
 	}
 
 }

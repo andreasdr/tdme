@@ -18,7 +18,7 @@ import org.w3c.dom.Node;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIParser {
+public final class GUIParser {
 
 	/**
 	 * Parses a GUI XML file
@@ -65,7 +65,7 @@ public class GUIParser {
 	 * @param gui parent node
 	 * @param xml parent node
 	 */
-	protected static void parseGUINode(GUIParentNode guiParentNode, Element xmlParentNode) {
+	protected static void parseGUINode(GUIParentNode guiParentNode, Element xmlParentNode) throws Exception {
 		// parse sub nodes
 		for (Element node: getChildrenTags(xmlParentNode)) {
 			if (node.getNodeName().equals("layout")) {

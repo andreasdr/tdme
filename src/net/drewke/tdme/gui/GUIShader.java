@@ -7,7 +7,7 @@ import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIShader {
+public final class GUIShader {
 
 	private GLRenderer renderer;
 

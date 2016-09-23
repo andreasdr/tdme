@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.gui.GUIParser;
 
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -83,6 +84,8 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 
 	public void display(GLAutoDrawable drawable) {
 		engine.display(drawable);
+		engine.getGUI().getScreen("test").setScreenSize(640,  480);
+		engine.getGUI().render("test");
 	}
 
 	public void dispose(GLAutoDrawable drawable) {
@@ -92,6 +95,11 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 	public void init(GLAutoDrawable drawable) {
 		drawable.getGL().setSwapInterval(0);
 		engine.init(drawable);
+		try {
+			engine.getGUI().addScreen("test", GUIParser.parse("resources/gui/definitions", "button-example.xml"));
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {

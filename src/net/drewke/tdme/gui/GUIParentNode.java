@@ -131,6 +131,16 @@ public abstract class GUIParentNode extends GUINode {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
+	 */
+	protected void render(GUIRenderer guiRenderer) {
+		for (int i = 0; i < subNodes.size(); i++) {
+			subNodes.get(i).render(guiRenderer);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#toString()
 	 */
 	public String toString() {

@@ -7,7 +7,7 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
  * @author andreas
  * @version $Id$
  */
-public class GUIScreenNode extends GUIParentNode {
+public final class GUIScreenNode extends GUIParentNode {
 
 	/**
 	 * Constructor

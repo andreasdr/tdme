@@ -5,7 +5,7 @@ package net.drewke.tdme.gui;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIParserException extends Exception {
+public final class GUIParserException extends Exception {
 
 	/**
 	 * Constructor
