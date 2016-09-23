@@ -61,6 +61,8 @@ public abstract class GUINode {
 		protected int height;
 		protected int alignmentLeft;
 		protected int alignmentTop;
+		protected int contentAlignmentLeft;
+		protected int contentAlignmentTop;
 		public String toString() {
 			return 
 				left + ", " +
@@ -68,7 +70,11 @@ public abstract class GUINode {
 				width + ", " +
 				height + 
 				(alignmentLeft != 0 || alignmentTop != 0?
-					" +(" + alignmentLeft + ", " + alignmentTop + ")":
+					" +A(" + alignmentLeft + ", " + alignmentTop + ")":
+					""
+				) +
+				(contentAlignmentLeft != 0 || contentAlignmentTop != 0?
+					" +CA(" + contentAlignmentLeft + ", " + contentAlignmentTop + ")":
 					""
 				);
 		}
@@ -211,6 +217,46 @@ public abstract class GUINode {
 				parentNode.computedConstraints.height, 
 				requestedConstraints.height
 			);
+
+		// content alignment horizontal
+		switch (alignments.horizontal) {
+			case LEFT:
+				{
+					computedConstraints.contentAlignmentLeft = 0;
+					break;
+				}
+			case CENTER:
+				{
+					computedConstraints.contentAlignmentLeft = (computedConstraints.width - getContentWidth()) / 2;
+					break;
+				}
+			case RIGHT: {
+				{
+					computedConstraints.contentAlignmentLeft = (computedConstraints.width - getContentWidth());
+					break;
+				}
+			}
+		}
+
+		// content alignment vertical
+		switch (alignments.vertical) {
+			case TOP:
+				{
+					computedConstraints.contentAlignmentTop = 0;
+					break;
+				}
+			case CENTER:
+				{
+					computedConstraints.contentAlignmentTop = (computedConstraints.height - getContentHeight()) / 2;
+					break;
+				}
+			case BOTTOM: {
+				{
+					computedConstraints.contentAlignmentTop = (computedConstraints.height - getContentHeight());
+					break;
+				}
+			}
+		}
 	}
 
 	/**
