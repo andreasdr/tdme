@@ -17,6 +17,8 @@ public final class GUIImageNode extends GUIElementChildNode {
 	private Texture texture;
 	private int textureId;
 
+	private float[] color = {1f, 1f, 1f, 1f};
+
 	/**
 	 * Constructor
 	 * @param parent node
@@ -30,7 +32,7 @@ public final class GUIImageNode extends GUIElementChildNode {
 		super(parentNode, id, alignments, requestedConstraints, showOn);
 		this.src = src;
 		this.texture = TextureLoader.loadTexture(".", src);
-		// this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
+		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
 
 	/**
@@ -61,7 +63,42 @@ public final class GUIImageNode extends GUIElementChildNode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {
-		// no op
+		// screen dimension
+		float screenWidth = guiRenderer.gui.width;
+		float screenHeight = guiRenderer.gui.height;
+
+		// element location and dimensions
+		float left = computedConstraints.left + computedConstraints.contentAlignmentLeft;
+		float top = computedConstraints.top + computedConstraints.contentAlignmentTop;
+		float width = getContentWidth();
+		float height = getContentHeight();
+
+		// render panel background
+		guiRenderer.clear();
+		guiRenderer.bindTexture(textureId);
+		guiRenderer.addQuad(
+			((left) / (screenWidth / 2f)) - 1f, 
+			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			color[0], color[1], color[2], color[3],
+			0f, 1f, 
+			((left + width) / (screenWidth / 2f)) - 1f, 
+			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			color[0], color[1], color[2], color[3],
+			1f, 1f, 
+			((left + width) / (screenWidth / 2f)) - 1f, 
+			((screenHeight - top - height) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			color[0], color[1], color[2], color[3],
+			1f, 0f, 
+			((left) / (screenWidth / 2f)) - 1f, 
+			((screenHeight - top - height) / (screenHeight / 2f)) - 1f, 
+			0f, 
+			color[0], color[1], color[2], color[3],
+			0f, 0f
+		);
+		guiRenderer.render();
 	}
 
 }

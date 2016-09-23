@@ -54,8 +54,6 @@ public final class GUIPanelNode extends GUILayoutNode {
 		float screenWidth = guiRenderer.gui.width;
 		float screenHeight = guiRenderer.gui.height;
 
-		// System.out.println(this);
-
 		// element location and dimensions
 		float left = computedConstraints.left + computedConstraints.alignmentLeft;
 		float top = computedConstraints.top + computedConstraints.alignmentTop;

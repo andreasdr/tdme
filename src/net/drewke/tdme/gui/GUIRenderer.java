@@ -254,7 +254,7 @@ public final class GUIRenderer {
 	 * @param texture
 	 */
 	protected void bindTexture(int textureId) {
-		Engine.getGUIShader().bindTexture(renderer, textureId);
+		renderer.bindTexture(textureId);
 	}
 
 	/**

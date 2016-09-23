@@ -1,5 +1,5 @@
 <screen id="test">
-	<panel left="64" top="48" width="512" height="384" alignment="vertical" background-color="#a0a0a0" horizontal-align="center">
+	<panel left="10%" top="10%" width="80%" height="80%" alignment="vertical" background-color="#a0a0a0" horizontal-align="center">
 	    <space height="*" />
 	 	<element id="xxx" horizontal-align="center">
 	        <image id="img" show-on="always" src="resources/gui/images/button_normal.png" width="200" height="200" horizontal-align="center" vertical-align="center" />
