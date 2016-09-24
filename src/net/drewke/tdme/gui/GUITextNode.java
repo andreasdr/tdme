@@ -27,7 +27,7 @@ public final class GUITextNode extends GUIElementChildNode {
 	 */
 	protected GUITextNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn, String font, String color, String text) throws Exception {
 		super(parentNode, id, alignments, requestedConstraints, showOn);
-		this.font = GUIFont.parse(new File(font).getParentFile().getCanonicalPath(), new File(font).getName());
+		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;
 	}

@@ -1,6 +1,10 @@
 package net.drewke.tdme.gui;
 
-import net.drewke.tdme.engine.Engine;
+import java.io.File;
+import java.io.IOException;
+
+import net.drewke.tdme.engine.fileio.textures.Texture;
+import net.drewke.tdme.engine.fileio.textures.TextureLoader;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.utils.HashMap;
 
@@ -14,6 +18,9 @@ public final class GUI {
 	private GUIRenderer guiRenderer;
 	private HashMap<String, GUIScreenNode> screens;
 
+	private static HashMap<String, GUIFont> fontCache = new HashMap<String, GUIFont>();
+	private static HashMap<String, Texture> imageCache = new HashMap<String, Texture>();
+
 	protected int width;
 	protected int height;
 
@@ -24,6 +31,8 @@ public final class GUI {
 	public GUI(GLRenderer renderer) {
 		this.guiRenderer = new GUIRenderer(this, renderer);
 		this.screens = new HashMap<String, GUIScreenNode>();
+		this.width = 0;
+		this.height = 0;
 	}
 
 	/**
@@ -48,6 +57,74 @@ public final class GUI {
 	 */
 	public void dispose() {
 		guiRenderer.dispose();
+	}
+
+	/**
+	 * Get font
+	 * @param file name
+	 * @return
+	 */
+	protected static GUIFont getFont(String fileName) {
+		// determine key
+		String key = null; 
+		try {
+			key = new File(fileName).getCanonicalPath();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return null;
+		}
+
+		// get font from cache
+		GUIFont font = fontCache.get(key);
+
+		// do we have it in cache
+		if (font == null) {
+			// nope, parse and put into key
+			try {
+				font = GUIFont.parse(new File(fileName).getParentFile().getCanonicalPath() , new File(fileName).getName());
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				return null;
+			}
+			fontCache.put(key, font);
+		}
+
+		// return
+		return font;
+	}
+
+	/**
+	 * Get image
+	 * @param file name
+	 * @return
+	 */
+	protected static Texture getImage(String fileName) {
+		// determine key
+		String key = null; 
+		try {
+			key = new File(fileName).getCanonicalPath();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return null;
+		}
+
+		// get texture from cache
+		Texture image = imageCache.get(key);
+
+		// do we have it in cache
+		if (image == null) {
+			// nope, parse and put into key
+			try {
+				image = TextureLoader.loadTexture(new File(fileName).getParentFile().getCanonicalPath() , new File(fileName).getName());
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				return null;
+			}
+			imageCache.put(key, image);
+		}
+
+		// return
+		return image;
 	}
 
 	/**
