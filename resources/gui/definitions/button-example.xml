@@ -7,7 +7,7 @@
 		</element>
 		<space height="*" />
 		<element id="yyy" horizontal-align="center" width="80%">
-			<panel alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
+			<panel id="abc" alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
 				<space height="10" />
 				<text id="text1" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 1" color="#000000" />
 				<text id="text2" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 2" color="#000000" />

@@ -1,5 +1,6 @@
 package net.drewke.tdme.gui;
 
+import net.drewke.tdme.gui.GUILayoutNode.Alignment;
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
@@ -27,18 +28,36 @@ public final class GUIElementNode extends GUIParentNode {
 		return "element";
 	}
 
-	/**
-	 * @return content width
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return -1;
+		int width = 0;
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode guiSubNode = subNodes.get(i);
+			int contentWidth = guiSubNode.getContentWidth();
+			if (contentWidth > width) {
+				width = contentWidth;
+			}
+		}
+		return width;
 	}
 
-	/**
-	 * @return content height
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return -1;
+		int height = 0;
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode guiSubNode = subNodes.get(i);
+			int contentHeight = guiSubNode.getContentHeight();
+			if (contentHeight > height) {
+				height = contentHeight;
+			}
+		}
+		return height;
 	}
 
 	/**
