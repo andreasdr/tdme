@@ -9,6 +9,9 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
  */
 public final class GUIScreenNode extends GUIParentNode {
 
+	private int screenWidth;
+	private int screenHeight;
+
 	/**
 	 * Constructor
 	 * @param parent node
@@ -18,6 +21,22 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	protected GUIScreenNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
 		super(parentNode, id, alignments, requestedConstraints);
+		this.screenWidth = 0;
+		this.screenHeight = 0;
+	}
+
+	/**
+	 * @return screen width
+	 */
+	protected int getScreenWidth() {
+		return screenWidth;
+	}
+
+	/**
+	 * @return screen height
+	 */
+	protected int getScreenHeight() {
+		return screenHeight;
 	}
 
 	/**
@@ -49,6 +68,8 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param height
 	 */
 	public void setScreenSize(int width, int height) {
+		this.screenWidth = width;
+		this.screenHeight = height;
 		this.requestedConstraints.widthType = RequestedConstraintsType.PIXEL;
 		this.requestedConstraints.width = width;
 		this.requestedConstraints.heightType = RequestedConstraintsType.PIXEL;

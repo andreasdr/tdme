@@ -64,7 +64,6 @@ public final class GUIPanelNode extends GUILayoutNode {
 		float[] bgColorData = backgroundColor.getData();
 
 		// render panel background
-		guiRenderer.clear();
 		guiRenderer.bindTexture(0);
 		guiRenderer.addQuad(
 			((left) / (screenWidth / 2f)) - 1f, 

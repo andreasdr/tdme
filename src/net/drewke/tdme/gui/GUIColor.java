@@ -7,6 +7,12 @@ package net.drewke.tdme.gui;
  */
 public final class GUIColor {
 
+	public final static GUIColor WHITE = new GUIColor(new float[] {1f, 1f, 1f, 1f});
+	public final static GUIColor BLACK = new GUIColor(new float[] {0f, 0f, 0f, 1f});
+	public final static GUIColor RED = new GUIColor(new float[] {1f, 0f, 0f, 1f});
+	public final static GUIColor GREEN = new GUIColor(new float[] {0f, 1f, 0f, 1f});
+	public final static GUIColor BLUE = new GUIColor(new float[] {0f, 0f, 1f, 1f});
+	
 	private float[] data;
 
 	/**
@@ -14,6 +20,14 @@ public final class GUIColor {
 	 */
 	public GUIColor() {
 		data = new float[] {0f,0f,0f,1f};
+	}
+
+	/**
+	 * Public constructor
+	 * @param data
+	 */
+	public GUIColor(float[] data) {
+		this.data = data;
 	}
 
 	/**

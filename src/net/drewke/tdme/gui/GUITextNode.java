@@ -1,5 +1,7 @@
 package net.drewke.tdme.gui;
 
+import java.io.File;
+
 /**
  * GUI text node
  * 
@@ -8,8 +10,8 @@ package net.drewke.tdme.gui;
  */
 public final class GUITextNode extends GUIElementChildNode {
 
-	private String font;
-	private String color;
+	private GUIFont font;
+	private GUIColor color;
 	private String text;
 
 	/**
@@ -23,10 +25,10 @@ public final class GUITextNode extends GUIElementChildNode {
 	 * @param color
 	 * @param text
 	 */
-	protected GUITextNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn, String font, String color, String text) {
+	protected GUITextNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn, String font, String color, String text) throws Exception {
 		super(parentNode, id, alignments, requestedConstraints, showOn);
-		this.font = font;
-		this.color = color;
+		this.font = GUIFont.parse(new File(font).getParentFile().getCanonicalPath(), new File(font).getName());
+		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;
 	}
 
@@ -42,7 +44,7 @@ public final class GUITextNode extends GUIElementChildNode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return 120; // TODO: implement me
+		return font.getTextWidth(text);
 	}
 
 	/*
@@ -50,7 +52,7 @@ public final class GUITextNode extends GUIElementChildNode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return 30; // TODO: implement me
+		return font.getTextHeight(text);
 	}
 
 	/*
@@ -58,7 +60,14 @@ public final class GUITextNode extends GUIElementChildNode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {
-		// no op
+		// draw string
+		font.drawString(
+			guiRenderer, 
+			computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.contentAlignmentLeft, 
+			computedConstraints.top  + computedConstraints.alignmentTop + computedConstraints.contentAlignmentTop, 
+			text, 
+			color
+		);
 	}
 
 }

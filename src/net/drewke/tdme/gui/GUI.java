@@ -74,10 +74,11 @@ public final class GUI {
 	public void render(String id) {
 		GUIScreenNode screen = screens.get(id);
 		if (screen != null) {
-			// update screen size and layout
-			// 	TODO: only if screen dimension has changed and layout is invalidated or has not yet been done
-			screen.setScreenSize(width, height);
-			screen.layout(); 
+			// update screen size and layout if reshaped
+			if (screen.getScreenWidth() != width || screen.getScreenHeight() != height) {
+				screen.setScreenSize(width, height);
+				screen.layout();
+			}
 
 			// render
 			guiRenderer.initRendering();

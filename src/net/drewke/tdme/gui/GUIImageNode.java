@@ -74,7 +74,6 @@ public final class GUIImageNode extends GUIElementChildNode {
 		float height = getContentHeight();
 
 		// render panel background
-		guiRenderer.clear();
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.addQuad(
 			((left) / (screenWidth / 2f)) - 1f, 

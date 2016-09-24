@@ -30,6 +30,9 @@ public final class GUIRenderer {
 	private FloatBuffer fbColors = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
+	// font color
+	private float[] fontColor = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
+
 	// effect colors
 	private float[] effectColorMul = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
 	private float[] effectColorAdd = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
@@ -82,13 +85,27 @@ public final class GUIRenderer {
 	}
 
 	/**
-	 * Clear
+	 * Set effect color mul
+	 * @param color
 	 */
-	protected void clear() {
-		quadCount = 0;
-		fbVertices.clear();
-		fbColors.clear();
-		fbTextureCoordinates.clear();
+	protected void setFontColor(GUIColor color) {
+		System.arraycopy(color.getData(), 0, effectColorMul, 0, 4);
+	}
+
+	/**
+	 * Set effect color mul
+	 * @param color
+	 */
+	protected void setEffectColorMul(GUIColor color) {
+		System.arraycopy(color.getData(), 0, effectColorMul, 0, 4);
+	}
+
+	/**
+	 * Set effect color add
+	 * @param color
+	 */
+	protected void setEffectColorAdd(GUIColor color) {
+		System.arraycopy(color.getData(), 0, effectColorAdd, 0, 4);
 	}
 
 	/**
@@ -141,32 +158,6 @@ public final class GUIRenderer {
 		float colorR4, float colorG4, float colorB4, float colorA4,
 		float tu4, float tv4
 	) {
-		/*
-		System.out.println(
-			"1: " +
-			 x1 + ", " +  y1 + ", " +  z1 + ", " +
-			 colorR1 + ", " +  colorG1 + ", " +  colorB1 + ", " +  colorA1 + ", " +
-			 tu1 + ", " +  tv1
-		);
-		System.out.println(
-			"2: " 	+
-			 x2 + ", " +  y2 + ", " +  z2 + ", " +
-			 colorR2 + ", " +  colorG2 + ", " +  colorB2 + ", " +  colorA2 + ", " +
-			 tu2 + ", " +  tv2
-		);
-		System.out.println(
-			"3: " +
-			 x3 + ", " +  y3 + ", " +  z3 + ", " +
-			 colorR3 + ", " +  colorG3 + ", " +  colorB3 + ", " +  colorA3 + ", " +
-			 tu3 + ", " +  tv3
-		);
-		System.out.println(
-			"4: " +
-			 x4 + ", " +  y4 + ", " +  z4 + ", " +
-			 colorR4 + ", " +  colorG4 + ", " +  colorB4 + ", " +  colorA4 + ", " +
-			 tu4 + ", " +  tv4
-		);
-		*/
 		// check quad count limit
 		if (quadCount > QUAD_COUNT) {
 			System.out.println("GUIRenderer::addQuad()::too many quads");
@@ -304,6 +295,13 @@ public final class GUIRenderer {
 
 		// draw
 		renderer.drawTrianglesFromBufferObjects(triangles, 0);
+
+		// reset
+		quadCount = 0;
+		fbVertices.clear();
+		fbColors.clear();
+		fbTextureCoordinates.clear();
+		System.arraycopy(GUIColor.WHITE.getData(), 0, effectColorMul, 0, 4);
 	}
 
 }

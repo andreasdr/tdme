@@ -1,20 +1,21 @@
 <screen id="test">
 	<panel left="10%" top="10%" width="80%" height="80%" alignment="vertical" background-color="#a0a0a0" horizontal-align="center">
-	    <space height="*" />
+		<space height="10%" />
 	 	<element id="xxx" horizontal-align="center">
-	        <image id="img" show-on="always" src="resources/gui/images/button_normal.png" width="200" height="200" horizontal-align="center" vertical-align="center" />
-	        <text id="text0" show-on="always" font="resources/font.fnt" text="text0" color="#ffffff" />
+	        <text id="text0" show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 	 	</element>
-	 	<element id="yyy" horizontal-align="center">
-	 		<panel alignment="vertical" horizontal-align="center" background-color="#ff0000">
-	        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
-	        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
+	 	<space height="*" />
+	 	<element id="yyy" horizontal-align="center" width="80%">
+	 		<panel alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
+	        	<text id="text1" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 1" color="#000000" />
+	        	<text id="text2" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 2" color="#000000" />
         	</panel>
 	 	</element>
- 		<panel alignment="vertical" horizontal-align="center" background-color="#00ff00">
-        	<text id="text1" show-on="always" font="resources/font.fnt" text="text1" color="#ffffff" />
-        	<text id="text2" show-on="always" font="resources/font.fnt" text="text2" color="#ffffff" />
-       	</panel>
-	    <space height="*" />
+	 	<space height="*" />
+       	<element id="zzz" horizontal-align="center" vertical-align="center">
+ 		        <image id="img" show-on="always" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
+            	<text id="text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+	    </element>
+	    <space height="10%" />
 	</panel>
 </screen>
