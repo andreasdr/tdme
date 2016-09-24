@@ -145,7 +145,7 @@ public abstract class GUINode {
 	 * @return int
 	 */
 	protected int getAutoHeight() {
-		if (requestedConstraints.widthType == RequestedConstraintsType.AUTO) {
+		if (requestedConstraints.heightType == RequestedConstraintsType.AUTO) {
 			return getContentHeight();
 		} else {
 			return computedConstraints.height;

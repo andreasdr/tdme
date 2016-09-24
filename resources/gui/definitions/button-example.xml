@@ -1,21 +1,24 @@
 <screen id="test">
-	<panel left="10%" top="10%" width="80%" height="80%" alignment="vertical" background-color="#a0a0a0" horizontal-align="center">
+	<panel left="10%" top="10%" width="80%" height="80%" alignment="vertical"
+		background-color="#a0a0a0" horizontal-align="center">
 		<space height="10%" />
-	 	<element id="xxx" horizontal-align="center">
-	        <text id="text0" show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
-	 	</element>
-	 	<space height="*" />
-	 	<element id="yyy" horizontal-align="center" width="80%">
-	 		<panel alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
-	        	<text id="text1" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 1" color="#000000" />
-	        	<text id="text2" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 2" color="#000000" />
-        	</panel>
-	 	</element>
-	 	<space height="*" />
-       	<element id="zzz" horizontal-align="center" vertical-align="center">
- 		        <image id="img" show-on="always" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
-            	<text id="text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
-	    </element>
-	    <space height="10%" />
+		<element id="xxx" horizontal-align="center">
+			<text id="text0" show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
+		</element>
+		<space height="*" />
+		<element id="yyy" horizontal-align="center" width="80%">
+			<panel alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
+				<space height="10" />
+				<text id="text1" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 1" color="#000000" />
+				<text id="text2" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 2" color="#000000" />
+				<space height="10" />
+			</panel>
+		</element>
+		<space height="*" />
+		<element id="zzz" horizontal-align="center" vertical-align="center">
+			<image id="img" show-on="always" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
+			<text id="text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+		</element>
+		<space height="10%" />
 	</panel>
 </screen>

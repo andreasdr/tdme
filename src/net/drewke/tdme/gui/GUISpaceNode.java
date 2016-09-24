@@ -32,7 +32,8 @@ public final class GUISpaceNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return 0;
+		// we derive content width from requested -> computed constraints
+		return computedConstraints.width;
 	}
 
 	/*
@@ -40,7 +41,8 @@ public final class GUISpaceNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return 0;
+		// we derive content height from requested -> computed constraints
+		return computedConstraints.height;
 	}
 
 	/**
