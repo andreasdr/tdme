@@ -1,5 +1,7 @@
 package net.drewke.tdme.gui;
 
+import java.util.ArrayList;
+
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
@@ -13,7 +15,6 @@ import net.drewke.tdme.engine.fileio.textures.TextureLoader;
  */
 public final class GUIImageNode extends GUIElementChildNode {
 
-	private String src;
 	private Texture texture;
 	private int textureId;
 
@@ -26,11 +27,11 @@ public final class GUIImageNode extends GUIElementChildNode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param show on
+	 * @param hide on
 	 * @param src
 	 */
-	protected GUIImageNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String[] showOn, String src) {
-		super(parentNode, id, alignments, requestedConstraints, showOn);
-		this.src = src;
+	protected GUIImageNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String src) {
+		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
 		this.texture = GUI.getImage(src);
 		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
@@ -63,6 +64,9 @@ public final class GUIImageNode extends GUIElementChildNode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {
+		// check if conditions apply
+		if (checkConditions() == false) return;
+
 		// screen dimension
 		float screenWidth = guiRenderer.gui.width;
 		float screenHeight = guiRenderer.gui.height;
@@ -94,6 +98,14 @@ public final class GUIImageNode extends GUIElementChildNode {
 			0f, 0f
 		);
 		guiRenderer.render();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
+	 */
+	public void handleEvent(GUIMouseEvent event) {
+		// no op
 	}
 
 }

@@ -141,6 +141,16 @@ public abstract class GUIParentNode extends GUINode {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
+	 */
+	public void handleEvent(GUIMouseEvent event) {
+		for (int i = 0; i < subNodes.size(); i++) {
+			subNodes.get(i).handleEvent(event);
+		}		
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#toString()
 	 */
 	public String toString() {

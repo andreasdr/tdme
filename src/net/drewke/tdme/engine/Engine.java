@@ -667,7 +667,7 @@ public final class Engine {
 		object3DVBORenderer.init();
 
 		// create GUI
-		gui = new GUI(renderer);
+		gui = new GUI(this, renderer);
 		gui.init();
 
 		// create camera

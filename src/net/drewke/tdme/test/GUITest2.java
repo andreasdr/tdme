@@ -26,8 +26,9 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author andreas.drewke
  * @version $Id$
  */
-public final class GUITest2 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public final class GUITest2 implements GLEventListener, KeyListener {
 
+	private GLCanvas glCanvas;
 	private Engine engine;
 	private FPSAnimator animator;
 
@@ -62,8 +63,6 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 		// event listener
 		GUITest2 guiTest = new GUITest2(glCanvas);
 		glCanvas.addGLEventListener(guiTest);
-		glCanvas.addMouseListener(guiTest);
-		glCanvas.addMouseMotionListener(guiTest);
 		glCanvas.addKeyListener(guiTest);
 		glCanvas.setEnabled(true);
 	}
@@ -75,6 +74,7 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 	 *            canvas
 	 */
 	public GUITest2(GLCanvas glCanvas) {
+		this.glCanvas = glCanvas;
 		engine = Engine.getInstance();
 		// animator, do the frames
 		animator = new FPSAnimator(glCanvas, 60);
@@ -85,6 +85,8 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 	public void display(GLAutoDrawable drawable) {
 		engine.display(drawable);
 		engine.getGUI().render("test");
+		engine.getGUI().handleEvents("test");
+		engine.getGUI().discardEvents();
 	}
 
 	public void dispose(GLAutoDrawable drawable) {
@@ -102,59 +104,14 @@ public final class GUITest2 implements GLEventListener, MouseListener, MouseMoti
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
+
+		// events
+		glCanvas.addMouseListener(engine.getGUI());
+		glCanvas.addMouseMotionListener(engine.getGUI());
 	}
 
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		engine.reshape(drawable, x, y, width, height);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	 */
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
-	 */
-	public void mouseDragged(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
-	 */
-	public void mouseMoved(MouseEvent e) {
 	}
 
 	/*

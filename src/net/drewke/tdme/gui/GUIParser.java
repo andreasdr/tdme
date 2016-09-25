@@ -160,7 +160,8 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
-					GUIElementChildNode.createShowOn(node.getAttribute("show-on")),
+					GUIElementChildNode.createConditions(node.getAttribute("show-on")),
+					GUIElementChildNode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("src")	
 				);
 				guiParentNode.getSubNodes().add(guiImageNode);
@@ -180,7 +181,8 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
-					GUIElementChildNode.createShowOn(node.getAttribute("show-on")),
+					GUIElementChildNode.createConditions(node.getAttribute("show-on")),
+					GUIElementChildNode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
 					node.getAttribute("text")

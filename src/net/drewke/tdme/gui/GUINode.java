@@ -370,6 +370,12 @@ public abstract class GUINode {
 	protected abstract void render(GUIRenderer guiRenderer);
 
 	/**
+	 * Handle event
+	 * @param event
+	 */
+	public abstract void handleEvent(GUIMouseEvent event);
+
+	/**
 	 * Compute indent string
 	 * @param ident
 	 * @return indented string

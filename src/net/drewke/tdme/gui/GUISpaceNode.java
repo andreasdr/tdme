@@ -74,4 +74,12 @@ public final class GUISpaceNode extends GUINode {
 		// no op
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
+	 */
+	public void handleEvent(GUIMouseEvent event) {
+		// no op
+	}
+
 }
