@@ -73,7 +73,6 @@ public final class ImageIO extends ImageLoader implements Texture {
 	private int width;
 	private int texWidth;
 	private int texHeight;
-	private boolean edging = true;
 	private ByteBuffer data;
 
 	/**
@@ -255,7 +254,7 @@ public final class ImageIO extends ImageLoader implements Texture {
 				glAlphaColorModel,
 				raster,
 				false,
-				new Hashtable()
+				null
 			);
 		} else {
 			depth = 24;
@@ -270,7 +269,7 @@ public final class ImageIO extends ImageLoader implements Texture {
 				glColorModel,
 				raster,
 				false,
-				new Hashtable()
+				null
 			);
 		}
 
@@ -286,20 +285,9 @@ public final class ImageIO extends ImageLoader implements Texture {
 
 		if (flipped) {
 			g.scale(1, -1);
-			g.drawImage(image, 0, -height, null);
+			g.drawImage(image, 0, -height, texWidth, texHeight, null);
 		} else {
-			g.drawImage(image, 0, 0, null);
-		}
-
-		if (edging) {
-			if (height < texHeight - 1) {
-				copyArea(texImage, 0, 0, width, 1, 0, texHeight - 1);
-				copyArea(texImage, 0, height - 1, width, 1, 0, 1);
-			}
-			if (width < texWidth - 1) {
-				copyArea(texImage, 0, 0, 1, height, texWidth - 1, 0);
-				copyArea(texImage, width - 1, 0, 1, height, 1, 0);
-			}
+			g.drawImage(image, 0, 0, texWidth, texHeight, null);
 		}
 
 		// build a byte buffer from the temporary image
@@ -361,8 +349,15 @@ public final class ImageIO extends ImageLoader implements Texture {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return "ImageIO [id=" + id + ", depth=" + depth + ", texWidth="
-				+ texWidth + ", texHeight=" + texHeight + "]";
+		return 
+			"ImageIO [id=" + 
+			id + ", depth=" + 
+			depth + 
+			", texWidth=" + texWidth + 
+			", texHeight=" + texHeight + 
+			", width=" + width + 
+			", height=" + height + 
+			"]";
 	}
 
 }

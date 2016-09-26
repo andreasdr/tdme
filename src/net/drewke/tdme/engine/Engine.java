@@ -136,8 +136,11 @@ public final class Engine {
 			System.out.println("Engine::createOffScreenInstance(): Engine not created or not initialized.");
 			return null;
 		}
+		// create off screen engine
 		Engine offScreenEngine = new Engine();
 		offScreenEngine.initialized = true;
+		// create GUI
+		offScreenEngine.gui = new GUI(offScreenEngine, renderer);
 		// create object 3d vbo renderer
 		offScreenEngine.object3DVBORenderer = new Object3DVBORenderer(offScreenEngine, renderer);
 		offScreenEngine.object3DVBORenderer.init();

@@ -22,8 +22,9 @@ import net.drewke.tdme.utils.Pool;
  */
 public final class GUI implements MouseListener, MouseMotionListener {
 
+	private static GUIRenderer guiRenderer;
+
 	private Engine engine;
-	private GUIRenderer guiRenderer;
 	private HashMap<String, GUIScreenNode> screens;
 
 	private static HashMap<String, GUIFont> fontCache = new HashMap<String, GUIFont>();
