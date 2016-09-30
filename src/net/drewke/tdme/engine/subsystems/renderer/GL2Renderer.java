@@ -17,7 +17,6 @@ import net.drewke.tdme.math.Matrix4x4;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GL3;
 
 /**
  * OpenGL 2 renderer
@@ -45,7 +44,6 @@ public abstract class GL2Renderer extends GLRenderer {
 		CLEAR_DEPTH_BUFFER_BIT = GL2.GL_DEPTH_BUFFER_BIT;
 		CLEAR_COLOR_BUFFER_BIT = GL2.GL_COLOR_BUFFER_BIT;
 		CULLFACE_FRONT = GL2.GL_FRONT;
-
 		CULLFACE_BACK = GL2.GL_BACK;
 
 		CLIENTSTATE_TEXTURECOORD_ARRAY = GL2.GL_TEXTURE_COORD_ARRAY;
@@ -976,31 +974,11 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#initGuiMode()
 	 */
 	final public void initGuiMode(int width, int height) {
-		gl.glMatrixMode(GL2.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrtho(0, width, height, 0, -9999, 9999);
-
-		gl.glMatrixMode(GL2.GL_MODELVIEW);
-		gl.glLoadIdentity();
-
-		gl.glMatrixMode(GL2.GL_TEXTURE);
-		gl.glLoadIdentity();
-
+		setTextureUnit(0);
+		gl.glBindTexture(GL2.GL_TEXTURE_2D, ID_NONE);
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glDisable(GL2.GL_DEPTH_TEST);
 		gl.glDisable(GL2.GL_CULL_FACE);
-
-		// save attributes
-		gl.glPushAttrib(GL2.GL_ALL_ATTRIB_BITS);
-
-		//
-		setTextureUnit(0);
-		gl.glBindTexture(GL2.GL_TEXTURE_2D, ID_NONE);
-
-		// disable shader program
-		gl.glUseProgram(0);
-
-		// clear error if we have any
 		gl.glGetError();
 	}
 
@@ -1010,11 +988,11 @@ public abstract class GL2Renderer extends GLRenderer {
 	 */
 	final public void doneGuiMode() {
 		gl.glGetError();
-		gl.glPopAttrib();
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, ID_NONE);
 		gl.glDisable(GL2.GL_BLEND);
 		gl.glEnable(GL2.GL_DEPTH_TEST);
 		gl.glEnable(GL2.GL_CULL_FACE);
 	}
+
 
 }

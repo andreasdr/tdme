@@ -2,6 +2,7 @@ package net.drewke.tdme.gui;
 
 import java.util.ArrayList;
 
+import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
