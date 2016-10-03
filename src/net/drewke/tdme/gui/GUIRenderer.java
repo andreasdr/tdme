@@ -116,7 +116,6 @@ public final class GUIRenderer {
 	 */
 	protected void initRendering() {
 		// init gui
-		renderer.initGuiMode();
 		Engine.getGUIShader().useProgram();
 		renderer.enableClientState(renderer.CLIENTSTATE_VERTEX_ARRAY);
 		renderer.enableClientState(renderer.CLIENTSTATE_TEXTURECOORD_ARRAY);
@@ -145,7 +144,6 @@ public final class GUIRenderer {
 		renderer.disableClientState(renderer.CLIENTSTATE_TEXTURECOORD_ARRAY);
 		renderer.disableClientState(renderer.CLIENTSTATE_COLOR_ARRAY);		
 		Engine.getGUIShader().unUseProgram();
-		renderer.doneGuiMode();
 	}
 
 	/**

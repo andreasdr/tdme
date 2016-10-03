@@ -186,9 +186,11 @@ public final class GUI implements MouseListener, MouseMotionListener {
 			}
 
 			// render
+			engine.initGUIMode();
 			guiRenderer.initRendering();
 			screen.render(guiRenderer);
 			guiRenderer.doneRendering();
+			engine.doneGUIMode();
 		}
 	}
 
