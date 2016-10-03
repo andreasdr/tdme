@@ -115,17 +115,32 @@ public final class GUIRenderer {
 	 * Init rendering
 	 */
 	protected void initRendering() {
-		renderer.initGuiMode(640, 480);
+		// init gui
+		renderer.initGuiMode();
 		Engine.getGUIShader().useProgram();
 		renderer.enableClientState(renderer.CLIENTSTATE_VERTEX_ARRAY);
 		renderer.enableClientState(renderer.CLIENTSTATE_TEXTURECOORD_ARRAY);
 		renderer.enableClientState(renderer.CLIENTSTATE_COLOR_ARRAY);
+
+		// bind buffer objects
+		//	indices
+		renderer.bindIndicesBufferObject(vboIds[0]);
+		// 	vertices
+		renderer.bindVerticesBufferObject(vboIds[1]);
+		// 	colors
+		renderer.bindColorsBufferObject(vboIds[2]);
+		// 	texture coordinates
+		renderer.bindTextureCoordinatesBufferObject(vboIds[3]);
 	}
 
 	/**
 	 * Done rendering
 	 */
 	protected void doneRendering() {
+		// unbind buffers objects
+		renderer.unbindBufferObjects();
+
+		// done gui
 		renderer.disableClientState(renderer.CLIENTSTATE_VERTEX_ARRAY);
 		renderer.disableClientState(renderer.CLIENTSTATE_TEXTURECOORD_ARRAY);
 		renderer.disableClientState(renderer.CLIENTSTATE_COLOR_ARRAY);		
@@ -283,12 +298,13 @@ public final class GUIRenderer {
 	 * Render 
 	 */
 	protected void render() {
+		// skip if no vertex data exists
+		if (quadCount == 0) return;
+
+		//
 		fbVertices.flip();
 		fbColors.flip();
 		fbTextureCoordinates.flip();
-
-		// skip if no vertex data exists
-		if (quadCount == 0) return;
 
 		// upload vertices
 		renderer.uploadBufferObject(
@@ -310,19 +326,6 @@ public final class GUIRenderer {
 			fbTextureCoordinates.limit() * Float.SIZE / Byte.SIZE,
 			fbTextureCoordinates
 		);
-
-		// bind
-		// 	indices
-		renderer.bindIndicesBufferObject(vboIds[0]);
-
-		// 	vertices
-		renderer.bindVerticesBufferObject(vboIds[1]);
-
-		// 	colors
-		renderer.bindColorsBufferObject(vboIds[2]);
-
-		// 	texture coordinates
-		renderer.bindTextureCoordinatesBufferObject(vboIds[3]);
 
 		// effect
 		renderer.setEffectColorMul(effectColorMul);

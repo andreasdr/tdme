@@ -973,7 +973,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#initGuiMode()
 	 */
-	final public void initGuiMode(int width, int height) {
+	final public void initGuiMode() {
 		setTextureUnit(0);
 		gl.glBindTexture(GL2.GL_TEXTURE_2D, ID_NONE);
 		gl.glEnable(GL2.GL_BLEND);

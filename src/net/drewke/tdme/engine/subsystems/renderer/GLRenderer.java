@@ -862,10 +862,8 @@ abstract public class GLRenderer {
 
 	/**
 	 * Set up renderer for GUI rendering
-	 * @param width
-	 * @param height
 	 */
-	abstract public void initGuiMode(int width, int height);
+	abstract public void initGuiMode();
 
 	/**
 	 * Set up renderer for 3d rendering

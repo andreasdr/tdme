@@ -1043,19 +1043,19 @@ public final class Engine {
 	 * Set up GUI mode rendering
 	 * @param drawable
 	 */
-	public void initGUIMode(GLAutoDrawable drawable) {
+	public void initGUIMode() {
 		// use framebuffer if we have one
 		if (frameBuffer != null) frameBuffer.enableFrameBuffer();
 
 		// 
-		renderer.initGuiMode(drawable.getSurfaceWidth(), drawable.getSurfaceHeight());
+		renderer.initGuiMode();
 	}
 
 	/**
 	 * Set up GUI mode rendering
 	 * @param drawable
 	 */
-	public void doneGUIMode(GLAutoDrawable drawable) {
+	public void doneGUIMode() {
 		renderer.doneGuiMode();
 
 		// unuse framebuffer if we have one
