@@ -3,6 +3,7 @@ package net.drewke.tdme.gui;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
 import java.util.Arrays;
 
 import net.drewke.tdme.engine.Engine;
@@ -26,6 +27,7 @@ public final class GUIRenderer {
 	private int quadCount;
 
 	// buffers
+	private ShortBuffer sbIndices = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * Short.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asShortBuffer();;
 	private FloatBuffer fbVertices = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	private FloatBuffer fbColors = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
@@ -36,8 +38,6 @@ public final class GUIRenderer {
 			0.0f, 0.0f, 0.0f, 
 			0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f
 		};
 	private float[] quadColors = 
@@ -45,14 +45,10 @@ public final class GUIRenderer {
 			0.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 0.0f
 		};
 	private float[] quadTextureCoordinates = 
 		{
-			0.0f, 0.0f,
-			0.0f, 0.0f,
 			0.0f, 0.0f,
 			0.0f, 0.0f,
 			0.0f, 0.0f,
@@ -81,8 +77,26 @@ public final class GUIRenderer {
 	protected void init() {
 		// initialize if not yet done
 		if (vboIds == null) {
-			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO("tdme.guirenderer", 3);
+			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO("tdme.guirenderer", 4);
 			vboIds = vboManaged.getVBOGlIds();
+
+			// set up indices
+			for (int i = 0; i < QUAD_COUNT; i++) {
+				sbIndices.put((short)(i * 4 + 0));
+				sbIndices.put((short)(i * 4 + 1));
+				sbIndices.put((short)(i * 4 + 2));
+				sbIndices.put((short)(i * 4 + 2));
+				sbIndices.put((short)(i * 4 + 3));
+				sbIndices.put((short)(i * 4 + 0));
+			}
+			sbIndices.flip();
+
+			// upload indices
+			renderer.uploadIndicesBufferObject(
+				vboIds[0],
+				sbIndices.limit() * Short.SIZE / Byte.SIZE,
+				sbIndices
+			);
 		}
 	}
 
@@ -199,8 +213,6 @@ public final class GUIRenderer {
 			return;
 		}
 
-		// TODO: check if its better to use indexed rendering
-
 		// quad component 1
 		int quad = 0;
 		quadVertices[quad * 3 + 0] = x1;
@@ -237,17 +249,6 @@ public final class GUIRenderer {
 		quadTextureCoordinates[quad * 2 + 0] = tu3;
 		quadTextureCoordinates[quad * 2 + 1] = tv3;
 
-		// quad component 3
-		quad++;
-		quadVertices[quad * 3 + 0] = x3;
-		quadVertices[quad * 3 + 1] = y3;
-		quadVertices[quad * 3 + 2] = 0.0f;
-		quadColors[quad * 4 + 0] = colorR3;
-		quadColors[quad * 4 + 1] = colorG3;
-		quadColors[quad * 4 + 2] = colorB3;
-		quadColors[quad * 4 + 3] = colorA3;
-		quadTextureCoordinates[quad * 2 + 0] = tu3;
-		quadTextureCoordinates[quad * 2 + 1] = tv3;
 
 		// quad component 4
 		quad++;
@@ -261,19 +262,7 @@ public final class GUIRenderer {
 		quadTextureCoordinates[quad * 2 + 0] = tu4;
 		quadTextureCoordinates[quad * 2 + 1] = tv4;
 
-		// quad component 1
-		quad++;
-		quadVertices[quad * 3 + 0] = x1;
-		quadVertices[quad * 3 + 1] = y1;
-		quadVertices[quad * 3 + 2] = 0.0f;
-		quadColors[quad * 4 + 0] = colorR1;
-		quadColors[quad * 4 + 1] = colorG1;
-		quadColors[quad * 4 + 2] = colorB1;
-		quadColors[quad * 4 + 3] = colorA1;
-		quadTextureCoordinates[quad * 2 + 0] = tu1;
-		quadTextureCoordinates[quad * 2 + 1] = tv1;
-
-		// put to quads direct float buffers
+		// put quads to direct float buffers
 		fbVertices.put(quadVertices);
 		fbColors.put(quadColors);
 		fbTextureCoordinates.put(quadTextureCoordinates);
@@ -299,40 +288,41 @@ public final class GUIRenderer {
 		fbTextureCoordinates.flip();
 
 		// skip if no vertex data exists
-		if (fbVertices.limit() == 0 || fbColors.limit() == 0 || fbTextureCoordinates.limit() == 0) return;
-
-		// determine triangles count
-		int triangles = fbVertices.limit() / 3 / 3;
+		if (quadCount == 0) return;
 
 		// upload vertices
 		renderer.uploadBufferObject(
-			vboIds[0],
+			vboIds[1],
 			fbVertices.limit() * Float.SIZE / Byte.SIZE,
 			fbVertices
 		);
 
 		// upload colors
 		renderer.uploadBufferObject(
-			vboIds[1],
+			vboIds[2],
 			fbColors.limit() * Float.SIZE / Byte.SIZE,
 			fbColors
 		);
 
 		// upload texture coordinates
 		renderer.uploadBufferObject(
-			vboIds[2],
+			vboIds[3],
 			fbTextureCoordinates.limit() * Float.SIZE / Byte.SIZE,
 			fbTextureCoordinates
 		);
 
-		// vertices
-		renderer.bindVerticesBufferObject(vboIds[0]);
+		// bind
+		// 	indices
+		renderer.bindIndicesBufferObject(vboIds[0]);
 
-		// colors
-		renderer.bindColorsBufferObject(vboIds[1]);
+		// 	vertices
+		renderer.bindVerticesBufferObject(vboIds[1]);
 
-		// texture coordinates
-		renderer.bindTextureCoordinatesBufferObject(vboIds[2]);
+		// 	colors
+		renderer.bindColorsBufferObject(vboIds[2]);
+
+		// 	texture coordinates
+		renderer.bindTextureCoordinatesBufferObject(vboIds[3]);
 
 		// effect
 		renderer.setEffectColorMul(effectColorMul);
@@ -340,7 +330,7 @@ public final class GUIRenderer {
 		renderer.onUpdateEffect();
 
 		// draw
-		renderer.drawTrianglesFromBufferObjects(triangles, 0);
+		renderer.drawIndexedTrianglesFromBufferObjects(quadCount * 2, 0);
 
 		// reset
 		quadCount = 0;
