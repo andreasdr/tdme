@@ -37,7 +37,7 @@ import net.drewke.tdme.os.FileSystem;
  * @author kevin, Andreas Drewke
  * @version $Id$
  */
-public class GUIFont {
+public final class GUIFont {
 
 	private final static int CHARACTERS_MAX = 10000;
 
@@ -47,7 +47,7 @@ public class GUIFont {
 	 * @author kevin, Andreas Drewke
 	 * @version $Id$
 	 */
-	private class CharacterDefinition {
+	private final class CharacterDefinition {
 		/** The id of the character */
 		public int id;
 		/** The x location on the sprite sheet */
