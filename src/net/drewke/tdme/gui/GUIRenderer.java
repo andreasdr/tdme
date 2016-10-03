@@ -30,6 +30,35 @@ public final class GUIRenderer {
 	private FloatBuffer fbColors = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
+	// quad data
+	private float[] quadVertices = 
+		{
+			0.0f, 0.0f, 0.0f, 
+			0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f
+		};
+	private float[] quadColors = 
+		{
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f
+		};
+	private float[] quadTextureCoordinates = 
+		{
+			0.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 0.0f
+		};
+
 	// font color
 	private float[] fontColor = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
 
@@ -173,70 +202,81 @@ public final class GUIRenderer {
 		// TODO: check if its better to use indexed rendering
 
 		// quad component 1
-		fbVertices.put(x1);
-		fbVertices.put(y1);
-		fbVertices.put(0.0f);
-		fbColors.put(colorR1);
-		fbColors.put(colorG1);
-		fbColors.put(colorB1);
-		fbColors.put(colorA1);
-		fbTextureCoordinates.put(tu1);
-		fbTextureCoordinates.put(tv1);
+		int quad = 0;
+		quadVertices[quad * 3 + 0] = x1;
+		quadVertices[quad * 3 + 1] = y1;
+		quadVertices[quad * 3 + 2] = 0.0f;
+		quadColors[quad * 4 + 0] = colorR1;
+		quadColors[quad * 4 + 1] = colorG1;
+		quadColors[quad * 4 + 2] = colorB1;
+		quadColors[quad * 4 + 3] = colorA1;
+		quadTextureCoordinates[quad * 2 + 0] = tu1;
+		quadTextureCoordinates[quad * 2 + 1] = tv1;
 
 		// quad component 2
-		fbVertices.put(x2);
-		fbVertices.put(y2);
-		fbVertices.put(0.0f);
-		fbColors.put(colorR2);
-		fbColors.put(colorG2);
-		fbColors.put(colorB2);
-		fbColors.put(colorA2);
-		fbTextureCoordinates.put(tu2);
-		fbTextureCoordinates.put(tv2);
+		quad++;
+		quadVertices[quad * 3 + 0] = x2;
+		quadVertices[quad * 3 + 1] = y2;
+		quadVertices[quad * 3 + 2] = 0.0f;
+		quadColors[quad * 4 + 0] = colorR2;
+		quadColors[quad * 4 + 1] = colorG2;
+		quadColors[quad * 4 + 2] = colorB2;
+		quadColors[quad * 4 + 3] = colorA2;
+		quadTextureCoordinates[quad * 2 + 0] = tu2;
+		quadTextureCoordinates[quad * 2 + 1] = tv2;
 
 		// quad component 3
-		fbVertices.put(x3);
-		fbVertices.put(y3);
-		fbVertices.put(0.0f);
-		fbColors.put(colorR3);
-		fbColors.put(colorG3);
-		fbColors.put(colorB3);
-		fbColors.put(colorA3);
-		fbTextureCoordinates.put(tu3);
-		fbTextureCoordinates.put(tv3);
+		quad++;
+		quadVertices[quad * 3 + 0] = x3;
+		quadVertices[quad * 3 + 1] = y3;
+		quadVertices[quad * 3 + 2] = 0.0f;
+		quadColors[quad * 4 + 0] = colorR3;
+		quadColors[quad * 4 + 1] = colorG3;
+		quadColors[quad * 4 + 2] = colorB3;
+		quadColors[quad * 4 + 3] = colorA3;
+		quadTextureCoordinates[quad * 2 + 0] = tu3;
+		quadTextureCoordinates[quad * 2 + 1] = tv3;
 
 		// quad component 3
-		fbVertices.put(x3);
-		fbVertices.put(y3);
-		fbVertices.put(0.0f);
-		fbColors.put(colorR3);
-		fbColors.put(colorG3);
-		fbColors.put(colorB3);
-		fbColors.put(colorA3);
-		fbTextureCoordinates.put(tu3);
-		fbTextureCoordinates.put(tv3);
+		quad++;
+		quadVertices[quad * 3 + 0] = x3;
+		quadVertices[quad * 3 + 1] = y3;
+		quadVertices[quad * 3 + 2] = 0.0f;
+		quadColors[quad * 4 + 0] = colorR3;
+		quadColors[quad * 4 + 1] = colorG3;
+		quadColors[quad * 4 + 2] = colorB3;
+		quadColors[quad * 4 + 3] = colorA3;
+		quadTextureCoordinates[quad * 2 + 0] = tu3;
+		quadTextureCoordinates[quad * 2 + 1] = tv3;
 
 		// quad component 4
-		fbVertices.put(x4);
-		fbVertices.put(y4);
-		fbVertices.put(0.0f);
-		fbColors.put(colorR4);
-		fbColors.put(colorG4);
-		fbColors.put(colorB4);
-		fbColors.put(colorA4);
-		fbTextureCoordinates.put(tu4);
-		fbTextureCoordinates.put(tv4);
+		quad++;
+		quadVertices[quad * 3 + 0] = x4;
+		quadVertices[quad * 3 + 1] = y4;
+		quadVertices[quad * 3 + 2] = 0.0f;
+		quadColors[quad * 4 + 0] = colorR4;
+		quadColors[quad * 4 + 1] = colorG4;
+		quadColors[quad * 4 + 2] = colorB4;
+		quadColors[quad * 4 + 3] = colorA4;
+		quadTextureCoordinates[quad * 2 + 0] = tu4;
+		quadTextureCoordinates[quad * 2 + 1] = tv4;
 
 		// quad component 1
-		fbVertices.put(x1);
-		fbVertices.put(y1);
-		fbVertices.put(0.0f);
-		fbColors.put(colorR1);
-		fbColors.put(colorG1);
-		fbColors.put(colorB1);
-		fbColors.put(colorA1);
-		fbTextureCoordinates.put(tu1);
-		fbTextureCoordinates.put(tv1);
+		quad++;
+		quadVertices[quad * 3 + 0] = x1;
+		quadVertices[quad * 3 + 1] = y1;
+		quadVertices[quad * 3 + 2] = 0.0f;
+		quadColors[quad * 4 + 0] = colorR1;
+		quadColors[quad * 4 + 1] = colorG1;
+		quadColors[quad * 4 + 2] = colorB1;
+		quadColors[quad * 4 + 3] = colorA1;
+		quadTextureCoordinates[quad * 2 + 0] = tu1;
+		quadTextureCoordinates[quad * 2 + 1] = tv1;
+
+		// put to quads direct float buffers
+		fbVertices.put(quadVertices);
+		fbColors.put(quadColors);
+		fbTextureCoordinates.put(quadTextureCoordinates);
 
 		//
 		quadCount++;
