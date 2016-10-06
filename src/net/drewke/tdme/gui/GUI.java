@@ -1,8 +1,5 @@
 package net.drewke.tdme.gui;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,12 +12,15 @@ import net.drewke.tdme.gui.GUIMouseEvent.Type;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Pool;
 
+import com.jogamp.newt.event.MouseEvent;
+import com.jogamp.newt.event.MouseListener;
+
 /**
  * GUI
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUI implements MouseListener, MouseMotionListener {
+public final class GUI implements MouseListener {
 
 	private static GUIRenderer guiRenderer;
 
@@ -214,80 +214,83 @@ public final class GUI implements MouseListener, MouseMotionListener {
 	public void discardEvents() {
 		mouseEventsPool.reset();
 		mouseEvents.clear();
-	} 
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
-	 */
-	public void mouseDragged(MouseEvent e) {
-		// not yet
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseClicked(com.jogamp.newt.event.MouseEvent)
 	 */
-	public void mouseMoved(MouseEvent e) {
+	public void mouseClicked(MouseEvent event) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
+	 */
+	public void mouseDragged(MouseEvent event) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.MouseListener#mouseEntered(com.jogamp.newt.event.MouseEvent)
+	 */
+	public void mouseEntered(MouseEvent event) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.MouseListener#mouseExited(com.jogamp.newt.event.MouseEvent)
+	 */
+	public void mouseExited(MouseEvent event) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
+	 */
+	public void mouseMoved(MouseEvent event) {
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_MOVED);
-		guiMouseEvent.setX(e.getX());
-		guiMouseEvent.setY(e.getY());
-		guiMouseEvent.setButton(e.getButton());
+		guiMouseEvent.setX(event.getX());
+		guiMouseEvent.setY(event.getY());
+		guiMouseEvent.setButton(event.getButton());
 		mouseEvents.add(guiMouseEvent);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
 	 */
-	public void mouseClicked(MouseEvent e) {
-		// not yet
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent event) {
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_PRESSED);
-		guiMouseEvent.setX(e.getX());
-		guiMouseEvent.setY(e.getY());
-		guiMouseEvent.setButton(e.getButton());
+		guiMouseEvent.setX(event.getX());
+		guiMouseEvent.setY(event.getY());
+		guiMouseEvent.setButton(event.getButton());
 		mouseEvents.add(guiMouseEvent);	
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
 	 */
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(MouseEvent event) {
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_RELEASED);
-		guiMouseEvent.setX(e.getX());
-		guiMouseEvent.setY(e.getY());
-		guiMouseEvent.setButton(e.getButton());
+		guiMouseEvent.setX(event.getX());
+		guiMouseEvent.setY(event.getY());
+		guiMouseEvent.setButton(event.getButton());
 		mouseEvents.add(guiMouseEvent);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
-	public void mouseEntered(MouseEvent e) {
-		// no op
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-		// no op
+	public void mouseWheelMoved(MouseEvent event) {
 	}
 
 }
