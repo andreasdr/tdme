@@ -61,6 +61,14 @@ public final class GUIImageNode extends GUIElementChildNode {
 	
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#dispose()
+	 */
+	protected void dispose() {
+		Engine.getInstance().getTextureManager().removeTexture(texture.getId());
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {

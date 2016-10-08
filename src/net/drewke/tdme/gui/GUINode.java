@@ -363,6 +363,11 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * Dispose node
+	 */
+	protected abstract void dispose();
+
+	/**
 	 * Render
 	 * 
 	 * @param gui renderer

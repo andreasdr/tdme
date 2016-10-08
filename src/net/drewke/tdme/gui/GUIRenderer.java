@@ -22,6 +22,8 @@ public final class GUIRenderer {
 
 	//
 	protected GUI gui;
+
+	//
 	private GLRenderer renderer;
 	private int[] vboIds;
 	private int quadCount;
@@ -66,15 +68,22 @@ public final class GUIRenderer {
 	 * Constructor
 	 * @param renderer
 	 */
-	protected GUIRenderer(GUI gui, GLRenderer renderer) {
-		this.gui = gui;
+	public GUIRenderer(GLRenderer renderer) {
 		this.renderer = renderer;
+	}
+
+	/**
+	 * Set GUI
+	 * @param gui
+	 */
+	protected void setGUI(GUI gui) {
+		this.gui = gui;
 	}
 
 	/**
 	 * Init
 	 */
-	protected void init() {
+	public void init() {
 		// initialize if not yet done
 		if (vboIds == null) {
 			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO("tdme.guirenderer", 4);
@@ -103,7 +112,7 @@ public final class GUIRenderer {
 	/**
 	 * Dispose
 	 */
-	protected void dispose() {
+	public void dispose() {
 		// 
 		if (vboIds != null) {
 			Engine.getInstance().getVBOManager().removeVBO("tdme.guirenderer");
@@ -261,7 +270,6 @@ public final class GUIRenderer {
 		quadColors[quad * 4 + 3] = colorA3;
 		quadTextureCoordinates[quad * 2 + 0] = tu3;
 		quadTextureCoordinates[quad * 2 + 1] = tv3;
-
 
 		// quad component 4
 		quad++;

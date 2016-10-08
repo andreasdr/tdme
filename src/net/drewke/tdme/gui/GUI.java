@@ -3,10 +3,13 @@ package net.drewke.tdme.gui;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
+import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.gui.GUIMouseEvent.Type;
 import net.drewke.tdme.utils.HashMap;
@@ -22,7 +25,7 @@ import com.jogamp.newt.event.MouseListener;
  */
 public final class GUI implements MouseListener {
 
-	private static GUIRenderer guiRenderer;
+	private GUIRenderer guiRenderer;
 
 	private Engine engine;
 	private HashMap<String, GUIScreenNode> screens;
@@ -44,11 +47,11 @@ public final class GUI implements MouseListener {
 	/**
 	 * Constructor
 	 * @param engine 
-	 * @param renderer
+	 * @param GUI renderer
 	 */
-	public GUI(Engine engine, GLRenderer renderer) {
+	public GUI(Engine engine, GUIRenderer guiRenderer) {
 		this.engine = engine;
-		this.guiRenderer = new GUIRenderer(this, renderer);
+		this.guiRenderer = guiRenderer;
 		this.screens = new HashMap<String, GUIScreenNode>();
 		this.width = 0;
 		this.height = 0;
@@ -58,7 +61,6 @@ public final class GUI implements MouseListener {
 	 * Init
 	 */
 	public void init() {
-		guiRenderer.init();
 	}
 
 	/**
@@ -75,7 +77,7 @@ public final class GUI implements MouseListener {
 	 * Dispose
 	 */
 	public void dispose() {
-		guiRenderer.dispose();
+		reset();
 	}
 
 	/**
@@ -172,6 +174,34 @@ public final class GUI implements MouseListener {
 	}
 
 	/**
+	 * Removes an screen
+	 * @param id
+	 */
+	public void removeScreen(String id) {
+		GUIScreenNode screen = screens.remove(id);
+		if (screen != null) {
+			screen.dispose();
+		}
+	}
+
+	/**
+	 * Removes all screens and caches
+	 */
+	public void reset() {
+		Iterator<String> screenKeys = screens.getKeysIterator();
+		ArrayList<String> entitiesToRemove = new ArrayList<String>();
+		while(screenKeys.hasNext()) {
+			String screen = screenKeys.next();
+			entitiesToRemove.add(screen);
+		}
+		for (int i = 0; i< entitiesToRemove.size(); i++) {
+			removeScreen(entitiesToRemove.get(i));
+		}
+		fontCache.clear();
+		imageCache.clear();
+	}
+
+	/**
 	 * Render screen with given id
 	 */
 	public void render(String screenId) {
@@ -186,6 +216,7 @@ public final class GUI implements MouseListener {
 			}
 
 			// render
+			guiRenderer.setGUI(this);
 			engine.initGUIMode();
 			guiRenderer.initRendering();
 			screen.render(guiRenderer);

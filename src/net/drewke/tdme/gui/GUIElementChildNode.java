@@ -77,7 +77,7 @@ public abstract class GUIElementChildNode extends GUINode {
 			}
 		}
 
-		// check for on-show
+		// check for on-hide
 		for (int i = 0; i < hideOn.size(); i++) {
 			for (int j = 0; j < elementNode.activeConditions.size(); j++) {
 				if (hideOn.get(i).equals(elementNode.activeConditions.get(j))) return false;

@@ -33,6 +33,9 @@ public final class GUITextNode extends GUIElementChildNode {
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;
+
+		// init font
+		this.font.init();
 	}
 
 	/**
@@ -56,6 +59,15 @@ public final class GUITextNode extends GUIElementChildNode {
 	 */
 	protected int getContentHeight() {
 		return font.getTextHeight(text);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#dispose()
+	 */
+	protected void dispose() {
+		// dispose font
+		this.font.dispose();
 	}
 
 	/*

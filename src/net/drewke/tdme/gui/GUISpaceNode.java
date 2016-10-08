@@ -68,6 +68,14 @@ public final class GUISpaceNode extends GUINode {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#dispose()
+	 */
+	protected void dispose() {
+		// no op
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {

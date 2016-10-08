@@ -28,6 +28,7 @@ import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMapping;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMappingShader;
 import net.drewke.tdme.gui.GUI;
+import net.drewke.tdme.gui.GUIRenderer;
 import net.drewke.tdme.gui.GUIShader;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector2;
@@ -61,6 +62,7 @@ public final class Engine {
 	private static VBOManager vboManager = null;
 	private static MeshManager meshManager = null;
 	private static HashMap<String, BoundingBox> boundingBoxCache = null;
+	private static GUIRenderer guiRenderer = null;
 
 	public enum AnimationProcessingTarget {GPU, CPU, CPU_NORENDERING};
 	public static AnimationProcessingTarget animationProcessingTarget = AnimationProcessingTarget.GPU;
@@ -140,7 +142,7 @@ public final class Engine {
 		Engine offScreenEngine = new Engine();
 		offScreenEngine.initialized = true;
 		// create GUI
-		offScreenEngine.gui = new GUI(offScreenEngine, renderer);
+		offScreenEngine.gui = new GUI(offScreenEngine, guiRenderer);
 		// create object 3d vbo renderer
 		offScreenEngine.object3DVBORenderer = new Object3DVBORenderer(offScreenEngine, renderer);
 		offScreenEngine.object3DVBORenderer.init();
@@ -670,7 +672,9 @@ public final class Engine {
 		object3DVBORenderer.init();
 
 		// create GUI
-		gui = new GUI(this, renderer);
+		guiRenderer = new GUIRenderer(renderer);
+		guiRenderer.init();
+		gui = new GUI(this, guiRenderer);
 		gui.init();
 
 		// create camera
@@ -1037,6 +1041,11 @@ public final class Engine {
 
 		// dispose GUI
 		gui.dispose();
+
+		// if disposing main engine
+		if (this == Engine.instance) {
+			guiRenderer.dispose();
+		}
 	}
 
 	/**

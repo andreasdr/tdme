@@ -49,29 +49,22 @@ public final class GUIFont {
 	 */
 	private final class CharacterDefinition {
 		/** The id of the character */
-		public int id;
+		protected int id;
 		/** The x location on the sprite sheet */
-		public int x;
+		protected int x;
 		/** The y location on the sprite sheet */
-		public int y;
+		protected int y;
 		/** The width of the character image */
-		public int width;
+		protected int width;
 		/** The height of the character image */
-		public int height;
+		protected int height;
 		/** The amount the x position should be offset when drawing the image */
-		public int xoffset;
+		protected int xoffset;
 		/** The amount the y position should be offset when drawing the image */
-		public int yoffset;
+		protected int yoffset;
 		/** The amount to move the current position after drawing the character */
-		public int xadvance;
-		
-		/**
-		 * Initialise the image by cutting the right section from the
-		 * map produced by the AngelCode tool.
-		 */
-		public void init() {
-		}
-		
+		protected int xadvance;
+
 		/**
 		 * @see java.lang.Object#toString()
 		 */
@@ -85,7 +78,7 @@ public final class GUIFont {
 		 * @param x
 		 * @param y
 		 */
-		public void draw(GUIRenderer guiRenderer, int x, int y) {
+		protected void draw(GUIRenderer guiRenderer, int x, int y) {
 			// screen dimension
 			float screenWidth = guiRenderer.gui.width;
 			float screenHeight = guiRenderer.gui.height;
@@ -157,7 +150,7 @@ public final class GUIFont {
 	 * @param font file
 	 * @throws GUIParserException
 	 */
-	public static GUIFont parse(String pathName, String fileName) throws Exception {
+	protected static GUIFont parse(String pathName, String fileName) throws Exception {
 		GUIFont font = new GUIFont();
 
 		// now parse the font file
@@ -174,7 +167,6 @@ public final class GUIFont {
 				page.lastIndexOf("\"")
 			)
 		);
-		font.textureId = Engine.getInstance().getTextureManager().addTexture(font.texture);
 
 		// parse
 		boolean done = false;
@@ -239,14 +231,27 @@ public final class GUIFont {
 		characterDefinition.yoffset = Integer.parseInt(tokens.nextToken()); // yoffset value
 		tokens.nextToken(); // xadvance
 		characterDefinition.xadvance = Integer.parseInt(tokens.nextToken()); // xadvance
-		
-		characterDefinition.init();
 
+		// line height
 		if (characterDefinition.id != ' ') {
 			lineHeight = Math.max(characterDefinition.height+characterDefinition.yoffset, lineHeight);
 		}
 		
 		return characterDefinition;
+	}
+
+	/**
+	 * Init
+	 */
+	protected void init() {
+		textureId = Engine.getInstance().getTextureManager().addTexture(texture);
+	}
+
+	/**
+	 * Dispose
+	 */
+	protected void dispose() {
+		Engine.getInstance().getTextureManager().removeTexture(texture.getId());
 	}
 
 	/**
@@ -257,7 +262,7 @@ public final class GUIFont {
 	 * @param text
 	 * @param color
 	 */
-	public void drawString(GUIRenderer guiRenderer, int x, int y, String text, GUIColor color) {
+	protected void drawString(GUIRenderer guiRenderer, int x, int y, String text, GUIColor color) {
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.setFontColor(color);
 		for (int i=0;i < text.length(); i++) {
@@ -287,7 +292,7 @@ public final class GUIFont {
 	 * @param text The text that is to be tested
 	 * @return The yoffset from the y draw location at which text will start
 	 */
-	public int getYOffset(String text) {
+	protected int getYOffset(String text) {
 		int minYOffset = 10000;
 		for (int i=0;i < text.length(); i++) {
 			int id = text.charAt(i);
@@ -305,7 +310,7 @@ public final class GUIFont {
 	 * @param text
 	 * @return text height
 	 */
-	public int getTextHeight(String text) {
+	protected int getTextHeight(String text) {
 		int maxHeight = 0;
 		for (int i=0;i < text.length();i++) {
 			int id = text.charAt(i);
@@ -326,7 +331,7 @@ public final class GUIFont {
 	 * @param text
 	 * @return text width
 	 */
-	public int getTextWidth(String text) {
+	protected int getTextWidth(String text) {
 		int width = 0;
 		for (int i=0;i < text.length();i++) {
 			int id = text.charAt(i);
@@ -347,7 +352,7 @@ public final class GUIFont {
 	/**
 	 * @return line height
 	 */
-	public int getLineHeight() {
+	protected int getLineHeight() {
 		return lineHeight;
 	}
 	
