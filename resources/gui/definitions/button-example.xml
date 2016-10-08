@@ -16,10 +16,16 @@
 		</element>
 		<space height="*" />
 		<element id="zzz" horizontal-align="center" vertical-align="center">
-			<image id="img1" hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
-			<image id="img2" show-on="mouseover" src="resources/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
-			<image id="img3" show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
-			<text id="text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+			<image id="zzz_img1" hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
+			<image id="zzz_img2" show-on="mouseover" src="resources/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
+			<image id="zzz_img3" show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
+			<text id="zzz_text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+		</element>
+		<space height="*" />
+		<element id="aaa" horizontal-align="center" vertical-align="center">
+			<text id="aaa_text3" hide-on="mouseover,click" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#000000" horizontal-align="center" vertical-align="center" />
+			<text id="aaa_text3" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ff8080" horizontal-align="center" vertical-align="center" />
+			<text id="aaa_text3" show-on="click" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ff0000" horizontal-align="center" vertical-align="center" />
 		</element>
 		<space height="10%" />
 	</panel>

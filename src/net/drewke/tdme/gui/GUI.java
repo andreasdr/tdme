@@ -315,6 +315,9 @@ public final class GUI implements MouseListener {
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
 		mouseEvents.add(guiMouseEvent);
+
+		// add additional mouse moved event
+		mouseMoved(event);
 	}
 
 	/*
