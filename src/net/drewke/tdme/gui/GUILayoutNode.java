@@ -169,7 +169,7 @@ public class GUILayoutNode extends GUIParentNode {
 				{
 					// determine horizontal stars
 					int starCount = 0;
-					int width = computedConstraints.width = computedConstraints.width;
+					int width = computedConstraints.width;
 					int nodesWidth = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);

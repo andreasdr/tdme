@@ -88,8 +88,8 @@ public final class GUIImageNode extends GUINode {
 		float screenHeight = guiRenderer.gui.height;
 
 		// element location and dimensions
-		float left = computedConstraints.left + computedConstraints.contentAlignmentLeft;
-		float top = computedConstraints.top + computedConstraints.contentAlignmentTop;
+		float left = computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.contentAlignmentLeft;
+		float top = computedConstraints.top  + computedConstraints.alignmentTop + computedConstraints.contentAlignmentTop;
 		float width = getContentWidth();
 		float height = getContentHeight();
 

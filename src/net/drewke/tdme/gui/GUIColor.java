@@ -65,7 +65,12 @@ public final class GUIColor {
 		// try to take from predefined colors
 		for (int i = 0; i < COLOR_NAMES.length; i++) {
 			if (COLOR_NAMES[i].equalsIgnoreCase(colorString) == true) {
-				System.arraycopy(COLOR_INSTANCES[i].data, 0, this.data, 0, this.data.length);
+				this.data = new float[] {
+					COLOR_INSTANCES[i].data[0], 
+					COLOR_INSTANCES[i].data[1], 
+					COLOR_INSTANCES[i].data[2], 
+					COLOR_INSTANCES[i].data[3]
+				};
 				return;
 			}
 		}

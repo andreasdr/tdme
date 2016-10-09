@@ -237,6 +237,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * Compute horizontal children alignment
 	 */
 	protected void computeHorizontalChildrenAlignment() {
+		// align all vertical aligned children horizontally
 		switch (alignments.horizontal) {
 			case LEFT: 
 				{
@@ -270,6 +271,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * Compute vertical children alignment
 	 */
 	protected void computeVerticalChildrenAlignment() {
+		// align all horizontal aligned children vertically 
 		switch (alignments.vertical) {
 			case TOP: 
 				{
