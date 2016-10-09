@@ -1,6 +1,10 @@
 package net.drewke.tdme.gui;
 
+import java.util.ArrayList;
+
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.GUIParentNode.Border;
+import net.drewke.tdme.gui.GUIParentNode.Margin;
 
 public class GUILayoutNode extends GUIParentNode {
 
@@ -14,10 +18,28 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param show on
+	 * @param hide on
+	 * @param border
+	 * @param margin
+	 * @param background color
+	 * @param background image
 	 * @param alignment
 	 */
-	protected GUILayoutNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, String alignment) {
-		super(parentNode, id, alignments, requestedConstraints);
+	protected GUILayoutNode(
+		GUINode parentNode, 
+		String id, 
+		Alignments alignments, 
+		RequestedConstraints 
+		requestedConstraints, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn, 
+		Border border, 
+		Margin margin, 
+		String backgroundColor,
+		String backgroundImage,
+		String alignment) throws GUIParserException {
+		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn, border, margin, backgroundColor, backgroundImage);
 		this.alignment = Alignment.valueOf(alignment.toUpperCase());
 	}
 
@@ -30,55 +52,18 @@ public class GUILayoutNode extends GUIParentNode {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#isContentNode()
+	 */
+	protected boolean isContentNode() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		int width = 0;
-		if (alignment == Alignment.HORIZONTAL) {
-			for (int i = 0; i < subNodes.size(); i++) {
-				GUINode guiSubNode = subNodes.get(i);
-				width+= guiSubNode.getContentWidth();
-			}
-		} else {
-			for (int i = 0; i < subNodes.size(); i++) {
-				GUINode guiSubNode = subNodes.get(i);
-				int contentWidth = guiSubNode.getContentWidth();
-				if (contentWidth > width) {
-					width = contentWidth;
-				}
-			}
-		}
-		return width;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
-	 */
-	protected int getContentHeight() {
-		int height = 0;
-		if (alignment == Alignment.VERTICAL) {
-			for (int i = 0; i < subNodes.size(); i++) {
-				GUINode guiSubNode = subNodes.get(i);
-				height+= guiSubNode.getContentHeight();
-			}
-		} else {
-			for (int i = 0; i < subNodes.size(); i++) {
-				GUINode guiSubNode = subNodes.get(i);
-				int contentHeight = guiSubNode.getContentHeight();
-				if (contentHeight > height) {
-					height = contentHeight;
-				}
-			}
-		}
-		return height;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#getAutoWidth()
-	 */
-	protected int getAutoWidth() {
+		// determine content width
 		int width = 0;
 		if (alignment == Alignment.HORIZONTAL) {
 			for (int i = 0; i < subNodes.size(); i++) {
@@ -88,20 +73,29 @@ public class GUILayoutNode extends GUIParentNode {
 		} else {
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiSubNode = subNodes.get(i);
-				int autoWidth = guiSubNode.getAutoWidth();
-				if (autoWidth > width) {
-					width = autoWidth;
+				int contentWidth = guiSubNode.getAutoWidth();
+				if (contentWidth > width) {
+					width = contentWidth;
 				}
 			}
 		}
+
+		// add border
+		width+= border.left + border.right;
+
+		// add margin
+		width+= margin.left + margin.right;
+
+		//
 		return width;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#getAutoHeight()
+	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
-	protected int getAutoHeight() {
+	protected int getContentHeight() {
+		// determine content height
 		int height = 0;
 		if (alignment == Alignment.VERTICAL) {
 			for (int i = 0; i < subNodes.size(); i++) {
@@ -111,12 +105,20 @@ public class GUILayoutNode extends GUIParentNode {
 		} else {
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiSubNode = subNodes.get(i);
-				int autoHeight = guiSubNode.getAutoHeight();
-				if (autoHeight > height) {
-					height = autoHeight;
+				int contentHeight = guiSubNode.getAutoHeight();
+				if (contentHeight > height) {
+					height = contentHeight;
 				}
 			}
 		}
+
+		// add border
+		height+= border.top + border.bottom;
+
+		// add margin
+		height+= margin.top + margin.bottom;
+
+		//
 		return height;
 	}
 
@@ -167,7 +169,7 @@ public class GUILayoutNode extends GUIParentNode {
 				{
 					// determine horizontal stars
 					int starCount = 0;
-					int width = computedConstraints.width;
+					int width = computedConstraints.width = computedConstraints.width;
 					int nodesWidth = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
@@ -192,7 +194,7 @@ public class GUILayoutNode extends GUIParentNode {
 				}
 		}
 
-		// do layout, layout children left, top 
+		// do parent + children top, left adjustments
 		setTop(computedConstraints.top);
 		setLeft(computedConstraints.left);
 	}

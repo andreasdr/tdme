@@ -1,5 +1,7 @@
 package net.drewke.tdme.gui;
 
+import java.util.ArrayList;
+
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
@@ -15,9 +17,11 @@ public final class GUISpaceNode extends GUINode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param show on
+	 * @param hide on
 	 */
-	protected GUISpaceNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
-		super(parentNode, id, alignments, requestedConstraints);
+	protected GUISpaceNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
+		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
 	}
 
 	/**
@@ -25,6 +29,14 @@ public final class GUISpaceNode extends GUINode {
 	 */
 	protected String getNodeType() {
 		return "space";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#isContentNode()
+	 */
+	protected boolean isContentNode() {
+		return false;
 	}
 
 	/*
@@ -59,10 +71,10 @@ public final class GUISpaceNode extends GUINode {
 		constraints.left = getRequestedConstraintsValue(left.trim(), 0);
 		constraints.topType = getRequestedConstraintsType(top.trim(), RequestedConstraintsType.PIXEL);
 		constraints.top = getRequestedConstraintsValue(top.trim(), 0);
-		constraints.widthType = getRequestedConstraintsType(width.trim(), RequestedConstraintsType.PERCENT);
-		constraints.width = getRequestedConstraintsValue(width.trim(), 100);
-		constraints.heightType = getRequestedConstraintsType(height.trim(), RequestedConstraintsType.PERCENT);
-		constraints.height = getRequestedConstraintsValue(height.trim(), 100);
+		constraints.widthType = getRequestedConstraintsType(width.trim(), RequestedConstraintsType.PIXEL);
+		constraints.width = getRequestedConstraintsValue(width.trim(), 1);
+		constraints.heightType = getRequestedConstraintsType(height.trim(), RequestedConstraintsType.PIXEL);
+		constraints.height = getRequestedConstraintsValue(height.trim(), 1);
 		return constraints;
 	}
 

@@ -13,7 +13,7 @@ import net.drewke.tdme.engine.fileio.textures.TextureLoader;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUIImageNode extends GUIElementChildNode {
+public final class GUIImageNode extends GUINode {
 
 	private Texture texture;
 	private int textureId;
@@ -41,6 +41,14 @@ public final class GUIImageNode extends GUIElementChildNode {
 	 */
 	protected String getNodeType() {
 		return "image";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#isContentNode()
+	 */
+	protected boolean isContentNode() {
+		return true;
 	}
 
 	/*

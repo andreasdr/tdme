@@ -1,5 +1,8 @@
 package net.drewke.tdme.gui;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
@@ -78,7 +81,7 @@ public abstract class GUINode {
 					""
 				);
 		}
-	} 
+	}
 
 	protected GUINode parentNode;
 	protected String id;
@@ -86,19 +89,26 @@ public abstract class GUINode {
 	protected RequestedConstraints requestedConstraints;
 	protected ComputedConstraints computedConstraints;
 
+	private ArrayList<String> showOn;
+	private ArrayList<String> hideOn;
+
 	/**
 	 * Constructor
 	 * @param parent node
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param show on
+	 * @param hide on
 	 */
-	protected GUINode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
+	protected GUINode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
 		this.parentNode = parentNode;
 		this.id = id;
 		this.alignments = alignments;
 		this.requestedConstraints = requestedConstraints;
 		this.computedConstraints = new ComputedConstraints();
+		this.showOn = showOn;
+		this.hideOn = hideOn;
 	}
 
 	/**
@@ -119,6 +129,11 @@ public abstract class GUINode {
 	protected String getId() {
 		return id;
 	}
+
+	/**
+	 * @return is content node
+	 */
+	protected abstract boolean isContentNode();
 
 	/**
 	 * @return content width
@@ -206,54 +221,63 @@ public abstract class GUINode {
 		computedConstraints.width = 
 			layoutConstraintPixel(
 				requestedConstraints.widthType,
-				getContentWidth(),
+				getAutoWidth(),
 				parentNode.computedConstraints.width, 
 				requestedConstraints.width
 			);
 		computedConstraints.height = 
 			layoutConstraintPixel(
 				requestedConstraints.heightType,
-				getContentHeight(),
+				getAutoHeight(),
 				parentNode.computedConstraints.height, 
 				requestedConstraints.height
 			);
 
-		// content alignment horizontal
-		switch (alignments.horizontal) {
-			case LEFT:
-				{
-					computedConstraints.contentAlignmentLeft = 0;
-					break;
-				}
-			case CENTER:
-				{
-					computedConstraints.contentAlignmentLeft = (computedConstraints.width - getContentWidth()) / 2;
-					break;
-				}
-			case RIGHT: {
-				{
-					computedConstraints.contentAlignmentLeft = (computedConstraints.width - getContentWidth());
-					break;
+		// reset additional constraints
+		computedConstraints.alignmentLeft = 0;
+		computedConstraints.alignmentTop = 0;
+		computedConstraints.contentAlignmentLeft = 0;
+		computedConstraints.contentAlignmentTop = 0;
+
+		// align content nodes
+		if (isContentNode() == true) {
+			// content alignment horizontal
+			switch (alignments.horizontal) {
+				case LEFT:
+					{
+						computedConstraints.contentAlignmentLeft = 0;
+						break;
+					}
+				case CENTER:
+					{
+						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getAutoWidth()) / 2;
+						break;
+					}
+				case RIGHT: {
+					{
+						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getAutoWidth());
+						break;
+					}
 				}
 			}
-		}
-
-		// content alignment vertical
-		switch (alignments.vertical) {
-			case TOP:
-				{
-					computedConstraints.contentAlignmentTop = 0;
-					break;
-				}
-			case CENTER:
-				{
-					computedConstraints.contentAlignmentTop = (computedConstraints.height - getContentHeight()) / 2;
-					break;
-				}
-			case BOTTOM: {
-				{
-					computedConstraints.contentAlignmentTop = (computedConstraints.height - getContentHeight());
-					break;
+	
+			// content alignment vertical
+			switch (alignments.vertical) {
+				case TOP:
+					{
+						computedConstraints.contentAlignmentTop = 0;
+						break;
+					}
+				case CENTER:
+					{
+						computedConstraints.contentAlignmentTop = (computedConstraints.height - getAutoHeight()) / 2;
+						break;
+					}
+				case BOTTOM: {
+					{
+						computedConstraints.contentAlignmentTop = (computedConstraints.height - getAutoHeight());
+						break;
+					}
 				}
 			}
 		}
@@ -360,6 +384,65 @@ public abstract class GUINode {
 		} else {
 			return Integer.valueOf(constraint);
 		}
+	}
+
+	/**
+	 * Create conditions
+	 * @param conditions
+	 */
+	protected static ArrayList<String> createConditions(String conditions) {
+		ArrayList<String> conditionsArrayList = new ArrayList<String>();
+		StringTokenizer t = new StringTokenizer(conditions, ",");
+		while (t.hasMoreTokens()) {
+			conditionsArrayList.add(t.nextToken());
+		}
+		return conditionsArrayList;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
+	 */
+	protected boolean checkConditions() {
+		// check for on-show "always"
+		for (int i = 0; i < showOn.size(); i++) {
+			if (showOn.get(i).equals(GUIElementNode.CONDITION_ALWAYS)) return true;
+		}
+
+		// check for on-hide "always"
+		for (int i = 0; i < hideOn.size(); i++) {
+			if (hideOn.get(i).equals(GUIElementNode.CONDITION_ALWAYS)) return false;
+		}
+
+		// determine parent element node
+		GUINode node = parentNode;
+		while (node != null && node instanceof GUIElementNode == false) {
+			node = node.parentNode;
+		}
+
+		// exit if no element node
+		if (node == null) {
+			return true;
+		}
+
+		GUIElementNode elementNode = (GUIElementNode)node;
+
+		// check for on-show
+		for (int i = 0; i < showOn.size(); i++) {
+			for (int j = 0; j < elementNode.activeConditions.size(); j++) {
+				if (showOn.get(i).equals(elementNode.activeConditions.get(j))) return true;
+			}
+		}
+
+		// check for on-hide
+		for (int i = 0; i < hideOn.size(); i++) {
+			for (int j = 0; j < elementNode.activeConditions.size(); j++) {
+				if (hideOn.get(i).equals(elementNode.activeConditions.get(j))) return false;
+			}
+		}
+
+		// always is default if no show-on given
+		return showOn.size() == 0;
 	}
 
 	/**

@@ -50,7 +50,13 @@ public final class GUIParser {
 				xmlRoot.getAttribute("top"), 
 				xmlRoot.getAttribute("width"), 
 				xmlRoot.getAttribute("height")
-			)
+			),
+			GUINode.createConditions(xmlRoot.getAttribute("show-on")),
+			GUINode.createConditions(xmlRoot.getAttribute("hide-on")),
+			null,
+			null,
+			xmlRoot.getAttribute("background-color"),
+			xmlRoot.getAttribute("background-image")
 		);
 
 		// parse GUI nodes
@@ -83,7 +89,31 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
-					node.getAttribute("alignment"));
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					GUIParentNode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUIParentNode.createMargin(
+						node.getAttribute("margin"), 
+						node.getAttribute("margin-left"), 
+						node.getAttribute("margin-top"), 
+						node.getAttribute("margin-right"), 
+						node.getAttribute("margin-bottom") 
+					),
+					node.getAttribute("background-color"),
+					node.getAttribute("background-image"),
+					node.getAttribute("alignment")
+				);
 				guiParentNode.getSubNodes().add(guiLayoutNode);
 				parseGUINode(guiLayoutNode, node);	
 			} else
@@ -101,7 +131,9 @@ public final class GUIParser {
 						node.getAttribute("top"), 
 						node.getAttribute("width"), 
 						node.getAttribute("height")
-					)
+					),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on"))
 				);
 				guiParentNode.getSubNodes().add(guiSpaceNode);
 			} else
@@ -120,9 +152,31 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
-					node.getAttribute("alignment"),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					GUIParentNode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUIParentNode.createMargin(
+						node.getAttribute("margin"), 
+						node.getAttribute("margin-left"), 
+						node.getAttribute("margin-top"), 
+						node.getAttribute("margin-right"), 
+						node.getAttribute("margin-bottom") 
+					),
 					node.getAttribute("background-color"),
-					node.getAttribute("background-image"));
+					node.getAttribute("background-image"),
+					node.getAttribute("alignment")
+				);
 				guiParentNode.getSubNodes().add(guiPanelNode);
 				parseGUINode(guiPanelNode, node);	
 			} else
@@ -140,7 +194,30 @@ public final class GUIParser {
 						node.getAttribute("top"), 
 						node.getAttribute("width"), 
 						node.getAttribute("height")
-					)
+					),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					GUIParentNode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUIParentNode.createMargin(
+						node.getAttribute("margin"), 
+						node.getAttribute("margin-left"), 
+						node.getAttribute("margin-top"), 
+						node.getAttribute("margin-right"), 
+						node.getAttribute("margin-bottom") 
+					),
+					node.getAttribute("background-color"),
+					node.getAttribute("background-image")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
 				parseGUINode(guiElementNode, node);	
@@ -160,8 +237,8 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
-					GUIElementChildNode.createConditions(node.getAttribute("show-on")),
-					GUIElementChildNode.createConditions(node.getAttribute("hide-on")),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("src")	
 				);
 				guiParentNode.getSubNodes().add(guiImageNode);
@@ -181,8 +258,8 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
-					GUIElementChildNode.createConditions(node.getAttribute("show-on")),
-					GUIElementChildNode.createConditions(node.getAttribute("hide-on")),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
 					node.getAttribute("text")

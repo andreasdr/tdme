@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUITextNode extends GUIElementChildNode {
+public final class GUITextNode extends GUINode {
 
 	private GUIFont font;
 	private GUIColor color;
@@ -43,6 +43,14 @@ public final class GUITextNode extends GUIElementChildNode {
 	 */
 	protected String getNodeType() {
 		return "text";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#isContentNode()
+	 */
+	protected boolean isContentNode() {
+		return true;
 	}
 
 	/*

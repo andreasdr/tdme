@@ -1,8 +1,8 @@
 <screen id="test">
-	<panel left="10%" top="10%" width="80%" height="80%" alignment="vertical"
-		background-color="#a0a0a0" horizontal-align="center">
+	<panel border="10" border-color="#ffffff" left="10%" top="10%" width="80%" height="80%" alignment="vertical"
+		background-color="#808080" horizontal-align="center">
 		<space height="10%" />
-		<element id="xxx" horizontal-align="center">
+		<element id="xxx" horizontal-align="center" vertical-align="center" background-color="#909090">
 			<text id="text0" show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</element>
 		<space height="*" />
@@ -14,6 +14,17 @@
 				<space height="10" />
 			</panel>
 		</element>
+		<element id="jjj" horizontal-align="center" width="80%">
+			<panel id="abc" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0" width="100%">
+				<space width="*" />
+				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="xxx" color="#000000" />
+				<space width="10" />
+				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="yyy" color="#000000" />
+				<space width="10" />
+				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="zzz" color="#000000" />
+				<space width="*" />
+			</panel>
+		</element>
 		<space height="*" />
 		<element id="zzz" horizontal-align="center" vertical-align="center">
 			<image id="zzz_img1" hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
@@ -23,9 +34,21 @@
 		</element>
 		<space height="*" />
 		<element id="aaa" horizontal-align="center" vertical-align="center">
-			<text id="aaa_text3" hide-on="mouseover,click" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#000000" horizontal-align="center" vertical-align="center" />
-			<text id="aaa_text3" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ff8080" horizontal-align="center" vertical-align="center" />
-			<text id="aaa_text3" show-on="click" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ff0000" horizontal-align="center" vertical-align="center" />
+			<panel border-color="#a0a0a0" border="2" margin="10" id="aaa_panel" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
+				<space width="*" />
+				<text id="aaa_panel_text3" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss A!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<space width="*" />
+			</panel>
+			<panel border-color="#e0e0e0" border="2" margin="10" id="aaa_panel" show-on="mouseover" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0">
+				<space width="*" />
+				<text id="aaa_panel_text3" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss B!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<space width="*" />
+			</panel>
+			<panel border-color="#ffffff" border="2" margin="10" id="aaa_panel" show-on="click" alignment="horizontal" horizontal-align="center" background-color="#f0a0a0">
+				<space width="*" />
+				<text id="aaa_panel_text3" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss C!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<space width="*" />
+			</panel>
 		</element>
 		<space height="10%" />
 	</panel>

@@ -1,5 +1,7 @@
 package net.drewke.tdme.gui;
 
+import java.util.Arrays;
+
 /**
  * GUI color
  * @author Andreas Drewke
@@ -7,11 +9,31 @@ package net.drewke.tdme.gui;
  */
 public final class GUIColor {
 
+	// predefined colors
 	public final static GUIColor WHITE = new GUIColor(new float[] {1f, 1f, 1f, 1f});
 	public final static GUIColor BLACK = new GUIColor(new float[] {0f, 0f, 0f, 1f});
 	public final static GUIColor RED = new GUIColor(new float[] {1f, 0f, 0f, 1f});
 	public final static GUIColor GREEN = new GUIColor(new float[] {0f, 1f, 0f, 1f});
 	public final static GUIColor BLUE = new GUIColor(new float[] {0f, 0f, 1f, 1f});
+	public final static GUIColor TRANSPARENT = new GUIColor(new float[] {0f, 0f, 0f, 0f});
+
+	// predefined color instances
+	private final static GUIColor[] COLOR_INSTANCES = {
+		WHITE,
+		BLACK,
+		RED,
+		GREEN,
+		BLUE
+	};
+
+	// predefined color names
+	private final static String[] COLOR_NAMES = {
+		"WHITE",
+		"BLACK",
+		"RED",
+		"GREEN",
+		"BLUE"
+	};
 	
 	private float[] data;
 
@@ -35,10 +57,26 @@ public final class GUIColor {
 	 * @param color text
 	 */
 	public GUIColor(String colorString) throws GUIParserException {
+		// check if color string is given
+		if (colorString == null) {
+			throw new GUIParserException("No color given");
+		}
+
+		// try to take from predefined colors
+		for (int i = 0; i < COLOR_NAMES.length; i++) {
+			if (COLOR_NAMES[i].equalsIgnoreCase(colorString) == true) {
+				System.arraycopy(COLOR_INSTANCES[i].data, 0, this.data, 0, this.data.length);
+				return;
+			}
+		}
+
+		// otherwise check if color string has valid hex notation
 		if (colorString.startsWith("#") == false ||
 			(colorString.length() != 7 && colorString.length() != 9)) {
 			throw new GUIParserException("Invalid color '" + colorString + "'");
 		}
+
+		// jup, parse RGB first, then alpha
 		data = new float[] {0f,0f,0f,1f};
         data[0] = Integer.valueOf(colorString.substring(1, 3), 16) / 255f;
         data[1] = Integer.valueOf(colorString.substring(3, 5), 16) / 255f;
@@ -53,6 +91,14 @@ public final class GUIColor {
 	 */
 	public float[] getData() {
 		return data;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "GUIColor [data=" + Arrays.toString(data) + "]";
 	}
 
 }

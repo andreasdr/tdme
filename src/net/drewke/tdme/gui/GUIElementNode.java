@@ -3,6 +3,8 @@ package net.drewke.tdme.gui;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.GUIParentNode.Border;
+import net.drewke.tdme.gui.GUIParentNode.Margin;
 
 /**
  * GUI element node
@@ -23,9 +25,26 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param show on
+	 * @param hide on
+	 * @param border
+	 * @param margin
+	 * @param background color
+	 * @param background image
 	 */
-	protected GUIElementNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints) {
-		super(parentNode, id, alignments, requestedConstraints);
+	protected GUIElementNode(
+		GUINode parentNode, 
+		String id, 
+		Alignments alignments, 
+		RequestedConstraints requestedConstraints, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn, 
+		Border border, 
+		Margin margin,
+		String backgroundColor,
+		String backgroundImage) throws GUIParserException {
+		//
+		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn, border, margin, backgroundColor, backgroundImage);
 	}
 
 	/**
@@ -37,17 +56,32 @@ public final class GUIElementNode extends GUIParentNode {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINode#isContentNode()
+	 */
+	protected boolean isContentNode() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
 	protected int getContentWidth() {
+		// determine content width
 		int width = 0;
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode guiSubNode = subNodes.get(i);
-			int contentWidth = guiSubNode.getContentWidth();
+			int contentWidth = guiSubNode.getAutoWidth();
 			if (contentWidth > width) {
 				width = contentWidth;
 			}
 		}
+
+		// add border, margin
+		width+= border.left + border.right;
+		width+= margin.left + margin.right;
+
+		//
 		return width;
 	}
 
@@ -56,27 +90,22 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
 	protected int getContentHeight() {
+		// determine content height
 		int height = 0;
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode guiSubNode = subNodes.get(i);
-			int contentHeight = guiSubNode.getContentHeight();
+			int contentHeight = guiSubNode.getAutoHeight();
 			if (contentHeight > height) {
 				height = contentHeight;
 			}
 		}
-		return height;
-	}
 
-	/**
-	 * Set computed left
-	 * @param left
-	 */
-	protected void setLeft(int left) {
-		super.setLeft(left);
-		left+= computedConstraints.alignmentLeft;
-		for (int i = 0; i < subNodes.size(); i++) {
-			subNodes.get(i).setLeft(left);
-		}
+		// add border, margin
+		height+= border.top + border.bottom;
+		height+= margin.top + margin.bottom;
+
+		//
+		return height;
 	}
 
 	/**
@@ -91,6 +120,18 @@ public final class GUIElementNode extends GUIParentNode {
 		}
 	}
 
+	/**
+	 * Set computed left
+	 * @param left
+	 */
+	protected void setLeft(int left) {
+		super.setLeft(left);
+		left+= computedConstraints.alignmentLeft;
+		for (int i = 0; i < subNodes.size(); i++) {
+			subNodes.get(i).setLeft(left);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIParentNode#layout()
@@ -99,34 +140,9 @@ public final class GUIElementNode extends GUIParentNode {
 		// super layout
 		super.layout();
 
-		// width type AUTO means we determine children width by content width or overridden width
-		if (requestedConstraints.widthType.equals(RequestedConstraintsType.AUTO)) {
-			int widthMax = 0;
-			for (int i = 0; i < subNodes.size(); i++) {
-				GUINode guiElementNode = subNodes.get(i);
-				if (guiElementNode.getAutoWidth() > widthMax) {
-					widthMax = guiElementNode.getAutoWidth();
-				}
-			}
-			computedConstraints.width = widthMax;
-		}
-
-		// width type AUTO means we determine children width by content height or overridden height
-		if (requestedConstraints.widthType.equals(RequestedConstraintsType.AUTO)) {
-			int heightMax = 0;
-			for (int i = 0; i < subNodes.size(); i++) {
-				GUINode guiElementNode = subNodes.get(i);
-				if (guiElementNode.getAutoHeight() > heightMax) {
-					heightMax = guiElementNode.getAutoHeight();
-				}
-			}
-			computedConstraints.height = heightMax;
-		}
-
-		// layout sub nodes
-		for (int i = 0; i < subNodes.size(); i++) {
-			subNodes.get(i).layout();
-		}
+		// do parent + children top, left adjustments
+		setTop(computedConstraints.top);
+		setLeft(computedConstraints.left);
 
 		// compute children alignments
 		computeHorizontalChildrenAlignment();
