@@ -7,15 +7,13 @@
 		</element>
 		<space height="*" />
 		<element id="yyy" horizontal-align="center" width="80%">
-			<panel id="abc" alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
-				<space height="10" />
+			<panel border="1" margin="20" id="abc" alignment="vertical" horizontal-align="center" background-color="#f0f0f0" width="100%">
 				<text id="text1" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 1" color="#000000" />
 				<text id="text2" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 2" color="#000000" />
-				<space height="10" />
 			</panel>
 		</element>
-		<element id="jjj" horizontal-align="center" width="80%">
-			<panel id="abc" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0" width="100%">
+		<element border="1" margin="20" border-color="red" id="jjj" width="80%">
+			<panel border="1" margin="20" id="abc" alignment="horizontal" background-color="#f0f0f0" width="100%">
 				<space width="*" />
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="xxx" color="#000000" />
 				<space width="10" />

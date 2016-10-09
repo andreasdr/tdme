@@ -33,7 +33,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param background image
 	 */
 	protected GUIElementNode(
-		GUINode parentNode, 
+		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 

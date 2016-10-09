@@ -28,7 +28,7 @@ public final class GUITextNode extends GUINode {
 	 * @param text
 	 * @throws Exception
 	 */
-	protected GUITextNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String font, String color, String text) throws Exception {
+	protected GUITextNode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String font, String color, String text) throws Exception {
 		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);

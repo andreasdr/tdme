@@ -53,8 +53,25 @@ public final class GUIParser {
 			),
 			GUINode.createConditions(xmlRoot.getAttribute("show-on")),
 			GUINode.createConditions(xmlRoot.getAttribute("hide-on")),
-			null,
-			null,
+			GUIParentNode.createBorder(
+				xmlRoot.getAttribute("border"), 
+				xmlRoot.getAttribute("border-left"), 
+				xmlRoot.getAttribute("border-top"), 
+				xmlRoot.getAttribute("border-right"), 
+				xmlRoot.getAttribute("border-bottom"), 
+				xmlRoot.getAttribute("border-color"),
+				xmlRoot.getAttribute("border-color-left"), 
+				xmlRoot.getAttribute("border-color-top"), 
+				xmlRoot.getAttribute("border-color-right"), 
+				xmlRoot.getAttribute("border-color-bottom")
+			),
+			GUIParentNode.createMargin(
+				xmlRoot.getAttribute("margin"), 
+				xmlRoot.getAttribute("margin-left"), 
+				xmlRoot.getAttribute("margin-top"), 
+				xmlRoot.getAttribute("margin-right"), 
+				xmlRoot.getAttribute("margin-bottom") 
+			),			
 			xmlRoot.getAttribute("background-color"),
 			xmlRoot.getAttribute("background-image")
 		);

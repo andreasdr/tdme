@@ -30,7 +30,7 @@ public final class GUIImageNode extends GUINode {
 	 * @param hide on
 	 * @param src
 	 */
-	protected GUIImageNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String src) {
+	protected GUIImageNode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String src) {
 		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
 		this.texture = GUI.getImage(src);
 		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);

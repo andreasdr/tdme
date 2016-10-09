@@ -83,7 +83,7 @@ public abstract class GUINode {
 		}
 	}
 
-	protected GUINode parentNode;
+	protected GUIParentNode parentNode;
 	protected String id;
 	protected Alignments alignments;
 	protected RequestedConstraints requestedConstraints;
@@ -101,7 +101,7 @@ public abstract class GUINode {
 	 * @param show on
 	 * @param hide on
 	 */
-	protected GUINode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
+	protected GUINode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
 		this.parentNode = parentNode;
 		this.id = id;
 		this.alignments = alignments;
@@ -119,7 +119,7 @@ public abstract class GUINode {
 	/**
 	 * @return parent node
 	 */
-	protected GUINode getParentNode() {
+	protected GUIParentNode getParentNode() {
 		return parentNode;
 	}
 	

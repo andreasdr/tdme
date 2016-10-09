@@ -27,7 +27,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @param alignment
 	 */
 	protected GUIPanelNode(
-		GUINode parentNode, 
+		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments,
 		RequestedConstraints requestedConstraints,

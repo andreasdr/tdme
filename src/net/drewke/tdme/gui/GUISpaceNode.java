@@ -20,7 +20,7 @@ public final class GUISpaceNode extends GUINode {
 	 * @param show on
 	 * @param hide on
 	 */
-	protected GUISpaceNode(GUINode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
+	protected GUISpaceNode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
 		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
 	}
 

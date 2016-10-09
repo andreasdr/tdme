@@ -81,7 +81,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param background image 
 	 */
 	protected GUIParentNode(
-		GUINode parentNode, 
+		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 
@@ -227,7 +227,88 @@ public abstract class GUIParentNode extends GUINode {
 	 * Layout
 	 */
 	protected void layout() {
-		super.layout();
+		// compute constraints like in GUINode.layout but take margin and border into account
+		computedConstraints.left =
+			parentNode.computedConstraints.left + 
+			layoutConstraintPixel(
+				requestedConstraints.leftType,
+				0,
+				parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.margin.left - parentNode.margin.right, 
+				requestedConstraints.left
+			);
+		computedConstraints.top = 
+			parentNode.computedConstraints.top +
+			layoutConstraintPixel(
+				requestedConstraints.topType,
+				0,
+				parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.margin.top - parentNode.margin.bottom, 
+				requestedConstraints.top
+			);
+		computedConstraints.width = 
+			layoutConstraintPixel(
+				requestedConstraints.widthType,
+				getAutoWidth(),
+				parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.margin.left - parentNode.margin.right, 
+				requestedConstraints.width
+			);
+		computedConstraints.height = 
+			layoutConstraintPixel(
+				requestedConstraints.heightType,
+				getAutoHeight(),
+				parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.margin.top - parentNode.margin.bottom, 
+				requestedConstraints.height
+			);
+
+		// reset additional constraints
+		computedConstraints.alignmentLeft = 0;
+		computedConstraints.alignmentTop = 0;
+		computedConstraints.contentAlignmentLeft = 0;
+		computedConstraints.contentAlignmentTop = 0;
+
+		// align content nodes
+		if (isContentNode() == true) {
+			// content alignment horizontal
+			switch (alignments.horizontal) {
+				case LEFT:
+					{
+						computedConstraints.contentAlignmentLeft = 0;
+						break;
+					}
+				case CENTER:
+					{
+						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getAutoWidth()) / 2;
+						break;
+					}
+				case RIGHT: {
+					{
+						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getAutoWidth());
+						break;
+					}
+				}
+			}
+	
+			// content alignment vertical
+			switch (alignments.vertical) {
+				case TOP:
+					{
+						computedConstraints.contentAlignmentTop = 0;
+						break;
+					}
+				case CENTER:
+					{
+						computedConstraints.contentAlignmentTop = (computedConstraints.height - getAutoHeight()) / 2;
+						break;
+					}
+				case BOTTOM: {
+					{
+						computedConstraints.contentAlignmentTop = (computedConstraints.height - getAutoHeight());
+						break;
+					}
+				}
+			}
+		}
+
+		//
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).layout();
 		}

@@ -28,7 +28,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param margin
 	 */
 	protected GUIScreenNode(
-		GUINode parentNode, 
+		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 
