@@ -138,25 +138,44 @@ public class GUILayoutNode extends GUIParentNode {
 					int starCount = 0;
 					int height = computedConstraints.height;
 					int nodesHeight = 0;
+					int finalNodesHeight = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
 							starCount++;
 						} else {
 							nodesHeight+= guiSubNode.computedConstraints.height;
+							finalNodesHeight+= guiSubNode.computedConstraints.height;
 						}
 					}
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
 							guiSubNode.computedConstraints.height = (height - nodesHeight) / starCount;
+							finalNodesHeight+= guiSubNode.computedConstraints.height;
 						}
 					}
-					for (int i = 0; i < subNodes.size(); i++) {
-						GUINode guiSubNode = subNodes.get(i);
-						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
-							guiSubNode.computedConstraints.height = (height - nodesHeight) / starCount;
-						}
+
+					// take border, margin into account
+					switch (alignments.vertical) {
+						case TOP:
+							for (int i = 0; i < subNodes.size(); i++) {
+								GUINode guiSubNode = subNodes.get(i);
+								guiSubNode.computedConstraints.alignmentTop = border.top + margin.top;
+							}
+							break;
+						case CENTER:
+							for (int i = 0; i < subNodes.size(); i++) {
+								GUINode guiSubNode = subNodes.get(i);
+								guiSubNode.computedConstraints.alignmentTop = (height - finalNodesHeight) / 2; 
+							}
+							break;
+						case BOTTOM:
+							for (int i = 0; i < subNodes.size(); i++) {
+								GUINode guiSubNode = subNodes.get(i);
+								guiSubNode.computedConstraints.alignmentTop = (height - finalNodesHeight - border.bottom - margin.bottom); 
+							}
+							break;
 					}
 
 					// compute children alignments
@@ -171,21 +190,46 @@ public class GUILayoutNode extends GUIParentNode {
 					int starCount = 0;
 					int width = computedConstraints.width;
 					int nodesWidth = 0;
+					int finalNodesWidth = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
 							starCount++;
 						} else {
 							nodesWidth+= guiSubNode.computedConstraints.width;
+							finalNodesWidth+= guiSubNode.computedConstraints.width;
 						}
 					}
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
 							guiSubNode.computedConstraints.width = (width - nodesWidth) / starCount;
+							finalNodesWidth+= guiSubNode.computedConstraints.width;
 						}
 					}
 					
+					// take border, margin into account
+					switch (alignments.horizontal) {
+						case LEFT:
+							for (int i = 0; i < subNodes.size(); i++) {
+								GUINode guiSubNode = subNodes.get(i);
+								guiSubNode.computedConstraints.alignmentLeft = border.left + margin.left;
+							}
+							break;
+						case CENTER:
+							for (int i = 0; i < subNodes.size(); i++) {
+								GUINode guiSubNode = subNodes.get(i);
+								guiSubNode.computedConstraints.alignmentLeft = (width - finalNodesWidth) / 2; 
+							}
+							break;
+						case RIGHT:
+							for (int i = 0; i < subNodes.size(); i++) {
+								GUINode guiSubNode = subNodes.get(i);
+								guiSubNode.computedConstraints.alignmentLeft = (width - finalNodesWidth - border.right - margin.right); 
+							}
+							break;
+					}
+
 					// compute children alignments
 					computeVerticalChildrenAlignment();
 					
