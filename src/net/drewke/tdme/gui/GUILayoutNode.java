@@ -156,7 +156,7 @@ public class GUILayoutNode extends GUIParentNode {
 						}
 					}
 
-					// take border, margin into account
+					// do vertical alignments, take border, margin into account
 					switch (alignments.vertical) {
 						case TOP:
 							for (int i = 0; i < subNodes.size(); i++) {
@@ -208,7 +208,7 @@ public class GUILayoutNode extends GUIParentNode {
 						}
 					}
 					
-					// take border, margin into account
+					// do horizontal alignments, take border, margin into account
 					switch (alignments.horizontal) {
 						case LEFT:
 							for (int i = 0; i < subNodes.size(); i++) {
