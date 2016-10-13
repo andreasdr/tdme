@@ -1,6 +1,5 @@
 package net.drewke.tdme.gui;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +20,8 @@ public final class GUITextNode extends GUINode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param border
+	 * @param margin
 	 * @param show on
 	 * @param hide on
 	 * @param font
@@ -28,8 +29,21 @@ public final class GUITextNode extends GUINode {
 	 * @param text
 	 * @throws Exception
 	 */
-	protected GUITextNode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String font, String color, String text) throws Exception {
-		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
+	protected GUITextNode(
+		GUIParentNode parentNode,
+		String id, 
+		Alignments alignments, 
+		RequestedConstraints requestedConstraints, 
+		Border border, 
+		Margin margin, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn, 
+		String font, 
+		String color, 
+		String text
+		) throws Exception {
+		//
+		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;
@@ -58,7 +72,7 @@ public final class GUITextNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return font.getTextWidth(text);
+		return font.getTextWidth(text) + border.left + border.right + margin.left + margin.right;
 	}
 
 	/*
@@ -66,7 +80,7 @@ public final class GUITextNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return font.getTextHeight(text);
+		return font.getTextHeight(text) + border.top + border.bottom + margin.top + margin.bottom;
 	}
 
 	/*
@@ -85,6 +99,9 @@ public final class GUITextNode extends GUINode {
 	protected void render(GUIRenderer guiRenderer) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
+
+		// call parent renderer
+		super.render(guiRenderer);
 
 		// draw string
 		font.drawString(

@@ -11,60 +11,9 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
  */
 public abstract class GUIParentNode extends GUINode {
 
-	/**
-	 * Margin
-	 * @author Andreas Drewke
-	 * @version $Id$
-	 */
-	static class Margin {
-		protected int left;
-		protected int top;
-		protected int right;
-		protected int bottom;
-		/*
-		 * (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		public String toString() {
-			return "Margin [left=" + left + ", top=" + top + ", right=" + right
-					+ ", bottom=" + bottom + "]";
-		}
-	}
-
-	/**
-	 * Border
-	 * 
-	 * @author Andreas Drewke
-	 * @ersion $Id$
-	 */
-	static class Border {
-		protected GUIColor leftColor;
-		protected GUIColor topColor;
-		protected GUIColor rightColor;
-		protected GUIColor bottomColor;
-		protected int left;
-		protected int top;
-		protected int right;
-		protected int bottom;
-		/*
-		 * (non-Javadoc)
-		 * @see java.lang.Object#toString()
-		 */
-		public String toString() {
-			return "Border [left=" + left + ", top=" + top
-					+ ", right=" + right + ", bottom=" + bottom
-					// + ", leftColor=" + leftColor + ", topColor=" + topColor
-					// + ", rightColor=" + rightColor + ", bottomColor="
-					// + bottomColor 
-					+ "]";
-		}	
-	}
-
 	//
 	private String backgroundImage;
 	private GUIColor backgroundColor;
-	protected Margin margin;
-	protected Border border;
 	protected ArrayList<GUINode> subNodes;
 
 	/**
@@ -73,10 +22,10 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
-	 * @param show on
-	 * @param hide on
 	 * @param border
 	 * @param margin
+	 * @param show on
+	 * @param hide on
 	 * @oaram background color
 	 * @param background image 
 	 */
@@ -85,15 +34,15 @@ public abstract class GUIParentNode extends GUINode {
 		String id, 
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
 		Border border, 
 		Margin margin, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn, 
 		String backgroundColor,
 		String backgroundImage
 		) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
+		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
 		this.border = border;
 		this.margin = margin;
 		this.backgroundColor = backgroundColor == null || backgroundColor.length() == 0?GUIColor.TRANSPARENT:new GUIColor(backgroundColor);
@@ -130,183 +79,10 @@ public abstract class GUIParentNode extends GUINode {
 	}
 
 	/**
-	 * Get requested pixel value
-	 * @param value
-	 * @param default value
-	 * @return value
-	 */
-	protected static int getRequestedPixelValue(String value, int defaultValue) {
-		if (value == null || value.length() == 0) {
-			return defaultValue;
-		} else{
-			return Integer.valueOf(value);
-		}
-	}
-
-	/**
-	 * Get color
-	 * @param color
-	 * @param default color
-	 * @return value
-	 */
-	protected static GUIColor getRequestedColor(String color, GUIColor defaultColor) throws GUIParserException {
-		if (color == null || color.length() == 0) {
-			return defaultColor;
-		} else{
-			return new GUIColor(color);
-		}
-	}
-
-	/**
-	 * Create border
-	 * @param all border
-	 * @param left
-	 * @param top
-	 * @param right
-	 * @param bottom
-	 * @param all border color
-	 * @param left color
-	 * @param top color
-	 * @param right color
-	 * @param bottom color
-	 * @return border
-	 */
-	protected static Border createBorder(
-		String allBorder,
-		String left, String top, String right, String bottom,
-		String allBorderColor,
-		String leftColor, String topColor, String rightColor, String bottomColor
-		) throws GUIParserException {
-		Border border = new Border();
-		border.left = getRequestedPixelValue(allBorder, 0);
-		border.top = getRequestedPixelValue(allBorder, 0);
-		border.right = getRequestedPixelValue(allBorder, 0);
-		border.bottom = getRequestedPixelValue(allBorder, 0);
-		border.left = getRequestedPixelValue(left, border.left);
-		border.top = getRequestedPixelValue(top, border.top);
-		border.right = getRequestedPixelValue(right, border.right);
-		border.bottom = getRequestedPixelValue(bottom, border.bottom);
-		border.leftColor = getRequestedColor(allBorderColor, GUIColor.BLACK);
-		border.topColor = getRequestedColor(allBorderColor, GUIColor.BLACK);
-		border.rightColor = getRequestedColor(allBorderColor, GUIColor.BLACK);
-		border.bottomColor = getRequestedColor(allBorderColor, GUIColor.BLACK);
-		border.leftColor = getRequestedColor(leftColor, border.leftColor);
-		border.topColor = getRequestedColor(topColor, border.topColor);
-		border.rightColor = getRequestedColor(rightColor, border.rightColor);
-		border.bottomColor = getRequestedColor(bottomColor, border.bottomColor);
-		return border;
-	}
-
-	/**
-	 * Create margin
-	 * @param all margin
-	 * @param left
-	 * @param top
-	 * @param right
-	 * @param bottom
-	 * @return margin
-	 */
-	protected static Margin createMargin(
-		String allMargin,
-		String left, String top, String right, String bottom
-		) throws GUIParserException {
-		//
-		Margin margin = new Margin();
-		margin.left = getRequestedPixelValue(allMargin, 0);
-		margin.top = getRequestedPixelValue(allMargin, 0);
-		margin.right = getRequestedPixelValue(allMargin, 0);
-		margin.bottom = getRequestedPixelValue(allMargin, 0);
-		margin.left = getRequestedPixelValue(left, margin.left);
-		margin.top = getRequestedPixelValue(top, margin.top);
-		margin.right = getRequestedPixelValue(right, margin.right);
-		margin.bottom = getRequestedPixelValue(bottom, margin.bottom);
-		return margin;
-	}
-
-	/**
 	 * Layout
 	 */
 	protected void layout() {
-		// compute constraints like in GUINode.layout but take margin and border into account
-		computedConstraints.left =
-			parentNode.computedConstraints.left + 
-			layoutConstraintPixel(
-				requestedConstraints.leftType,
-				0,
-				parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.margin.left - parentNode.margin.right, 
-				requestedConstraints.left
-			);
-		computedConstraints.top = 
-			parentNode.computedConstraints.top +
-			layoutConstraintPixel(
-				requestedConstraints.topType,
-				0,
-				parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.margin.top - parentNode.margin.bottom, 
-				requestedConstraints.top
-			);
-		computedConstraints.width = 
-			layoutConstraintPixel(
-				requestedConstraints.widthType,
-				getAutoWidth(),
-				parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.margin.left - parentNode.margin.right, 
-				requestedConstraints.width
-			);
-		computedConstraints.height = 
-			layoutConstraintPixel(
-				requestedConstraints.heightType,
-				getAutoHeight(),
-				parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.margin.top - parentNode.margin.bottom, 
-				requestedConstraints.height
-			);
-
-		// reset additional constraints
-		computedConstraints.alignmentLeft = 0;
-		computedConstraints.alignmentTop = 0;
-		computedConstraints.contentAlignmentLeft = 0;
-		computedConstraints.contentAlignmentTop = 0;
-
-		// align content nodes
-		if (isContentNode() == true) {
-			// content alignment horizontal
-			switch (alignments.horizontal) {
-				case LEFT:
-					{
-						computedConstraints.contentAlignmentLeft = 0;
-						break;
-					}
-				case CENTER:
-					{
-						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getAutoWidth()) / 2;
-						break;
-					}
-				case RIGHT: {
-					{
-						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getAutoWidth());
-						break;
-					}
-				}
-			}
-	
-			// content alignment vertical
-			switch (alignments.vertical) {
-				case TOP:
-					{
-						computedConstraints.contentAlignmentTop = 0;
-						break;
-					}
-				case CENTER:
-					{
-						computedConstraints.contentAlignmentTop = (computedConstraints.height - getAutoHeight()) / 2;
-						break;
-					}
-				case BOTTOM: {
-					{
-						computedConstraints.contentAlignmentTop = (computedConstraints.height - getAutoHeight());
-						break;
-					}
-				}
-			}
-		}
+		super.layout();
 
 		//
 		for (int i = 0; i < subNodes.size(); i++) {
@@ -400,6 +176,9 @@ public abstract class GUIParentNode extends GUINode {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 
+		// call parent renderer
+		super.render(guiRenderer);
+
 		// screen dimension
 		float screenWidth = guiRenderer.gui.width;
 		float screenHeight = guiRenderer.gui.height;
@@ -436,139 +215,6 @@ public abstract class GUIParentNode extends GUINode {
 				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
 				0f, 0f
 			);
-			guiRenderer.render();
-		}
-
-		// render border if given
-		if (border != null) {
-			// 
-			guiRenderer.bindTexture(0);
-
-			// render border top
-			if (border.top > 0) {
-				float left = computedConstraints.left + computedConstraints.alignmentLeft;
-				float top = computedConstraints.top + computedConstraints.alignmentTop;
-				float width = computedConstraints.width;
-				float height = border.top;
-	
-				// background color
-				float[] borderColorData = border.topColor.getData();
-	
-				// render panel background
-				guiRenderer.addQuad(
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 0f, 
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 0f
-				);
-			}
-	
-			// render border bottom
-			if (border.bottom > 0) {
-				float left = computedConstraints.left + computedConstraints.alignmentLeft;
-				float top = computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height - border.bottom;
-				float width = computedConstraints.width;
-				float height = border.bottom;
-	
-				// background color
-				float[] borderColorData = border.bottomColor.getData();
-	
-				// render panel background
-				guiRenderer.addQuad(
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 0f, 
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 0f
-				);
-			}
-	
-			// render border bottom
-			if (border.left > 0) {
-				float left = computedConstraints.left + computedConstraints.alignmentLeft;
-				float top = computedConstraints.top + computedConstraints.alignmentTop;
-				float width = border.left;
-				float height = computedConstraints.height;
-	
-				// background color
-				float[] borderColorData = border.leftColor.getData();
-	
-				// render panel background
-				guiRenderer.addQuad(
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 0f, 
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 0f
-				);
-			}
-	
-			// render border bottom
-			if (border.right > 0) {
-				float left = computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width - border.right;
-				float top = computedConstraints.top + computedConstraints.alignmentTop;
-				float width = border.right;
-				float height = computedConstraints.height;
-	
-				// background color
-				float[] borderColorData = border.rightColor.getData();
-	
-				// render panel background
-				guiRenderer.addQuad(
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 1f, 
-					((left + width) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					1f, 0f, 
-					((left) / (screenWidth / 2f)) - 1f, 
-					((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-					borderColorData[0], borderColorData[1], borderColorData[2], borderColorData[3],
-					0f, 0f
-				);
-			}
-
-			//
 			guiRenderer.render();
 		}
 

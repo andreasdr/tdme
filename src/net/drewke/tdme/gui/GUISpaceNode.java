@@ -17,11 +17,23 @@ public final class GUISpaceNode extends GUINode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param border
+	 * @param margin
 	 * @param show on
 	 * @param hide on
 	 */
-	protected GUISpaceNode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn) {
-		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
+	protected GUISpaceNode(
+		GUIParentNode parentNode, 
+		String id, 
+		Alignments alignments, 
+		RequestedConstraints requestedConstraints,
+		Border border, 
+		Margin margin, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn
+		) {
+		//
+		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
 	}
 
 	/**
@@ -91,7 +103,8 @@ public final class GUISpaceNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected void render(GUIRenderer guiRenderer) {
-		// no op
+		// call parent renderer
+		super.render(guiRenderer);
 	}
 
 	/*

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
+import net.drewke.tdme.gui.GUINode.Border;
+import net.drewke.tdme.gui.GUINode.Margin;
 
 
 /**
@@ -26,12 +28,25 @@ public final class GUIImageNode extends GUINode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
+	 * @param border
+	 * @param margin
 	 * @param show on
 	 * @param hide on
 	 * @param src
 	 */
-	protected GUIImageNode(GUIParentNode parentNode, String id, Alignments alignments, RequestedConstraints requestedConstraints, ArrayList<String> showOn, ArrayList<String> hideOn, String src) {
-		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn);
+	protected GUIImageNode(
+		GUIParentNode parentNode, 
+		String id, 
+		Alignments alignments, 
+		RequestedConstraints requestedConstraints,
+		Border border, 
+		Margin margin, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn, 
+		String src
+		) {
+		//
+		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
 		this.texture = GUI.getImage(src);
 		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
@@ -56,7 +71,7 @@ public final class GUIImageNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return texture != null?texture.getWidth():0;
+		return (texture != null?texture.getWidth():0) + border.left + border.right + margin.left + margin.right;
 	}
 
 	/*
@@ -64,7 +79,7 @@ public final class GUIImageNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return texture != null?texture.getHeight():0;
+		return (texture != null?texture.getHeight():0) + border.top + border.bottom + margin.top + margin.bottom;
 	}
 	
 	/*
@@ -82,6 +97,9 @@ public final class GUIImageNode extends GUINode {
 	protected void render(GUIRenderer guiRenderer) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
+
+		// call parent renderer
+		super.render(guiRenderer);
 
 		// screen dimension
 		float screenWidth = guiRenderer.gui.width;

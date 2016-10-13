@@ -2,9 +2,6 @@ package net.drewke.tdme.gui;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUIParentNode.Border;
-import net.drewke.tdme.gui.GUIParentNode.Margin;
-
 /**
  * GUI Panel
  * @author Andreas Drewke
@@ -18,10 +15,10 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
-	 * @param show on
-	 * @param hide on
 	 * @param border
 	 * @param margin
+	 * @param show on
+	 * @param hide on
 	 * @param background color
 	 * @param background image
 	 * @param alignment
@@ -31,16 +28,16 @@ public final class GUIPanelNode extends GUILayoutNode {
 		String id, 
 		Alignments alignments,
 		RequestedConstraints requestedConstraints,
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn,
 		Border border, 
 		Margin margin, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn,
 		String backgroundColor,
 		String backgroundImage,
 		String alignment) 
 		throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn, border, margin, backgroundColor, backgroundImage, alignment);
+		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn, backgroundColor, backgroundImage, alignment);
 	}
 
 	/*
@@ -59,7 +56,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 
-		// 
+		// call parent renderer
 		super.render(guiRenderer);
 	}
 

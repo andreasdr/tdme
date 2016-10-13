@@ -1,6 +1,6 @@
 <screen id="test">
 	<panel border="10" border-color="#ffffff" left="10%" top="10%" width="80%" height="80%" alignment="vertical"
-		background-color="#808080" horizontal-align="center">
+		background-color="#808080" horizontal-align="center"> 
 		<space height="10%" />
 		<element id="xxx" horizontal-align="center" vertical-align="center" background-color="#909090">
 			<text id="text0" show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
@@ -29,20 +29,21 @@
 			<text id="zzz_text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 		</element>
 		<space height="*" />
+		<space height="*" />
 		<element id="aaa" horizontal-align="center" vertical-align="center">
 			<panel border-color="#a0a0a0" border="2" margin="10" id="aaa_panel" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
 				<space width="*" />
-				<text id="aaa_panel_text3" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss A!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss A!" color="#000000" horizontal-align="left" vertical-align="center" />
 				<space width="*" />
 			</panel>
 			<panel border-color="#e0e0e0" border="2" margin="10" id="aaa_panel" show-on="mouseover" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0">
 				<space width="*" />
-				<text id="aaa_panel_text3" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss B!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss B!" color="#000000" horizontal-align="center" vertical-align="center" />
 				<space width="*" />
 			</panel>
 			<panel border-color="#ffffff" border="2" margin="10" id="aaa_panel" show-on="click" alignment="horizontal" horizontal-align="center" background-color="#f0a0a0">
 				<space width="*" />
-				<text id="aaa_panel_text3" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss C!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss C!" color="#000000" horizontal-align="right" vertical-align="center" />
 				<space width="*" />
 			</panel>
 		</element>

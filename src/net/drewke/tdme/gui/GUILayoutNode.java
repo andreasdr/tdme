@@ -3,8 +3,6 @@ package net.drewke.tdme.gui;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
-import net.drewke.tdme.gui.GUIParentNode.Border;
-import net.drewke.tdme.gui.GUIParentNode.Margin;
 
 public class GUILayoutNode extends GUIParentNode {
 
@@ -18,10 +16,10 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param id
 	 * @param alignments
 	 * @param requested constraints
-	 * @param show on
-	 * @param hide on
 	 * @param border
 	 * @param margin
+	 * @param show on
+	 * @param hide on
 	 * @param background color
 	 * @param background image
 	 * @param alignment
@@ -32,14 +30,16 @@ public class GUILayoutNode extends GUIParentNode {
 		Alignments alignments, 
 		RequestedConstraints 
 		requestedConstraints, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
 		Border border, 
 		Margin margin, 
+		ArrayList<String> showOn, 
+		ArrayList<String> hideOn, 
 		String backgroundColor,
 		String backgroundImage,
-		String alignment) throws GUIParserException {
-		super(parentNode, id, alignments, requestedConstraints, showOn, hideOn, border, margin, backgroundColor, backgroundImage);
+		String alignment
+		) throws GUIParserException {
+		//
+		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn, backgroundColor, backgroundImage);
 		this.alignment = Alignment.valueOf(alignment.toUpperCase());
 	}
 
@@ -152,6 +152,9 @@ public class GUILayoutNode extends GUIParentNode {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
 							guiSubNode.computedConstraints.height = (height - nodesHeight) / starCount;
+							if (guiSubNode.computedConstraints.height < 0) {
+								guiSubNode.computedConstraints.height = 0;
+							}
 							finalNodesHeight+= guiSubNode.computedConstraints.height;
 						}
 					}
@@ -204,6 +207,9 @@ public class GUILayoutNode extends GUIParentNode {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
 							guiSubNode.computedConstraints.width = (width - nodesWidth) / starCount;
+							if (guiSubNode.computedConstraints.width < 0) {
+								guiSubNode.computedConstraints.width = 0;
+							}
 							finalNodesWidth+= guiSubNode.computedConstraints.width;
 						}
 					}
