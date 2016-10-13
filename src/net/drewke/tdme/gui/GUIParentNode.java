@@ -23,7 +23,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 * @oaram background color
@@ -35,16 +35,14 @@ public abstract class GUIParentNode extends GUINode {
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn, 
 		String backgroundColor,
 		String backgroundImage
 		) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
-		this.border = border;
-		this.margin = margin;
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 		this.backgroundColor = backgroundColor == null || backgroundColor.length() == 0?GUIColor.TRANSPARENT:new GUIColor(backgroundColor);
 		this.backgroundImage = backgroundImage;
 		subNodes = new ArrayList<GUINode>();
@@ -100,7 +98,7 @@ public abstract class GUIParentNode extends GUINode {
 				{
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
-						guiSubNode.computedConstraints.alignmentLeft = border.left + margin.left; 
+						guiSubNode.computedConstraints.alignmentLeft = border.left + padding.left; 
 					}
 					break;
 				}
@@ -116,7 +114,7 @@ public abstract class GUIParentNode extends GUINode {
 				{
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
-						guiSubNode.computedConstraints.alignmentLeft = (computedConstraints.width - guiSubNode.computedConstraints.width - border.right - margin.right); 
+						guiSubNode.computedConstraints.alignmentLeft = (computedConstraints.width - guiSubNode.computedConstraints.width - border.right - padding.right); 
 					}
 					break;
 				}
@@ -134,7 +132,7 @@ public abstract class GUIParentNode extends GUINode {
 				{
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
-						guiSubNode.computedConstraints.alignmentTop = border.top + margin.top; 
+						guiSubNode.computedConstraints.alignmentTop = border.top + padding.top; 
 					}
 					break;
 				}
@@ -150,7 +148,7 @@ public abstract class GUIParentNode extends GUINode {
 				{
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
-						guiSubNode.computedConstraints.alignmentTop = (computedConstraints.height - guiSubNode.computedConstraints.height - border.bottom - margin.bottom); 
+						guiSubNode.computedConstraints.alignmentTop = (computedConstraints.height - guiSubNode.computedConstraints.height - border.bottom - padding.bottom); 
 					}
 					break;
 				}
@@ -256,7 +254,7 @@ public abstract class GUIParentNode extends GUINode {
 				+ ", requestedConstraints=" + requestedConstraints 
 				+ ", computedConstraints=" + computedConstraints
 				+ ", border=" + border 
-				+ ", margin=" + margin + 
+				+ ", padding=" + padding + 
 				"]" + "\n";
 		for (int i = 0; i < subNodes.size(); i++) {
 			tmp+= subNodes.get(i).toString(indent + 1) + (i == subNodes.size() - 1?"":"\n");

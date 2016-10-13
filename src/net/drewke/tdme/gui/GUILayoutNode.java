@@ -17,7 +17,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 * @param background color
@@ -31,7 +31,7 @@ public class GUILayoutNode extends GUIParentNode {
 		RequestedConstraints 
 		requestedConstraints, 
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn, 
 		String backgroundColor,
@@ -39,7 +39,7 @@ public class GUILayoutNode extends GUIParentNode {
 		String alignment
 		) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn, backgroundColor, backgroundImage);
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
 		this.alignment = Alignment.valueOf(alignment.toUpperCase());
 	}
 
@@ -83,8 +83,8 @@ public class GUILayoutNode extends GUIParentNode {
 		// add border
 		width+= border.left + border.right;
 
-		// add margin
-		width+= margin.left + margin.right;
+		// add padding
+		width+= padding.left + padding.right;
 
 		//
 		return width;
@@ -115,8 +115,8 @@ public class GUILayoutNode extends GUIParentNode {
 		// add border
 		height+= border.top + border.bottom;
 
-		// add margin
-		height+= margin.top + margin.bottom;
+		// add padding
+		height+= padding.top + padding.bottom;
 
 		//
 		return height;
@@ -136,7 +136,7 @@ public class GUILayoutNode extends GUIParentNode {
 				{
 					// determine vertical stars
 					int starCount = 0;
-					int height = computedConstraints.height - border.top - border.bottom - margin.top - margin.bottom;
+					int height = computedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;
 					int nodesHeight = 0;
 					int finalNodesHeight = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
@@ -159,18 +159,18 @@ public class GUILayoutNode extends GUIParentNode {
 						}
 					}
 
-					// do vertical alignments, take border, margin into account
+					// do vertical alignments, take border, padding into account
 					switch (alignments.vertical) {
 						case TOP:
 							for (int i = 0; i < subNodes.size(); i++) {
 								GUINode guiSubNode = subNodes.get(i);
-								guiSubNode.computedConstraints.alignmentTop = border.top + margin.top;
+								guiSubNode.computedConstraints.alignmentTop = border.top + padding.top;
 							}
 							break;
 						case CENTER:
 							for (int i = 0; i < subNodes.size(); i++) {
 								GUINode guiSubNode = subNodes.get(i);
-								guiSubNode.computedConstraints.alignmentTop = border.top + margin.top + ((height - finalNodesHeight) / 2); 
+								guiSubNode.computedConstraints.alignmentTop = border.top + padding.top + ((height - finalNodesHeight) / 2); 
 							}
 							break;
 						case BOTTOM:
@@ -191,7 +191,7 @@ public class GUILayoutNode extends GUIParentNode {
 				{
 					// determine horizontal stars
 					int starCount = 0;
-					int width = computedConstraints.width - border.left - border.right - margin.left - margin.right;
+					int width = computedConstraints.width - border.left - border.right - padding.left - padding.right;
 					int nodesWidth = 0;
 					int finalNodesWidth = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
@@ -214,18 +214,18 @@ public class GUILayoutNode extends GUIParentNode {
 						}
 					}
 					
-					// do horizontal alignments, take border, margin into account
+					// do horizontal alignments, take border, padding into account
 					switch (alignments.horizontal) {
 						case LEFT:
 							for (int i = 0; i < subNodes.size(); i++) {
 								GUINode guiSubNode = subNodes.get(i);
-								guiSubNode.computedConstraints.alignmentLeft = border.left + margin.left;
+								guiSubNode.computedConstraints.alignmentLeft = border.left + padding.left;
 							}
 							break;
 						case CENTER:
 							for (int i = 0; i < subNodes.size(); i++) {
 								GUINode guiSubNode = subNodes.get(i);
-								guiSubNode.computedConstraints.alignmentLeft = border.left + margin.left + ((width - finalNodesWidth) / 2); 
+								guiSubNode.computedConstraints.alignmentLeft = border.left + padding.left + ((width - finalNodesWidth) / 2); 
 							}
 							break;
 						case RIGHT:

@@ -21,7 +21,7 @@ public final class GUITextNode extends GUINode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 * @param font
@@ -35,7 +35,7 @@ public final class GUITextNode extends GUINode {
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn, 
 		String font, 
@@ -43,7 +43,7 @@ public final class GUITextNode extends GUINode {
 		String text
 		) throws Exception {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;
@@ -72,7 +72,7 @@ public final class GUITextNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return font.getTextWidth(text) + border.left + border.right + margin.left + margin.right;
+		return font.getTextWidth(text) + border.left + border.right + padding.left + padding.right;
 	}
 
 	/*
@@ -80,7 +80,7 @@ public final class GUITextNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return font.getTextHeight(text) + border.top + border.bottom + margin.top + margin.bottom;
+		return font.getTextHeight(text) + border.top + border.bottom + padding.top + padding.bottom;
 	}
 
 	/*

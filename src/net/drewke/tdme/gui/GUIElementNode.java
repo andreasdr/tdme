@@ -22,7 +22,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 * @param background color
@@ -34,13 +34,13 @@ public final class GUIElementNode extends GUIParentNode {
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints, 
 		Border border, 
-		Margin margin,
+		Padding padding,
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn, 
 		String backgroundColor,
 		String backgroundImage) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn, backgroundColor, backgroundImage);
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
 	}
 
 	/**
@@ -73,9 +73,9 @@ public final class GUIElementNode extends GUIParentNode {
 			}
 		}
 
-		// add border, margin
+		// add border, padding
 		width+= border.left + border.right;
-		width+= margin.left + margin.right;
+		width+= padding.left + padding.right;
 
 		//
 		return width;
@@ -96,9 +96,9 @@ public final class GUIElementNode extends GUIParentNode {
 			}
 		}
 
-		// add border, margin
+		// add border, padding
 		height+= border.top + border.bottom;
-		height+= margin.top + margin.bottom;
+		height+= padding.top + padding.bottom;
 
 		//
 		return height;

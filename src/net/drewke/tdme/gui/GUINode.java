@@ -84,11 +84,11 @@ public abstract class GUINode {
 	}
 
 	/**
-	 * Margin
+	 * Padding
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
-	static class Margin {
+	static class Padding {
 		protected int left;
 		protected int top;
 		protected int right;
@@ -98,7 +98,7 @@ public abstract class GUINode {
 		 * @see java.lang.Object#toString()
 		 */
 		public String toString() {
-			return "Margin [left=" + left + ", top=" + top + ", right=" + right
+			return "Padding [left=" + left + ", top=" + top + ", right=" + right
 					+ ", bottom=" + bottom + "]";
 		}
 	}
@@ -136,7 +136,7 @@ public abstract class GUINode {
 	protected Alignments alignments;
 	protected RequestedConstraints requestedConstraints;
 	protected ComputedConstraints computedConstraints;
-	protected Margin margin;
+	protected Padding padding;
 	protected Border border;
 
 	private ArrayList<String> showOn;
@@ -149,7 +149,7 @@ public abstract class GUINode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 */
@@ -159,7 +159,7 @@ public abstract class GUINode {
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn
 		) {
@@ -170,7 +170,7 @@ public abstract class GUINode {
 		this.requestedConstraints = requestedConstraints;
 		this.computedConstraints = new ComputedConstraints();
 		this.border = border;
-		this.margin = margin;
+		this.padding = padding;
 		this.showOn = showOn;
 		this.hideOn = hideOn;
 	}
@@ -266,8 +266,8 @@ public abstract class GUINode {
 	 */
 	protected void layout() {
 		// parent node constraints
-		int parentNodeContentWidth = parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.margin.left - parentNode.margin.right;
-		int parentNodeContentHeight = parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.margin.top - parentNode.margin.bottom;
+		int parentNodeContentWidth = parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.padding.left - parentNode.padding.right;
+		int parentNodeContentHeight = parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.padding.top - parentNode.padding.bottom;
 
 		// compute constraints
 		computedConstraints.left =
@@ -313,17 +313,17 @@ public abstract class GUINode {
 			switch (alignments.horizontal) {
 				case LEFT:
 					{
-						computedConstraints.contentAlignmentLeft = border.left + margin.left;
+						computedConstraints.contentAlignmentLeft = border.left + padding.left;
 						break;
 					}
 				case CENTER:
 					{
-						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getContentWidth()) / 2 + border.left + margin.left;
+						computedConstraints.contentAlignmentLeft = (computedConstraints.width - getContentWidth()) / 2 + border.left + padding.left;
 						break;
 					}
 				case RIGHT: {
 					{
-						computedConstraints.contentAlignmentLeft = computedConstraints.width - getContentWidth() + border.left + margin.left;
+						computedConstraints.contentAlignmentLeft = computedConstraints.width - getContentWidth() + border.left + padding.left;
 						break;
 					}
 				}
@@ -333,17 +333,17 @@ public abstract class GUINode {
 			switch (alignments.vertical) {
 				case TOP:
 					{
-						computedConstraints.contentAlignmentTop = border.top + margin.top;
+						computedConstraints.contentAlignmentTop = border.top + padding.top;
 						break;
 					}
 				case CENTER:
 					{
-						computedConstraints.contentAlignmentTop = (computedConstraints.height - getContentHeight()) / 2 + border.top + margin.top;
+						computedConstraints.contentAlignmentTop = (computedConstraints.height - getContentHeight()) / 2 + border.top + padding.top;
 						break;
 					}
 				case BOTTOM: {
 					{
-						computedConstraints.contentAlignmentTop = computedConstraints.height - getContentHeight() + border.left + margin.left;
+						computedConstraints.contentAlignmentTop = computedConstraints.height - getContentHeight() + border.left + padding.left;
 						break;
 					}
 				}
@@ -524,29 +524,29 @@ public abstract class GUINode {
 	}
 
 	/**
-	 * Create margin
-	 * @param all margin
+	 * Create padding
+	 * @param all padding
 	 * @param left
 	 * @param top
 	 * @param right
 	 * @param bottom
-	 * @return margin
+	 * @return padding
 	 */
-	protected static Margin createMargin(
-		String allMargin,
+	protected static Padding createPadding(
+		String allPadding,
 		String left, String top, String right, String bottom
 		) throws GUIParserException {
 		//
-		Margin margin = new Margin();
-		margin.left = getRequestedPixelValue(allMargin, 0);
-		margin.top = getRequestedPixelValue(allMargin, 0);
-		margin.right = getRequestedPixelValue(allMargin, 0);
-		margin.bottom = getRequestedPixelValue(allMargin, 0);
-		margin.left = getRequestedPixelValue(left, margin.left);
-		margin.top = getRequestedPixelValue(top, margin.top);
-		margin.right = getRequestedPixelValue(right, margin.right);
-		margin.bottom = getRequestedPixelValue(bottom, margin.bottom);
-		return margin;
+		Padding padding = new Padding();
+		padding.left = getRequestedPixelValue(allPadding, 0);
+		padding.top = getRequestedPixelValue(allPadding, 0);
+		padding.right = getRequestedPixelValue(allPadding, 0);
+		padding.bottom = getRequestedPixelValue(allPadding, 0);
+		padding.left = getRequestedPixelValue(left, padding.left);
+		padding.top = getRequestedPixelValue(top, padding.top);
+		padding.right = getRequestedPixelValue(right, padding.right);
+		padding.bottom = getRequestedPixelValue(bottom, padding.bottom);
+		return padding;
 	}
 
 	/**
@@ -798,7 +798,7 @@ public abstract class GUINode {
 			", requestedConstraints=" + requestedConstraints +
 			", computedConstraints=" + computedConstraints +
 			", border=" + border + 
-			", margin=" + margin + 
+			", padding=" + padding + 
 			"]";
 	}
 

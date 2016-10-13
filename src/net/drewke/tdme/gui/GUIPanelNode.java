@@ -16,7 +16,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 * @param background color
@@ -29,7 +29,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 		Alignments alignments,
 		RequestedConstraints requestedConstraints,
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn,
 		String backgroundColor,
@@ -37,7 +37,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 		String alignment) 
 		throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn, backgroundColor, backgroundImage, alignment);
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage, alignment);
 	}
 
 	/*

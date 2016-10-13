@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
-import net.drewke.tdme.engine.fileio.textures.TextureLoader;
-import net.drewke.tdme.gui.GUINode.Border;
-import net.drewke.tdme.gui.GUINode.Margin;
 
 
 /**
@@ -29,7 +26,7 @@ public final class GUIImageNode extends GUINode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 * @param src
@@ -40,13 +37,13 @@ public final class GUIImageNode extends GUINode {
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn, 
 		String src
 		) {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 		this.texture = GUI.getImage(src);
 		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
@@ -71,7 +68,7 @@ public final class GUIImageNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
 	protected int getContentWidth() {
-		return (texture != null?texture.getWidth():0) + border.left + border.right + margin.left + margin.right;
+		return (texture != null?texture.getWidth():0) + border.left + border.right + padding.left + padding.right;
 	}
 
 	/*
@@ -79,7 +76,7 @@ public final class GUIImageNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
 	protected int getContentHeight() {
-		return (texture != null?texture.getHeight():0) + border.top + border.bottom + margin.top + margin.bottom;
+		return (texture != null?texture.getHeight():0) + border.top + border.bottom + padding.top + padding.bottom;
 	}
 	
 	/*

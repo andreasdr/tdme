@@ -18,7 +18,7 @@ public final class GUISpaceNode extends GUINode {
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
-	 * @param margin
+	 * @param padding
 	 * @param show on
 	 * @param hide on
 	 */
@@ -28,12 +28,12 @@ public final class GUISpaceNode extends GUINode {
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		Border border, 
-		Margin margin, 
+		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn
 		) {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, margin, showOn, hideOn);
+		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 	}
 
 	/**

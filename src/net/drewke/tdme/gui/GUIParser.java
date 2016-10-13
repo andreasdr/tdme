@@ -63,12 +63,12 @@ public final class GUIParser {
 				xmlRoot.getAttribute("border-color-right"), 
 				xmlRoot.getAttribute("border-color-bottom")
 			),
-			GUIParentNode.createMargin(
-				xmlRoot.getAttribute("margin"), 
-				xmlRoot.getAttribute("margin-left"), 
-				xmlRoot.getAttribute("margin-top"), 
-				xmlRoot.getAttribute("margin-right"), 
-				xmlRoot.getAttribute("margin-bottom") 
+			GUIParentNode.createPadding(
+				xmlRoot.getAttribute("padding"), 
+				xmlRoot.getAttribute("padding-left"), 
+				xmlRoot.getAttribute("padding-top"), 
+				xmlRoot.getAttribute("padding-right"), 
+				xmlRoot.getAttribute("padding-bottom") 
 			),
 			GUINode.createConditions(xmlRoot.getAttribute("show-on")),
 			GUINode.createConditions(xmlRoot.getAttribute("hide-on")),
@@ -118,12 +118,12 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createMargin(
-						node.getAttribute("margin"), 
-						node.getAttribute("margin-left"), 
-						node.getAttribute("margin-top"), 
-						node.getAttribute("margin-right"), 
-						node.getAttribute("margin-bottom") 
+					GUIParentNode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
@@ -161,12 +161,12 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createMargin(
-						node.getAttribute("margin"), 
-						node.getAttribute("margin-left"), 
-						node.getAttribute("margin-top"), 
-						node.getAttribute("margin-right"), 
-						node.getAttribute("margin-bottom") 
+					GUIParentNode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on"))
@@ -200,12 +200,12 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createMargin(
-						node.getAttribute("margin"), 
-						node.getAttribute("margin-left"), 
-						node.getAttribute("margin-top"), 
-						node.getAttribute("margin-right"), 
-						node.getAttribute("margin-bottom") 
+					GUIParentNode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
@@ -243,12 +243,12 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createMargin(
-						node.getAttribute("margin"), 
-						node.getAttribute("margin-left"), 
-						node.getAttribute("margin-top"), 
-						node.getAttribute("margin-right"), 
-						node.getAttribute("margin-bottom") 
+					GUIParentNode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
@@ -285,12 +285,12 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createMargin(
-						node.getAttribute("margin"), 
-						node.getAttribute("margin-left"), 
-						node.getAttribute("margin-top"), 
-						node.getAttribute("margin-right"), 
-						node.getAttribute("margin-bottom") 
+					GUIParentNode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
@@ -325,12 +325,12 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createMargin(
-						node.getAttribute("margin"), 
-						node.getAttribute("margin-left"), 
-						node.getAttribute("margin-top"), 
-						node.getAttribute("margin-right"), 
-						node.getAttribute("margin-bottom") 
+					GUIParentNode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
