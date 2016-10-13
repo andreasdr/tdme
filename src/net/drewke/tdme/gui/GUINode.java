@@ -200,17 +200,17 @@ public abstract class GUINode {
 	protected abstract boolean isContentNode();
 
 	/**
-	 * @return content width
+	 * @return content width including border, margin
 	 */
 	protected abstract int getContentWidth();
 
 	/**
-	 * @return content height
+	 * @return content height including border, margin
 	 */
 	protected abstract int getContentHeight();
 
 	/**
-	 * @return int
+	 * @return auto width if auto width requested or content width
 	 */
 	protected int getAutoWidth() {
 		if (requestedConstraints.widthType == RequestedConstraintsType.AUTO) {
@@ -221,7 +221,7 @@ public abstract class GUINode {
 	}
 
 	/**
-	 * @return int
+	 * @return auto height if auto height requested or content height
 	 */
 	protected int getAutoHeight() {
 		if (requestedConstraints.heightType == RequestedConstraintsType.AUTO) {
