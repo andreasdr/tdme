@@ -294,7 +294,9 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("src")	
+					node.getAttribute("src"),
+					GUINode.getRequestedColor(node.getAttribute("effect-color-mul"), GUIColor.EFFECT_COLOR_MUL),
+					GUINode.getRequestedColor(node.getAttribute("effect-color-add"), GUIColor.EFFECT_COLOR_ADD)
 				);
 				guiParentNode.getSubNodes().add(guiImageNode);
 			} else

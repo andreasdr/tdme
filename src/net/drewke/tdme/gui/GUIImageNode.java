@@ -19,6 +19,11 @@ public final class GUIImageNode extends GUINode {
 
 	private float[] color = {1f, 1f, 1f, 1f};
 
+	// effect colors
+	private GUIColor effectColorMul;
+	private GUIColor effectColorAdd;
+
+
 	/**
 	 * Constructor
 	 * @param parent node
@@ -30,6 +35,8 @@ public final class GUIImageNode extends GUINode {
 	 * @param show on
 	 * @param hide on
 	 * @param src
+	 * @param effect color mul
+	 * @param effect color add
 	 */
 	protected GUIImageNode(
 		GUIParentNode parentNode, 
@@ -40,12 +47,16 @@ public final class GUIImageNode extends GUINode {
 		Padding padding, 
 		ArrayList<String> showOn, 
 		ArrayList<String> hideOn, 
-		String src
-		) {
+		String src,
+		GUIColor effectColorMul,
+		GUIColor effectColorAdd
+		) throws GUIParserException {
 		//
 		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 		this.texture = GUI.getImage(src);
 		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
+		this.effectColorMul = effectColorMul;
+		this.effectColorAdd = effectColorAdd;
 	}
 
 	/**
@@ -110,23 +121,25 @@ public final class GUIImageNode extends GUINode {
 
 		// render panel background
 		guiRenderer.bindTexture(textureId);
+		guiRenderer.setEffectColorMul(effectColorMul);
+		guiRenderer.setEffectColorAdd(effectColorAdd);
 		guiRenderer.addQuad(
 			((left) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
-			0f, 1f, 
+			0f, 0f, 
 			((left + width) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
-			1f, 1f, 
+			1f, 0f, 
 			((left + width) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
-			1f, 0f, 
+			1f, 1f, 
 			((left) / (screenWidth / 2f)) - 1f, 
 			((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
 			color[0], color[1], color[2], color[3],
-			0f, 0f
+			0f, 1f
 		);
 		guiRenderer.render();
 	}

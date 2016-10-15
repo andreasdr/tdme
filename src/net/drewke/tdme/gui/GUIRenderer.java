@@ -64,6 +64,8 @@ public final class GUIRenderer {
 	private float[] effectColorMul = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
 	private float[] effectColorAdd = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
 
+	// effect color multiplication final
+	private float[] effectColorMulFinal = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
 	/**
 	 * Constructor
 	 * @param renderer
@@ -160,7 +162,7 @@ public final class GUIRenderer {
 	 * @param color
 	 */
 	protected void setFontColor(GUIColor color) {
-		System.arraycopy(color.getData(), 0, effectColorMul, 0, 4);
+		System.arraycopy(color.getData(), 0, fontColor, 0, 4);
 	}
 
 	/**
@@ -334,7 +336,11 @@ public final class GUIRenderer {
 		);
 
 		// effect
-		renderer.setEffectColorMul(effectColorMul);
+		effectColorMulFinal[0] = effectColorMul[0] * fontColor[0];
+		effectColorMulFinal[1] = effectColorMul[1] * fontColor[1];
+		effectColorMulFinal[2] = effectColorMul[2] * fontColor[2];
+		effectColorMulFinal[3] = effectColorMul[3] * fontColor[3];
+		renderer.setEffectColorMul(effectColorMulFinal);
 		renderer.setEffectColorAdd(effectColorAdd);
 		renderer.onUpdateEffect();
 
@@ -346,7 +352,10 @@ public final class GUIRenderer {
 		fbVertices.clear();
 		fbColors.clear();
 		fbTextureCoordinates.clear();
+		System.arraycopy(GUIColor.WHITE.getData(), 0, fontColor, 0, 4);
 		System.arraycopy(GUIColor.WHITE.getData(), 0, effectColorMul, 0, 4);
+		System.arraycopy(GUIColor.BLACK.getData(), 0, effectColorAdd, 0, 4);
+		effectColorAdd[3] = 0;
 	}
 
 }

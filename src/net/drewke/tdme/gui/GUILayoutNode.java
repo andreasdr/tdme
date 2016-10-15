@@ -244,6 +244,12 @@ public class GUILayoutNode extends GUIParentNode {
 				}
 		}
 
+		// compute content alignment second pass, as we have computed "star" height, widths
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode guiSubNode = subNodes.get(i);
+			guiSubNode.computeContentAlignment();
+		}
+
 		// do parent + children top, left adjustments
 		setTop(computedConstraints.top);
 		setLeft(computedConstraints.left);

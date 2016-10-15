@@ -307,6 +307,14 @@ public abstract class GUINode {
 		computedConstraints.contentAlignmentLeft = 0;
 		computedConstraints.contentAlignmentTop = 0;
 
+		//
+		computeContentAlignment();
+	}
+
+	/**
+	 * Do content alignment
+	 */
+	protected void computeContentAlignment() {
 		// align content nodes
 		if (isContentNode() == true) {
 			// content alignment horizontal

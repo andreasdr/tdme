@@ -16,6 +16,8 @@ public final class GUIColor {
 	public final static GUIColor GREEN = new GUIColor(new float[] {0f, 1f, 0f, 1f});
 	public final static GUIColor BLUE = new GUIColor(new float[] {0f, 0f, 1f, 1f});
 	public final static GUIColor TRANSPARENT = new GUIColor(new float[] {0f, 0f, 0f, 0f});
+	public final static GUIColor EFFECT_COLOR_MUL = new GUIColor(new float[] {1f, 1f, 1f, 1f});
+	public final static GUIColor EFFECT_COLOR_ADD = new GUIColor(new float[] {0f, 0f, 0f, 0f});
 
 	// predefined color instances
 	private final static GUIColor[] COLOR_INSTANCES = {

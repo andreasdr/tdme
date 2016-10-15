@@ -8,17 +8,39 @@
 		<space height="*" />
 		<element id="yyy" border="1" border-color="green" padding="10" horizontal-align="center" width="80%">
 			<panel border="1" padding="10" id="abc" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-				<text id="text1" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 1" color="#000000" />
-				<text id="text2" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="test text 2" color="#000000" />
+				<layout padding-top="5" padding-bottom="5" alignment="horizontal" width="100%" height="auto">
+					<element>
+						<image effect-color-mul="#8080FF" hide-on="mouseover" src="resources/gui/images/checkbox_unchecked.png" />
+						<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/checkbox_checked.png" />
+					</element>
+					<space width="10" />
+					<text width="*" horizontal-align="left" font="resources/gui/fonts/Foo_25.fnt" text="Check that fucking checkbox 1" color="#000000" />
+				</layout>
+				<layout padding-top="5" padding-bottom="5" alignment="horizontal" width="100%" height="auto">
+					<element>
+						<image effect-color-mul="#8080FF" hide-on="mouseover" src="resources/gui/images/checkbox_unchecked.png" />
+						<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/checkbox_checked.png" />
+					</element>
+					<space width="10" />
+					<text width="*" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="Check that nice checkbox 2" color="#000000" />
+				</layout> 
+				<layout padding-top="5" padding-bottom="5" alignment="horizontal" width="100%" height="auto">
+					<element>
+						<image effect-color-mul="#8080FF" hide-on="mouseover" src="resources/gui/images/checkbox_unchecked.png" />
+						<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/checkbox_checked.png" />
+					</element>
+					<space width="10" /> 
+					<text width="*" horizontal-align="right" font="resources/gui/fonts/Foo_25.fnt" text="Check that checkbox 3" color="#000000" />
+				</layout>
 			</panel>
 		</element>
 		<element border="1" padding="10" border-color="red" id="jjj" width="80%">
 			<panel border="1" padding="10" id="abc" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="xxx" color="#000000" />
+				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
 				<space width="10" />
-				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="yyy" color="#000000" />
+				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
 				<space width="10" />
-				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="zzz" color="#000000" />
+				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
 			</panel>
 		</element>
 		<space height="*" />
@@ -26,24 +48,24 @@
 			<image id="zzz_img1" hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
 			<image id="zzz_img2" show-on="mouseover" src="resources/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
 			<image id="zzz_img3" show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
-			<text id="zzz_text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+			<text id="zzz_text3" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 		</element>
 		<space height="*" />
 		<space height="*" />
 		<element id="aaa" horizontal-align="center" vertical-align="center">
 			<panel border-color="#a0a0a0" border="2" padding="10" id="aaa_panel" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
 				<space width="*" />
-				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss A!" color="#000000" horizontal-align="left" vertical-align="center" />
+				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button A!" color="#000000" horizontal-align="left" vertical-align="center" />
 				<space width="*" />
 			</panel>
 			<panel border-color="#e0e0e0" border="2" padding="10" id="aaa_panel" show-on="mouseover" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0">
 				<space width="*" />
-				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss B!" color="#000000" horizontal-align="center" vertical-align="center" />
+				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button B!" color="#000000" horizontal-align="center" vertical-align="center" />
 				<space width="*" />
 			</panel>
 			<panel border-color="#ffffff" border="2" padding="10" id="aaa_panel" show-on="click" alignment="horizontal" horizontal-align="center" background-color="#f0a0a0">
 				<space width="*" />
-				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Dismiss C!" color="#000000" horizontal-align="right" vertical-align="center" />
+				<text id="aaa_panel_text3" width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button C!" color="#000000" horizontal-align="right" vertical-align="center" />
 				<space width="*" />
 			</panel>
 		</element>
