@@ -140,8 +140,10 @@ public abstract class GUINode {
 	protected Padding padding;
 	protected Border border;
 
-	private ArrayList<String> showOn;
-	private ArrayList<String> hideOn;
+	private GUINodeConditions showOn;
+	private GUINodeConditions hideOn;
+
+	private GUINodeController controller;
 
 	/**
 	 * Constructor
@@ -163,8 +165,8 @@ public abstract class GUINode {
 		RequestedConstraints requestedConstraints,
 		Border border, 
 		Padding padding, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn
 		) {
 		//
 		this.screenNode = screenNode;
@@ -177,12 +179,20 @@ public abstract class GUINode {
 		this.padding = padding;
 		this.showOn = showOn;
 		this.hideOn = hideOn;
+		this.controller = null;
 	}
 
 	/**
 	 * @return node type
 	 */
 	protected abstract String getNodeType();
+
+	/**
+	 * @return scren node
+	 */
+	public GUIScreenNode getScreenNode() {
+		return screenNode;
+	}
 
 	/**
 	 * @return parent node
@@ -565,13 +575,13 @@ public abstract class GUINode {
 	 * Create conditions
 	 * @param conditions
 	 */
-	protected static ArrayList<String> createConditions(String conditions) {
-		ArrayList<String> conditionsArrayList = new ArrayList<String>();
+	protected static GUINodeConditions createConditions(String conditions) {
+		GUINodeConditions guiNodeConditions = new GUINodeConditions();
 		StringTokenizer t = new StringTokenizer(conditions, ",");
 		while (t.hasMoreTokens()) {
-			conditionsArrayList.add(t.nextToken());
+			guiNodeConditions.add(t.nextToken());
 		}
-		return conditionsArrayList;
+		return guiNodeConditions;
 	}
 
 	/*
@@ -579,6 +589,9 @@ public abstract class GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	protected boolean checkConditions() {
+		ArrayList<String> showOn = this.showOn.conditions;
+		ArrayList<String> hideOn = this.hideOn.conditions;
+
 		// check for on-show "always"
 		for (int i = 0; i < showOn.size(); i++) {
 			if (showOn.get(i).equals(GUIElementNode.CONDITION_ALWAYS)) return true;
@@ -602,17 +615,17 @@ public abstract class GUINode {
 
 		GUIElementNode elementNode = (GUIElementNode)node;
 
-		// check for on-show
-		for (int i = 0; i < showOn.size(); i++) {
-			for (int j = 0; j < elementNode.activeConditions.size(); j++) {
-				if (showOn.get(i).equals(elementNode.activeConditions.get(j))) return true;
+		// check for on-hide match
+		for (int i = 0; i < hideOn.size(); i++) {
+			for (int j = 0; j < elementNode.activeConditions.conditions.size(); j++) {
+				if (hideOn.get(i).equals(elementNode.activeConditions.conditions.get(j))) return false;
 			}
 		}
 
-		// check for on-hide
-		for (int i = 0; i < hideOn.size(); i++) {
-			for (int j = 0; j < elementNode.activeConditions.size(); j++) {
-				if (hideOn.get(i).equals(elementNode.activeConditions.get(j))) return false;
+		// check for a on-show match
+		for (int i = 0; i < showOn.size(); i++) {
+			for (int j = 0; j < elementNode.activeConditions.conditions.size(); j++) {
+				if (showOn.get(i).equals(elementNode.activeConditions.conditions.get(j))) return true;
 			}
 		}
 
@@ -770,10 +783,44 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * Is event belonging to node
+	 * @param event
+	 * @return boolean
+	 */
+	protected boolean isEventBelongingToNode(GUIMouseEvent event) {
+		return
+			event.x >= computedConstraints.left + computedConstraints.alignmentLeft && event.x <= computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
+			event.y >= computedConstraints.top + computedConstraints.alignmentTop && event.y <= computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
+
+	}
+
+	/**
 	 * Handle event
 	 * @param event
 	 */
-	public abstract void handleEvent(GUIMouseEvent event);
+	public void handleEvent(GUIMouseEvent event) {
+		// determine first node up the tree with controller
+		GUINode node = this;
+		while (node != null && node.controller == null) {
+			node = node.parentNode;
+		}
+
+		// exit if no element node with controller
+		if (node == null) {
+			return;
+		}
+
+		// otherwise call controller
+		node.controller.handleEvent(this, event);
+	}
+
+	/**
+	 * Set up node controller
+	 * @param controller
+	 */
+	protected void setController(GUINodeController controller) {
+		this.controller = controller;
+	}
 
 	/**
 	 * Compute indent string

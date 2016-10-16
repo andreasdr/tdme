@@ -24,4 +24,11 @@ public abstract class GUIElement {
 	 */
 	protected abstract HashMap<String, String> getAttributes();
 
+	/**
+	 * Create controller which is attached to this node
+	 * @param node
+	 * @return
+	 */
+	protected abstract GUINodeController createController(GUINode node);
+
 }

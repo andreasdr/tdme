@@ -13,7 +13,7 @@ public final class GUIElementNode extends GUIParentNode {
 	protected static final String CONDITION_ONMOUSEOVER = "mouseover";
 	protected static final String CONDITION_CLICK = "click";
 
-	protected ArrayList<String> activeConditions = new ArrayList<String>();
+	protected GUINodeConditions activeConditions = new GUINodeConditions();
 
 	/**
 	 * Constructor
@@ -37,8 +37,8 @@ public final class GUIElementNode extends GUIParentNode {
 		RequestedConstraints requestedConstraints, 
 		Border border, 
 		Padding padding,
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn, 
 		String backgroundColor,
 		String backgroundImage) throws GUIParserException {
 		//
@@ -147,14 +147,22 @@ public final class GUIElementNode extends GUIParentNode {
 		computeVerticalChildrenAlignment();
 	}
 
+	/**
+	 * @return active conditions
+	 */
+	public GUINodeConditions getActiveConditions() {
+		return activeConditions;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUIMouseEvent event) {
-		activeConditions.clear();
-		if (event.x >= computedConstraints.left + computedConstraints.alignmentLeft && event.x <= computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
-			event.y >= computedConstraints.top + computedConstraints.alignmentTop && event.y <= computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height) {
+		activeConditions.remove(CONDITION_ONMOUSEOVER);
+		activeConditions.remove(CONDITION_CLICK);
+		if (isEventBelongingToNode(event)) {
+			//
 			switch (event.type) {
 				case MOUSE_MOVED:
 					activeConditions.add(CONDITION_ONMOUSEOVER);
@@ -166,6 +174,8 @@ public final class GUIElementNode extends GUIParentNode {
 					break;
 			}
 		}
+
+		//
 		super.handleEvent(event);
 	}
 

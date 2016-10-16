@@ -32,8 +32,8 @@ public final class GUIPanelNode extends GUILayoutNode {
 		RequestedConstraints requestedConstraints,
 		Border border, 
 		Padding padding, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn,
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn,
 		String backgroundColor,
 		String backgroundImage,
 		String alignment) 

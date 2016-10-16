@@ -31,8 +31,8 @@ public final class GUISpaceNode extends GUINode {
 		RequestedConstraints requestedConstraints,
 		Border border, 
 		Padding padding, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn
 		) {
 		//
 		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
@@ -114,7 +114,8 @@ public final class GUISpaceNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUIMouseEvent event) {
-		// no op
+		//
+		super.handleEvent(event);
 	}
 
 }

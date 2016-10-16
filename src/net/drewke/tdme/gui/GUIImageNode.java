@@ -47,8 +47,8 @@ public final class GUIImageNode extends GUINode {
 		RequestedConstraints requestedConstraints,
 		Border border, 
 		Padding padding, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn, 
 		String src,
 		GUIColor effectColorMul,
 		GUIColor effectColorAdd
@@ -151,7 +151,8 @@ public final class GUIImageNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUIMouseEvent event) {
-		// no op
+		//
+		super.handleEvent(event);
 	}
 
 }

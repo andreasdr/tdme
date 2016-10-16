@@ -35,8 +35,8 @@ public final class GUIScreenNode extends GUIParentNode {
 		RequestedConstraints requestedConstraints, 
 		Border border, 
 		Padding padding,
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn, 
 		String backgroundColor,
 		String backgroundImage) throws GUIParserException {
 		super(null, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);

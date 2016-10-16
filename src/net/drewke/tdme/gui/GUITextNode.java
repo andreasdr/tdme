@@ -38,8 +38,8 @@ public final class GUITextNode extends GUINode {
 		RequestedConstraints requestedConstraints, 
 		Border border, 
 		Padding padding, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn, 
 		String font, 
 		String color, 
 		String text
@@ -120,7 +120,8 @@ public final class GUITextNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUIMouseEvent event) {
-		// no op
+		//
+		super.handleEvent(event);
 	}
 
 }

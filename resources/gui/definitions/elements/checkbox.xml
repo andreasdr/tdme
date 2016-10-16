@@ -1,8 +1,10 @@
-<layout padding="{$padding}" alignment="horizontal" width="{$width}" height="{$height}">
-	<element id="{$id}_checkbox_element">
-		<image effect-color-mul="#8080A0" hide-on="mouseover" src="resources/gui/images/elements/checkbox/checkbox_unchecked.png" />
-		<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/elements/checkbox/checkbox_unchecked.png" />
+<layout id="{$id}" padding="{$padding}" alignment="horizontal" width="{$width}" height="{$height}">
+	<element id="{$id}_element">
+		<image effect-color-mul="#8080A0" hide-on="checked,mouseover" src="resources/gui/images/elements/checkbox/checkbox_unchecked.png" />
+		<image effect-color-mul="#8080FF" hide-on="checked" show-on="mouseover" src="resources/gui/images/elements/checkbox/checkbox_unchecked.png" />
+		<image effect-color-mul="#8080A0" hide-on="unchecked,ouseover" src="resources/gui/images/elements/checkbox/checkbox_checked.png" />
+		<image effect-color-mul="#8080FF" hide-on="unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/checkbox_checked.png" />
 	</element>
-	<space id="{$id}_checkbox_space" width="{$separator-width}" />
-	<text id="{$id}_checkbox_text" width="*" horizontal-align="{$text-horizontal-align}" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="{$text-color}" />
+	<space id="{$id}_space" width="{$separator-width}" />
+	<text id="{$id}_text" width="*" horizontal-align="{$text-horizontal-align}" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="{$text-color}" />
 </layout>

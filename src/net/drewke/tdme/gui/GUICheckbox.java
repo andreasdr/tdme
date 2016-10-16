@@ -58,4 +58,13 @@ public class GUICheckbox extends GUIElement  {
 		return attributes;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUIElement#createController(net.drewke.tdme.gui.GUINode)
+	 */
+	protected GUINodeController createController(GUINode node) {
+		// TODO Auto-generated method stub
+		return new GUICheckboxController(node);
+	}
+
 }

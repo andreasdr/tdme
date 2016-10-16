@@ -81,7 +81,7 @@ public final class GUIParser {
 		);
 
 		// parse GUI nodes
-		parseGUINode(guiScreenNode, guiScreenNode, xmlRoot);
+		parseGUINode(guiScreenNode, guiScreenNode, xmlRoot, null);
 
 		//
 		return guiScreenNode;
@@ -92,7 +92,10 @@ public final class GUIParser {
 	 * @param gui parent node
 	 * @param xml parent node
 	 */
-	protected static void parseGUINode(GUIScreenNode guiScreenNode, GUIParentNode guiParentNode, Element xmlParentNode) throws Exception {
+	protected static void parseGUINode(GUIScreenNode guiScreenNode, GUIParentNode guiParentNode, Element xmlParentNode, GUIElement guiElement) throws Exception {
+		//
+		GUINodeController guiElementController = null;
+		boolean guiElementControllerInstalled = false;
 		// parse sub nodes
 		for (Element node: getChildrenTags(xmlParentNode)) {
 			if (node.getNodeName().equals("layout")) {
@@ -140,7 +143,13 @@ public final class GUIParser {
 				if (guiScreenNode.addNode(guiLayoutNode) == false) {
 					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiLayoutNode.getId() + "'");
 				}
-				parseGUINode(guiScreenNode, guiLayoutNode, node);	
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiLayoutNode.setController(guiElementController = guiElement.createController(guiLayoutNode));
+					guiElementControllerInstalled = true;
+				}
+				// parse child nodes
+				parseGUINode(guiScreenNode, guiLayoutNode, node, null);	
 			} else
 			if (node.getNodeName().equals("space")) {
 				// TODO: validate root node
@@ -183,6 +192,11 @@ public final class GUIParser {
 				guiParentNode.getSubNodes().add(guiSpaceNode);
 				if (guiScreenNode.addNode(guiSpaceNode) == false) {
 					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiSpaceNode.getId() + "'");
+				}
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiSpaceNode.setController(guiElementController = guiElement.createController(guiSpaceNode));
+					guiElementControllerInstalled = true;
 				}
 			} else
 			if (node.getNodeName().equals("panel")) {
@@ -230,7 +244,13 @@ public final class GUIParser {
 				if (guiScreenNode.addNode(guiPanelNode) == false) {
 					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiPanelNode.getId() + "'");
 				}
-				parseGUINode(guiScreenNode, guiPanelNode, node);	
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiPanelNode.setController(guiElementController = guiElement.createController(guiPanelNode));
+					guiElementControllerInstalled = true;
+				}
+				// parse child nodes
+				parseGUINode(guiScreenNode, guiPanelNode, node, null);	
 			} else
 			if (node.getNodeName().equals("element")) {
 				// TODO: validate root node
@@ -276,7 +296,13 @@ public final class GUIParser {
 				if (guiScreenNode.addNode(guiElementNode) == false) {
 					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiElementNode.getId() + "'");
 				}
-				parseGUINode(guiScreenNode, guiElementNode, node);	
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiElementNode.setController(guiElementController = guiElement.createController(guiElementNode));
+					guiElementControllerInstalled = true;
+				}
+				// parse child nodes
+				parseGUINode(guiScreenNode, guiElementNode, node, null);	
 			} else
 			if (node.getNodeName().equals("image")) {
 				// TODO: validate root node
@@ -322,6 +348,11 @@ public final class GUIParser {
 				guiParentNode.getSubNodes().add(guiImageNode);
 				if (guiScreenNode.addNode(guiImageNode) == false) {
 					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiImageNode.getId() + "'");
+				}
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiImageNode.setController(guiElementController = guiElement.createController(guiImageNode));
+					guiElementControllerInstalled = true;
 				}
 			} else
 			if (node.getNodeName().equals("text")) {
@@ -369,40 +400,49 @@ public final class GUIParser {
 				if (guiScreenNode.addNode(guiTextNode) == false) {
 					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiTextNode.getId() + "'");
 				}
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiTextNode.setController(guiElementController = guiElement.createController(guiTextNode));
+					guiElementControllerInstalled = true;
+				}
 			} else {
 				// Try to load from GUI elements
-				GUIElement guiElement = elements.get(node.getNodeName());
-				if (guiElement == null) {
+				GUIElement newGuiElement = elements.get(node.getNodeName());
+				if (newGuiElement == null) {
 					throw new GUIParserException("Unknown element '" + node.getNodeName() + "'");
 				}
 
 				// create final template, replace attributes
-				String guiElementTemplate = guiElement.getTemplate();
-				HashMap<String, String> guiElementAttributes = guiElement.getAttributes();
+				String newGuiElementTemplate = newGuiElement.getTemplate();
+				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes();
 				for (int i = 0; i < node.getAttributes().getLength(); i++) {
 					Node attribute = node.getAttributes().item(i);
-					guiElementAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
+					newGuiElementAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
 				}
-				for (String guiElementAttributeKey: guiElementAttributes.getKeysIterator()) {
-					String guiElementAttributeValue = guiElementAttributes.get(guiElementAttributeKey);
-					guiElementTemplate = guiElementTemplate.replace("{$" + guiElementAttributeKey + "}", guiElementAttributeValue);
+				for (String newGuiElementAttributeKey: newGuiElementAttributes.getKeysIterator()) {
+					String guiElementAttributeValue = newGuiElementAttributes.get(newGuiElementAttributeKey);
+					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + newGuiElementAttributeKey + "}", guiElementAttributeValue);
 				}
 
 				// create xml document and parse
-				DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-				Document document = builder.parse(
+				DocumentBuilder newGuiElementBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+				Document newGuiElementDocument = newGuiElementBuilder.parse(
 					new ByteArrayInputStream(
 						new String(
 							"<element>\n" +
-							guiElementTemplate +
+							newGuiElementTemplate +
 							"</element>\n"
 						).getBytes()
 					)
 				);
-				Element xmlTemplateRoot = document.getDocumentElement();
-				parseGUINode(guiScreenNode, guiParentNode, xmlTemplateRoot);
+				parseGUINode(guiScreenNode, guiParentNode, newGuiElementDocument.getDocumentElement(), newGuiElement);
 			}
-		}		
+		}
+
+		// if we have a GUI element controller just init it, after element has been loaded
+		if (guiElementController != null) {
+			guiElementController.init();
+		}
 	}
 
 	/**

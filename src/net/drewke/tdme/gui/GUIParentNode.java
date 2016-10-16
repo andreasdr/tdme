@@ -38,8 +38,8 @@ public abstract class GUIParentNode extends GUINode {
 		RequestedConstraints requestedConstraints, 
 		Border border, 
 		Padding padding, 
-		ArrayList<String> showOn, 
-		ArrayList<String> hideOn, 
+		GUINodeConditions showOn, 
+		GUINodeConditions hideOn, 
 		String backgroundColor,
 		String backgroundImage
 		) throws GUIParserException {
@@ -230,8 +230,12 @@ public abstract class GUIParentNode extends GUINode {
 	 */
 	public void handleEvent(GUIMouseEvent event) {
 		for (int i = 0; i < subNodes.size(); i++) {
-			subNodes.get(i).handleEvent(event);
-		}		
+			GUINode subNode = subNodes.get(i);
+			subNode.handleEvent(event);
+		}
+
+		//
+		super.handleEvent(event);
 	}
 
 	/*
