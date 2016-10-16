@@ -81,7 +81,7 @@ public final class GUIParser {
 		);
 
 		// parse GUI nodes
-		parseGUINode(guiScreenNode, xmlRoot);
+		parseGUINode(guiScreenNode, guiScreenNode, xmlRoot);
 
 		//
 		return guiScreenNode;
@@ -92,12 +92,13 @@ public final class GUIParser {
 	 * @param gui parent node
 	 * @param xml parent node
 	 */
-	protected static void parseGUINode(GUIParentNode guiParentNode, Element xmlParentNode) throws Exception {
+	protected static void parseGUINode(GUIScreenNode guiScreenNode, GUIParentNode guiParentNode, Element xmlParentNode) throws Exception {
 		// parse sub nodes
 		for (Element node: getChildrenTags(xmlParentNode)) {
 			if (node.getNodeName().equals("layout")) {
 				// TODO: validate root node
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(
+					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createAlignments(
@@ -136,11 +137,15 @@ public final class GUIParser {
 					node.getAttribute("alignment")
 				);
 				guiParentNode.getSubNodes().add(guiLayoutNode);
-				parseGUINode(guiLayoutNode, node);	
+				if (guiScreenNode.addNode(guiLayoutNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiLayoutNode.getId() + "'");
+				}
+				parseGUINode(guiScreenNode, guiLayoutNode, node);	
 			} else
 			if (node.getNodeName().equals("space")) {
 				// TODO: validate root node
 				GUISpaceNode guiSpaceNode = new GUISpaceNode(
+					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"),
 					GUINode.createAlignments(
@@ -176,10 +181,14 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on"))
 				);
 				guiParentNode.getSubNodes().add(guiSpaceNode);
+				if (guiScreenNode.addNode(guiSpaceNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiSpaceNode.getId() + "'");
+				}
 			} else
 			if (node.getNodeName().equals("panel")) {
 				// TODO: validate root node
 				GUIPanelNode guiPanelNode = new GUIPanelNode(
+					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createAlignments(
@@ -218,11 +227,15 @@ public final class GUIParser {
 					node.getAttribute("alignment")
 				);
 				guiParentNode.getSubNodes().add(guiPanelNode);
-				parseGUINode(guiPanelNode, node);	
+				if (guiScreenNode.addNode(guiPanelNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiPanelNode.getId() + "'");
+				}
+				parseGUINode(guiScreenNode, guiPanelNode, node);	
 			} else
 			if (node.getNodeName().equals("element")) {
 				// TODO: validate root node
 				GUIElementNode guiElementNode = new GUIElementNode(
+					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createAlignments(
@@ -260,11 +273,15 @@ public final class GUIParser {
 					node.getAttribute("background-image")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
-				parseGUINode(guiElementNode, node);	
+				if (guiScreenNode.addNode(guiElementNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiElementNode.getId() + "'");
+				}
+				parseGUINode(guiScreenNode, guiElementNode, node);	
 			} else
 			if (node.getNodeName().equals("image")) {
 				// TODO: validate root node
 				GUIImageNode guiImageNode = new GUIImageNode(
+					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"),
 					GUINode.createAlignments(
@@ -303,10 +320,14 @@ public final class GUIParser {
 					GUINode.getRequestedColor(node.getAttribute("effect-color-add"), GUIColor.EFFECT_COLOR_ADD)
 				);
 				guiParentNode.getSubNodes().add(guiImageNode);
+				if (guiScreenNode.addNode(guiImageNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiImageNode.getId() + "'");
+				}
 			} else
 			if (node.getNodeName().equals("text")) {
 				// TODO: validate root node
 				GUITextNode guiTextNode = new GUITextNode(
+					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createAlignments(
@@ -345,6 +366,9 @@ public final class GUIParser {
 					node.getAttribute("text")
 				);
 				guiParentNode.getSubNodes().add(guiTextNode);
+				if (guiScreenNode.addNode(guiTextNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiTextNode.getId() + "'");
+				}
 			} else {
 				// Try to load from GUI elements
 				GUIElement guiElement = elements.get(node.getNodeName());
@@ -376,7 +400,7 @@ public final class GUIParser {
 					)
 				);
 				Element xmlTemplateRoot = document.getDocumentElement();
-				parseGUINode(guiParentNode, xmlTemplateRoot);
+				parseGUINode(guiScreenNode, guiParentNode, xmlTemplateRoot);
 			}
 		}		
 	}

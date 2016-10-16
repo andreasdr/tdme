@@ -12,6 +12,7 @@ public class GUILayoutNode extends GUIParentNode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent node
 	 * @param id
 	 * @param alignments
@@ -25,6 +26,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param alignment
 	 */
 	protected GUILayoutNode(
+		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
@@ -39,7 +41,7 @@ public class GUILayoutNode extends GUIParentNode {
 		String alignment
 		) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
 		this.alignment = Alignment.valueOf(alignment.toUpperCase());
 	}
 

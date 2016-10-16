@@ -17,6 +17,7 @@ public final class GUIElementNode extends GUIParentNode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent node
 	 * @param id
 	 * @param alignments
@@ -29,6 +30,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param background image
 	 */
 	protected GUIElementNode(
+		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
@@ -40,7 +42,7 @@ public final class GUIElementNode extends GUIParentNode {
 		String backgroundColor,
 		String backgroundImage) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
 	}
 
 	/**

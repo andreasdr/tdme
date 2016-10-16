@@ -13,6 +13,7 @@ public final class GUISpaceNode extends GUINode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent node
 	 * @param id
 	 * @param alignments
@@ -23,6 +24,7 @@ public final class GUISpaceNode extends GUINode {
 	 * @param hide on
 	 */
 	protected GUISpaceNode(
+		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
@@ -33,7 +35,7 @@ public final class GUISpaceNode extends GUINode {
 		ArrayList<String> hideOn
 		) {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 	}
 
 	/**

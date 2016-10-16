@@ -11,6 +11,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent node
 	 * @param id
 	 * @param alignments
@@ -24,6 +25,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @param alignment
 	 */
 	protected GUIPanelNode(
+		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments,
@@ -37,7 +39,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 		String alignment) 
 		throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage, alignment);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage, alignment);
 	}
 
 	/*

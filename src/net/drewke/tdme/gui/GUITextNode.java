@@ -16,6 +16,7 @@ public final class GUITextNode extends GUINode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent mode
 	 * @param id
 	 * @param alignments
@@ -30,6 +31,7 @@ public final class GUITextNode extends GUINode {
 	 * @throws Exception
 	 */
 	protected GUITextNode(
+		GUIScreenNode screenNode, 
 		GUIParentNode parentNode,
 		String id, 
 		Alignments alignments, 
@@ -43,7 +45,7 @@ public final class GUITextNode extends GUINode {
 		String text
 		) throws Exception {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;

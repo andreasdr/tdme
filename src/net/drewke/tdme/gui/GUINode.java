@@ -131,6 +131,7 @@ public abstract class GUINode {
 		}	
 	}
 
+	protected GUIScreenNode screenNode;
 	protected GUIParentNode parentNode;
 	protected String id;
 	protected Alignments alignments;
@@ -144,6 +145,7 @@ public abstract class GUINode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent node
 	 * @param id
 	 * @param alignments
@@ -154,6 +156,7 @@ public abstract class GUINode {
 	 * @param hide on
 	 */
 	protected GUINode(
+		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
@@ -164,6 +167,7 @@ public abstract class GUINode {
 		ArrayList<String> hideOn
 		) {
 		//
+		this.screenNode = screenNode;
 		this.parentNode = parentNode;
 		this.id = id;
 		this.alignments = alignments;

@@ -3,6 +3,7 @@ package net.drewke.tdme.gui;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.utils.HashMap;
 
 /**
  * GUI Screen Node
@@ -13,6 +14,8 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	private int screenWidth;
 	private int screenHeight;
+
+	private HashMap<String, GUINode> nodesById;
 
 	/**
 	 * Constructor
@@ -36,9 +39,10 @@ public final class GUIScreenNode extends GUIParentNode {
 		ArrayList<String> hideOn, 
 		String backgroundColor,
 		String backgroundImage) throws GUIParserException {
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
+		super(null, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
 		this.screenWidth = 0;
 		this.screenHeight = 0;
+		this.nodesById = new HashMap<String, GUINode>();
 	}
 
 	/**
@@ -109,6 +113,33 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	protected String getNodeType() {
 		return "screen";
+	}
+
+	/**
+	 * Get GUI node by id
+	 * @param nodeId
+	 * @return GUI node or null
+	 */
+	protected GUINode getNodeById(String nodeId) {
+		return nodesById.get(nodeId); 
+	}
+
+	/**
+	 * Add node
+	 * @param node
+	 * @return success
+	 */
+	protected boolean addNode(GUINode node) {
+		// having a node without a ID is valid, this node will not be added
+		if (node.getId().length() == 0) return true;
+
+		// check if we have a node registered already
+		if (nodesById.get(node.getId()) != null) {
+			return false;
+		}
+		// nope, add node
+		nodesById.put(node.getId(), node);
+		return true;
 	}
 
 }

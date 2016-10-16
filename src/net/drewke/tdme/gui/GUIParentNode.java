@@ -18,6 +18,7 @@ public abstract class GUIParentNode extends GUINode {
 
 	/**
 	 * Constructor
+	 * @param screen node
 	 * @param parent node
 	 * @param id
 	 * @param alignments
@@ -30,6 +31,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param background image 
 	 */
 	protected GUIParentNode(
+		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
@@ -42,7 +44,7 @@ public abstract class GUIParentNode extends GUINode {
 		String backgroundImage
 		) throws GUIParserException {
 		//
-		super(parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
 		this.backgroundColor = backgroundColor == null || backgroundColor.length() == 0?GUIColor.TRANSPARENT:new GUIColor(backgroundColor);
 		this.backgroundImage = backgroundImage;
 		subNodes = new ArrayList<GUINode>();
