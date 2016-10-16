@@ -1,5 +1,6 @@
 package net.drewke.tdme.gui;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,6 +21,8 @@ import org.w3c.dom.Node;
  * @version $Id$
  */
 public final class GUIParser {
+
+	public static HashMap<String, GUIElement> elements;
 
 	/**
 	 * Parses a GUI XML file
@@ -342,7 +346,37 @@ public final class GUIParser {
 				);
 				guiParentNode.getSubNodes().add(guiTextNode);
 			} else {
-				// TODO: check if end tag or unsupported
+				// Try to load from GUI elements
+				GUIElement guiElement = elements.get(node.getNodeName());
+				if (guiElement == null) {
+					throw new GUIParserException("Unknown element '" + node.getNodeName() + "'");
+				}
+
+				// create final template, replace attributes
+				String guiElementTemplate = guiElement.getTemplate();
+				HashMap<String, String> guiElementAttributes = guiElement.getAttributes();
+				for (int i = 0; i < node.getAttributes().getLength(); i++) {
+					Node attribute = node.getAttributes().item(i);
+					guiElementAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
+				}
+				for (String guiElementAttributeKey: guiElementAttributes.getKeysIterator()) {
+					String guiElementAttributeValue = guiElementAttributes.get(guiElementAttributeKey);
+					guiElementTemplate = guiElementTemplate.replace("{$" + guiElementAttributeKey + "}", guiElementAttributeValue);
+				}
+
+				// create xml document and parse
+				DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+				Document document = builder.parse(
+					new ByteArrayInputStream(
+						new String(
+							"<element>\n" +
+							guiElementTemplate +
+							"</element>\n"
+						).getBytes()
+					)
+				);
+				Element xmlTemplateRoot = document.getDocumentElement();
+				parseGUINode(guiParentNode, xmlTemplateRoot);
 			}
 		}		
 	}
@@ -362,4 +396,9 @@ public final class GUIParser {
 		return nodeList;
 	}
 
+	static {
+		GUIElement guiCheckbox = new GUICheckbox();
+		elements = new HashMap<String, GUIElement>();
+		elements.put(guiCheckbox.getName(), guiCheckbox);
+	}
 }

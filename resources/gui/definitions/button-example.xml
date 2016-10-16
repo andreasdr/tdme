@@ -8,30 +8,9 @@
 		<space height="*" />
 		<element id="yyy" border="1" border-color="green" padding="10" horizontal-align="center" width="80%">
 			<panel border="1" padding="10" id="abc" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-				<layout padding-top="5" padding-bottom="5" alignment="horizontal" width="100%" height="auto">
-					<element>
-						<image effect-color-mul="#8080FF" hide-on="mouseover" src="resources/gui/images/checkbox_unchecked.png" />
-						<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/checkbox_checked.png" />
-					</element>
-					<space width="10" />
-					<text width="*" horizontal-align="left" font="resources/gui/fonts/Foo_25.fnt" text="Check that fucking checkbox 1" color="#000000" />
-				</layout>
-				<layout padding-top="5" padding-bottom="5" alignment="horizontal" width="100%" height="auto">
-					<element>
-						<image effect-color-mul="#8080FF" hide-on="mouseover" src="resources/gui/images/checkbox_unchecked.png" />
-						<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/checkbox_checked.png" />
-					</element>
-					<space width="10" />
-					<text width="*" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="Check that nice checkbox 2" color="#000000" />
-				</layout> 
-				<layout padding-top="5" padding-bottom="5" alignment="horizontal" width="100%" height="auto">
-					<element>
-						<image effect-color-mul="#8080FF" hide-on="mouseover" src="resources/gui/images/checkbox_unchecked.png" />
-						<image effect-color-mul="#8080FF" show-on="mouseover" src="resources/gui/images/checkbox_checked.png" />
-					</element>
-					<space width="10" /> 
-					<text width="*" horizontal-align="right" font="resources/gui/fonts/Foo_25.fnt" text="Check that checkbox 3" color="#000000" />
-				</layout>
+				<checkbox text="1. Check that check box" />
+				<checkbox text="2. Check that check box right now" />
+				<checkbox text="3. Check that fucking check box" />
 			</panel>
 		</element>
 		<element border="1" padding="10" border-color="red" id="jjj" width="80%">
