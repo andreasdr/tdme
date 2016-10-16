@@ -21,6 +21,14 @@ public interface FileSystemInterface {
 	public InputStream getInputStream(String path, String fileName) throws IOException;
 
 	/**
+	 * Get file content
+	 * @param path
+	 * @param file name
+	 * @throws IOException
+	 */
+	public String getContent(String path, String fileName) throws IOException;
+
+	/**
 	 * List files for given path and filter by a file name filter if not null 
 	 * @param path
 	 * @param filter or null

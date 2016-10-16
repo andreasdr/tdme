@@ -1,11 +1,13 @@
 package net.drewke.tdme.os;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -103,6 +105,28 @@ public final class StandardFileSystem implements FileSystemInterface {
 		String[] _files = new String[filesNoDuplicates.size()];
 		filesNoDuplicates.toArray(_files);
 		return _files;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.os.FileSystemInterface#getContent(java.lang.String, java.lang.String)
+	 */
+	public String getContent(String path, String fileName) throws IOException {
+		StringBuilder contents = new StringBuilder();
+		InputStream fileInputStream = getInputStream(path, fileName);
+		try {
+			BufferedReader input = new BufferedReader(new InputStreamReader(fileInputStream));
+			String line = null; // not declared within while loop
+			while ((line = input.readLine()) != null) {
+				contents.append(line);
+				contents.append(System.getProperty("line.separator"));
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (fileInputStream != null) fileInputStream.close();
+		}
+		return contents.toString();
 	}
 
 }

@@ -396,9 +396,15 @@ public final class GUIParser {
 		return nodeList;
 	}
 
+	// 
 	static {
-		GUIElement guiCheckbox = new GUICheckbox();
 		elements = new HashMap<String, GUIElement>();
-		elements.put(guiCheckbox.getName(), guiCheckbox);
+
+		try {
+			GUIElement guiCheckbox = new GUICheckbox();
+			elements.put(guiCheckbox.getName(), guiCheckbox);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package net.drewke.tdme.gui;
 
+import java.io.IOException;
+
+import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -11,23 +14,15 @@ public class GUICheckbox extends GUIElement  {
 
 	private static final String NAME = "checkbox";
 
-	private static final String rootTemplate =
-		"<layout padding='{$padding}' alignment='horizontal' width='{$width}' height='{$height}'>" +
-		"	<element>" +
-		"		<image effect-color-mul='#8080A0' hide-on='mouseover' src='resources/gui/images/elements/checkbox/checkbox_unchecked.png' />" +
-		"		<image effect-color-mul='#8080FF' show-on='mouseover' src='resources/gui/images/elements/checkbox/checkbox_unchecked.png' />" +
-		"	</element>" +
-		"	<space width='{$separator-width}' />" +
-		"	<text width='*' horizontal-align='{$text-horizontal-align}' font='resources/gui/fonts/Foo_25.fnt' text='{$text}' color='{$text-color}' />" +
-		"</layout>";
-
 	private HashMap<String, String> attributes;
-	
+	private String template;
+
 	/**
 	 * Constructor
 	 */
-	protected GUICheckbox() {
+	protected GUICheckbox() throws IOException {
 		attributes = new HashMap<String, String>();
+		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "checkbox.xml");
 	}
 
 	/*
@@ -43,7 +38,7 @@ public class GUICheckbox extends GUIElement  {
 	 * @see net.drewke.tdme.gui.GUIElement#getTemplate(net.drewke.tdme.utils.HashMap)
 	 */
 	protected String getTemplate() {
-		return rootTemplate;
+		return template;
 	}
 
 	/*
