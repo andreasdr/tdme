@@ -290,7 +290,8 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("background-color"),
-					node.getAttribute("background-image")
+					node.getAttribute("background-image"),
+					node.getAttribute("name")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
 				if (guiScreenNode.addNode(guiElementNode) == false) {
@@ -464,11 +465,21 @@ public final class GUIParser {
 	static {
 		elements = new HashMap<String, GUIElement>();
 
+		// add check box
 		try {
 			GUIElement guiCheckbox = new GUICheckbox();
 			elements.put(guiCheckbox.getName(), guiCheckbox);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// add radio button
+		try {
+			GUIElement guiRadioButton = new GUIRadioButton();
+			elements.put(guiRadioButton.getName(), guiRadioButton);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

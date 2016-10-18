@@ -140,10 +140,10 @@ public abstract class GUINode {
 	protected Padding padding;
 	protected Border border;
 
-	private GUINodeConditions showOn;
-	private GUINodeConditions hideOn;
+	protected GUINodeConditions showOn;
+	protected GUINodeConditions hideOn;
 
-	private GUINodeController controller;
+	protected GUINodeController controller;
 
 	/**
 	 * Constructor
@@ -636,7 +636,9 @@ public abstract class GUINode {
 	/**
 	 * Dispose node
 	 */
-	protected abstract void dispose();
+	protected void dispose() {
+		if (controller != null) controller.dispose();
+	}
 
 	/**
 	 * Render

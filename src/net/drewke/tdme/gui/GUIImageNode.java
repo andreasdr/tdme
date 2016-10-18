@@ -98,6 +98,8 @@ public final class GUIImageNode extends GUINode {
 	 */
 	protected void dispose() {
 		Engine.getInstance().getTextureManager().removeTexture(texture.getId());
+		// parent dispose
+		super.dispose();
 	}
 
 	/*

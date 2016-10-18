@@ -1,0 +1,6 @@
+<element id="{$id}" name="{$name}">
+	<image effect-color-mul="#8080A0" hide-on="selected,mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
+	<image effect-color-mul="#8080FF" hide-on="selected" show-on="mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
+	<image effect-color-mul="#8080A0" hide-on="unselected,ouseover" src="resources/gui/images/elements/radiobutton/selected.png" />
+	<image effect-color-mul="#8080FF" hide-on="unselected" show-on="mouseover" src="resources/gui/images/elements/radiobutton/selected.png" />
+</element>

@@ -36,9 +36,9 @@ public class GUICheckboxController extends GUINodeController {
 	 */
 	public void setChecked(boolean checked) {
 		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
-		nodeConditions.remove(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
+		nodeConditions.remove(this.checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
 		this.checked = checked;
-		nodeConditions.add(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
+		nodeConditions.add(this.checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
 	}
 
 	/*
@@ -46,7 +46,14 @@ public class GUICheckboxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		((GUIElementNode)node).getActiveConditions().add(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
+		setChecked(checked);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.GUINodeController#dispose()
+	 */
+	public void dispose() {
 	}
 
 	/*
@@ -59,10 +66,7 @@ public class GUICheckboxController extends GUINodeController {
 			event.type == Type.MOUSE_RELEASED && 
 			event.button == 1) {
 			//
-			GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
-			nodeConditions.remove(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
-			checked = !checked;
-			nodeConditions.add(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
+			setChecked(checked == true?false:true);
 		}
 	}
 

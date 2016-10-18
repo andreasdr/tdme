@@ -6,25 +6,42 @@
 			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</element>
 		<space height="*" />
-		<element border="1" border-color="green" padding="10" horizontal-align="center" width="80%">
-			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-				<panel width="100%" alignment="horizontal">
+		<panel border="1" border-color="green" padding="10" horizontal-align="center" alignment="horizontal" width="80%">
+			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+				<panel padding="2" width="100%" alignment="horizontal">
 					<checkbox id="checkbox1" />
 					<space width="10" />
 					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" />
 				</panel>
-				<panel width="100%" alignment="horizontal">
+				<panel padding="2" width="100%" alignment="horizontal">
 					<checkbox id="checkbox2" />
 					<space width="10" />
 					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" />
 				</panel>
-				<panel width="100%" alignment="horizontal">
+				<panel padding="2" width="100%" alignment="horizontal">
 					<checkbox id="checkbox3" />
 					<space width="10" />
 					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" />
 				</panel>
 			</panel>
-		</element>
+			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+				<panel padding="2" width="100%" alignment="horizontal">
+					<radiobutton id="radio1" />
+					<space width="10" />
+					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
+				</panel>
+				<panel padding="2" width="100%" alignment="horizontal">
+					<radiobutton id="radio2" />
+					<space width="10" />
+					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
+				</panel>
+				<panel padding="2" width="100%" alignment="horizontal">
+					<radiobutton id="radio3" />
+					<space width="10" />
+					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
+				</panel>
+			</panel>
+		</panel>
 		<element border="1" padding="10" border-color="red" width="80%">
 			<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />

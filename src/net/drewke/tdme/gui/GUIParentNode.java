@@ -163,9 +163,12 @@ public abstract class GUIParentNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
 	 */
 	protected void dispose() {
+		// dispose sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).dispose();
 		}
+		// parent dispose
+		super.dispose();
 	}
 
 	/*

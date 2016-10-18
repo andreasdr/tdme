@@ -97,7 +97,8 @@ public final class GUISpaceNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
 	 */
 	protected void dispose() {
-		// no op
+		// parent dispose
+		super.dispose();
 	}
 
 	/*

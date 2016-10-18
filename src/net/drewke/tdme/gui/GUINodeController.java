@@ -23,6 +23,11 @@ public abstract class GUINodeController {
 	public abstract void init();
 
 	/**
+	 * Dispose controller
+	 */
+	public abstract void dispose();
+
+	/**
 	 * Handle event
 	 * @param node
 	 * @param event

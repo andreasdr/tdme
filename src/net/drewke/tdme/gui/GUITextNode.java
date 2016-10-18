@@ -92,6 +92,8 @@ public final class GUITextNode extends GUINode {
 	protected void dispose() {
 		// dispose font
 		this.font.dispose();
+		// parent dispose
+		super.dispose();
 	}
 
 	/*

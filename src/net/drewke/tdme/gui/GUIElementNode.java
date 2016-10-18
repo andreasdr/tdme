@@ -13,6 +13,7 @@ public final class GUIElementNode extends GUIParentNode {
 	protected static final String CONDITION_ONMOUSEOVER = "mouseover";
 	protected static final String CONDITION_CLICK = "click";
 
+	protected String name;
 	protected GUINodeConditions activeConditions = new GUINodeConditions();
 
 	/**
@@ -40,9 +41,12 @@ public final class GUIElementNode extends GUIParentNode {
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn, 
 		String backgroundColor,
-		String backgroundImage) throws GUIParserException {
+		String backgroundImage,
+		String name) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
+		// name
+		this.name = name;
 	}
 
 	/**
@@ -145,6 +149,13 @@ public final class GUIElementNode extends GUIParentNode {
 		// compute children alignments
 		computeHorizontalChildrenAlignment();
 		computeVerticalChildrenAlignment();
+	}
+
+	/** 
+	 * @return name
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**
