@@ -48,13 +48,6 @@ public class GUICheckbox extends GUIElement  {
 	protected HashMap<String, String> getAttributes() {
 		attributes.clear();
 		attributes.put("id", "");
-		attributes.put("padding", "5");
-		attributes.put("width", "100%");
-		attributes.put("height", "auto");
-		attributes.put("separator-width", "10");
-		attributes.put("text-horizontal-align", "left");
-		attributes.put("text", "");
-		attributes.put("text-color", "#000000");
 		return attributes;
 	}
 
