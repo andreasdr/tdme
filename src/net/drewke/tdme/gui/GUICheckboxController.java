@@ -12,7 +12,6 @@ public class GUICheckboxController extends GUINodeController {
 	protected static final String CONDITION_CHECKED = "checked";
 	protected static final String CONDITION_UNCHECKED = "unchecked";
 
-	private String nodeCheckboxElementId;
 	private boolean checked;
 
 	/**
@@ -21,7 +20,6 @@ public class GUICheckboxController extends GUINodeController {
 	 */
 	protected GUICheckboxController(GUINode node) {
 		super(node);
-		this.nodeCheckboxElementId = node.getId() + "_element";
 		this.checked = false;
 	}
 
@@ -48,7 +46,7 @@ public class GUICheckboxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		((GUIElementNode)node.getScreenNode().getNodeById(this.nodeCheckboxElementId)).getActiveConditions().add(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
+		((GUIElementNode)node).getActiveConditions().add(checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
 	}
 
 	/*
@@ -56,7 +54,7 @@ public class GUICheckboxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#handleEvent(net.drewke.tdme.gui.GUINode, net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUINode node, GUIMouseEvent event) {
-		if (node.id.equals(nodeCheckboxElementId) &&
+		if (node.id.equals(this.node.id) &&
 			node.isEventBelongingToNode(event) && 
 			event.type == Type.MOUSE_RELEASED && 
 			event.button == 1) {

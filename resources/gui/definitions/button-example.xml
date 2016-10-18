@@ -8,9 +8,21 @@
 		<space height="*" />
 		<element border="1" border-color="green" padding="10" horizontal-align="center" width="80%">
 			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-				<checkbox id="checkbox1" text="1. Check that check box" />
-				<checkbox id="checkbox2" text="2. Check that check box right now" />
-				<checkbox id="checkbox3" text="3. Check that fucking check box" />
+				<panel width="100%" alignment="horizontal">
+					<checkbox id="checkbox1" />
+					<space width="10" />
+					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" />
+				</panel>
+				<panel width="100%" alignment="horizontal">
+					<checkbox id="checkbox2" />
+					<space width="10" />
+					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" />
+				</panel>
+				<panel width="100%" alignment="horizontal">
+					<checkbox id="checkbox3" />
+					<space width="10" />
+					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" />
+				</panel>
 			</panel>
 		</element>
 		<element border="1" padding="10" border-color="red" width="80%">
