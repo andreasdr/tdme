@@ -1,12 +1,10 @@
 package net.drewke.tdme.gui;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 public class GUILayoutNode extends GUIParentNode {
 
-	enum Alignment {VERTICAL, HORIZONTAL};
+	enum Alignment {VERTICAL, HORIZONTAL, NONE};
 
 	private Alignment alignment; 
 
@@ -242,6 +240,12 @@ public class GUILayoutNode extends GUIParentNode {
 					computeVerticalChildrenAlignment();
 					
 					//
+					break;
+				}
+			case NONE: 
+				{
+					computeHorizontalChildrenAlignment();
+					computeVerticalChildrenAlignment();
 					break;
 				}
 		}

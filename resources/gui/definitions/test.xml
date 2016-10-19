@@ -2,9 +2,9 @@
 	<panel border="10" border-color="#ffffff" left="10%" top="10%" width="80%" height="80%" alignment="vertical"
 		background-color="#808080" horizontal-align="center"> 
 		<space height="10%" />
-		<element horizontal-align="center" vertical-align="center" background-color="#909090">
+		<panel width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">
 			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
-		</element>
+		</panel>
 		<space height="*" />
 		<panel border="1" border-color="green" padding="10" horizontal-align="center" alignment="horizontal" width="80%">
 			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
@@ -42,15 +42,16 @@
 				</panel>
 			</panel>
 		</panel>
-		<element border="1" padding="10" border-color="red" width="80%">
-			<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
+		<space height="*" />
+		<panel border="1" border-color="blue" padding="10" horizontal-align="center" alignment="none" width="80%">
+			<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
 				<space width="10" />
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
 				<space width="10" />
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
 			</panel>
-		</element>
+		</panel>
 		<space height="*" />
 		<element horizontal-align="center" vertical-align="center">
 			<image hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
@@ -58,7 +59,6 @@
 			<image show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
 			<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 		</element>
-		<space height="*" />
 		<space height="*" />
 		<element horizontal-align="center" vertical-align="center">
 			<panel border-color="#a0a0a0" border="2" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
