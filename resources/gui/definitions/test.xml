@@ -1,7 +1,7 @@
 <screen id="test">
-	<panel border="10" border-color="#ffffff" left="10%" top="10%" width="80%" height="80%" alignment="vertical"
+	<panel border="1" border-color="#ffffff" left="5%" top="5%" width="90%" height="90%" alignment="vertical"
 		background-color="#808080" horizontal-align="center"> 
-		<space height="10%" />
+		<space height="5%" />
 		<panel width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">
 			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</panel>
@@ -26,17 +26,17 @@
 			</panel>
 			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
 				<panel padding="2" width="100%" alignment="horizontal">
-					<radiobutton id="radio1" />
+					<radiobutton id="radio1" value="radio" />
 					<space width="10" />
 					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
 				</panel>
 				<panel padding="2" width="100%" alignment="horizontal">
-					<radiobutton id="radio2" />
+					<radiobutton id="radio2" value="radio" />
 					<space width="10" />
 					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
 				</panel>
 				<panel padding="2" width="100%" alignment="horizontal">
-					<radiobutton id="radio3" />
+					<radiobutton id="radio3" value="radio" />
 					<space width="10" />
 					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
 				</panel>
@@ -50,6 +50,23 @@
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
 				<space width="10" />
 				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
+			</panel>
+		</panel>
+		<space height="*" />
+		<panel border="1" border-color="blue" padding="10" horizontal-align="center" alignment="none" width="80%">
+			<panel border="1" border-color="black" padding="10" width="100%" height="auto" alignment="vertical" background-color="#f0f0f0">
+				<element width="100%" height="auto">
+					<text width="100%" hide-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 1" color="#000000" />
+					<text width="100%" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 1" color="#000000" background-color="#8080c0" />
+				</element>
+				<element width="100%" height="auto">
+					<text width="100%" hide-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 2" color="#000000" />
+					<text width="100%" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 2" color="#000000" background-color="#8080c0" />
+				</element>
+				<element width="100%" height="auto">
+					<text width="100%" hide-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 3" color="#000000" />
+					<text width="100%" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 3" color="#000000" background-color="#8080c0" />
+				</element>
 			</panel>
 		</panel>
 		<space height="*" />
@@ -77,6 +94,6 @@
 				<space width="*" />
 			</panel>
 		</element>
-		<space height="10%" />
+		<space height="5%" />
 	</panel>
 </screen>

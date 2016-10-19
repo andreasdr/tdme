@@ -11,9 +11,6 @@ import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType
  */
 public abstract class GUIParentNode extends GUINode {
 
-	//
-	private String backgroundImage;
-	private GUIColor backgroundColor;
 	protected ArrayList<GUINode> subNodes;
 
 	/**
@@ -35,18 +32,15 @@ public abstract class GUIParentNode extends GUINode {
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
-		RequestedConstraints requestedConstraints, 
+		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding, 
 		GUINodeConditions showOn, 
-		GUINodeConditions hideOn, 
-		String backgroundColor,
-		String backgroundImage
+		GUINodeConditions hideOn
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
-		this.backgroundColor = backgroundColor == null || backgroundColor.length() == 0?GUIColor.TRANSPARENT:new GUIColor(backgroundColor);
-		this.backgroundImage = backgroundImage;
+		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		subNodes = new ArrayList<GUINode>();
 	}
 
@@ -181,45 +175,6 @@ public abstract class GUIParentNode extends GUINode {
 
 		// call parent renderer
 		super.render(guiRenderer);
-
-		// screen dimension
-		float screenWidth = guiRenderer.gui.width;
-		float screenHeight = guiRenderer.gui.height;
-
-		// render background if not transparent
-		//	TODO: render background image
-		if (backgroundColor != GUIColor.TRANSPARENT) {
-			// element location and dimensions
-			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left;
-			float top = computedConstraints.top + computedConstraints.alignmentTop + border.top;
-			float width = computedConstraints.width - border.left - border.right;
-			float height = computedConstraints.height - border.top - border.bottom;
-	
-			// background color
-			float[] bgColorData = backgroundColor.getData();
-	
-			// render background
-			guiRenderer.bindTexture(0);
-			guiRenderer.addQuad(
-				((left) / (screenWidth / 2f)) - 1f, 
-				((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-				0f, 1f, 
-				((left + width) / (screenWidth / 2f)) - 1f, 
-				((screenHeight - top) / (screenHeight / 2f)) - 1f,  
-				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-				1f, 1f, 
-				((left + width) / (screenWidth / 2f)) - 1f, 
-				((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-				1f, 0f, 
-				((left) / (screenWidth / 2f)) - 1f, 
-				((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
-				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
-				0f, 0f
-			);
-			guiRenderer.render();
-		}
 
 		//
 		for (int i = 0; i < subNodes.size(); i++) {

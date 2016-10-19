@@ -137,6 +137,7 @@ public abstract class GUINode {
 	protected Alignments alignments;
 	protected RequestedConstraints requestedConstraints;
 	protected ComputedConstraints computedConstraints;
+	protected GUIColor backgroundColor;
 	protected Padding padding;
 	protected Border border;
 
@@ -163,6 +164,7 @@ public abstract class GUINode {
 		String id, 
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding, 
 		GUINodeConditions showOn, 
@@ -175,6 +177,7 @@ public abstract class GUINode {
 		this.alignments = alignments;
 		this.requestedConstraints = requestedConstraints;
 		this.computedConstraints = new ComputedConstraints();
+		this.backgroundColor = backgroundColor;
 		this.border = border;
 		this.padding = padding;
 		this.showOn = showOn;
@@ -649,6 +652,41 @@ public abstract class GUINode {
 		// screen dimension
 		float screenWidth = guiRenderer.gui.width;
 		float screenHeight = guiRenderer.gui.height;
+
+		// render background if not transparent
+		//	TODO: render background image
+		if (backgroundColor != GUIColor.TRANSPARENT) {
+			// element location and dimensions
+			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left;
+			float top = computedConstraints.top + computedConstraints.alignmentTop + border.top;
+			float width = computedConstraints.width - border.left - border.right;
+			float height = computedConstraints.height - border.top - border.bottom;
+	
+			// background color
+			float[] bgColorData = backgroundColor.getData();
+	
+			// render background
+			guiRenderer.bindTexture(0);
+			guiRenderer.addQuad(
+				((left) / (screenWidth / 2f)) - 1f, 
+				((screenHeight - top) / (screenHeight / 2f)) - 1f,  
+				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+				0f, 1f, 
+				((left + width) / (screenWidth / 2f)) - 1f, 
+				((screenHeight - top) / (screenHeight / 2f)) - 1f,  
+				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+				1f, 1f, 
+				((left + width) / (screenWidth / 2f)) - 1f, 
+				((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
+				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+				1f, 0f, 
+				((left) / (screenWidth / 2f)) - 1f, 
+				((screenHeight - top - height) / (screenHeight / 2f)) - 1f,  
+				bgColorData[0], bgColorData[1], bgColorData[2], bgColorData[3],
+				0f, 0f
+			);
+			guiRenderer.render();
+		}
 
 		// render border if given
 		if (border != null) {

@@ -45,6 +45,7 @@ public final class GUIImageNode extends GUINode {
 		String id, 
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding, 
 		GUINodeConditions showOn, 
@@ -54,7 +55,7 @@ public final class GUIImageNode extends GUINode {
 		GUIColor effectColorAdd
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.texture = GUI.getImage(src);
 		this.textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 		this.effectColorMul = effectColorMul;

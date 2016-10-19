@@ -35,7 +35,8 @@ public final class GUITextNode extends GUINode {
 		GUIParentNode parentNode,
 		String id, 
 		Alignments alignments, 
-		RequestedConstraints requestedConstraints, 
+		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding, 
 		GUINodeConditions showOn, 
@@ -45,7 +46,7 @@ public final class GUITextNode extends GUINode {
 		String text
 		) throws Exception {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;

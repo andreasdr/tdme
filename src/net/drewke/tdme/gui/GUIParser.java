@@ -55,6 +55,7 @@ public final class GUIParser {
 				xmlRoot.getAttribute("width"), 
 				xmlRoot.getAttribute("height")
 			),
+			GUINode.getRequestedColor(xmlRoot.getAttribute("background-color"), GUIColor.TRANSPARENT),
 			GUIParentNode.createBorder(
 				xmlRoot.getAttribute("border"), 
 				xmlRoot.getAttribute("border-left"), 
@@ -75,9 +76,7 @@ public final class GUIParser {
 				xmlRoot.getAttribute("padding-bottom") 
 			),
 			GUINode.createConditions(xmlRoot.getAttribute("show-on")),
-			GUINode.createConditions(xmlRoot.getAttribute("hide-on")),
-			xmlRoot.getAttribute("background-color"),
-			xmlRoot.getAttribute("background-image")
+			GUINode.createConditions(xmlRoot.getAttribute("hide-on"))
 		);
 
 		// parse GUI nodes
@@ -114,6 +113,7 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
 					GUIParentNode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
@@ -135,8 +135,6 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("background-color"),
-					node.getAttribute("background-image"),
 					node.getAttribute("alignment")
 				);
 				guiParentNode.getSubNodes().add(guiLayoutNode);
@@ -167,6 +165,7 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
 					GUIParentNode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
@@ -215,6 +214,7 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
 					GUIParentNode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
@@ -236,8 +236,6 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("background-color"),
-					node.getAttribute("background-image"),
 					node.getAttribute("alignment")
 				);
 				guiParentNode.getSubNodes().add(guiPanelNode);
@@ -268,6 +266,7 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
 					GUIParentNode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
@@ -289,8 +288,6 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("background-color"),
-					node.getAttribute("background-image"),
 					node.getAttribute("name")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
@@ -321,6 +318,7 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
 					GUIParentNode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
@@ -372,6 +370,7 @@ public final class GUIParser {
 						node.getAttribute("width"), 
 						node.getAttribute("height")
 					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
 					GUIParentNode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 

@@ -32,14 +32,14 @@ public final class GUIScreenNode extends GUIParentNode {
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
-		RequestedConstraints requestedConstraints, 
+		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding,
 		GUINodeConditions showOn, 
-		GUINodeConditions hideOn, 
-		String backgroundColor,
-		String backgroundImage) throws GUIParserException {
-		super(null, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
+		GUINodeConditions hideOn
+		) throws GUIParserException {
+		super(null, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.screenWidth = 0;
 		this.screenHeight = 0;
 		this.nodesById = new HashMap<String, GUINode>();

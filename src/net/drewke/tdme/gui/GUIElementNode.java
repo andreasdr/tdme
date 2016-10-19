@@ -35,16 +35,16 @@ public final class GUIElementNode extends GUIParentNode {
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
-		RequestedConstraints requestedConstraints, 
+		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding,
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn, 
-		String backgroundColor,
-		String backgroundImage,
-		String name) throws GUIParserException {
+		String name
+		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		// name
 		this.name = name;
 	}

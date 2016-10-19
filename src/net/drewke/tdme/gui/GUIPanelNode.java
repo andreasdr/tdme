@@ -30,16 +30,15 @@ public final class GUIPanelNode extends GUILayoutNode {
 		String id, 
 		Alignments alignments,
 		RequestedConstraints requestedConstraints,
+		GUIColor backgroundColor,
 		Border border, 
 		Padding padding, 
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn,
-		String backgroundColor,
-		String backgroundImage,
 		String alignment) 
 		throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, border, padding, showOn, hideOn, backgroundColor, backgroundImage, alignment);
+		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn, alignment);
 	}
 
 	/*
