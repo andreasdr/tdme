@@ -1,4 +1,4 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.renderer;
 
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 

@@ -1,4 +1,4 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.events;
 
 /**
  * GUI mouse event
@@ -9,15 +9,15 @@ public class GUIMouseEvent {
 
 	public enum Type {NONE, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_MOVED};
 
-	protected long time;
+	private long time;
 
-	protected Type type;
+	private Type type;
 
-	protected int x;
-	protected int y;
-	protected int button;
+	private int x;
+	private int y;
+	private int button;
 
-	protected boolean processed;
+	private boolean processed;
 
 	/**
 	 * Public constructor

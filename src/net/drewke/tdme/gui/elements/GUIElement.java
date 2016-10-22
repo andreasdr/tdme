@@ -1,5 +1,7 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.elements;
 
+import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -12,23 +14,23 @@ public abstract class GUIElement {
 	/**
 	 * @return name
 	 */
-	protected abstract String getName();
+	public abstract String getName();
 
 	/**
 	 * @return template
 	 */
-	protected abstract String getTemplate();
+	public abstract String getTemplate();
 
 	/**
 	 * @return default attributes
 	 */
-	protected abstract HashMap<String, String> getAttributes();
+	public abstract HashMap<String, String> getAttributes();
 
 	/**
 	 * Create controller which is attached to this node
 	 * @param node
 	 * @return
 	 */
-	protected abstract GUINodeController createController(GUINode node);
+	public abstract GUINodeController createController(GUINode node);
 
 }

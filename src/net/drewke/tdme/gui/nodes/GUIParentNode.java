@@ -1,8 +1,11 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
  * A parent node supporting child notes
@@ -47,7 +50,7 @@ public abstract class GUIParentNode extends GUINode {
 	/**
 	 * @return sub nodes
 	 */
-	protected ArrayList<GUINode> getSubNodes() {
+	public ArrayList<GUINode> getSubNodes() {
 		return subNodes;
 	}
 
@@ -59,7 +62,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param height
 	 * @return requested constraints
 	 */
-	protected static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
+	public static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
 		RequestedConstraints constraints = new RequestedConstraints();
 		constraints.leftType = getRequestedConstraintsType(left.trim(), RequestedConstraintsType.PIXEL);
 		constraints.left = getRequestedConstraintsValue(left.trim(), 0);
@@ -173,7 +176,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * Get child controller nodes
 	 * @param child controller nodes
 	 */
-	protected void getChildControllerNodes(ArrayList<GUINode> childControllerNodes) {
+	public void getChildControllerNodes(ArrayList<GUINode> childControllerNodes) {
 		childControllerNodes.clear();
 		getChildControllerNodesInternal(childControllerNodes);
 	}
@@ -182,7 +185,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
 	 */
-	protected void dispose() {
+	public void dispose() {
 		// dispose sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).dispose();
@@ -195,7 +198,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	protected void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 

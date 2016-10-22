@@ -1,18 +1,20 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.elements;
 
 import java.io.IOException;
 
+import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
 /**
- * GUI Checkbox
+ * GUI select box
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIRadioButton extends GUIElement  {
+public final class GUISelectBox extends GUIElement  {
 
-	private static final String NAME = "radiobutton";
+	private static final String NAME = "selectbox";
 
 	private HashMap<String, String> attributes;
 	private String template;
@@ -20,16 +22,16 @@ public class GUIRadioButton extends GUIElement  {
 	/**
 	 * Constructor
 	 */
-	protected GUIRadioButton() throws IOException {
+	public GUISelectBox() throws IOException {
 		attributes = new HashMap<String, String>();
-		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "radiobutton.xml");
+		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "selectbox.xml");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#getName()
 	 */
-	protected String getName() {
+	public String getName() {
 		return NAME;
 	}
 
@@ -37,7 +39,7 @@ public class GUIRadioButton extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#getTemplate(net.drewke.tdme.utils.HashMap)
 	 */
-	protected String getTemplate() {
+	public String getTemplate() {
 		return template;
 	}
 
@@ -45,10 +47,9 @@ public class GUIRadioButton extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#getAttributes()
 	 */
-	protected HashMap<String, String> getAttributes() {
+	public HashMap<String, String> getAttributes() {
 		attributes.clear();
 		attributes.put("id", "");
-		attributes.put("name", "");
 		return attributes;
 	}
 
@@ -56,8 +57,8 @@ public class GUIRadioButton extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#createController(net.drewke.tdme.gui.GUINode)
 	 */
-	protected GUINodeController createController(GUINode node) {
-		return new GUIRadioButtonController(node);
+	public GUINodeController createController(GUINode node) {
+		return new GUISelectBoxController(node);
 	}
 
 }

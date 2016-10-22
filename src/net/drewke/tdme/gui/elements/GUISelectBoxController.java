@@ -1,13 +1,18 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.elements;
 
 import java.util.ArrayList;
+
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 
 /**
  * GUI select box controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUISelectBoxController extends GUINodeController {
+public final class GUISelectBoxController extends GUINodeController {
 
 	protected ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 
@@ -40,7 +45,7 @@ public class GUISelectBoxController extends GUINodeController {
 		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
 		for (int i = 0; i < childControllerNodes.size(); i++) {
 			GUINode childControllerNode = childControllerNodes.get(i);
-			GUINodeController childController = childControllerNode.controller; 
+			GUINodeController childController = childControllerNode.getController(); 
 			if (childController instanceof GUISelectBoxOptionController) {
 				((GUISelectBoxOptionController)childController).unselect();
 			}

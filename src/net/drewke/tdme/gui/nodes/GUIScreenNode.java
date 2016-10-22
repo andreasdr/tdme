@@ -1,8 +1,9 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -28,7 +29,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param show on
 	 * @param hide on
 	 */
-	protected GUIScreenNode(
+	public GUIScreenNode(
 		GUIParentNode parentNode, 
 		String id, 
 		Alignments alignments, 
@@ -48,14 +49,14 @@ public final class GUIScreenNode extends GUIParentNode {
 	/**
 	 * @return screen width
 	 */
-	protected int getScreenWidth() {
+	public int getScreenWidth() {
 		return screenWidth;
 	}
 
 	/**
 	 * @return screen height
 	 */
-	protected int getScreenHeight() {
+	public int getScreenHeight() {
 		return screenHeight;
 	}
 
@@ -129,7 +130,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param node
 	 * @return success
 	 */
-	protected boolean addNode(GUINode node) {
+	public boolean addNode(GUINode node) {
 		// having a node without a ID is valid, this node will not be added
 		if (node.getId().length() == 0) return true;
 

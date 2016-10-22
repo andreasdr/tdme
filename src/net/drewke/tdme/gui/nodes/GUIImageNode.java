@@ -1,9 +1,13 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
+import net.drewke.tdme.gui.GUI;
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 
 /**
@@ -39,7 +43,7 @@ public final class GUIImageNode extends GUINode {
 	 * @param effect color mul
 	 * @param effect color add
 	 */
-	protected GUIImageNode(
+	public GUIImageNode(
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
@@ -97,7 +101,7 @@ public final class GUIImageNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
 	 */
-	protected void dispose() {
+	public void dispose() {
 		Engine.getInstance().getTextureManager().removeTexture(texture.getId());
 		// parent dispose
 		super.dispose();
@@ -107,7 +111,7 @@ public final class GUIImageNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	protected void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 
@@ -115,8 +119,8 @@ public final class GUIImageNode extends GUINode {
 		super.render(guiRenderer);
 
 		// screen dimension
-		float screenWidth = guiRenderer.gui.width;
-		float screenHeight = guiRenderer.gui.height;
+		float screenWidth = guiRenderer.getGUI().getWidth();
+		float screenHeight = guiRenderer.getGUI().getHeight();
 
 		// element location and dimensions
 		float left = computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.contentAlignmentLeft;

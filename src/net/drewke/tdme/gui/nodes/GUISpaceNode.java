@@ -1,8 +1,10 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
  * GUI space node
@@ -23,7 +25,7 @@ public final class GUISpaceNode extends GUINode {
 	 * @param show on
 	 * @param hide on
 	 */
-	protected GUISpaceNode(
+	public GUISpaceNode(
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
@@ -80,7 +82,7 @@ public final class GUISpaceNode extends GUINode {
 	 * @param height
 	 * @return requested constraints
 	 */
-	protected static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
+	public static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
 		RequestedConstraints constraints = new RequestedConstraints();
 		constraints.leftType = getRequestedConstraintsType(left.trim(), RequestedConstraintsType.PIXEL);
 		constraints.left = getRequestedConstraintsValue(left.trim(), 0);
@@ -97,7 +99,7 @@ public final class GUISpaceNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
 	 */
-	protected void dispose() {
+	public void dispose() {
 		// parent dispose
 		super.dispose();
 	}
@@ -106,7 +108,7 @@ public final class GUISpaceNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	protected void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer) {
 		// call parent renderer
 		super.render(guiRenderer);
 	}

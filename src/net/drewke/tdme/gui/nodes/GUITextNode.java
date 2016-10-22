@@ -1,6 +1,11 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
+
+import net.drewke.tdme.gui.GUI;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.renderer.GUIFont;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
  * GUI text node
@@ -30,7 +35,7 @@ public final class GUITextNode extends GUINode {
 	 * @param text
 	 * @throws Exception
 	 */
-	protected GUITextNode(
+	public GUITextNode(
 		GUIScreenNode screenNode, 
 		GUIParentNode parentNode,
 		String id, 
@@ -90,7 +95,7 @@ public final class GUITextNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
 	 */
-	protected void dispose() {
+	public void dispose() {
 		// dispose font
 		this.font.dispose();
 		// parent dispose
@@ -101,7 +106,7 @@ public final class GUITextNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	protected void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 

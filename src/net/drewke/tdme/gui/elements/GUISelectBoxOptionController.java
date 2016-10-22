@@ -1,15 +1,21 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.elements;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeConditions;
+import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 
 /**
  * GUI select box option controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUISelectBoxOptionController extends GUINodeController {
+public final class GUISelectBoxOptionController extends GUINodeController {
 
 	protected static final String CONDITION_SELECTED = "selected";
 	protected static final String CONDITION_UNSELECTED = "unselected";
@@ -71,12 +77,12 @@ public class GUISelectBoxOptionController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#handleEvent(net.drewke.tdme.gui.GUINode, net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUINode node, GUIMouseEvent event) {
-		if (node.id.equals(this.node.id) &&
+		if (node.getId().equals(this.node.getId()) &&
 			node.isEventBelongingToNode(event) && 
-			event.type == Type.MOUSE_RELEASED && 
-			event.button == 1) {
+			event.getType() == Type.MOUSE_RELEASED && 
+			event.getButton() == 1) {
 			//
-			((GUISelectBoxController)selectBoxNode.controller).unselect();
+			((GUISelectBoxController)selectBoxNode.getController()).unselect();
 			select();
 		}
 	}

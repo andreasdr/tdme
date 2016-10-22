@@ -1,9 +1,12 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
  * GUI Node class
@@ -207,7 +210,7 @@ public abstract class GUINode {
 	/**
 	 * @return id
 	 */
-	protected String getId() {
+	public String getId() {
 		return id;
 	}
 
@@ -405,7 +408,7 @@ public abstract class GUINode {
 	 * @param height
 	 * @return requested constraints
 	 */
-	protected static Alignments createAlignments(String horizontal, String vertical) {
+	public static Alignments createAlignments(String horizontal, String vertical) {
 		Alignments alignments = new Alignments();
 		alignments.horizontal = AlignmentHorizontal.valueOf(horizontal != null && horizontal.length() > 0?horizontal.toUpperCase():"LEFT");
 		alignments.vertical = AlignmentVertical.valueOf(vertical != null && vertical.length() > 0?vertical.toUpperCase():"TOP");
@@ -420,7 +423,7 @@ public abstract class GUINode {
 	 * @param height
 	 * @return requested constraints
 	 */
-	protected static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
+	public static RequestedConstraints createRequestedConstraints(String left, String top, String width, String height) {
 		RequestedConstraints constraints = new RequestedConstraints();
 		constraints.leftType = getRequestedConstraintsType(left.trim(), RequestedConstraintsType.PIXEL);
 		constraints.left = getRequestedConstraintsValue(left.trim(), 0);
@@ -499,7 +502,7 @@ public abstract class GUINode {
 	 * @param default color
 	 * @return value
 	 */
-	protected static GUIColor getRequestedColor(String color, GUIColor defaultColor) throws GUIParserException {
+	public static GUIColor getRequestedColor(String color, GUIColor defaultColor) throws GUIParserException {
 		if (color == null || color.length() == 0) {
 			return defaultColor;
 		} else{
@@ -522,7 +525,7 @@ public abstract class GUINode {
 	 * @param bottom color
 	 * @return border
 	 */
-	protected static Border createBorder(
+	public static Border createBorder(
 		String allBorder,
 		String left, String top, String right, String bottom,
 		String allBorderColor,
@@ -557,7 +560,7 @@ public abstract class GUINode {
 	 * @param bottom
 	 * @return padding
 	 */
-	protected static Padding createPadding(
+	public static Padding createPadding(
 		String allPadding,
 		String left, String top, String right, String bottom
 		) throws GUIParserException {
@@ -578,7 +581,7 @@ public abstract class GUINode {
 	 * Create conditions
 	 * @param conditions
 	 */
-	protected static GUINodeConditions createConditions(String conditions) {
+	public static GUINodeConditions createConditions(String conditions) {
 		GUINodeConditions guiNodeConditions = new GUINodeConditions();
 		StringTokenizer t = new StringTokenizer(conditions, ",");
 		while (t.hasMoreTokens()) {
@@ -636,10 +639,11 @@ public abstract class GUINode {
 		return showOn.size() == 0;
 	}
 
+
 	/**
 	 * Dispose node
 	 */
-	protected void dispose() {
+	public void dispose() {
 		if (controller != null) controller.dispose();
 	}
 
@@ -648,10 +652,10 @@ public abstract class GUINode {
 	 * 
 	 * @param gui renderer
 	 */
-	protected void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer) {
 		// screen dimension
-		float screenWidth = guiRenderer.gui.width;
-		float screenHeight = guiRenderer.gui.height;
+		float screenWidth = guiRenderer.getGUI().getWidth();
+		float screenHeight = guiRenderer.getGUI().getHeight();
 
 		// render background if not transparent
 		//	TODO: render background image
@@ -827,17 +831,19 @@ public abstract class GUINode {
 	 * @param event
 	 * @return boolean
 	 */
-	protected boolean isEventBelongingToNode(GUIMouseEvent event) {
+	public boolean isEventBelongingToNode(GUIMouseEvent event) {
+		int eventX = event.getX();
+		int eventY = event.getY();
 		return
-			event.x >= computedConstraints.left + computedConstraints.alignmentLeft && event.x < computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
-			event.y >= computedConstraints.top + computedConstraints.alignmentTop && event.y < computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
+			eventX >= computedConstraints.left + computedConstraints.alignmentLeft && eventX < computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
+			eventY >= computedConstraints.top + computedConstraints.alignmentTop && eventY < computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
 
 	}
 
 	/**
 	 * @return first parent node in tree with controller node attached
 	 */
-	protected GUINode getParentControllerNode() {
+	public GUINode getParentControllerNode() {
 		// determine first node up the tree with controller
 		GUINode node = this.parentNode;
 		while (node != null && node.controller == null) {
@@ -869,10 +875,17 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * @return controller
+	 */
+	public GUINodeController getController() {
+		return controller;
+	}
+
+	/**
 	 * Set up node controller
 	 * @param controller
 	 */
-	protected void setController(GUINodeController controller) {
+	public void setController(GUINodeController controller) {
 		this.controller = controller;
 	}
 

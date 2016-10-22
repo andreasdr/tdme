@@ -1,6 +1,7 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
-import net.drewke.tdme.gui.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 public class GUILayoutNode extends GUIParentNode {
 
@@ -23,7 +24,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param background image
 	 * @param alignment
 	 */
-	protected GUILayoutNode(
+	public GUILayoutNode(
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 

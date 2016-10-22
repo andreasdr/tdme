@@ -1,4 +1,6 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
+
+import net.drewke.tdme.gui.events.GUIMouseEvent;
 
 /**
  * GUI element controller

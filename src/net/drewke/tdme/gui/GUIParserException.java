@@ -11,7 +11,7 @@ public final class GUIParserException extends Exception {
 	 * Constructor
 	 * @param message
 	 */
-	protected GUIParserException(String message) {
+	public GUIParserException(String message) {
 		super(message);
 	}
 

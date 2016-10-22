@@ -1,4 +1,4 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
@@ -7,14 +7,14 @@ import java.util.ArrayList;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUINodeConditions {
+public final class GUINodeConditions {
 
 	protected ArrayList<String> conditions;
 
 	/**
 	 * Constructor
 	 */
-	protected GUINodeConditions() {
+	public GUINodeConditions() {
 		this.conditions = new ArrayList<String>();
 	}
 
@@ -29,7 +29,7 @@ public class GUINodeConditions {
 	 * Add a condition
 	 * @param condition
 	 */
-	protected void add(String condition) {
+	public void add(String condition) {
 		remove(condition);
 		conditions.add(condition);
 	}
@@ -38,7 +38,7 @@ public class GUINodeConditions {
 	 * Remove a condition
 	 * @param condition
 	 */
-	protected void remove(String condition) {
+	public void remove(String condition) {
 		for (int i = 0; i < conditions.size(); i++) {
 			if (conditions.get(i).equals(condition) == true) {
 				conditions.remove(i);

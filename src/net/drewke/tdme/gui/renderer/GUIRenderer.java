@@ -1,4 +1,4 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.renderer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,6 +10,8 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.subsystems.manager.VBOManager;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
+import net.drewke.tdme.gui.GUI;
+import net.drewke.tdme.gui.nodes.GUIColor;
 
 /**
  * GUI
@@ -78,8 +80,15 @@ public final class GUIRenderer {
 	 * Set GUI
 	 * @param gui
 	 */
-	protected void setGUI(GUI gui) {
+	public void setGUI(GUI gui) {
 		this.gui = gui;
+	}
+
+	/**
+	 * @return GUI
+	 */
+	public GUI getGUI() {
+		return gui;
 	}
 
 	/**
@@ -125,7 +134,7 @@ public final class GUIRenderer {
 	/**
 	 * Init rendering
 	 */
-	protected void initRendering() {
+	public void initRendering() {
 		// init gui
 		Engine.getGUIShader().useProgram();
 		renderer.enableClientState(renderer.CLIENTSTATE_VERTEX_ARRAY);
@@ -146,7 +155,7 @@ public final class GUIRenderer {
 	/**
 	 * Done rendering
 	 */
-	protected void doneRendering() {
+	public void doneRendering() {
 		// unbind buffers objects
 		renderer.unbindBufferObjects();
 
@@ -161,7 +170,7 @@ public final class GUIRenderer {
 	 * Set effect color mul
 	 * @param color
 	 */
-	protected void setFontColor(GUIColor color) {
+	public void setFontColor(GUIColor color) {
 		System.arraycopy(color.getData(), 0, fontColor, 0, 4);
 	}
 
@@ -169,7 +178,7 @@ public final class GUIRenderer {
 	 * Set effect color mul
 	 * @param color
 	 */
-	protected void setEffectColorMul(GUIColor color) {
+	public void setEffectColorMul(GUIColor color) {
 		System.arraycopy(color.getData(), 0, effectColorMul, 0, 4);
 	}
 
@@ -177,7 +186,7 @@ public final class GUIRenderer {
 	 * Set effect color add
 	 * @param color
 	 */
-	protected void setEffectColorAdd(GUIColor color) {
+	public void setEffectColorAdd(GUIColor color) {
 		System.arraycopy(color.getData(), 0, effectColorAdd, 0, 4);
 	}
 
@@ -217,7 +226,7 @@ public final class GUIRenderer {
 	 * @param texture u 4
 	 * @param texture v 4
 	 */
-	protected void addQuad(
+	public void addQuad(
 		float x1, float y1,
 		float colorR1, float colorG1, float colorB1, float colorA1,
 		float tu1, float tv1,
@@ -298,14 +307,14 @@ public final class GUIRenderer {
 	 * Bind texture
 	 * @param texture
 	 */
-	protected void bindTexture(int textureId) {
+	public void bindTexture(int textureId) {
 		renderer.bindTexture(textureId);
 	}
 
 	/**
 	 * Render 
 	 */
-	protected void render() {
+	public void render() {
 		// skip if no vertex data exists
 		if (quadCount == 0) return;
 

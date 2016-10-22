@@ -1,6 +1,9 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
+
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
 
 /**
  * GUI element node
@@ -30,7 +33,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param background color
 	 * @param background image
 	 */
-	protected GUIElementNode(
+	public GUIElementNode(
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
@@ -174,7 +177,7 @@ public final class GUIElementNode extends GUIParentNode {
 		activeConditions.remove(CONDITION_CLICK);
 		if (isEventBelongingToNode(event)) {
 			//
-			switch (event.type) {
+			switch (event.getType()) {
 				case MOUSE_MOVED:
 					activeConditions.add(CONDITION_ONMOUSEOVER);
 					break;

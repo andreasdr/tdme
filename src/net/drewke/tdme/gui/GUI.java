@@ -11,7 +11,11 @@ import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
 import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
-import net.drewke.tdme.gui.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUIScreenNode;
+import net.drewke.tdme.gui.renderer.GUIFont;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Pool;
 
@@ -41,8 +45,8 @@ public final class GUI implements MouseListener {
 	};
 	private ArrayList<GUIMouseEvent> mouseEvents = new ArrayList<GUIMouseEvent>(); 
 
-	protected int width;
-	protected int height;
+	private int width;
+	private int height;
 
 	/**
 	 * Constructor
@@ -55,6 +59,20 @@ public final class GUI implements MouseListener {
 		this.screens = new HashMap<String, GUIScreenNode>();
 		this.width = 0;
 		this.height = 0;
+	}
+
+	/**
+	 * @return width
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	/**
+	 * @return height
+	 */
+	public int getHeight() {
+		return height;
 	}
 
 	/**
@@ -92,7 +110,7 @@ public final class GUI implements MouseListener {
 	 * @param file name
 	 * @return
 	 */
-	protected static GUIFont getFont(String fileName) {
+	public static GUIFont getFont(String fileName) {
 		// determine key
 		String key = null; 
 		try {
@@ -126,7 +144,7 @@ public final class GUI implements MouseListener {
 	 * @param file name
 	 * @return
 	 */
-	protected static Texture getImage(String fileName) {
+	public static Texture getImage(String fileName) {
 		// determine key
 		String key = null; 
 		try {

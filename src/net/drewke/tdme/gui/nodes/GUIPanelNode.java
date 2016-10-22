@@ -1,6 +1,9 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
+
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
  * GUI Panel
@@ -24,7 +27,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @param background image
 	 * @param alignment
 	 */
-	protected GUIPanelNode(
+	public GUIPanelNode(
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
@@ -53,7 +56,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	protected void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 

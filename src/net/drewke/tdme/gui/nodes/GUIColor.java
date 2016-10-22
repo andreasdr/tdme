@@ -1,6 +1,8 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.nodes;
 
 import java.util.Arrays;
+
+import net.drewke.tdme.gui.GUIParserException;
 
 /**
  * GUI color

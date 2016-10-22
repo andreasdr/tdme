@@ -1,8 +1,13 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.elements;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.gui.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeConditions;
+import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -10,7 +15,7 @@ import net.drewke.tdme.utils.HashMap;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIRadioButtonController extends GUINodeController {
+public final class GUIRadioButtonController extends GUINodeController {
 
 	protected static final String CONDITION_SELECTED = "selected";
 	protected static final String CONDITION_UNSELECTED = "unselected";
@@ -29,12 +34,12 @@ public class GUIRadioButtonController extends GUINodeController {
 
 		// add to nodes
 		//	check if group exists
-		ArrayList<GUIElementNode> radioButtonGroupNodes = radioButtonGroupNodesByName.get(this.node.screenNode.id + "_radiobuttongroup_" + ((GUIElementNode)this.node).name);
+		ArrayList<GUIElementNode> radioButtonGroupNodes = radioButtonGroupNodesByName.get(this.node.getScreenNode().getId() + "_radiobuttongroup_" + ((GUIElementNode)this.node).getName());
 		// nope?
 		if (radioButtonGroupNodes == null) {
 			// ok, create
 			radioButtonGroupNodes = new ArrayList<GUIElementNode>();
-			radioButtonGroupNodesByName.put(node.screenNode.id + "_radiobuttongroup_" + ((GUIElementNode)node).name, radioButtonGroupNodes);
+			radioButtonGroupNodesByName.put(node.getScreenNode().getId() + "_radiobuttongroup_" + ((GUIElementNode)node).getName(), radioButtonGroupNodes);
 		}
 		// add node
 		radioButtonGroupNodes.add((GUIElementNode)node);
@@ -52,12 +57,12 @@ public class GUIRadioButtonController extends GUINodeController {
 	 * @param checked
 	 */
 	public void select() {
-		ArrayList<GUIElementNode> radioButtonGroupNodes = radioButtonGroupNodesByName.get(this.node.screenNode.id + "_radiobuttongroup_" + ((GUIElementNode)this.node).name);
+		ArrayList<GUIElementNode> radioButtonGroupNodes = radioButtonGroupNodesByName.get(this.node.getScreenNode().getId() + "_radiobuttongroup_" + ((GUIElementNode)this.node).getName());
 		// unselect all radio buttons
 		if (radioButtonGroupNodes != null) {
 			for (GUIElementNode radioButtonNode: radioButtonGroupNodes) {
 				GUINodeConditions nodeConditions = radioButtonNode.getActiveConditions();
-				GUIRadioButtonController nodeController = (GUIRadioButtonController)radioButtonNode.controller;
+				GUIRadioButtonController nodeController = (GUIRadioButtonController)radioButtonNode.getController();
 				nodeConditions.remove(nodeController.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 				nodeController.selected = false;
 				nodeConditions.add(nodeController.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);				
@@ -85,7 +90,7 @@ public class GUIRadioButtonController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#dispose()
 	 */
 	public void dispose() {
-		radioButtonGroupNodesByName.remove(this.node.screenNode.id + "_radiobuttongroup_" + ((GUIElementNode)this.node).name);
+		radioButtonGroupNodesByName.remove(this.node.getScreenNode().getId() + "_radiobuttongroup_" + ((GUIElementNode)this.node).getName());
 	}
 
 	/*
@@ -93,10 +98,10 @@ public class GUIRadioButtonController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#handleEvent(net.drewke.tdme.gui.GUINode, net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUINode node, GUIMouseEvent event) {
-		if (node.id.equals(this.node.id) &&
+		if (node.getId().equals(this.node.getId()) &&
 			node.isEventBelongingToNode(event) && 
-			event.type == Type.MOUSE_RELEASED && 
-			event.button == 1) {
+			event.getType() == Type.MOUSE_RELEASED && 
+			event.getButton() == 1) {
 			//
 			select();
 		}

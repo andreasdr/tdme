@@ -1,7 +1,9 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.elements;
 
 import java.io.IOException;
 
+import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
@@ -10,7 +12,7 @@ import net.drewke.tdme.utils.HashMap;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUISelectBoxOption extends GUIElement  {
+public final class GUISelectBoxOption extends GUIElement  {
 
 	private static final String NAME = "selectbox-option";
 
@@ -20,7 +22,7 @@ public class GUISelectBoxOption extends GUIElement  {
 	/**
 	 * Constructor
 	 */
-	protected GUISelectBoxOption() throws IOException {
+	public GUISelectBoxOption() throws IOException {
 		attributes = new HashMap<String, String>();
 		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "selectbox-option.xml");
 	}
@@ -29,7 +31,7 @@ public class GUISelectBoxOption extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#getName()
 	 */
-	protected String getName() {
+	public String getName() {
 		return NAME;
 	}
 
@@ -37,7 +39,7 @@ public class GUISelectBoxOption extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#getTemplate(net.drewke.tdme.utils.HashMap)
 	 */
-	protected String getTemplate() {
+	public String getTemplate() {
 		return template;
 	}
 
@@ -45,7 +47,7 @@ public class GUISelectBoxOption extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#getAttributes()
 	 */
-	protected HashMap<String, String> getAttributes() {
+	public HashMap<String, String> getAttributes() {
 		attributes.clear();
 		attributes.put("id", "");
 		return attributes;
@@ -55,7 +57,7 @@ public class GUISelectBoxOption extends GUIElement  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElement#createController(net.drewke.tdme.gui.GUINode)
 	 */
-	protected GUINodeController createController(GUINode node) {
+	public GUINodeController createController(GUINode node) {
 		return new GUISelectBoxOptionController(node);
 	}
 

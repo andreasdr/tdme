@@ -1,4 +1,4 @@
-package net.drewke.tdme.gui;
+package net.drewke.tdme.gui.renderer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -7,6 +7,8 @@ import java.util.StringTokenizer;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
+import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.os.FileSystem;
 
 /**
@@ -80,8 +82,8 @@ public final class GUIFont {
 		 */
 		protected void draw(GUIRenderer guiRenderer, int x, int y) {
 			// screen dimension
-			float screenWidth = guiRenderer.gui.width;
-			float screenHeight = guiRenderer.gui.height;
+			float screenWidth = guiRenderer.gui.getWidth();
+			float screenHeight = guiRenderer.gui.getHeight();
 
 			// element location and dimensions
 			float left = x + xoffset;
@@ -150,7 +152,7 @@ public final class GUIFont {
 	 * @param font file
 	 * @throws GUIParserException
 	 */
-	protected static GUIFont parse(String pathName, String fileName) throws Exception {
+	public static GUIFont parse(String pathName, String fileName) throws Exception {
 		GUIFont font = new GUIFont();
 
 		// now parse the font file
@@ -243,14 +245,14 @@ public final class GUIFont {
 	/**
 	 * Init
 	 */
-	protected void init() {
+	public void init() {
 		textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
 
 	/**
 	 * Dispose
 	 */
-	protected void dispose() {
+	public void dispose() {
 		Engine.getInstance().getTextureManager().removeTexture(texture.getId());
 	}
 
@@ -262,7 +264,7 @@ public final class GUIFont {
 	 * @param text
 	 * @param color
 	 */
-	protected void drawString(GUIRenderer guiRenderer, int x, int y, String text, GUIColor color) {
+	public void drawString(GUIRenderer guiRenderer, int x, int y, String text, GUIColor color) {
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.setFontColor(color);
 		for (int i=0;i < text.length(); i++) {
@@ -292,7 +294,7 @@ public final class GUIFont {
 	 * @param text The text that is to be tested
 	 * @return The yoffset from the y draw location at which text will start
 	 */
-	protected int getYOffset(String text) {
+	public int getYOffset(String text) {
 		int minYOffset = 10000;
 		for (int i=0;i < text.length(); i++) {
 			int id = text.charAt(i);
@@ -310,7 +312,7 @@ public final class GUIFont {
 	 * @param text
 	 * @return text height
 	 */
-	protected int getTextHeight(String text) {
+	public int getTextHeight(String text) {
 		int maxHeight = 0;
 		for (int i=0;i < text.length();i++) {
 			int id = text.charAt(i);
@@ -331,7 +333,7 @@ public final class GUIFont {
 	 * @param text
 	 * @return text width
 	 */
-	protected int getTextWidth(String text) {
+	public int getTextWidth(String text) {
 		int width = 0;
 		for (int i=0;i < text.length();i++) {
 			int id = text.charAt(i);
@@ -352,7 +354,7 @@ public final class GUIFont {
 	/**
 	 * @return line height
 	 */
-	protected int getLineHeight() {
+	public int getLineHeight() {
 		return lineHeight;
 	}
 	
