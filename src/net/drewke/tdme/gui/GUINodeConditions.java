@@ -47,4 +47,12 @@ public class GUINodeConditions {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "GUINodeConditions [conditions=" + conditions + "]";
+	}
+
 }

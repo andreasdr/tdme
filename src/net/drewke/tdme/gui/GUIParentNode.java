@@ -152,6 +152,32 @@ public abstract class GUIParentNode extends GUINode {
 		}
 	}
 
+	/**
+	 * Get child controller nodes internal
+	 * @param child controller nodes
+	 */
+	private void getChildControllerNodesInternal(ArrayList<GUINode> childControllerNodes) {
+		// dispose sub nodes
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode node = subNodes.get(i);
+			if (node.controller != null) {
+				childControllerNodes.add(node);
+			}
+			if (node instanceof GUIParentNode) {
+				((GUIParentNode)node).getChildControllerNodesInternal(childControllerNodes);
+			}
+		}		
+	}
+
+	/**
+	 * Get child controller nodes
+	 * @param child controller nodes
+	 */
+	protected void getChildControllerNodes(ArrayList<GUINode> childControllerNodes) {
+		childControllerNodes.clear();
+		getChildControllerNodesInternal(childControllerNodes);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#dispose()
@@ -218,8 +244,9 @@ public abstract class GUIParentNode extends GUINode {
 				+ ", requestedConstraints=" + requestedConstraints 
 				+ ", computedConstraints=" + computedConstraints
 				+ ", border=" + border 
-				+ ", padding=" + padding + 
-				"]" + "\n";
+				+ ", padding=" + padding
+				+ ", controller=" + (this.controller != null?"yes":"no")
+				+ "]" + "\n";
 		for (int i = 0; i < subNodes.size(); i++) {
 			tmp+= subNodes.get(i).toString(indent + 1) + (i == subNodes.size() - 1?"":"\n");
 		}

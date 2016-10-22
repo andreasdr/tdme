@@ -54,20 +54,11 @@
 		</panel>
 		<space height="*" />
 		<panel border="1" border-color="blue" padding="10" horizontal-align="center" alignment="none" width="80%">
-			<panel border="1" border-color="black" padding="10" width="100%" height="auto" alignment="vertical" background-color="#f0f0f0">
-				<element width="100%" height="auto">
-					<text width="100%" hide-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 1" color="#000000" />
-					<text width="100%" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 1" color="#000000" background-color="#8080c0" />
-				</element>
-				<element width="100%" height="auto">
-					<text width="100%" hide-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 2" color="#000000" />
-					<text width="100%" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 2" color="#000000" background-color="#8080c0" />
-				</element>
-				<element width="100%" height="auto">
-					<text width="100%" hide-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 3" color="#000000" />
-					<text width="100%" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="Select Entry 3" color="#000000" background-color="#8080c0" />
-				</element>
-			</panel>
+			<selectbox id="select">
+				<selectbox-option id="select1" name="select" text="Select Me!" />
+				<selectbox-option id="select2" name="select" text="Why not selecting me?" />
+				<selectbox-option id="select3" name="select" text="You should select me" />
+			</selectbox>
 		</panel>
 		<space height="*" />
 		<element horizontal-align="center" vertical-align="center">

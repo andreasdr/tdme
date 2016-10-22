@@ -14,6 +14,9 @@ import net.drewke.tdme.utils.HashMap;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 
 /**
  * GUI parser 
@@ -423,15 +426,16 @@ public final class GUIParser {
 					String guiElementAttributeValue = newGuiElementAttributes.get(newGuiElementAttributeKey);
 					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + newGuiElementAttributeKey + "}", guiElementAttributeValue);
 				}
+				newGuiElementTemplate = newGuiElementTemplate.replace("{$innerXml}", getInnerXml(node));
 
 				// create xml document and parse
 				DocumentBuilder newGuiElementBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 				Document newGuiElementDocument = newGuiElementBuilder.parse(
 					new ByteArrayInputStream(
 						new String(
-							"<element>\n" +
+							"<gui-element>\n" +
 							newGuiElementTemplate +
-							"</element>\n"
+							"</gui-element>\n"
 						).getBytes()
 					)
 				);
@@ -460,6 +464,25 @@ public final class GUIParser {
 		return nodeList;
 	}
 
+	/**
+	 * Get inner XML
+	 * 	see: http://stackoverflow.com/questions/3300839/get-a-nodes-inner-xml-as-string-in-java-dom
+	 * @param node
+	 * @return string
+	 */
+	public static String getInnerXml(Node node) {
+	    DOMImplementationLS lsImpl = (DOMImplementationLS)node.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
+	    LSSerializer lsSerializer = lsImpl.createLSSerializer();
+	    NodeList childNodes = node.getChildNodes();
+	    StringBuilder sb = new StringBuilder();
+	    for (int i = 0; i < childNodes.getLength(); i++) {
+	       sb.append(lsSerializer.writeToString(childNodes.item(i)));
+	    }
+	    String result = sb.toString();
+	    result = result.replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>", "");
+	    return result;
+	}
+
 	// 
 	static {
 		elements = new HashMap<String, GUIElement>();
@@ -480,5 +503,20 @@ public final class GUIParser {
 			e.printStackTrace();
 		}
 
+		// add select box
+		try {
+			GUIElement guiSelectBox = new GUISelectBox();
+			elements.put(guiSelectBox.getName(), guiSelectBox);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add select box option
+		try {
+			GUIElement guiSelectBoxOption = new GUISelectBoxOption();
+			elements.put(guiSelectBoxOption.getName(), guiSelectBoxOption);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

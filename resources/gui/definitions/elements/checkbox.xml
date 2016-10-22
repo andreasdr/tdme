@@ -1,6 +1,10 @@
 <element id="{$id}">
+	<!-- unselected, no mouse over -->
 	<image effect-color-mul="#8080A0" hide-on="checked,mouseover" src="resources/gui/images/elements/checkbox/unchecked.png" />
+	<!-- unselected, mouse over -->
 	<image effect-color-mul="#8080FF" hide-on="checked" show-on="mouseover" src="resources/gui/images/elements/checkbox/unchecked.png" />
-	<image effect-color-mul="#8080A0" hide-on="unchecked,ouseover" src="resources/gui/images/elements/checkbox/checked.png" />
+	<!-- selected, no mouse over -->
+	<image effect-color-mul="#8080A0" hide-on="unchecked,mouseover" src="resources/gui/images/elements/checkbox/checked.png" />
+	<!-- selected, mouse over -->
 	<image effect-color-mul="#8080FF" hide-on="unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/checked.png" />
 </element>

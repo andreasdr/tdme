@@ -829,9 +829,23 @@ public abstract class GUINode {
 	 */
 	protected boolean isEventBelongingToNode(GUIMouseEvent event) {
 		return
-			event.x >= computedConstraints.left + computedConstraints.alignmentLeft && event.x <= computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
-			event.y >= computedConstraints.top + computedConstraints.alignmentTop && event.y <= computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
+			event.x >= computedConstraints.left + computedConstraints.alignmentLeft && event.x < computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
+			event.y >= computedConstraints.top + computedConstraints.alignmentTop && event.y < computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
 
+	}
+
+	/**
+	 * @return first parent node in tree with controller node attached
+	 */
+	protected GUINode getParentControllerNode() {
+		// determine first node up the tree with controller
+		GUINode node = this.parentNode;
+		while (node != null && node.controller == null) {
+			node = node.parentNode;
+		}
+
+		//
+		return node;
 	}
 
 	/**
@@ -841,8 +855,8 @@ public abstract class GUINode {
 	public void handleEvent(GUIMouseEvent event) {
 		// determine first node up the tree with controller
 		GUINode node = this;
-		while (node != null && node.controller == null) {
-			node = node.parentNode;
+		if (node.controller == null) {
+			node = getParentControllerNode();
 		}
 
 		// exit if no element node with controller
@@ -898,6 +912,7 @@ public abstract class GUINode {
 			", computedConstraints=" + computedConstraints +
 			", border=" + border + 
 			", padding=" + padding + 
+			", controller=" + (this.controller != null?"yes":"no") +
 			"]";
 	}
 
