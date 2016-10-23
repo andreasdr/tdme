@@ -6,11 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
-import net.drewke.tdme.engine.physics.CollisionDetection;
-import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
