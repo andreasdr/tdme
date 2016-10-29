@@ -267,6 +267,7 @@ public final class GUIFont {
 	public void drawString(GUIRenderer guiRenderer, int x, int y, String text, GUIColor color) {
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.setFontColor(color);
+		y-= getYOffset(text) / 2;
 		for (int i=0;i < text.length(); i++) {
 			int id = text.charAt(i);
 			if (id >= chars.length) {
