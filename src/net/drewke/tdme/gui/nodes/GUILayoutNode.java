@@ -124,13 +124,13 @@ public class GUILayoutNode extends GUIParentNode {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUIParentNode#layout()
+	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#layoutSubNodes()
 	 */
-	protected void layout() {
-		// GUI parent node layout
-		super.layout();
+	protected void layoutSubNodes() {
+		// layout sub nodes first pass
+		super.layoutSubNodes();
 
-		//
+		// layout sub nodes, taking stars into account
 		switch (alignment) {
 			case VERTICAL:
 				{
@@ -148,6 +148,7 @@ public class GUILayoutNode extends GUIParentNode {
 							finalNodesHeight+= guiSubNode.computedConstraints.height;
 						}
 					}
+					// set vertical stars
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
@@ -156,6 +157,10 @@ public class GUILayoutNode extends GUIParentNode {
 								guiSubNode.computedConstraints.height = 0;
 							}
 							finalNodesHeight+= guiSubNode.computedConstraints.height;
+							// layout sub node, sub nodes, second pass
+							if (guiSubNode instanceof GUIParentNode) {
+								((GUIParentNode)guiSubNode).layoutSubNodes();
+							}
 						}
 					}
 
@@ -203,6 +208,7 @@ public class GUILayoutNode extends GUIParentNode {
 							finalNodesWidth+= guiSubNode.computedConstraints.width;
 						}
 					}
+					// set horizontal stars
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
@@ -211,6 +217,10 @@ public class GUILayoutNode extends GUIParentNode {
 								guiSubNode.computedConstraints.width = 0;
 							}
 							finalNodesWidth+= guiSubNode.computedConstraints.width;
+							// layout sub node sub nodes, second pass
+							if (guiSubNode instanceof GUIParentNode) {
+								((GUIParentNode)guiSubNode).layoutSubNodes();
+							}
 						}
 					}
 					

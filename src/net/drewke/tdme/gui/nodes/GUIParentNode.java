@@ -80,8 +80,13 @@ public abstract class GUIParentNode extends GUINode {
 	 */
 	protected void layout() {
 		super.layout();
+		layoutSubNodes();
+	}
 
-		//
+	/**
+	 * Layout sub nodes
+	 */
+	protected void layoutSubNodes() {
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).layout();
 		}
