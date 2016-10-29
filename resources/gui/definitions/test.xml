@@ -6,11 +6,11 @@
 			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</panel>
 		<space height="5%" />
-		<tabs>
+		<tabs width="100%" height="*">
 			<tabs-header>
-				<tab id="tab1" text="Tab 1" />
-				<tab id="tab2" text="Tab 2" />
-				<tab id="tab3" text="Tab 3" />
+				<tab id="tab1" text="Radio + Checkbox" />
+				<tab id="tab2" text="Selectbox" />
+				<tab id="tab3" text="Buttons" />
 			</tabs-header>
 			<tabs-content>
 				<tab-content tab-id="tab1">

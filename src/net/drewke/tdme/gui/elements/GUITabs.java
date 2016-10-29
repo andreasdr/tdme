@@ -49,6 +49,8 @@ public class GUITabs extends GUIElement {
 	 */
 	public HashMap<String, String> getAttributes() {
 		attributes.clear();
+		attributes.put("width", "100%");
+		attributes.put("height", "*");
 		return attributes;
 	}
 
