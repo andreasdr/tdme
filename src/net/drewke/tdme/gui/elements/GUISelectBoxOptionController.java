@@ -79,7 +79,7 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	public void handleEvent(GUINode node, GUIMouseEvent event) {
 		if (node.getId().equals(this.node.getId()) &&
 			node.isEventBelongingToNode(event) && 
-			event.getType() == Type.MOUSE_RELEASED && 
+			event.getType() == Type.MOUSE_PRESSED && 
 			event.getButton() == 1) {
 			//
 			((GUISelectBoxController)selectBoxNode.getController()).unselect();
