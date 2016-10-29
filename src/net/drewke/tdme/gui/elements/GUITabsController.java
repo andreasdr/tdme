@@ -8,7 +8,7 @@ import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 
 /**
- * GUI select box controller
+ * GUI tabs controller
  * @author Andreas Drewke
  * @version $Id$
  */
@@ -42,6 +42,7 @@ public final class GUITabsController extends GUINodeController {
 	 * Unselect all tab nodes
 	 */
 	protected void unselect() {
+		// unselect tabs (header)
 		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
 		for (int i = 0; i < childControllerNodes.size(); i++) {
 			GUINode childControllerNode = childControllerNodes.get(i);
@@ -57,6 +58,7 @@ public final class GUITabsController extends GUINodeController {
 	 * @param id
 	 */
 	protected void setTabContentSelected(String id) {
+		// select selected content tab, unselect other content tabs
 		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
 		for (int i = 0; i < childControllerNodes.size(); i++) {
 			GUINode childControllerNode = childControllerNodes.get(i);

@@ -9,7 +9,7 @@ import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 
 /**
- * GUI tab controller
+ * GUI tab content controller
  * @author Andreas Drewke
  * @version $Id$
  */
