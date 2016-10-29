@@ -5,86 +5,113 @@
 		<panel width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">
 			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</panel>
-		<space height="*" />
-		<panel border="1" border-color="green" padding="10" horizontal-align="center" alignment="horizontal" width="80%">
-			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
-				<panel padding="2" width="100%" alignment="horizontal">
-					<checkbox id="checkbox1" />
-					<space width="10" />
-					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" />
+		<space height="5%" />
+		<panel id="a" alignment="vertical" width="100%" height="*">
+			<layout alignment="horizontal" width="100%" height="auto">
+				<element width="*" height="auto">
+					<text width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="Tab 1" color="#000000" background-color="#f0f0f0" />
+				</element>
+				<element width="*" height="auto">
+					<text width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="Tab 2" color="#000000" background-color="#f0f0f0" />
+				</element>
+				<element width="*" height="auto">
+					<text width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="Tab 3" color="#000000" background-color="#f0f0f0" />
+				</element>
+			</layout>
+			<element id="b" width="100%" height="*" background-color="#f0f0f0">
+				<panel show-on="tab1" width="100%" height="100%" alignment="none">
+					<panel border="1" width="100%" height="100%" border-color="green" padding="10" horizontal-align="center" alignment="horizontal">
+						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+							<panel padding="2" width="100%" alignment="horizontal">
+								<checkbox id="checkbox1" />
+								<space width="10" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" />
+							</panel>
+							<panel padding="2" width="100%" alignment="horizontal">
+								<checkbox id="checkbox2" />
+								<space width="10" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" />
+							</panel>
+							<panel padding="2" width="100%" alignment="horizontal">
+								<checkbox id="checkbox3" />
+								<space width="10" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" />
+							</panel>
+						</panel>
+						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+							<panel padding="2" width="100%" alignment="horizontal">
+								<radiobutton id="radio1" value="radio" />
+								<space width="10" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
+							</panel>
+							<panel padding="2" width="100%" alignment="horizontal">
+								<radiobutton id="radio2" value="radio" />
+								<space width="10" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
+							</panel>
+							<panel padding="2" width="100%" alignment="horizontal">
+								<radiobutton id="radio3" value="radio" />
+								<space width="10" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
+							</panel>
+						</panel>
+					</panel>
 				</panel>
-				<panel padding="2" width="100%" alignment="horizontal">
-					<checkbox id="checkbox2" />
-					<space width="10" />
-					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" />
+				<panel show-on="tab2" width="100%" height="100%" alignment="none">
+					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%">
+						<space height="*" />
+						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
+							<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
+								<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
+								<space width="10" />
+								<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
+								<space width="10" />
+								<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
+							</panel>
+						</panel>
+						<space height="*" />
+						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
+							<selectbox id="select">
+								<selectbox-option id="select1" name="select" text="Select Me!" />
+								<selectbox-option id="select2" name="select" text="Why not selecting me?" />
+								<selectbox-option id="select3" name="select" text="You should select me" />
+							</selectbox>
+						</panel>
+						<space height="*" />
+					</panel>
 				</panel>
-				<panel padding="2" width="100%" alignment="horizontal">
-					<checkbox id="checkbox3" />
-					<space width="10" />
-					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" />
+				<panel show-on="tab3, always" width="100%" height="100%" alignment="none">
+					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
+						<space height="*" />
+						<element horizontal-align="center" vertical-align="center">
+							<image hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
+							<image show-on="mouseover" src="resources/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
+							<image show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
+							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+						</element>
+						<space height="*" />
+						<element horizontal-align="center" vertical-align="center">
+							<panel border-color="#a0a0a0" border="2" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
+								<space width="*" />
+								<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button A!" color="#000000" horizontal-align="left" vertical-align="center" />
+								<space width="*" />
+							</panel>
+							<panel border-color="#e0e0e0" border="2" padding="10" show-on="mouseover" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0">
+								<space width="*" />
+								<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button B!" color="#000000" horizontal-align="center" vertical-align="center" />
+								<space width="*" />
+							</panel>
+							<panel border-color="#ffffff" border="2" padding="10" show-on="click" alignment="horizontal" horizontal-align="center" background-color="#f0a0a0">
+								<space width="*" />
+								<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button C!" color="#000000" horizontal-align="right" vertical-align="center" />
+								<space width="*" />
+							</panel>
+						</element>
+						<space height="*" />
+					</panel>
 				</panel>
-			</panel>
-			<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
-				<panel padding="2" width="100%" alignment="horizontal">
-					<radiobutton id="radio1" value="radio" />
-					<space width="10" />
-					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
-				</panel>
-				<panel padding="2" width="100%" alignment="horizontal">
-					<radiobutton id="radio2" value="radio" />
-					<space width="10" />
-					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
-				</panel>
-				<panel padding="2" width="100%" alignment="horizontal">
-					<radiobutton id="radio3" value="radio" />
-					<space width="10" />
-					<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
-				</panel>
-			</panel>
+			</element>
 		</panel>
-		<space height="*" />
-		<panel border="1" border-color="blue" padding="10" horizontal-align="center" alignment="none" width="80%">
-			<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
-				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
-				<space width="10" />
-				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
-				<space width="10" />
-				<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
-			</panel>
-		</panel>
-		<space height="*" />
-		<panel border="1" border-color="blue" padding="10" horizontal-align="center" alignment="none" width="80%">
-			<selectbox id="select">
-				<selectbox-option id="select1" name="select" text="Select Me!" />
-				<selectbox-option id="select2" name="select" text="Why not selecting me?" />
-				<selectbox-option id="select3" name="select" text="You should select me" />
-			</selectbox>
-		</panel>
-		<space height="*" />
-		<element horizontal-align="center" vertical-align="center">
-			<image hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
-			<image show-on="mouseover" src="resources/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
-			<image show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
-			<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
-		</element>
-		<space height="*" />
-		<element horizontal-align="center" vertical-align="center">
-			<panel border-color="#a0a0a0" border="2" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
-				<space width="*" />
-				<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button A!" color="#000000" horizontal-align="left" vertical-align="center" />
-				<space width="*" />
-			</panel>
-			<panel border-color="#e0e0e0" border="2" padding="10" show-on="mouseover" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0">
-				<space width="*" />
-				<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button B!" color="#000000" horizontal-align="center" vertical-align="center" />
-				<space width="*" />
-			</panel>
-			<panel border-color="#ffffff" border="2" padding="10" show-on="click" alignment="horizontal" horizontal-align="center" background-color="#f0a0a0">
-				<space width="*" />
-				<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button C!" color="#000000" horizontal-align="right" vertical-align="center" />
-				<space width="*" />
-			</panel>
-		</element>
 		<space height="5%" />
 	</panel>
 </screen>
