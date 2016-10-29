@@ -203,7 +203,7 @@ public abstract class GUINode {
 	/**
 	 * @return parent node
 	 */
-	protected GUIParentNode getParentNode() {
+	public GUIParentNode getParentNode() {
 		return parentNode;
 	}
 	
@@ -509,7 +509,6 @@ public abstract class GUINode {
 			return new GUIColor(color);
 		}
 	}
-
 
 	/**
 	 * Create border

@@ -1,0 +1,3 @@
+<layout alignment="horizontal" width="100%" height="auto">
+	{$innerXml}
+</layout>

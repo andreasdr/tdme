@@ -20,6 +20,13 @@ public abstract class GUINodeController {
 	}
 
 	/**
+	 * @return node
+	 */
+	public GUINode getNode() {
+		return node;
+	}
+
+	/**
 	 * Initialize controller after element has been created
 	 */
 	public abstract void init();

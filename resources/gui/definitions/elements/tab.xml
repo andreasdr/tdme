@@ -1,0 +1,10 @@
+<element id="{$id}" width="*" height="auto">
+	<!-- unselected, no mouse over -->
+	<text background-color="#8080A0" hide-on="selected,mouseover" width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<!-- unselected, mouse over -->
+	<text background-color="#8080FF" hide-on="selected" show-on="mouseover" width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<!-- selected, no mouse over -->
+	<text background-color="#F0F0F0" hide-on="unselected,mouseover" width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<!-- selected, mouse over -->
+	<text background-color="#F0F0FF" hide-on="unselected" show-on="mouseover" width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+</element>

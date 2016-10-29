@@ -6,21 +6,15 @@
 			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</panel>
 		<space height="5%" />
-		<panel id="a" alignment="vertical" width="100%" height="*">
-			<layout alignment="horizontal" width="100%" height="auto">
-				<element width="*" height="auto">
-					<text width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="Tab 1" color="#000000" background-color="#f0f0f0" />
-				</element>
-				<element width="*" height="auto">
-					<text width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="Tab 2" color="#000000" background-color="#f0f0f0" />
-				</element>
-				<element width="*" height="auto">
-					<text width="100%" padding="10" horizontal-align="center" border="1" border-color="black" font="resources/gui/fonts/Foo_25.fnt" text="Tab 3" color="#000000" background-color="#f0f0f0" />
-				</element>
-			</layout>
-			<element id="b" width="100%" height="*" background-color="#f0f0f0">
-				<panel show-on="tab1" width="100%" height="100%" alignment="none">
-					<panel border="1" width="100%" height="100%" border-color="green" padding="10" horizontal-align="center" alignment="horizontal">
+		<tabs>
+			<tabs-header>
+				<tab id="tab1" text="Tab 1" />
+				<tab id="tab2" text="Tab 2" />
+				<tab id="tab3" text="Tab 3" />
+			</tabs-header>
+			<tabs-content>
+				<tab-content tab-id="tab1">
+					<panel width="100%" height="100%" padding="10" horizontal-align="center" alignment="horizontal">
 						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
 							<panel padding="2" width="100%" alignment="horizontal">
 								<checkbox id="checkbox1" />
@@ -56,8 +50,8 @@
 							</panel>
 						</panel>
 					</panel>
-				</panel>
-				<panel show-on="tab2" width="100%" height="100%" alignment="none">
+				</tab-content>
+				<tab-content tab-id="tab2">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%">
 						<space height="*" />
 						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
@@ -79,8 +73,8 @@
 						</panel>
 						<space height="*" />
 					</panel>
-				</panel>
-				<panel show-on="tab3, always" width="100%" height="100%" alignment="none">
+				</tab-content>
+				<tab-content tab-id="tab3">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
 						<space height="*" />
 						<element horizontal-align="center" vertical-align="center">
@@ -109,9 +103,8 @@
 						</element>
 						<space height="*" />
 					</panel>
-				</panel>
-			</element>
-		</panel>
-		<space height="5%" />
+				</tab-content>
+			</tabs-content>
+		</tabs>
 	</panel>
 </screen>

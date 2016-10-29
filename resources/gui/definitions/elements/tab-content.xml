@@ -1,0 +1,3 @@
+<panel id="{$tab-id}-content" show-on="{$tab-id}-content-selected" width="100%" height="100%" alignment="none">
+	{$innerXml}
+</panel>

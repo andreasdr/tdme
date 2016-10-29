@@ -1,0 +1,3 @@
+<panel alignment="vertical" width="100%" height="*">
+	{$innerXml}
+</panel>

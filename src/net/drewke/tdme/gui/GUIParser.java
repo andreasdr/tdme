@@ -13,6 +13,11 @@ import net.drewke.tdme.gui.elements.GUIElement;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
 import net.drewke.tdme.gui.elements.GUISelectBox;
 import net.drewke.tdme.gui.elements.GUISelectBoxOption;
+import net.drewke.tdme.gui.elements.GUITab;
+import net.drewke.tdme.gui.elements.GUITabContent;
+import net.drewke.tdme.gui.elements.GUITabs;
+import net.drewke.tdme.gui.elements.GUITabsContent;
+import net.drewke.tdme.gui.elements.GUITabsHeader;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIImageNode;
@@ -505,32 +510,72 @@ public final class GUIParser {
 
 		// add check box
 		try {
-			GUIElement guiCheckbox = new GUICheckbox();
-			elements.put(guiCheckbox.getName(), guiCheckbox);
+			GUIElement guiElement = new GUICheckbox();
+			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// add radio button
 		try {
-			GUIElement guiRadioButton = new GUIRadioButton();
-			elements.put(guiRadioButton.getName(), guiRadioButton);
+			GUIElement guiElement = new GUIRadioButton();
+			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// add select box
 		try {
-			GUIElement guiSelectBox = new GUISelectBox();
-			elements.put(guiSelectBox.getName(), guiSelectBox);
+			GUIElement guiElement = new GUISelectBox();
+			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// add select box option
 		try {
-			GUIElement guiSelectBoxOption = new GUISelectBoxOption();
-			elements.put(guiSelectBoxOption.getName(), guiSelectBoxOption);
+			GUIElement guiElement = new GUISelectBoxOption();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add tabs
+		try {
+			GUIElement guiElement = new GUITabs();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add tabs-header
+		try {
+			GUIElement guiElement = new GUITabsHeader();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add tab
+		try {
+			GUIElement guiElement = new GUITab();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add tab-contents
+		try {
+			GUIElement guiElement = new GUITabsContent();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add tab-content
+		try {
+			GUIElement guiElement = new GUITabContent();
+			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
