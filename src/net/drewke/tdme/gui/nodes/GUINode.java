@@ -585,7 +585,7 @@ public abstract class GUINode {
 		GUINodeConditions guiNodeConditions = new GUINodeConditions();
 		StringTokenizer t = new StringTokenizer(conditions, ",");
 		while (t.hasMoreTokens()) {
-			guiNodeConditions.add(t.nextToken());
+			guiNodeConditions.add(t.nextToken().trim());
 		}
 		return guiNodeConditions;
 	}
