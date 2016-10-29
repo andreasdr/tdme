@@ -50,6 +50,9 @@ public final class GUISelectBox extends GUIElement  {
 	public HashMap<String, String> getAttributes() {
 		attributes.clear();
 		attributes.put("id", "");
+		attributes.put("width", "100%");
+		attributes.put("height", "auto");
+		attributes.put("padding", "10");
 		return attributes;
 	}
 

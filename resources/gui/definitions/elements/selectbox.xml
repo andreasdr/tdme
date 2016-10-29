@@ -1,3 +1,3 @@
-<panel id="{$id}" border="1" border-color="black" padding="10" width="100%" height="auto" alignment="vertical" background-color="#f0f0f0">
+<panel id="{$id}" border="1" border-color="black" padding="{$padding}" width="{$width}" height="{$height}" alignment="vertical" background-color="#f0f0f0">
 	{$innerXml}
 </panel>
