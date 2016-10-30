@@ -13,7 +13,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUITabController extends GUINodeController {
+public final class GUITabController extends GUINodeController {
 
 	protected static final String CONDITION_SELECTED = "selected";
 	protected static final String CONDITION_UNSELECTED = "unselected";

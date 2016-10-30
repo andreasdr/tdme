@@ -12,7 +12,7 @@ import net.drewke.tdme.utils.HashMap;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUITabsHeader extends GUIElement {
+public final class GUITabsHeader extends GUIElement {
 
 	private static final String NAME = "tabs-header";
 
