@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.drewke.tdme.gui.elements.GUIButton;
 import net.drewke.tdme.gui.elements.GUICheckbox;
 import net.drewke.tdme.gui.elements.GUIElement;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
@@ -575,6 +576,14 @@ public final class GUIParser {
 		// add tab-content
 		try {
 			GUIElement guiElement = new GUITabContent();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add button
+		try {
+			GUIElement guiElement = new GUIButton();
 			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();

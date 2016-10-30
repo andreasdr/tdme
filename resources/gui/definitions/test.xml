@@ -84,23 +84,7 @@
 							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 						</element>
 						<space height="*" />
-						<element horizontal-align="center" vertical-align="center">
-							<panel border-color="#a0a0a0" border="2" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" background-color="#e0e0e0">
-								<space width="*" />
-								<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button A!" color="#000000" horizontal-align="left" vertical-align="center" />
-								<space width="*" />
-							</panel>
-							<panel border-color="#e0e0e0" border="2" padding="10" show-on="mouseover" alignment="horizontal" horizontal-align="center" background-color="#f0f0f0">
-								<space width="*" />
-								<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button B!" color="#000000" horizontal-align="center" vertical-align="center" />
-								<space width="*" />
-							</panel>
-							<panel border-color="#ffffff" border="2" padding="10" show-on="click" alignment="horizontal" horizontal-align="center" background-color="#f0a0a0">
-								<space width="*" />
-								<text width="200" font="resources/gui/fonts/Foo_25.fnt" text="Text Button C!" color="#000000" horizontal-align="right" vertical-align="center" />
-								<space width="*" />
-							</panel>
-						</element>
+						<button id="test_text_button" text="Test text button" />
 						<space height="*" />
 					</panel>
 				</tab-content>

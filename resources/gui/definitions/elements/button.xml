@@ -1,0 +1,20 @@
+<element width="auto" height="auto" horizontal-align="center" vertical-align="center">
+	<!-- unselected, no mouse over -->
+	<panel width="{$width}" height="{$height}" border-color="#000000" border="1" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
+		<space width="*" />
+		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
+		<space width="*" />
+	</panel>
+	<!-- mouse over -->
+	<panel width="{$width}" height="{$height}" border-color="#000000" border="1" padding="10" show-on="mouseover" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080FF">
+		<space width="*" />
+		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
+		<space width="*" />
+	</panel>
+	<!-- clicked -->
+	<panel width="{$width}" height="{$height}" border-color="#000000" border="1" padding="10" show-on="click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#A0A0FF">
+		<space width="*" />
+		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
+		<space width="*" />
+	</panel>
+</element>
