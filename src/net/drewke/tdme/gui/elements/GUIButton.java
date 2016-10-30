@@ -12,7 +12,7 @@ import net.drewke.tdme.utils.HashMap;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIButton extends GUIElement {
+public final class GUIButton extends GUIElement {
 
 	private static final String NAME = "button";
 
