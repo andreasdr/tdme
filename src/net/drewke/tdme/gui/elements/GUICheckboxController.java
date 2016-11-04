@@ -66,7 +66,7 @@ public final class GUICheckboxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#handleEvent(net.drewke.tdme.gui.GUINode, net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUINode node, GUIMouseEvent event) {
-		if (node.getId().equals(this.node.getId()) &&
+		if (node == this.node &&
 			node.isEventBelongingToNode(event) && 
 			event.getType() == Type.MOUSE_RELEASED && 
 			event.getButton() == 1) {

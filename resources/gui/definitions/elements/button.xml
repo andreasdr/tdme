@@ -1,4 +1,4 @@
-<element width="auto" height="auto" horizontal-align="center" vertical-align="center">
+<element id="{$id}" width="auto" height="auto" horizontal-align="center" vertical-align="center">
 	<!-- unselected, no mouse over -->
 	<panel border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" width="{$width}" height="{$height}" border-color="#000000" border="2" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
 		<space width="*" />

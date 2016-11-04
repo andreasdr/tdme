@@ -39,12 +39,12 @@ public final class GUIButtonController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#handleEvent(net.drewke.tdme.gui.GUINode, net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUINode node, GUIMouseEvent event) {
-		if (node.getId().equals(this.node.getId()) &&
+		if (node == this.node &&
 			node.isEventBelongingToNode(event) && 
 			event.getType() == Type.MOUSE_RELEASED && 
 			event.getButton() == 1) {
 			//
-			System.out.println("BUTTON CLICKED");
+			System.out.println(node.getId() + ": BUTTON CLICKED");
 		}
 	}
 
