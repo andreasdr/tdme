@@ -81,7 +81,7 @@ public final class GUIParser {
 				xmlRoot.getAttribute("height")
 			),
 			GUINode.getRequestedColor(xmlRoot.getAttribute("background-color"), GUIColor.TRANSPARENT),
-			GUIParentNode.createBorder(
+			GUINode.createBorder(
 				xmlRoot.getAttribute("border"), 
 				xmlRoot.getAttribute("border-left"), 
 				xmlRoot.getAttribute("border-top"), 
@@ -93,7 +93,7 @@ public final class GUIParser {
 				xmlRoot.getAttribute("border-color-right"), 
 				xmlRoot.getAttribute("border-color-bottom")
 			),
-			GUIParentNode.createPadding(
+			GUINode.createPadding(
 				xmlRoot.getAttribute("padding"), 
 				xmlRoot.getAttribute("padding-left"), 
 				xmlRoot.getAttribute("padding-top"), 
@@ -139,7 +139,7 @@ public final class GUIParser {
 						node.getAttribute("height")
 					),
 					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
-					GUIParentNode.createBorder(
+					GUINode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
 						node.getAttribute("border-top"), 
@@ -151,7 +151,7 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createPadding(
+					GUINode.createPadding(
 						node.getAttribute("padding"), 
 						node.getAttribute("padding-left"), 
 						node.getAttribute("padding-top"), 
@@ -191,7 +191,7 @@ public final class GUIParser {
 						node.getAttribute("height")
 					),
 					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
-					GUIParentNode.createBorder(
+					GUINode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
 						node.getAttribute("border-top"), 
@@ -203,7 +203,7 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createPadding(
+					GUINode.createPadding(
 						node.getAttribute("padding"), 
 						node.getAttribute("padding-left"), 
 						node.getAttribute("padding-top"), 
@@ -240,7 +240,7 @@ public final class GUIParser {
 						node.getAttribute("height")
 					),
 					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
-					GUIParentNode.createBorder(
+					GUINode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
 						node.getAttribute("border-top"), 
@@ -252,7 +252,7 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createPadding(
+					GUINode.createPadding(
 						node.getAttribute("padding"), 
 						node.getAttribute("padding-left"), 
 						node.getAttribute("padding-top"), 
@@ -292,7 +292,7 @@ public final class GUIParser {
 						node.getAttribute("height")
 					),
 					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
-					GUIParentNode.createBorder(
+					GUINode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
 						node.getAttribute("border-top"), 
@@ -304,7 +304,7 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createPadding(
+					GUINode.createPadding(
 						node.getAttribute("padding"), 
 						node.getAttribute("padding-left"), 
 						node.getAttribute("padding-top"), 
@@ -344,7 +344,7 @@ public final class GUIParser {
 						node.getAttribute("height")
 					),
 					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
-					GUIParentNode.createBorder(
+					GUINode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
 						node.getAttribute("border-top"), 
@@ -356,7 +356,7 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createPadding(
+					GUINode.createPadding(
 						node.getAttribute("padding"), 
 						node.getAttribute("padding-left"), 
 						node.getAttribute("padding-top"), 
@@ -396,7 +396,7 @@ public final class GUIParser {
 						node.getAttribute("height")
 					),
 					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
-					GUIParentNode.createBorder(
+					GUINode.createBorder(
 						node.getAttribute("border"), 
 						node.getAttribute("border-left"), 
 						node.getAttribute("border-top"), 
@@ -408,7 +408,7 @@ public final class GUIParser {
 						node.getAttribute("border-color-right"), 
 						node.getAttribute("border-color-bottom")
 					),
-					GUIParentNode.createPadding(
+					GUINode.createPadding(
 						node.getAttribute("padding"), 
 						node.getAttribute("padding-left"), 
 						node.getAttribute("padding-top"), 
