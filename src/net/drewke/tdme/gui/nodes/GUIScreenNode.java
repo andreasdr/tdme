@@ -1,7 +1,10 @@
 package net.drewke.tdme.gui.nodes;
 
+import java.util.ArrayList;
+
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -15,6 +18,8 @@ public final class GUIScreenNode extends GUIParentNode {
 	private int screenHeight;
 
 	private HashMap<String, GUINode> nodesById;
+
+	private ArrayList<GUINode> floatingNodes;
 
 	/**
 	 * Constructor
@@ -44,6 +49,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.screenWidth = 0;
 		this.screenHeight = 0;
 		this.nodesById = new HashMap<String, GUINode>();
+		this.floatingNodes = new ArrayList<GUINode>();
 	}
 
 	/**
@@ -141,6 +147,17 @@ public final class GUIScreenNode extends GUIParentNode {
 		// nope, add node
 		nodesById.put(node.getId(), node);
 		return true;
+	}
+
+	/**
+	 * Render
+	 * @param guiRenderer
+	 */
+	public void render(GUIRenderer guiRenderer) {
+		super.render(guiRenderer, floatingNodes);
+		for (int i = 0; i < floatingNodes.size(); i++) {
+			floatingNodes.get(i).render(guiRenderer, null);
+		}
 	}
 
 }

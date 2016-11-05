@@ -110,9 +110,9 @@ public final class GUISpaceNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	public void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// call parent renderer
-		super.render(guiRenderer);
+		super.render(guiRenderer, floatingNodes);
 	}
 
 	/*

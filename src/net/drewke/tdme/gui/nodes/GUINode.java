@@ -663,8 +663,9 @@ public abstract class GUINode {
 	 * Render
 	 * 
 	 * @param gui renderer
+	 * @param floating nodes
 	 */
-	public void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// screen dimension
 		float screenWidth = guiRenderer.getGUI().getWidth();
 		float screenHeight = guiRenderer.getGUI().getHeight();

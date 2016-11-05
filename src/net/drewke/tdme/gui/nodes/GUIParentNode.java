@@ -205,16 +205,22 @@ public abstract class GUIParentNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
-	public void render(GUIRenderer guiRenderer) {
+	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// check if conditions apply
 		if (checkConditions() == false) return;
 
 		// call parent renderer
-		super.render(guiRenderer);
+		super.render(guiRenderer, floatingNodes);
 
 		//
 		for (int i = 0; i < subNodes.size(); i++) {
-			subNodes.get(i).render(guiRenderer);
+			GUINode guiSubNode = subNodes.get(i);
+			// render floating nodes later
+			if (guiSubNode.flow == Flow.FLOATING) {
+				floatingNodes.add(guiSubNode);
+				continue;
+			}
+			guiSubNode.render(guiRenderer, floatingNodes);
 		}
 	}
 
