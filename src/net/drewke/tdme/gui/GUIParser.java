@@ -160,7 +160,7 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("alignment")
+					GUILayoutNode.createAlignment(node.getAttribute("alignment"))
 				);
 				guiParentNode.getSubNodes().add(guiLayoutNode);
 				if (guiScreenNode.addNode(guiLayoutNode) == false) {
@@ -261,7 +261,7 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("alignment")
+					GUILayoutNode.createAlignment(node.getAttribute("alignment"))
 				);
 				guiParentNode.getSubNodes().add(guiPanelNode);
 				if (guiScreenNode.addNode(guiPanelNode) == false) {

@@ -401,12 +401,10 @@ public abstract class GUINode {
 	}
 
 	/**
-	 * Create requested constraints
-	 * @param left
-	 * @param top
-	 * @param width
-	 * @param height
-	 * @return requested constraints
+	 * Create alignments
+	 * @param horizontal
+	 * @param vertical
+	 * @return alignments
 	 */
 	public static Alignments createAlignments(String horizontal, String vertical) {
 		Alignments alignments = new Alignments();

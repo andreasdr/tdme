@@ -1,6 +1,9 @@
 package net.drewke.tdme.gui.nodes;
 
 import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.nodes.GUINode.AlignmentHorizontal;
+import net.drewke.tdme.gui.nodes.GUINode.AlignmentVertical;
+import net.drewke.tdme.gui.nodes.GUINode.Alignments;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 public class GUILayoutNode extends GUIParentNode {
@@ -36,11 +39,11 @@ public class GUILayoutNode extends GUIParentNode {
 		Padding padding, 
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn, 
-		String alignment
+		Alignment alignment
 		) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
-		this.alignment = Alignment.valueOf(alignment.toUpperCase());
+		this.alignment = alignment;
 	}
 
 	/**
@@ -301,6 +304,15 @@ public class GUILayoutNode extends GUIParentNode {
 				left+= guiSubNode.computedConstraints.width;
 			}
 		}
+	}
+
+	/**
+	 * Create alignment
+	 * @param alignment
+	 * @return alignment
+	 */
+	public static Alignment createAlignment(String alignment) {
+		return Alignment.valueOf(alignment != null && alignment.length() > 0?alignment.toUpperCase():"NONE");
 	}
 
 }

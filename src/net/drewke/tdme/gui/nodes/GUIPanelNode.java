@@ -38,7 +38,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 		Padding padding, 
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn,
-		String alignment) 
+		Alignment alignment) 
 		throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn, alignment);
