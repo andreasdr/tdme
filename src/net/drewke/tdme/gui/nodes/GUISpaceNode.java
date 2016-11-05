@@ -18,6 +18,7 @@ public final class GUISpaceNode extends GUINode {
 	 * @param screen node
 	 * @param parent node
 	 * @param id
+	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -29,6 +30,7 @@ public final class GUISpaceNode extends GUINode {
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
+		Flow flow,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -38,7 +40,7 @@ public final class GUISpaceNode extends GUINode {
 		GUINodeConditions hideOn
 		) {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 	}
 
 	/**

@@ -69,7 +69,8 @@ public final class GUIParser {
 		}
 		guiScreenNode = new GUIScreenNode(
 			null, 
-			xmlRoot.getAttribute("id"), 
+			xmlRoot.getAttribute("id"),
+			GUINode.createFlow(xmlRoot.getAttribute("flow")),
 			GUINode.createAlignments(
 				xmlRoot.getAttribute("horizontal-align"), 
 				xmlRoot.getAttribute("vertical-align")							
@@ -127,7 +128,8 @@ public final class GUIParser {
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(
 					guiScreenNode,
 					guiParentNode, 
-					node.getAttribute("id"), 
+					node.getAttribute("id"),
+					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -180,6 +182,7 @@ public final class GUIParser {
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"),
+					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -229,6 +232,7 @@ public final class GUIParser {
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -281,6 +285,7 @@ public final class GUIParser {
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -333,6 +338,7 @@ public final class GUIParser {
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"),
+					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -385,6 +391,7 @@ public final class GUIParser {
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
+					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							

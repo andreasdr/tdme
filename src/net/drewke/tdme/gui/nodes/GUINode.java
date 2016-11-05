@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.nodes.GUILayoutNode.Alignment;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
@@ -15,6 +16,7 @@ import net.drewke.tdme.gui.renderer.GUIRenderer;
  */
 public abstract class GUINode {
 
+	enum Flow {INTEGRATED, FLOATING};
 	enum AlignmentHorizontal {LEFT, CENTER, RIGHT};
 	enum AlignmentVertical {TOP, CENTER, BOTTOM};
 
@@ -137,6 +139,7 @@ public abstract class GUINode {
 	protected GUIScreenNode screenNode;
 	protected GUIParentNode parentNode;
 	protected String id;
+	protected Flow flow;
 	protected Alignments alignments;
 	protected RequestedConstraints requestedConstraints;
 	protected ComputedConstraints computedConstraints;
@@ -154,6 +157,7 @@ public abstract class GUINode {
 	 * @param screen node
 	 * @param parent node
 	 * @param id
+	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -165,6 +169,7 @@ public abstract class GUINode {
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
+		Flow flow,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -177,6 +182,7 @@ public abstract class GUINode {
 		this.screenNode = screenNode;
 		this.parentNode = parentNode;
 		this.id = id;
+		this.flow = flow;
 		this.alignments = alignments;
 		this.requestedConstraints = requestedConstraints;
 		this.computedConstraints = new ComputedConstraints();
@@ -506,6 +512,15 @@ public abstract class GUINode {
 		} else{
 			return new GUIColor(color);
 		}
+	}
+
+	/**
+	 * Create flow
+	 * @param flow
+	 * @return flow
+	 */
+	public static Flow createFlow(String flow) {
+		return Flow.valueOf(flow != null && flow.length() > 0?flow.toUpperCase():"INTEGRATED");
 	}
 
 	/**

@@ -53,6 +53,9 @@ public final class GUISelectBox extends GUIElement  {
 		attributes.put("width", "100%");
 		attributes.put("height", "auto");
 		attributes.put("padding", "10");
+		attributes.put("show-on", "");
+		attributes.put("flow", "integrated");
+		attributes.put("border-top", "1");
 		return attributes;
 	}
 

@@ -24,6 +24,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param screen node
 	 * @param parent node
 	 * @param id
+	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -37,6 +38,7 @@ public final class GUIElementNode extends GUIParentNode {
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
+		Flow flow,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -47,7 +49,7 @@ public final class GUIElementNode extends GUIParentNode {
 		String name
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		// name
 		this.name = name;
 	}

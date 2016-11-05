@@ -21,6 +21,7 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param screen node
 	 * @param parent node
 	 * @param id
+	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -34,6 +35,7 @@ public abstract class GUIParentNode extends GUINode {
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
+		Flow flow,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -43,7 +45,7 @@ public abstract class GUIParentNode extends GUINode {
 		GUINodeConditions hideOn
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		subNodes = new ArrayList<GUINode>();
 	}
 

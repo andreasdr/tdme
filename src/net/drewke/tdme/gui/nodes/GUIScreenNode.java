@@ -1,7 +1,5 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.utils.HashMap;
@@ -22,6 +20,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * Constructor
 	 * @param parent node
 	 * @param id
+	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -32,6 +31,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	public GUIScreenNode(
 		GUIParentNode parentNode, 
 		String id, 
+		Flow flow,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -40,7 +40,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn
 		) throws GUIParserException {
-		super(null, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(null, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.screenWidth = 0;
 		this.screenHeight = 0;
 		this.nodesById = new HashMap<String, GUINode>();

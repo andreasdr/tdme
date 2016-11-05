@@ -17,6 +17,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param screen node
 	 * @param parent node
 	 * @param id
+	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -31,6 +32,7 @@ public class GUILayoutNode extends GUIParentNode {
 		GUIScreenNode screenNode,
 		GUIParentNode parentNode, 
 		String id, 
+		Flow flow,
 		Alignments alignments, 
 		RequestedConstraints 
 		requestedConstraints,
@@ -42,7 +44,7 @@ public class GUILayoutNode extends GUIParentNode {
 		Alignment alignment
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.alignment = alignment;
 	}
 
@@ -71,11 +73,24 @@ public class GUILayoutNode extends GUIParentNode {
 		if (alignment == Alignment.HORIZONTAL) {
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiSubNode = subNodes.get(i);
+				
+				// floating sub nodes do not contribute to width 
+				if (guiSubNode.flow == Flow.FLOATING) {
+					continue;
+				}
+
+				// all other do
 				width+= guiSubNode.getAutoWidth();
 			}
 		} else {
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiSubNode = subNodes.get(i);
+				// floating sub nodes do not contribute to width 
+				if (guiSubNode.flow == Flow.FLOATING) {
+					continue;
+				}
+
+				// all other do
 				int contentWidth = guiSubNode.getAutoWidth();
 				if (contentWidth > width) {
 					width = contentWidth;
@@ -103,11 +118,23 @@ public class GUILayoutNode extends GUIParentNode {
 		if (alignment == Alignment.VERTICAL) {
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiSubNode = subNodes.get(i);
+				// floating sub nodes do not contribute to height 
+				if (guiSubNode.flow == Flow.FLOATING) {
+					continue;
+				}
+
+				// all other do
 				height+= guiSubNode.getAutoHeight();
 			}
 		} else {
 			for (int i = 0; i < subNodes.size(); i++) {
 				GUINode guiSubNode = subNodes.get(i);
+				// floating sub nodes do not contribute to height 
+				if (guiSubNode.flow == Flow.FLOATING) {
+					continue;
+				}
+
+				// all other do
 				int contentHeight = guiSubNode.getAutoHeight();
 				if (contentHeight > height) {
 					height = contentHeight;
@@ -144,6 +171,12 @@ public class GUILayoutNode extends GUIParentNode {
 					int finalNodesHeight = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
+						// floating sub nodes do not contribute to height 
+						if (guiSubNode.flow == Flow.FLOATING) {
+							continue;
+						}
+
+						// all other do
 						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
 							starCount++;
 						} else {
@@ -204,6 +237,12 @@ public class GUILayoutNode extends GUIParentNode {
 					int finalNodesWidth = 0;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
+						// floating sub nodes do not contribute to width 
+						if (guiSubNode.flow == Flow.FLOATING) {
+							continue;
+						}
+
+						// all other do
 						if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
 							starCount++;
 						} else {
@@ -284,9 +323,11 @@ public class GUILayoutNode extends GUIParentNode {
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode guiSubNode = subNodes.get(i);
 			guiSubNode.setTop(top);
-			if (alignment == Alignment.VERTICAL) {
-				top+= guiSubNode.computedConstraints.height;
+			if (alignment != Alignment.VERTICAL ||
+				guiSubNode.flow == Flow.FLOATING) {
+				continue;
 			}
+			top+= guiSubNode.computedConstraints.height;
 		}
 	}
 
@@ -300,9 +341,11 @@ public class GUILayoutNode extends GUIParentNode {
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode guiSubNode = subNodes.get(i);
 			guiSubNode.setLeft(left);
-			if (alignment == Alignment.HORIZONTAL) {
-				left+= guiSubNode.computedConstraints.width;
+			if (alignment != Alignment.HORIZONTAL ||
+				guiSubNode.flow == Flow.FLOATING) {
+				continue;
 			}
+			left+= guiSubNode.computedConstraints.width;
 		}
 	}
 
