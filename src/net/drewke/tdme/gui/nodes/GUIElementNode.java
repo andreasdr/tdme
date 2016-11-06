@@ -176,6 +176,10 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUIMouseEvent event) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// add mouseoever, click to active conditions
 		activeConditions.remove(CONDITION_ONMOUSEOVER);
 		activeConditions.remove(CONDITION_CLICK);
 		if (isEventBelongingToNode(event)) {

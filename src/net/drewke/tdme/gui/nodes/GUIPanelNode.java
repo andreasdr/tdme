@@ -60,7 +60,8 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// check if conditions apply
-		if (checkConditions() == false) return;
+		conditionsMet = checkConditions();
+		if (conditionsMet == false) return;
 
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);

@@ -115,7 +115,8 @@ public final class GUIImageNode extends GUINode {
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// check if conditions apply
-		if (checkConditions() == false) return;
+		conditionsMet = checkConditions();
+		if (conditionsMet == false) return;
 
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
@@ -153,15 +154,6 @@ public final class GUIImageNode extends GUINode {
 			0f, 1f
 		);
 		guiRenderer.render();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
-	 */
-	public void handleEvent(GUIMouseEvent event) {
-		//
-		super.handleEvent(event);
 	}
 
 }

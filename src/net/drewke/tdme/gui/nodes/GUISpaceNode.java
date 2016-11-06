@@ -115,13 +115,4 @@ public final class GUISpaceNode extends GUINode {
 		super.render(guiRenderer, floatingNodes);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
-	 */
-	public void handleEvent(GUIMouseEvent event) {
-		//
-		super.handleEvent(event);
-	}
-
 }

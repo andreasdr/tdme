@@ -5,7 +5,6 @@ import java.util.StringTokenizer;
 
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
-import net.drewke.tdme.gui.nodes.GUILayoutNode.Alignment;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
@@ -152,6 +151,8 @@ public abstract class GUINode {
 
 	protected GUINodeController controller;
 
+	protected boolean conditionsMet;
+
 	/**
 	 * Constructor
 	 * @param screen node
@@ -192,6 +193,7 @@ public abstract class GUINode {
 		this.showOn = showOn;
 		this.hideOn = hideOn;
 		this.controller = null;
+		this.conditionsMet = false;
 	}
 
 	/**
@@ -872,6 +874,9 @@ public abstract class GUINode {
 	 * @param event
 	 */
 	public void handleEvent(GUIMouseEvent event) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
 		// determine first node up the tree with controller
 		GUINode node = this;
 		if (node.controller == null) {

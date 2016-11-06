@@ -207,7 +207,8 @@ public abstract class GUIParentNode extends GUINode {
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// check if conditions apply
-		if (checkConditions() == false) return;
+		conditionsMet = checkConditions();
+		if (conditionsMet == false) return;
 
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
@@ -229,6 +230,10 @@ public abstract class GUIParentNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
 	 */
 	public void handleEvent(GUIMouseEvent event) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// delegate event to sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode subNode = subNodes.get(i);
 			subNode.handleEvent(event);

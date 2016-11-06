@@ -110,7 +110,8 @@ public final class GUITextNode extends GUINode {
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
 		// check if conditions apply
-		if (checkConditions() == false) return;
+		conditionsMet = checkConditions();
+		if (conditionsMet == false) return;
 
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
@@ -123,15 +124,6 @@ public final class GUITextNode extends GUINode {
 			text, 
 			color
 		);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
-	 */
-	public void handleEvent(GUIMouseEvent event) {
-		//
-		super.handleEvent(event);
 	}
 
 }
