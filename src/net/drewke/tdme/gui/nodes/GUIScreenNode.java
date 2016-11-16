@@ -168,6 +168,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param guiRenderer
 	 */
 	public void render(GUIRenderer guiRenderer) {
+		floatingNodes.clear();
 		super.render(guiRenderer, floatingNodes);
 		for (int i = 0; i < floatingNodes.size(); i++) {
 			floatingNodes.get(i).render(guiRenderer, null);
