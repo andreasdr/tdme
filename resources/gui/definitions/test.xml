@@ -3,7 +3,7 @@
 		background-color="#808080" horizontal-align="center"> 
 		<space height="5%" />
 		<panel width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">
-			<text show-on="always" font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
+			<text font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
 		</panel>
 		<space height="5%" />
 		<tabs width="100%" height="*">
@@ -57,11 +57,11 @@
 						<space height="*" />
 						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
 							<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
-								<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
+								<text font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
 								<space width="10" />
-								<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
+								<text font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
 								<space width="10" />
-								<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
+								<text font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
 							</panel>
 						</panel>
 						<space height="*" />
@@ -82,7 +82,7 @@
 							<image hide-on="mouseover,click" src="resources/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
 							<image show-on="mouseover" src="resources/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
 							<image show-on="click" src="resources/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
-							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 						</element>
 						<space height="*" />
 						<button id="test_text_button" text="Test text button" />
@@ -95,7 +95,7 @@
 							<element width="100%">
 								<layout alignment="vertical" width="100%">
 									<panel id="hans" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-										<text width="100%" border="1" padding="10" show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Drop down could be here" color="#000000" />
+										<text width="100%" border="1" padding="10" font="resources/gui/fonts/Foo_25.fnt" text="Drop down could be here" color="#000000" />
 										<selectbox border-top="0" show-on="mouseover" flow="floating" id="select-dropdown">
 											<selectbox-option id="select-dropdown1" name="select-dropdown" text="Its me!" />
 											<selectbox-option id="select-dropdown2" name="select-dropdown" text="No? Its me, believe me." />
@@ -105,11 +105,11 @@
 								</layout>
 							</element>
 							<space height="20" />
-							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
-							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />
-							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
-							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
-							<text show-on="always" font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
 						</panel>
 					</panel>
 				</tab-content>
