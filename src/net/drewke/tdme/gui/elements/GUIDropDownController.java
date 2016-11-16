@@ -42,6 +42,13 @@ public final class GUIDropDownController extends GUINodeController {
 	}
 
 	/**
+	 * @return drop down open state
+	 */
+	public boolean isOpen() {
+		return isOpen;
+	}
+
+	/**
 	 * Unselect all nodes
 	 */
 	protected void unselect() {

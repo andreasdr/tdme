@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
@@ -45,11 +46,11 @@ public final class GUIRadioButton extends GUIElement  {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUIElement#getAttributes()
+	 * @see net.drewke.tdme.gui.elements.GUIElement#getAttributes(net.drewke.tdme.gui.nodes.GUIScreenNode)
 	 */
-	public HashMap<String, String> getAttributes() {
+	public HashMap<String, String> getAttributes(GUIScreenNode screenNode) {
 		attributes.clear();
-		attributes.put("id", "");
+		attributes.put("id", screenNode.allocateNodeId());
 		attributes.put("name", "");
 		return attributes;
 	}

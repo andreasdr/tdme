@@ -92,6 +92,21 @@ public final class GUITextNode extends GUINode {
 	protected int getContentHeight() {
 		return font.getTextHeight(text) + border.top + border.bottom + padding.top + padding.bottom;
 	}
+	
+	/**
+	 * @return text
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * Set text
+	 * @param text
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
 
 	/*
 	 * (non-Javadoc)

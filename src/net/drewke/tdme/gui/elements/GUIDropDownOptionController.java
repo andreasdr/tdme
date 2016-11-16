@@ -1,7 +1,5 @@
 package net.drewke.tdme.gui.elements;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
@@ -9,6 +7,7 @@ import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.gui.nodes.GUITextNode;
 
 /**
  * GUI select box option controller
@@ -41,6 +40,11 @@ public final class GUIDropDownOptionController extends GUINodeController {
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 		this.selected = true;
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+
+		// set text from option to heading text
+		GUITextNode dropDownOptionTextNode = (GUITextNode)node.getScreenNode().getNodeById(node.getId() + "_unselected");
+		GUITextNode dropDownTextNode = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_panel_text");
+		dropDownTextNode.setText(dropDownOptionTextNode.getText());
 	}
 
 	/**

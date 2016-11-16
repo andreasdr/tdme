@@ -448,7 +448,7 @@ public final class GUIParser {
 
 				// create final template, replace attributes
 				String newGuiElementTemplate = newGuiElement.getTemplate();
-				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes();
+				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes(guiScreenNode);
 				for (int i = 0; i < node.getAttributes().getLength(); i++) {
 					Node attribute = node.getAttributes().item(i);
 					newGuiElementAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
