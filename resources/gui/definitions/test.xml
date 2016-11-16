@@ -67,9 +67,9 @@
 						<space height="*" />
 						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
 							<selectbox id="select">
-								<selectbox-option id="select1" name="select" text="Select Me!" />
-								<selectbox-option id="select2" name="select" text="Why not selecting me?" />
-								<selectbox-option id="select3" name="select" text="You should select me" />
+								<selectbox-option id="select1" text="Select Me!" />
+								<selectbox-option id="select2" text="Why not selecting me?" />
+								<selectbox-option id="select3" text="You should select me" />
 							</selectbox>
 						</panel>
 						<space height="*" />
@@ -92,18 +92,11 @@
 				<tab-content tab-id="tab4">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
 						<panel padding="10" horizontal-align="center" alignment="vertical" width="80%">
-							<element width="100%">
-								<layout alignment="vertical" width="100%">
-									<panel id="hans" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-										<text width="100%" border="1" padding="10" font="resources/gui/fonts/Foo_25.fnt" text="Drop down could be here" color="#000000" />
-										<selectbox border-top="0" show-on="mouseover" flow="floating" id="select-dropdown">
-											<selectbox-option id="select-dropdown1" name="select-dropdown" text="Its me!" />
-											<selectbox-option id="select-dropdown2" name="select-dropdown" text="No? Its me, believe me." />
-											<selectbox-option id="select-dropdown3" name="select-dropdown" text="Let's dance" />
-										</selectbox>
-									</panel>
-								</layout>
-							</element>
+							<dropdown text="Click me and select a drop down option">
+								<dropdown-option id="dropdown1" text="I am a good option!" />
+								<dropdown-option id="dropdown2" text="Me feels better I guess?!" />
+								<dropdown-option id="dropdown3" text="Just opt for me!" />
+							</dropdown>
 							<space height="20" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />

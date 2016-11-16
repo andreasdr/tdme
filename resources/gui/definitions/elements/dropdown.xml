@@ -1,0 +1,10 @@
+<element id="{$id}" width="{$width}" height="{$height}" background-color="#f0f0f0">
+	<layout alignment="vertical" width="100%">
+		<panel id="{$id}_panel" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
+			<text id="{$id}_panel_text" width="100%" border="1" padding="{$padding}" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+			<panel id="{$id}_panel_panel" border="1" border-top="0" border-color="black" padding="{$padding}" width="100%" height="auto" alignment="vertical" show-on="open" flow="floating" background-color="#f0f0f0">
+				{$innerXml}
+			</panel>
+		</panel>
+	</layout>
+</element>

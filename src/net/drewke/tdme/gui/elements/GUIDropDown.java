@@ -12,9 +12,9 @@ import net.drewke.tdme.utils.HashMap;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUISelectBox extends GUIElement  {
+public final class GUIDropDown extends GUIElement  {
 
-	private static final String NAME = "selectbox";
+	private static final String NAME = "dropdown";
 
 	private HashMap<String, String> attributes;
 	private String template;
@@ -22,9 +22,9 @@ public final class GUISelectBox extends GUIElement  {
 	/**
 	 * Constructor
 	 */
-	public GUISelectBox() throws IOException {
+	public GUIDropDown() throws IOException {
 		attributes = new HashMap<String, String>();
-		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "selectbox.xml");
+		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "dropdown.xml");
 	}
 
 	/*
@@ -53,6 +53,7 @@ public final class GUISelectBox extends GUIElement  {
 		attributes.put("width", "100%");
 		attributes.put("height", "auto");
 		attributes.put("padding", "10");
+		attributes.put("text", "10");
 		return attributes;
 	}
 
@@ -61,7 +62,7 @@ public final class GUISelectBox extends GUIElement  {
 	 * @see net.drewke.tdme.gui.GUIElement#createController(net.drewke.tdme.gui.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return new GUISelectBoxController(node);
+		return new GUIDropDownController(node);
 	}
 
 }

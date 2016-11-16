@@ -10,6 +10,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.drewke.tdme.gui.elements.GUIButton;
 import net.drewke.tdme.gui.elements.GUICheckbox;
+import net.drewke.tdme.gui.elements.GUIDropDown;
+import net.drewke.tdme.gui.elements.GUIDropDownOption;
 import net.drewke.tdme.gui.elements.GUIElement;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
 import net.drewke.tdme.gui.elements.GUISelectBox;
@@ -543,6 +545,22 @@ public final class GUIParser {
 		// add select box option
 		try {
 			GUIElement guiElement = new GUISelectBoxOption();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add drop down
+		try {
+			GUIElement guiElement = new GUIDropDown();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add drop down option
+		try {
+			GUIElement guiElement = new GUIDropDownOption();
 			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
