@@ -16,11 +16,11 @@ import net.drewke.tdme.gui.nodes.GUITextNode;
  */
 public final class GUIDropDownOptionController extends GUINodeController {
 
-	protected static final String CONDITION_SELECTED = "selected";
-	protected static final String CONDITION_UNSELECTED = "unselected";
+	private static final String CONDITION_SELECTED = "selected";
+	private static final String CONDITION_UNSELECTED = "unselected";
 
-	protected GUINode dropDownNode;
-	protected boolean selected;
+	private GUINode dropDownNode;
+	private boolean selected;
 
 	/**
 	 * Constructor

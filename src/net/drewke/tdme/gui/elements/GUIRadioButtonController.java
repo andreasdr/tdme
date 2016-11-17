@@ -17,10 +17,10 @@ import net.drewke.tdme.utils.HashMap;
  */
 public final class GUIRadioButtonController extends GUINodeController {
 
-	protected static final String CONDITION_SELECTED = "selected";
-	protected static final String CONDITION_UNSELECTED = "unselected";
+	private static final String CONDITION_SELECTED = "selected";
+	private static final String CONDITION_UNSELECTED = "unselected";
 
-	protected boolean selected;
+	private boolean selected;
 
 	private static HashMap<String, ArrayList<GUIElementNode>> radioButtonGroupNodesByName = new HashMap<String, ArrayList<GUIElementNode>>();
 

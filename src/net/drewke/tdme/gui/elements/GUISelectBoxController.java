@@ -14,7 +14,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
  */
 public final class GUISelectBoxController extends GUINodeController {
 
-	protected ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
+	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 
 	/**
 	 * Constructor

@@ -17,11 +17,11 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
  */
 public final class GUISelectBoxOptionController extends GUINodeController {
 
-	protected static final String CONDITION_SELECTED = "selected";
-	protected static final String CONDITION_UNSELECTED = "unselected";
+	private static final String CONDITION_SELECTED = "selected";
+	private static final String CONDITION_UNSELECTED = "unselected";
 
-	protected GUINode selectBoxNode;
-	protected boolean selected;
+	private GUINode selectBoxNode;
+	private boolean selected;
 
 	/**
 	 * Constructor

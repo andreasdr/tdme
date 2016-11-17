@@ -16,8 +16,12 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
  */
 public final class GUIDropDownController extends GUINodeController {
 
+	private static final String CONDITION_OPENED = "opened";
+	private static final String CONDITION_CLOSED = "closed";
+
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 	private boolean isOpen = false;
+	private GUIElementNode arrowNode = null;
 
 	/**
 	 * Constructor
@@ -32,6 +36,7 @@ public final class GUIDropDownController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
+		arrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_panel_arrow");
 	}
 
 	/*
@@ -66,9 +71,11 @@ public final class GUIDropDownController extends GUINodeController {
 	 * Toggle open state
 	 */
 	public void toggleOpenState() {
-		((GUIElementNode)node).getActiveConditions().remove(isOpen == true?"open":"close");
+		((GUIElementNode)node).getActiveConditions().remove(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
+		arrowNode.getActiveConditions().remove(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 		isOpen = isOpen == true?false:true;
-		((GUIElementNode)node).getActiveConditions().add(isOpen == true?"open":"close");
+		((GUIElementNode)node).getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
+		arrowNode.getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 	}
 
 	/*

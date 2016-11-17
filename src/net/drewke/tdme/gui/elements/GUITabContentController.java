@@ -15,8 +15,8 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
  */
 public final class GUITabContentController extends GUINodeController {
 
-	protected String CONDITION_SELECTED;
-	protected String CONDITION_UNSELECTED;
+	private String CONDITION_SELECTED;
+	private String CONDITION_UNSELECTED;
 
 	private boolean selected;
 

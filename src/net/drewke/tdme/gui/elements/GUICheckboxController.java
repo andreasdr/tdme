@@ -14,8 +14,8 @@ import net.drewke.tdme.gui.nodes.GUINodeController;
  */
 public final class GUICheckboxController extends GUINodeController {
 
-	protected static final String CONDITION_CHECKED = "checked";
-	protected static final String CONDITION_UNCHECKED = "unchecked";
+	private static final String CONDITION_CHECKED = "checked";
+	private static final String CONDITION_UNCHECKED = "unchecked";
 
 	private boolean checked;
 
