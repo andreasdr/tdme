@@ -20,17 +20,17 @@
 							<panel padding="2" width="100%" alignment="horizontal">
 								<checkbox id="checkbox1" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" height="100%" vertical-align="center" />
 							</panel>
 							<panel padding="2" width="100%" alignment="horizontal">
 								<checkbox id="checkbox2" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" height="100%" vertical-align="center"  />
 							</panel>
 							<panel padding="2" width="100%" alignment="horizontal">
 								<checkbox id="checkbox3" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" />
+								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" height="100%" vertical-align="center" />
 							</panel>
 						</panel>
 						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
