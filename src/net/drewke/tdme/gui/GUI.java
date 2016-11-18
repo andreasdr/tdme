@@ -16,6 +16,8 @@ import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Pool;
 
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 
@@ -24,7 +26,7 @@ import com.jogamp.newt.event.MouseListener;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUI implements MouseListener {
+public final class GUI implements MouseListener, KeyListener {
 
 	private GUIRenderer guiRenderer;
 
@@ -340,6 +342,22 @@ public final class GUI implements MouseListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseWheelMoved(MouseEvent event) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
+	 */
+	public void keyPressed(KeyEvent event) {
+		System.out.println(event);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
+	 */
+	public void keyReleased(KeyEvent event) {
+		System.out.println(event);
 	}
 
 }

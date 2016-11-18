@@ -37,6 +37,8 @@ public final class GUIDropDownController extends GUINodeController {
 	 */
 	public void init() {
 		arrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_panel_arrow");
+		((GUIElementNode)node).getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
+		arrowNode.getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 	}
 
 	/*

@@ -5,8 +5,10 @@
 				<text id="{$id}_panel_text" width="*" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 				<element id="{$id}_panel_arrow" width="auto" height="100%" vertical-align="center">
 					<!-- Image needs transparency and white arrow so that I can do effects on it -->
-					<image hide-on="opened" src="resources/gui/images/elements/dropdown/expand-arrow.png" vertical-align="center" />
-					<image show-on="opened" src="resources/gui/images/elements/dropdown/collapse-arrow.png" vertical-align="center" />
+					<image effect-color-mul="#8080A0" hide-on="opened,mouseover" src="resources/gui/images/elements/dropdown/expand-arrow.png" vertical-align="center" />
+					<image effect-color-mul="#8080FF" hide-on="opened" src="resources/gui/images/elements/dropdown/expand-arrow.png" vertical-align="center" />
+					<image effect-color-mul="#8080A0" hide-on="closed,mouseover" src="resources/gui/images/elements/dropdown/collapse-arrow.png" vertical-align="center" />
+					<image effect-color-mul="#8080FF" hide-on="closed" src="resources/gui/images/elements/dropdown/collapse-arrow.png" vertical-align="center" />
 				</element>
 			</panel>
 			<panel id="{$id}_panel_panel" border="1" border-top="0" border-color="black" padding="{$padding}" width="100%" height="auto" alignment="vertical" show-on="opened" flow="floating" background-color="#f0f0f0">

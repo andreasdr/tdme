@@ -44,6 +44,7 @@ public class GUITest implements GLEventListener, WindowListener {
 		
 		// register gui to mouse, keyboard events
 		glWindow.addMouseListener(engine.getGUI());
+		glWindow.addKeyListener(engine.getGUI());
 
 		//
 		try {
