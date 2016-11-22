@@ -440,6 +440,59 @@ public final class GUIParser {
 					guiTextNode.setController(guiElementController = guiElement.createController(guiTextNode));
 					guiElementControllerInstalled = true;
 				}
+			} else 
+			if (node.getNodeName().equals("text-input")) {
+				// TODO: validate root node
+				GUITextNode guiTextInputNode = new GUITextNode(
+					guiScreenNode,
+					guiParentNode, 
+					node.getAttribute("id"), 
+					GUINode.createFlow(node.getAttribute("flow")),
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
+					GUINode.createRequestedConstraints(
+						node.getAttribute("left"), 
+						node.getAttribute("top"), 
+						node.getAttribute("width"), 
+						node.getAttribute("height")
+					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
+					GUINode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUINode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
+					),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					node.getAttribute("font"),
+					node.getAttribute("color"),
+					node.getAttribute("text")
+				);
+				guiParentNode.getSubNodes().add(guiTextInputNode);
+				if (guiScreenNode.addNode(guiTextInputNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiTextInputNode.getId() + "'");
+				}
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiTextInputNode.setController(guiElementController = guiElement.createController(guiTextInputNode));
+					guiElementControllerInstalled = true;
+				}
 			} else {
 				// Try to load from GUI elements
 				GUIElement newGuiElement = elements.get(node.getNodeName());
