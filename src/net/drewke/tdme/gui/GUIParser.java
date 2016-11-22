@@ -32,6 +32,7 @@ import net.drewke.tdme.gui.nodes.GUIPanelNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUISpaceNode;
+import net.drewke.tdme.gui.nodes.GUITextInputNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
@@ -443,7 +444,7 @@ public final class GUIParser {
 			} else 
 			if (node.getNodeName().equals("text-input")) {
 				// TODO: validate root node
-				GUITextNode guiTextInputNode = new GUITextNode(
+				GUITextInputNode guiTextInputNode = new GUITextInputNode(
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
