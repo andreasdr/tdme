@@ -53,7 +53,6 @@ public final class GUIDropDown extends GUIElement  {
 		attributes.put("id", screenNode.allocateNodeId());
 		attributes.put("width", "100%");
 		attributes.put("height", "auto");
-		attributes.put("padding", "10");
 		attributes.put("text", "10");
 		return attributes;
 	}

@@ -13,6 +13,7 @@ import net.drewke.tdme.gui.elements.GUICheckbox;
 import net.drewke.tdme.gui.elements.GUIDropDown;
 import net.drewke.tdme.gui.elements.GUIDropDownOption;
 import net.drewke.tdme.gui.elements.GUIElement;
+import net.drewke.tdme.gui.elements.GUIInput;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
 import net.drewke.tdme.gui.elements.GUISelectBox;
 import net.drewke.tdme.gui.elements.GUISelectBoxOption;
@@ -609,6 +610,14 @@ public final class GUIParser {
 		// add button
 		try {
 			GUIElement guiElement = new GUIButton();
+			elements.put(guiElement.getName(), guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add input
+		try {
+			GUIElement guiElement = new GUIInput();
 			elements.put(guiElement.getName(), guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();

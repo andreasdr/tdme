@@ -12,6 +12,7 @@
 				<tab id="tab2" text="Selectbox" />
 				<tab id="tab3" text="Buttons" />
 				<tab id="tab4" text="Dropdown" />
+				<tab id="tab5" text="Input" />
 			</tabs-header>
 			<tabs-content>
 				<tab-content tab-id="tab1">
@@ -54,8 +55,7 @@
 				</tab-content>
 				<tab-content tab-id="tab2">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%">
-						<space height="*" />
-						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
+						<panel horizontal-align="center" alignment="none" width="80%">
 							<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
 								<space width="10" />
@@ -64,15 +64,14 @@
 								<text font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
 							</panel>
 						</panel>
-						<space height="*" />
-						<panel padding="10" horizontal-align="center" alignment="none" width="80%">
+						<space height="10" />
+						<panel horizontal-align="center" alignment="none" width="80%">
 							<selectbox id="select">
 								<selectbox-option id="select1" text="Select Me!" />
 								<selectbox-option id="select2" text="Why not selecting me?" />
 								<selectbox-option id="select3" text="You should select me" />
 							</selectbox>
 						</panel>
-						<space height="*" />
 					</panel>
 				</tab-content>
 				<tab-content tab-id="tab3">
@@ -91,7 +90,7 @@
 				</tab-content>
 				<tab-content tab-id="tab4">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
-						<panel padding="10" horizontal-align="center" alignment="vertical" width="80%">
+						<panel horizontal-align="center" alignment="vertical" width="80%">
 							<dropdown text="Click me and select a drop down option">
 								<dropdown-option id="dropdown1" text="I am a good option!" />
 								<dropdown-option id="dropdown2" text="Me feels better I guess?!" />
@@ -104,6 +103,11 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
 						</panel>
+					</panel>
+				</tab-content>
+				<tab-content tab-id="tab5">
+					<panel padding="10" horizontal-align="center" vertical-align="center" alignment="none" width="100%" height="auto">
+						<input width="80%" text="Enter some text here" />
 					</panel>
 				</tab-content>
 			</tabs-content>

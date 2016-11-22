@@ -9,13 +9,13 @@ import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
 /**
- * GUI select box
+ * GUI button element
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUISelectBox extends GUIElement  {
+public final class GUIInput extends GUIElement {
 
-	private static final String NAME = "selectbox";
+	private static final String NAME = "input";
 
 	private HashMap<String, String> attributes;
 	private String template;
@@ -23,9 +23,9 @@ public final class GUISelectBox extends GUIElement  {
 	/**
 	 * Constructor
 	 */
-	public GUISelectBox() throws IOException {
+	public GUIInput() throws IOException {
 		attributes = new HashMap<String, String>();
-		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "selectbox.xml");
+		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "input.xml");
 	}
 
 	/*
@@ -51,8 +51,9 @@ public final class GUISelectBox extends GUIElement  {
 	public HashMap<String, String> getAttributes(GUIScreenNode screenNode) {
 		attributes.clear();
 		attributes.put("id", screenNode.allocateNodeId());
-		attributes.put("width", "100%");
+		attributes.put("width", "auto");
 		attributes.put("height", "auto");
+		attributes.put("text", "");
 		return attributes;
 	}
 
@@ -61,7 +62,7 @@ public final class GUISelectBox extends GUIElement  {
 	 * @see net.drewke.tdme.gui.GUIElement#createController(net.drewke.tdme.gui.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return new GUISelectBoxController(node);
+		return new GUIInputController(node);
 	}
 
 }
