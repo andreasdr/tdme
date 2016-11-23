@@ -16,6 +16,7 @@ public class GUIKeyboardEvent {
 	private int keyCode;
 	private char keyChar;
 
+	private boolean metaDown;
 	private boolean controlDown;
 	private boolean altDown;
 	private boolean shiftDown;
@@ -31,9 +32,11 @@ public class GUIKeyboardEvent {
 		this.type = Type.NONE;
 		this.keyCode = -1;
 		this.keyChar = '\0';
+		this.metaDown = false;
 		this.controlDown = false;
 		this.altDown = false;
 		this.shiftDown = false;
+		this.processed = false;
 	}
 
 	/**
@@ -94,6 +97,21 @@ public class GUIKeyboardEvent {
 	 */
 	public void setKeyChar(char keyChar) {
 		this.keyChar = keyChar;
+	}
+
+	/**
+	 * @return is meta down
+	 */
+	public boolean isMetaDown() {
+		return metaDown;
+	}
+
+	/**
+	 * Set meta down 
+	 * @param meta down
+	 */
+	public void setMetaDown(boolean metaDown) {
+		this.metaDown = metaDown;
 	}
 
 	/**

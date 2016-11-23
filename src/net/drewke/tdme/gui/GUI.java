@@ -365,6 +365,7 @@ public final class GUI implements MouseListener, KeyListener {
 		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_PRESSED);
 		guiKeyboardEvent.setKeyCode(event.getKeyCode());
 		guiKeyboardEvent.setKeyChar(event.getKeyChar());
+		guiKeyboardEvent.setMetaDown(event.isMetaDown());
 		guiKeyboardEvent.setControlDown(event.isControlDown());
 		guiKeyboardEvent.setAltDown(event.isAltDown());
 		guiKeyboardEvent.setShiftDown(event.isShiftDown());
@@ -382,6 +383,7 @@ public final class GUI implements MouseListener, KeyListener {
 		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_RELEASED);
 		guiKeyboardEvent.setKeyCode(event.getKeyCode());
 		guiKeyboardEvent.setKeyChar(event.getKeyChar());
+		guiKeyboardEvent.setMetaDown(event.isMetaDown());
 		guiKeyboardEvent.setControlDown(event.isControlDown());
 		guiKeyboardEvent.setAltDown(event.isAltDown());
 		guiKeyboardEvent.setShiftDown(event.isShiftDown());
