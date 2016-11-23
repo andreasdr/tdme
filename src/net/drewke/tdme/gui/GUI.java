@@ -8,6 +8,7 @@ import java.util.Iterator;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
@@ -40,9 +41,15 @@ public final class GUI implements MouseListener, KeyListener {
 		public GUIMouseEvent instantiate() {
 			return new GUIMouseEvent();
 		}
-		
 	};
 	private ArrayList<GUIMouseEvent> mouseEvents = new ArrayList<GUIMouseEvent>(); 
+
+	private Pool<GUIKeyboardEvent> keyboardEventsPool = new Pool<GUIKeyboardEvent>() {
+		public GUIKeyboardEvent instantiate() {
+			return new GUIKeyboardEvent();
+		}
+	};
+	private ArrayList<GUIKeyboardEvent> keyboardEvents = new ArrayList<GUIKeyboardEvent>(); 
 
 	private int width;
 	private int height;
@@ -262,6 +269,8 @@ public final class GUI implements MouseListener, KeyListener {
 	public void discardEvents() {
 		mouseEventsPool.reset();
 		mouseEvents.clear();
+		keyboardEventsPool.reset();
+		keyboardEvents.clear();
 	}
 
 	/*
@@ -317,6 +326,7 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setX(event.getX());
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
+		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);	
 	}
 
@@ -331,6 +341,7 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setX(event.getX());
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
+		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);
 
 		// add additional mouse moved event
@@ -349,7 +360,16 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent event) {
-		System.out.println(event);
+		GUIKeyboardEvent guiKeyboardEvent = keyboardEventsPool.allocate();
+		guiKeyboardEvent.setTime(System.currentTimeMillis());
+		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_PRESSED);
+		guiKeyboardEvent.setKeyCode(event.getKeyCode());
+		guiKeyboardEvent.setKeyChar(event.getKeyChar());
+		guiKeyboardEvent.setControlDown(event.isControlDown());
+		guiKeyboardEvent.setAltDown(event.isAltDown());
+		guiKeyboardEvent.setShiftDown(event.isShiftDown());
+		guiKeyboardEvent.setProcessed(false);
+		keyboardEvents.add(guiKeyboardEvent);
 	}
 
 	/*
@@ -357,7 +377,16 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyReleased(KeyEvent event) {
-		System.out.println(event);
+		GUIKeyboardEvent guiKeyboardEvent = keyboardEventsPool.allocate();
+		guiKeyboardEvent.setTime(System.currentTimeMillis());
+		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_RELEASED);
+		guiKeyboardEvent.setKeyCode(event.getKeyCode());
+		guiKeyboardEvent.setKeyChar(event.getKeyChar());
+		guiKeyboardEvent.setControlDown(event.isControlDown());
+		guiKeyboardEvent.setAltDown(event.isAltDown());
+		guiKeyboardEvent.setShiftDown(event.isShiftDown());
+		guiKeyboardEvent.setProcessed(false);
+		keyboardEvents.add(guiKeyboardEvent);
 	}
 
 }

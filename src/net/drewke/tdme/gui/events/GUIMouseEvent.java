@@ -27,7 +27,7 @@ public class GUIMouseEvent {
 	 * @param button
 	 */
 	public GUIMouseEvent() {
-		this.time = System.currentTimeMillis();
+		this.time = -1;
 		this.type = Type.NONE;
 		this.x = -1;
 		this.y = -1;
