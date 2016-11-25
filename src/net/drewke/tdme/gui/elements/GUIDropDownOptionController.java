@@ -1,5 +1,6 @@
 package net.drewke.tdme.gui.elements;
 
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
@@ -78,9 +79,9 @@ public final class GUIDropDownOptionController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#handleEvent(net.drewke.tdme.gui.GUINode, net.drewke.tdme.gui.GUIMouseEvent)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
-	public void handleEvent(GUINode node, GUIMouseEvent event) {
+	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		if (node == this.node &&
 			node.isEventBelongingToNode(event) && 
 			event.getType() == Type.MOUSE_PRESSED && 
@@ -90,6 +91,14 @@ public final class GUIDropDownOptionController extends GUINodeController {
 			select();
 			((GUIDropDownController)dropDownNode.getController()).toggleOpenState();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
+	 */
+	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
+		// no op for now
 	}
 
 }

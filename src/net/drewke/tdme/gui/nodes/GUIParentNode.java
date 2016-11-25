@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.nodes;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
@@ -227,20 +228,38 @@ public abstract class GUIParentNode extends GUINode {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
+	 * @see net.drewke.tdme.gui.nodes.GUINode#handleMouseEvent(net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
-	public void handleEvent(GUIMouseEvent event) {
+	public void handleMouseEvent(GUIMouseEvent event) {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
 		// delegate event to sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode subNode = subNodes.get(i);
-			subNode.handleEvent(event);
+			subNode.handleMouseEvent(event);
 		}
 
 		//
-		super.handleEvent(event);
+		super.handleMouseEvent(event);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINode#handleKeyboardEvent(net.drewke.tdme.gui.events.GUIKeyboardEvent)
+	 */
+	public void handleKeyboardEvent(GUIKeyboardEvent event) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// delegate event to sub nodes
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode subNode = subNodes.get(i);
+			subNode.handleKeyboardEvent(event);
+		}
+
+		//
+		super.handleKeyboardEvent(event);
 	}
 
 	/*

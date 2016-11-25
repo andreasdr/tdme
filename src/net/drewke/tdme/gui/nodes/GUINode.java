@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
@@ -870,10 +871,10 @@ public abstract class GUINode {
 	}
 
 	/**
-	 * Handle event
+	 * Handle mouse event
 	 * @param event
 	 */
-	public void handleEvent(GUIMouseEvent event) {
+	public void handleMouseEvent(GUIMouseEvent event) {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
@@ -889,7 +890,30 @@ public abstract class GUINode {
 		}
 
 		// otherwise call controller
-		node.controller.handleEvent(this, event);
+		node.controller.handleMouseEvent(this, event);
+	}
+
+	/**
+	 * Handle keyboard event
+	 * @param event
+	 */
+	public void handleKeyboardEvent(GUIKeyboardEvent event) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// determine first node up the tree with controller
+		GUINode node = this;
+		if (node.controller == null) {
+			node = getParentControllerNode();
+		}
+
+		// exit if no element node with controller
+		if (node == null) {
+			return;
+		}
+
+		// otherwise call controller
+		node.controller.handleKeyboardEvent(this, event);
 	}
 
 	/**

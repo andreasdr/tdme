@@ -173,9 +173,9 @@ public final class GUIElementNode extends GUIParentNode {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#handleEvent(net.drewke.tdme.gui.GUIMouseEvent)
+	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#handleMouseEvent(net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
-	public void handleEvent(GUIMouseEvent event) {
+	public void handleMouseEvent(GUIMouseEvent event) {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
@@ -197,7 +197,7 @@ public final class GUIElementNode extends GUIParentNode {
 		}
 
 		//
-		super.handleEvent(event);
+		super.handleMouseEvent(event);
 	}
 
 }

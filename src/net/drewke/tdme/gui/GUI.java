@@ -258,7 +258,11 @@ public final class GUI implements MouseListener, KeyListener {
 		if (screen != null) {
 			for (int i = 0; i < mouseEvents.size(); i++) {
 				GUIMouseEvent event = mouseEvents.get(i);
-				screen.handleEvent(event);
+				screen.handleMouseEvent(event);
+			}
+			for (int i = 0; i < keyboardEvents.size(); i++) {
+				GUIKeyboardEvent event = keyboardEvents.get(i);
+				screen.handleKeyboardEvent(event);
 			}
 		}
 	}

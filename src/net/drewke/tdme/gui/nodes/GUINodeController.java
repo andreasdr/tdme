@@ -1,5 +1,6 @@
 package net.drewke.tdme.gui.nodes;
 
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 
 /**
@@ -37,10 +38,17 @@ public abstract class GUINodeController {
 	public abstract void dispose();
 
 	/**
-	 * Handle event
+	 * Handle mouse event
 	 * @param node
 	 * @param event
 	 */
-	public abstract void handleEvent(GUINode node, GUIMouseEvent event);
+	public abstract void handleMouseEvent(GUINode node, GUIMouseEvent event);
+
+	/**
+	 * Handle keyboard event
+	 * @param node
+	 * @param event
+	 */
+	public abstract void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event);	
 
 }
