@@ -7,6 +7,13 @@ package net.drewke.tdme.gui.events;
  */
 public class GUIKeyboardEvent {
 
+	public final static int KEYCODE_BACKSPACE = '\b';
+	public final static int KEYCODE_DELETE = 147;
+	public final static int KEYCODE_LEFT = 149;
+	public final static int KEYCODE_UP = 150;
+	public final static int KEYCODE_RIGHT = 151;
+	public final static int KEYCODE_DOWN = 152;
+
 	public enum Type {NONE, KEY_PRESSED, KEY_RELEASED};
 
 	private long time;

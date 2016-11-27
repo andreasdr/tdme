@@ -290,6 +290,33 @@ public final class GUIFont {
 	}
 
 	/**
+	 * Get text index X of given text and index
+	 * @param text
+	 * @param index
+	 */
+	public int getTextIndexX(String text, int index) {
+		int x = 0;
+		for (int i = 0; i < index && i < text.length(); i++) {
+			int id = text.charAt(i);
+			if (id >= chars.length) {
+				continue;
+			}
+			if (chars[id] == null) {
+				continue;
+			}
+			x += chars[id].xadvance;
+			/*
+			if (i < text.length()-1) {
+				if ((text.charAt(i+1) < CHARACTERS_MAX) && (id < CHARACTERS_MAX)) {
+					x += kerning[id][text.charAt(i+1)];
+				}
+			}
+			*/
+		}
+		return x;
+	}
+
+	/**
 	 * Get the offset from the draw location the font will place glyphs
 	 * 
 	 * @param text The text that is to be tested

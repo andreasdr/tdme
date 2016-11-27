@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.nodes;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUI;
+import net.drewke.tdme.gui.nodes.GUITextInputController.CursorMode;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
@@ -144,6 +145,47 @@ public final class GUITextInputNode extends GUINode {
 			text, 
 			color
 		);
+
+		// get controller
+		GUITextInputController controller = (GUITextInputController)this.controller;
+
+		// check if to show cursor
+		if (controller.getCursorMode() == CursorMode.SHOW) {
+			// screen dimension
+			float screenWidth = guiRenderer.getGUI().getWidth();
+			float screenHeight = guiRenderer.getGUI().getHeight();
+
+			// element location and dimensions
+			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left + padding.left + font.getTextIndexX(text, controller.getIndex());
+			float top = computedConstraints.top + computedConstraints.alignmentTop + border.top + padding.top;
+			float width = 2;
+			float height = computedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;
+
+			// background color
+			float[] colorData = color.getData();
+
+			// render cursor
+			guiRenderer.bindTexture(0);
+			guiRenderer.addQuad(
+				((left) / (screenWidth / 2f)) - 1f,
+				((screenHeight - top) / (screenHeight / 2f)) - 1f,
+				colorData[0], colorData[1], colorData[2], colorData[3],
+				0f, 1f,
+				((left + width) / (screenWidth / 2f)) - 1f,
+				((screenHeight - top) / (screenHeight / 2f)) - 1f,
+				colorData[0], colorData[1], colorData[2], colorData[3],
+				1f, 1f,
+				((left + width) / (screenWidth / 2f)) - 1f,
+				((screenHeight - top - height) / (screenHeight / 2f)) - 1f,
+				colorData[0], colorData[1], colorData[2], colorData[3],
+				1f, 0f,
+				((left) / (screenWidth / 2f)) - 1f,
+				((screenHeight - top - height) / (screenHeight / 2f)) - 1f,
+				colorData[0], colorData[1], colorData[2], colorData[3],
+				0f, 0f
+			);
+			guiRenderer.render();
+		}
 	}
 
 }
