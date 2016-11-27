@@ -89,10 +89,17 @@ public final class GUITextInputController extends GUINodeController {
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		if (node == this.node &&
 			node.isEventBelongingToNode(event) && 
-			event.getType() == Type.MOUSE_RELEASED && 
+			(event.getType() == Type.MOUSE_PRESSED == true ||
+			event.getType() == Type.MOUSE_RELEASED == true ||
+			event.getType() == Type.MOUSE_DRAGGED == true) &&
 			event.getButton() == 1) {
 			//
-			System.out.println(node.getId() + ": INPUT CLICKED");
+			GUITextInputNode textInputNode = ((GUITextInputNode)node);
+			index = textInputNode.getFont().getTextIndexByRelativeX(
+				textInputNode.getText(), 
+				event.getX() - (textInputNode.computedConstraints.left + textInputNode.computedConstraints.alignmentLeft + textInputNode.border.left + textInputNode.padding.left)
+			);
+			resetCursorMode();
 		}
 	}
 

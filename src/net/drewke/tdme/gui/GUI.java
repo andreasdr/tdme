@@ -289,6 +289,13 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseDragged(MouseEvent event) {
+		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
+		guiMouseEvent.setTime(System.currentTimeMillis());
+		guiMouseEvent.setType(Type.MOUSE_DRAGGED);
+		guiMouseEvent.setX(event.getX());
+		guiMouseEvent.setY(event.getY());
+		guiMouseEvent.setButton(event.getButton());
+		mouseEvents.add(guiMouseEvent);
 	}
 
 	/*

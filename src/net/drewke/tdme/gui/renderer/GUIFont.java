@@ -61,11 +61,11 @@ public final class GUIFont {
 		/** The height of the character image */
 		protected int height;
 		/** The amount the x position should be offset when drawing the image */
-		protected int xoffset;
+		protected int xOffset;
 		/** The amount the y position should be offset when drawing the image */
-		protected int yoffset;
+		protected int yOffset;
 		/** The amount to move the current position after drawing the character */
-		protected int xadvance;
+		protected int xAdvance;
 
 		/**
 		 * @see java.lang.Object#toString()
@@ -86,8 +86,8 @@ public final class GUIFont {
 			float screenHeight = guiRenderer.gui.getHeight();
 
 			// element location and dimensions
-			float left = x + xoffset;
-			float top = y + yoffset;
+			float left = x + xOffset;
+			float top = y + yOffset;
 			float width = this.width;
 			float height = this.height;
 
@@ -228,15 +228,15 @@ public final class GUIFont {
 		tokens.nextToken(); // height
 		characterDefinition.height = Integer.parseInt(tokens.nextToken()); // height value
 		tokens.nextToken(); // x offset
-		characterDefinition.xoffset = Integer.parseInt(tokens.nextToken()); // xoffset value
+		characterDefinition.xOffset = Integer.parseInt(tokens.nextToken()); // xoffset value
 		tokens.nextToken(); // y offset
-		characterDefinition.yoffset = Integer.parseInt(tokens.nextToken()); // yoffset value
+		characterDefinition.yOffset = Integer.parseInt(tokens.nextToken()); // yoffset value
 		tokens.nextToken(); // xadvance
-		characterDefinition.xadvance = Integer.parseInt(tokens.nextToken()); // xadvance
+		characterDefinition.xAdvance = Integer.parseInt(tokens.nextToken()); // xadvance
 
 		// line height
 		if (characterDefinition.id != ' ') {
-			lineHeight = Math.max(characterDefinition.height+characterDefinition.yoffset, lineHeight);
+			lineHeight = Math.max(characterDefinition.height+characterDefinition.yOffset, lineHeight);
 		}
 		
 		return characterDefinition;
@@ -276,12 +276,19 @@ public final class GUIFont {
 			if (chars[id] == null) {
 				continue;
 			}
+
+			//
 			chars[id].draw(guiRenderer, x, y);
-			x += chars[id].xadvance;
+
+			//
+			int xAdvance = chars[id].xAdvance; 
+			x += xAdvance;
+
 			/*
+			// kerning
 			if (i < text.length()-1) {
 				if ((text.charAt(i+1) < CHARACTERS_MAX) && (id < CHARACTERS_MAX)) {
-					x += kerning[id][text.charAt(i+1)];
+					x+= kerning[id][text.charAt(i+1)];
 				}
 			}
 			*/
@@ -304,16 +311,59 @@ public final class GUIFont {
 			if (chars[id] == null) {
 				continue;
 			}
-			x += chars[id].xadvance;
+
+			//
+			int xAdvance = chars[id].xAdvance; 
+			x += xAdvance;
+
 			/*
+			// kerning
 			if (i < text.length()-1) {
 				if ((text.charAt(i+1) < CHARACTERS_MAX) && (id < CHARACTERS_MAX)) {
-					x += kerning[id][text.charAt(i+1)];
+					x+= kerning[id][text.charAt(i+1)];
 				}
 			}
 			*/
 		}
 		return x;
+	}
+
+	/**
+	 * Get text index X of given text and index
+	 * @param text
+	 * @param relative x
+	 */
+	public int getTextIndexByRelativeX(String text, int relativeX) {
+		int x = 0;
+		int index = 0;
+		for (; index < text.length(); index++) {
+			int id = text.charAt(index);
+			if (id >= chars.length) {
+				continue;
+			}
+			if (chars[id] == null) {
+				continue;
+			}
+
+			//
+			int xAdvance = chars[id].xAdvance; 
+			x += xAdvance;
+
+			/*
+			// kerning
+			if (i < text.length()-1) {
+				if ((text.charAt(i+1) < CHARACTERS_MAX) && (id < CHARACTERS_MAX)) {
+					x+= kerning[id][text.charAt(i+1)];
+				}
+			}
+			*/
+
+			// check if character was hit
+			if (x  - xAdvance / 2 > relativeX) {
+				return index;
+			}
+		}
+		return index;
 	}
 
 	/**
@@ -329,7 +379,7 @@ public final class GUIFont {
 			if (chars[id] == null) {
 				continue;
 			}
-			minYOffset = Math.min(chars[id].yoffset,minYOffset);
+			minYOffset = Math.min(chars[id].yOffset,minYOffset);
 		}
 		
 		return minYOffset;
@@ -351,7 +401,7 @@ public final class GUIFont {
 			if (id == ' ') {
 				continue;
 			}
-			maxHeight = Math.max(chars[id].height+chars[id].yoffset, maxHeight);
+			maxHeight = Math.max(chars[id].height+chars[id].yOffset, maxHeight);
 		}
 		return maxHeight;
 	}
@@ -368,10 +418,17 @@ public final class GUIFont {
 			if (chars[id] == null) {
 				continue;
 			}
-			width += chars[id].xadvance;
+
+			//
+			int xAdvance = chars[id].xAdvance; 
+			width += xAdvance;
+
 			/*
+			// kerning
 			if (i < text.length()-1) {
-				width += kerning[id][text.charAt(i+1)];
+				if ((text.charAt(i+1) < CHARACTERS_MAX) && (id < CHARACTERS_MAX)) {
+					width+= kerning[id][text.charAt(i+1)];
+				}
 			}
 			*/
 		}

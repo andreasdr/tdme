@@ -7,7 +7,7 @@ package net.drewke.tdme.gui.events;
  */
 public class GUIMouseEvent {
 
-	public enum Type {NONE, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_MOVED};
+	public enum Type {NONE, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_MOVED, MOUSE_DRAGGED};
 
 	private long time;
 
