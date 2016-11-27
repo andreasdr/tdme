@@ -329,11 +329,11 @@ public final class GUIFont {
 	}
 
 	/**
-	 * Get text index X of given text and index
+	 * Get text index by text and X in space of text
 	 * @param text
 	 * @param relative x
 	 */
-	public int getTextIndexByRelativeX(String text, int relativeX) {
+	public int getTextIndexByX(String text, int textX) {
 		int x = 0;
 		int index = 0;
 		for (; index < text.length(); index++) {
@@ -359,7 +359,7 @@ public final class GUIFont {
 			*/
 
 			// check if character was hit
-			if (x  - xAdvance / 2 > relativeX) {
+			if (x  - xAdvance / 2 > textX) {
 				return index;
 			}
 		}

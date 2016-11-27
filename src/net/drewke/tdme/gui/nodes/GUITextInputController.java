@@ -95,7 +95,7 @@ public final class GUITextInputController extends GUINodeController {
 			event.getButton() == 1) {
 			//
 			GUITextInputNode textInputNode = ((GUITextInputNode)node);
-			index = textInputNode.getFont().getTextIndexByRelativeX(
+			index = textInputNode.getFont().getTextIndexByX(
 				textInputNode.getText(), 
 				event.getX() - (textInputNode.computedConstraints.left + textInputNode.computedConstraints.alignmentLeft + textInputNode.border.left + textInputNode.padding.left)
 			);
