@@ -49,6 +49,16 @@ public abstract class GUINodeController {
 	 * @param node
 	 * @param event
 	 */
-	public abstract void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event);	
+	public abstract void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event);
+
+	/**
+	 * On focus gained
+	 */
+	public abstract void onFocusGained();
+
+	/**
+	 * On focus lost
+	 */
+	public abstract void onFocusLost();
 
 }

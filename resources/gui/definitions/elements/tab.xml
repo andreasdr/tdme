@@ -1,4 +1,4 @@
-<element id="{$id}" width="*" height="auto" border="1" border-color="black" focusable="true">
+<element id="{$id}" width="*" height="auto" border="1" border-color="black">
 	<!-- unselected, no mouse over -->
 	<text background-color="#8080A0" hide-on="selected,mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 	<!-- unselected, mouse over -->

@@ -248,6 +248,7 @@ public final class GUIScreenNode extends GUIParentNode {
 			focussedNode.border.leftColor = focussedNodeBorderLeftColor;
 			focussedNode.border.bottomColor = focussedNodeBorderBottomColor;
 			focussedNode.border.rightColor = focussedNodeBorderRightColor;
+			if (focussedNode.controller != null) focussedNode.controller.onFocusLost();
 		}
 	}
 
@@ -266,6 +267,7 @@ public final class GUIScreenNode extends GUIParentNode {
 			focussedNode.border.leftColor = foccussedBorderColor;
 			focussedNode.border.bottomColor = foccussedBorderColor;
 			focussedNode.border.rightColor = foccussedBorderColor;
+			if (focussedNode.controller != null) focussedNode.controller.onFocusGained();
 		}
 	}
 

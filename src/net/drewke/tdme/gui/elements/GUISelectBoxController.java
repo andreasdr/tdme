@@ -83,4 +83,18 @@ public final class GUISelectBoxController extends GUINodeController {
 		// no op for now
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusGained()
+	 */
+	public void onFocusGained() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusLost()
+	 */
+	public void onFocusLost() {
+	}
+
 }

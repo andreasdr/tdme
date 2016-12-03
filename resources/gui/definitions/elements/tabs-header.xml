@@ -1,3 +1,5 @@
-<layout alignment="horizontal" width="100%" height="auto">
-	{$innerXml}
-</layout>
+<element width="100%" height="auto" focusable="true">
+	<layout alignment="horizontal" width="100%" height="auto">
+		{$innerXml}
+	</layout>
+</element>
