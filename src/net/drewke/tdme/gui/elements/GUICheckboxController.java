@@ -91,7 +91,26 @@ public final class GUICheckboxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		// no op for now
+		if (node == this.node) {
+			switch (event.getKeyCode()) {
+				case GUIKeyboardEvent.KEYCODE_SPACE:
+					{
+						// set event processed
+						event.setProcessed(true);
+		
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							// toggle
+							setChecked(checked == true?false:true);
+						}
+					}
+					break;
+				default:
+					{
+						break;
+					}
+			}
+		}
 	}
 
 	/*

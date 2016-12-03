@@ -9,6 +9,7 @@ public class GUIKeyboardEvent {
 
 	public final static int KEYCODE_TAB = '\t';
 	public final static int KEYCODE_BACKSPACE = '\b';
+	public final static int KEYCODE_SPACE = 32;
 	public final static int KEYCODE_DELETE = 147;
 	public final static int KEYCODE_LEFT = 149;
 	public final static int KEYCODE_UP = 150;
@@ -182,5 +183,16 @@ public class GUIKeyboardEvent {
 		this.processed = processed;
 	}
 
-	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "GUIKeyboardEvent [time=" + time + ", type=" + type
+				+ ", keyCode=" + keyCode + ", keyChar=" + keyChar
+				+ ", metaDown=" + metaDown + ", controlDown=" + controlDown
+				+ ", altDown=" + altDown + ", shiftDown=" + shiftDown
+				+ ", processed=" + processed + "]";
+	}
+
 }

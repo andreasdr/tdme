@@ -158,7 +158,6 @@ public final class GUIElementNode extends GUIParentNode {
 	protected void layout() {
 		// super layout
 		super.layout();
-		
 
 		// do parent + children top, left adjustments
 		setTop(computedConstraints.top);

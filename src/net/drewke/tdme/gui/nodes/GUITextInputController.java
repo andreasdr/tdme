@@ -139,9 +139,6 @@ public final class GUITextInputController extends GUINodeController {
 							if (index > 0) {
 								index--;
 								resetCursorMode();
-	
-								// set event processed
-								event.setProcessed(true);
 							}
 						}
 					}
@@ -156,9 +153,6 @@ public final class GUITextInputController extends GUINodeController {
 							if (index < textInputNode.getText().length()) {
 								index++;
 								resetCursorMode();
-	
-								// set event processed
-								event.setProcessed(true);
 							}
 						}
 					}
@@ -178,9 +172,6 @@ public final class GUITextInputController extends GUINodeController {
 								);
 								index--;
 								resetCursorMode();
-	
-								// set event processed
-								event.setProcessed(true);
 							}
 						}
 					}
@@ -200,9 +191,6 @@ public final class GUITextInputController extends GUINodeController {
 								);
 								index--;
 								resetCursorMode();
-	
-								// set event processed
-								event.setProcessed(true);
 							}
 						}
 					}
