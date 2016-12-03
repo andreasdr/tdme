@@ -3,8 +3,6 @@ package net.drewke.tdme.gui.nodes;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
-import net.drewke.tdme.gui.nodes.GUINode;
-import net.drewke.tdme.gui.nodes.GUINodeController;
 
 /**
  * GUI input controller
@@ -113,90 +111,103 @@ public final class GUITextInputController extends GUINodeController {
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
 		GUITextInputNode textInputNode = ((GUITextInputNode)node);
-		switch (event.getType()) {
-			case KEY_PRESSED:
-				{
-					char keyChar = event.getKeyChar();
-					if (keyChar >= 32 && keyChar < 127) {
-						String text = textInputNode.getText();
-						textInputNode.setText(
-							text.substring(0, index) +
-							keyChar +
-							text.substring(index, text.length())
-						);
-						index++;
-						resetCursorMode();
+		char keyChar = event.getKeyChar();
+		if (keyChar >= 32 && keyChar < 127) {
+			// set event processed
+			event.setProcessed(true);
 
+			// check if key pressed
+			if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+				String text = textInputNode.getText();
+				textInputNode.setText(
+					text.substring(0, index) +
+					keyChar +
+					text.substring(index, text.length())
+				);
+				index++;
+				resetCursorMode();
+			}
+		} else {
+			switch (event.getKeyCode()) {
+				case GUIKeyboardEvent.KEYCODE_LEFT:
+					{
 						// set event processed
 						event.setProcessed(true);
-					} else {
-						switch (event.getKeyCode()) {
-							case GUIKeyboardEvent.KEYCODE_LEFT:
-								{
-									if (index > 0) {
-										index--;
-										resetCursorMode();
 
-										// set event processed
-										event.setProcessed(true);
-									}
-								}
-								break;
-							case GUIKeyboardEvent.KEYCODE_RIGHT:
-								{
-									if (index < textInputNode.getText().length()) {
-										index++;
-										resetCursorMode();
-
-										// set event processed
-										event.setProcessed(true);
-									}
-								}
-								break;
-							case GUIKeyboardEvent.KEYCODE_BACKSPACE:
-								{
-									if (index > 0) {
-										String text = textInputNode.getText();
-										textInputNode.setText(
-											text.substring(0, index - 1) +
-											text.substring(index, text.length())
-										);
-										index--;
-										resetCursorMode();
-
-										// set event processed
-										event.setProcessed(true);
-									}
-								}
-								break;
-							case GUIKeyboardEvent.KEYCODE_DELETE:
-								{
-									String text = textInputNode.getText();
-									if (index < text.length()) {
-										textInputNode.setText(
-											text.substring(0, index) +
-											text.substring(index + 1, text.length())
-										);
-										index--;
-										resetCursorMode();
-
-										// set event processed
-										event.setProcessed(true);
-									}
-								}
-								break;
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {						
+							if (index > 0) {
+								index--;
+								resetCursorMode();
+	
+								// set event processed
+								event.setProcessed(true);
+							}
 						}
 					}
 					break;
-				}
-			case KEY_RELEASED:
-				{
+				case GUIKeyboardEvent.KEYCODE_RIGHT:
+					{
+						// set event processed
+						event.setProcessed(true);
+
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							if (index < textInputNode.getText().length()) {
+								index++;
+								resetCursorMode();
+	
+								// set event processed
+								event.setProcessed(true);
+							}
+						}
+					}
 					break;
-				}
-			default:
-				{
+				case GUIKeyboardEvent.KEYCODE_BACKSPACE:
+					{
+						// set event processed
+						event.setProcessed(true);
+
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							if (index > 0) {
+								String text = textInputNode.getText();
+								textInputNode.setText(
+									text.substring(0, index - 1) +
+									text.substring(index, text.length())
+								);
+								index--;
+								resetCursorMode();
+	
+								// set event processed
+								event.setProcessed(true);
+							}
+						}
+					}
 					break;
-				}
+				case GUIKeyboardEvent.KEYCODE_DELETE:
+					{
+						// set event processed
+						event.setProcessed(true);
+
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							String text = textInputNode.getText();
+							if (index < text.length()) {
+								textInputNode.setText(
+									text.substring(0, index) +
+									text.substring(index + 1, text.length())
+								);
+								index--;
+								resetCursorMode();
+	
+								// set event processed
+								event.setProcessed(true);
+							}
+						}
+					}
+					break;
+			}
 		}
 	}
 

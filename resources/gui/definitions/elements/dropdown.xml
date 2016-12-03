@@ -11,7 +11,7 @@
 					<image effect-color-mul="#8080FF" hide-on="closed" src="resources/gui/images/elements/dropdown/collapse-arrow.png" vertical-align="center" />
 				</element>
 			</panel>
-			<panel id="{$id}_panel_panel" border="1" border-color="black" padding="10" width="100%" height="auto" alignment="vertical" show-on="opened" flow="floating" background-color="#f0f0f0">
+			<panel id="{$id}_panel_panel" border="1" border-color="#ff4040" padding="10" width="100%" height="auto" alignment="vertical" show-on="opened" flow="floating" background-color="#f0f0f0">
 				{$innerXml}
 			</panel>
 		</panel>

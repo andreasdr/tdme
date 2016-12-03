@@ -377,8 +377,9 @@ public final class GUIScreenNode extends GUIParentNode {
 		}
 
 		// delegate keyboard event to node if not yet processed
-		if (event.isProcessed() == false) {
-			super.handleKeyboardEvent(event);
+		if (event.isProcessed() == false &&
+			focussedNode != null) {
+			focussedNode.handleKeyboardEvent(event);
 		}
 	}
 

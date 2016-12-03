@@ -73,17 +73,29 @@ public final class GUITabController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// check if our node was clicked
 		if (node == this.node &&
-			node.isEventBelongingToNode(event) && 
-			event.getType() == Type.MOUSE_RELEASED && 
+			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
-			GUITabsController guiTabsController = (GUITabsController)tabsNode.getController(); 
-			// unselect all tabs
-			guiTabsController.unselect();
-			// select current
-			setSelected(selected == true?false:true);
-			// select tab content
-			guiTabsController.setTabContentSelected(node.getId());
+			// set event processed
+			event.setProcessed(true);
+
+			// check if mouse released
+			if (event.getType() == Type.MOUSE_RELEASED) {
+				GUITabsController guiTabsController = (GUITabsController)tabsNode.getController();
+	
+				// unselect all tabs
+				guiTabsController.unselect();
+	
+				// select current
+				setSelected(selected == true?false:true);
+	
+				// select tab content
+				guiTabsController.setTabContentSelected(node.getId());
+	
+				// set focussed node
+				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+			}
 		}
 	}
 

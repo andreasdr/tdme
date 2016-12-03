@@ -78,13 +78,19 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// check if our node was clicked
 		if (node == this.node &&
-			node.isEventBelongingToNode(event) && 
-			event.getType() == Type.MOUSE_PRESSED && 
+			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
-			//
-			((GUISelectBoxController)selectBoxNode.getController()).unselect();
-			select();
+			// set event processed
+			event.setProcessed(true);
+
+			// check if mouse released
+			if (event.getType() == Type.MOUSE_PRESSED) {
+				//
+				((GUISelectBoxController)selectBoxNode.getController()).unselect();
+				select();
+			}
 		}
 	}
 

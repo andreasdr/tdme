@@ -82,14 +82,20 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// check if our node was clicked
 		if (node == this.node &&
-			node.isEventBelongingToNode(event) && 
-			event.getType() == Type.MOUSE_PRESSED && 
+			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
-			//
-			((GUIDropDownController)dropDownNode.getController()).unselect();
-			select();
-			((GUIDropDownController)dropDownNode.getController()).toggleOpenState();
+			// set event processed
+			event.setProcessed(true);
+
+			// check if mouse released
+			if (event.getType() == Type.MOUSE_RELEASED) {
+				//
+				((GUIDropDownController)dropDownNode.getController()).unselect();
+				select();
+				((GUIDropDownController)dropDownNode.getController()).toggleOpenState();
+			}
 		}
 	}
 
