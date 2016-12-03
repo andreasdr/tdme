@@ -107,7 +107,7 @@
 				</tab-content>
 				<tab-content tab-id="tab5">
 					<panel padding="10" horizontal-align="center" vertical-align="center" alignment="none" width="100%" height="auto">
-						<input width="80%" text="Enter some text here" />
+						<input id="input" width="80%" text="Enter some text here" />
 					</panel>
 				</tab-content>
 			</tabs-content>

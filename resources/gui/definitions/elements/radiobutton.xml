@@ -1,10 +1,14 @@
-<element id="{$id}" name="{$name}">
+<element id="{$id}" name="{$name}" focusable="true">
 	<!-- unselected, no mouse over -->
-	<image effect-color-mul="#8080A0" hide-on="selected,mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
+	<image effect-color-mul="#8080A0" hide-on="focus,selected,mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
 	<!-- unselected, mouse over -->
-	<image effect-color-mul="#8080FF" hide-on="selected" show-on="mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
+	<image effect-color-mul="#8080FF" hide-on="focus,selected" show-on="mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
 	<!-- selected, no mouse over -->
-	<image effect-color-mul="#8080A0" hide-on="unselected,mouseover" src="resources/gui/images/elements/radiobutton/selected.png" />
+	<image effect-color-mul="#8080A0" hide-on="focus,unselected,mouseover" src="resources/gui/images/elements/radiobutton/selected.png" />
 	<!-- selected, mouse over -->
-	<image effect-color-mul="#8080FF" hide-on="unselected" show-on="mouseover" src="resources/gui/images/elements/radiobutton/selected.png" />
+	<image effect-color-mul="#8080FF" hide-on="focus,unselected" show-on="mouseover" src="resources/gui/images/elements/radiobutton/selected.png" />
+	<!-- unselected, focus -->
+	<image effect-color-mul="#FF4040" show-on="focus" hide-on="selected" src="resources/gui/images/elements/radiobutton/unselected.png" />
+	<!-- selected, focus -->
+	<image effect-color-mul="#FF4040" show-on="focus" hide-on="unselected" src="resources/gui/images/elements/radiobutton/selected.png" />
 </element>

@@ -15,9 +15,12 @@ public final class GUIElementNode extends GUIParentNode {
 	protected static final String CONDITION_ALWAYS = "always";
 	protected static final String CONDITION_ONMOUSEOVER = "mouseover";
 	protected static final String CONDITION_CLICK = "click";
+	protected static final String CONDITION_FOCUS = "focus";
 
 	protected String name;
 	protected GUINodeConditions activeConditions = new GUINodeConditions();
+
+	protected boolean focusable;
 
 	/**
 	 * Constructor
@@ -46,12 +49,14 @@ public final class GUIElementNode extends GUIParentNode {
 		Padding padding,
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn, 
-		String name
+		String name,
+		boolean focusable
 		) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		// name
 		this.name = name;
+		this.focusable = focusable;
 	}
 
 	/**
@@ -113,6 +118,13 @@ public final class GUIElementNode extends GUIParentNode {
 
 		//
 		return height;
+	}
+
+	/**
+	 * @return focusable
+	 */
+	public boolean isFocusable() {
+		return focusable;
 	}
 
 	/**

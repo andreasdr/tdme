@@ -112,6 +112,9 @@ public final class GUIParser {
 		// parse GUI nodes
 		parseGUINode(guiScreenNode, guiScreenNode, xmlRoot, null);
 
+		// determine focussed nodes
+		guiScreenNode.focusNextNode();
+
 		//
 		return guiScreenNode;
 	}
@@ -322,7 +325,8 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("name")
+					node.getAttribute("name"),
+					node.getAttribute("focusable").trim().equalsIgnoreCase("true")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
 				if (guiScreenNode.addNode(guiElementNode) == false) {

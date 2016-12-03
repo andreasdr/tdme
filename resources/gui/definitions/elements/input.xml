@@ -1,3 +1,3 @@
-<element id="{$id}" width="{$width}" height="{$height}">
-	<text-input padding="10" width="100%" height="auto" border="1" border-color="#000000" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" />
+<element id="{$id}" width="{$width}" height="{$height}" border="1" border-color="#000000" focusable="true">
+	<text-input padding="10" width="100%" height="auto" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" />
 </element>

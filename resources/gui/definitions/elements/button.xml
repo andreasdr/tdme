@@ -1,18 +1,18 @@
-<element id="{$id}" width="auto" height="auto" horizontal-align="center" vertical-align="center">
+<element id="{$id}" width="auto" height="auto" horizontal-align="center" vertical-align="center" border="2" border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" focusable="true">
 	<!-- unselected, no mouse over -->
-	<panel border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" width="{$width}" height="{$height}" border-color="#000000" border="2" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
+	<panel width="{$width}" height="{$height}" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
 		<space width="*" />
 	</panel>
 	<!-- mouse over -->
-	<panel border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" width="{$width}" height="{$height}" border-color="#000000" border="2" padding="10" show-on="mouseover" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080FF">
+	<panel width="{$width}" height="{$height}" padding="10" show-on="mouseover" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080FF">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
 		<space width="*" />
 	</panel>
 	<!-- clicked -->
-	<panel border-color-top="#404040" border-color-left="#404040" border-color-bottom="#C0C0C0" border-color-right="#C0C0C0" width="{$width}" height="{$height}" border-color="#000000" border="2" padding="10" show-on="click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#A0A0FF">
+	<panel width="{$width}" height="{$height}" padding="10" show-on="click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#A0A0FF">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
 		<space width="*" />

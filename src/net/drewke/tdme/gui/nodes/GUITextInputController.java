@@ -93,6 +93,7 @@ public final class GUITextInputController extends GUINodeController {
 			event.getType() == Type.MOUSE_RELEASED == true ||
 			event.getType() == Type.MOUSE_DRAGGED == true) &&
 			event.getButton() == 1) {
+
 			//
 			GUITextInputNode textInputNode = ((GUITextInputNode)node);
 			index = textInputNode.getFont().getTextIndexByX(
@@ -100,6 +101,9 @@ public final class GUITextInputController extends GUINodeController {
 				event.getX() - (textInputNode.computedConstraints.left + textInputNode.computedConstraints.alignmentLeft + textInputNode.border.left + textInputNode.padding.left)
 			);
 			resetCursorMode();
+
+			// set event processed
+			event.setProcessed(true);
 		}
 	}
 
@@ -122,6 +126,9 @@ public final class GUITextInputController extends GUINodeController {
 						);
 						index++;
 						resetCursorMode();
+
+						// set event processed
+						event.setProcessed(true);
 					} else {
 						switch (event.getKeyCode()) {
 							case GUIKeyboardEvent.KEYCODE_LEFT:
@@ -129,6 +136,9 @@ public final class GUITextInputController extends GUINodeController {
 									if (index > 0) {
 										index--;
 										resetCursorMode();
+
+										// set event processed
+										event.setProcessed(true);
 									}
 								}
 								break;
@@ -137,6 +147,9 @@ public final class GUITextInputController extends GUINodeController {
 									if (index < textInputNode.getText().length()) {
 										index++;
 										resetCursorMode();
+
+										// set event processed
+										event.setProcessed(true);
 									}
 								}
 								break;
@@ -150,6 +163,9 @@ public final class GUITextInputController extends GUINodeController {
 										);
 										index--;
 										resetCursorMode();
+
+										// set event processed
+										event.setProcessed(true);
 									}
 								}
 								break;
@@ -163,6 +179,9 @@ public final class GUITextInputController extends GUINodeController {
 										);
 										index--;
 										resetCursorMode();
+
+										// set event processed
+										event.setProcessed(true);
 									}
 								}
 								break;
