@@ -43,7 +43,6 @@ public final class GUIInputController extends GUINodeController {
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		if (node == this.node &&
 			node.isEventBelongingToNode(event) && 
-			event.getType() == Type.MOUSE_RELEASED && 
 			event.getButton() == 1) {
 
 			// set focussed node
