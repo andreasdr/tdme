@@ -27,6 +27,7 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	private ArrayList<GUINode> floatingNodes;
 
+	private boolean invalidateFocussedNode;
 	private ArrayList<GUIElementNode> focusableNodes;
 	private GUIElementNode focussedNode;
 
@@ -72,6 +73,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.focussedNodeBorderRightColor = null;
 		this.focussedNodeBorderTopColor = null;
 		this.focussedNodeBorderBottomColor = null;
+		this.invalidateFocussedNode = true;
 	}
 
 	/**
@@ -183,10 +185,23 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
+	 * Invalidate focussed node
+	 */
+	public void invalidateFocussedNode() {
+		unfocusNode();
+		focussedNode = null;
+		invalidateFocussedNode = true;
+	}
+
+	/**
 	 * Render
 	 * @param guiRenderer
 	 */
 	public void render(GUIRenderer guiRenderer) {
+		if (invalidateFocussedNode == true) {
+			invalidateFocussedNode = false;
+			focusNextNode();
+		}
 		floatingNodes.clear();
 		super.render(guiRenderer, floatingNodes);
 		for (int i = 0; i < floatingNodes.size(); i++) {

@@ -217,6 +217,17 @@ public final class GUIDropDownController extends GUINodeController {
 						}
 					}
 					break;
+				case GUIKeyboardEvent.KEYCODE_SPACE:
+					{
+						// set event processed
+						event.setProcessed(true);
+	
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							toggleOpenState();
+						}
+					}
+					break;
 			}
 		}
 	}
