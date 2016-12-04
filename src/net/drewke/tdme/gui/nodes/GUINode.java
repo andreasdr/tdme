@@ -94,10 +94,10 @@ public abstract class GUINode {
 	 * @version $Id$
 	 */
 	static class Padding {
-		protected int left;
-		protected int top;
-		protected int right;
-		protected int bottom;
+		public int left;
+		public int top;
+		public int right;
+		public int bottom;
 		/*
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
@@ -113,15 +113,15 @@ public abstract class GUINode {
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
-	static class Border {
-		protected GUIColor leftColor;
-		protected GUIColor topColor;
-		protected GUIColor rightColor;
-		protected GUIColor bottomColor;
-		protected int left;
-		protected int top;
-		protected int right;
-		protected int bottom;
+	public static class Border {
+		public GUIColor leftColor;
+		public GUIColor topColor;
+		public GUIColor rightColor;
+		public GUIColor bottomColor;
+		public int left;
+		public int top;
+		public int right;
+		public int bottom;
 		/*
 		 * (non-Javadoc)
 		 * @see java.lang.Object#toString()
@@ -221,6 +221,13 @@ public abstract class GUINode {
 	 */
 	public String getId() {
 		return id;
+	}
+
+	/**
+	 * @return border
+	 */
+	public Border getBorder() {
+		return border;
 	}
 
 	/**

@@ -17,8 +17,9 @@ public final class GUITabsHeaderController extends GUINodeController {
 
 	private GUINode tabsNode;
 
-	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
-	private ArrayList<GUITabController> tabControllers = new ArrayList<GUITabController>();
+	private ArrayList<GUINode> childControllerNodes;
+	private ArrayList<GUITabController> tabControllers;
+	private boolean hasFocus;
 
 	/**
 	 * GUI Checkbox controller
@@ -26,6 +27,9 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 */
 	protected GUITabsHeaderController(GUINode node) {
 		super(node);
+		this.childControllerNodes = new ArrayList<GUINode>();
+		this.tabControllers = new ArrayList<GUITabController>();
+		this.hasFocus = false;
 	}
 
 
@@ -187,9 +191,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusGained()
 	 */
 	public void onFocusGained() {
-		// determine child nodes
-		// determine selected child node
-		// set border
+		hasFocus = true;
 	}
 
 	/*
@@ -197,9 +199,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusLost()
 	 */
 	public void onFocusLost() {
-		// determine child nodes
-		// determine selected child node
-		// unset border
+		hasFocus = false;
 	}
 
 }

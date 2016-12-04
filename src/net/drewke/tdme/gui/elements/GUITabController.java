@@ -28,6 +28,7 @@ public final class GUITabController extends GUINodeController {
 	 */
 	protected GUITabController(GUINode node) {
 		super(node);
+		this.tabsNode = null;
 		this.selected = false;
 	}
 
@@ -48,11 +49,6 @@ public final class GUITabController extends GUINodeController {
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 		this.selected = selected;
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
-
-		// if selected invalidate current focussed node as it might not be in viewport any more
-		if (selected == true) {
-			node.getScreenNode().invalidateFocussedNode();
-		}
 	}
 
 	/*

@@ -185,6 +185,13 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
+	 * @return focussed border color
+	 */
+	public static GUIColor getFoccussedBorderColor() {
+		return foccussedBorderColor;
+	}
+
+	/**
 	 * Invalidate focussed node
 	 */
 	public void invalidateFocussedNode() {
