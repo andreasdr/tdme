@@ -56,7 +56,7 @@ public final class GUITabController extends GUINodeController {
 	 */
 	public void init() {
 		// get "tabs" node
-		tabsNode = ((GUIParentNode)node).getParentControllerNode();
+		tabsNode = ((GUIParentNode)node).getParentControllerNode().getParentControllerNode();
 		// set initial state
 		setSelected(selected);
 	}

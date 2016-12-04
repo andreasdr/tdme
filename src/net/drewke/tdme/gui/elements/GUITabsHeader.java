@@ -59,7 +59,7 @@ public final class GUITabsHeader extends GUIElement {
 	 * @see net.drewke.tdme.gui.elements.GUIElement#createController(net.drewke.tdme.gui.nodes.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return null;
+		return new GUITabsHeaderController(node);
 	}
 
 }
