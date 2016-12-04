@@ -9,6 +9,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.gui.nodes.GUITextInputNode;
 
 /**
  * GUI select box controller
@@ -18,6 +19,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 public final class GUISelectBoxController extends GUINodeController {
 
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
+	private ArrayList<GUISelectBoxOptionController> selectBoxOptionControllers = new ArrayList<GUISelectBoxOptionController>();
 
 	/**
 	 * Constructor
@@ -55,6 +57,81 @@ public final class GUISelectBoxController extends GUINodeController {
 		}
 	}
 
+	/**
+	 * Determine select box option controllers
+	 */
+	private void determineSelectBoxOptionControllers() {
+		selectBoxOptionControllers.clear();
+		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
+		for (int i = 0; i < childControllerNodes.size(); i++) {
+			GUINode childControllerNode = childControllerNodes.get(i);
+			GUINodeController childController = childControllerNode.getController();
+			if (childController instanceof GUISelectBoxOptionController) {
+				selectBoxOptionControllers.add((GUISelectBoxOptionController)childController);
+			}
+		}
+	}
+
+	/**
+	 * Get selected option idx
+	 */
+	private int getSelectedOptionIdx() {
+		int selectBoxOptionControllerIdx = -1;
+		for (int i = 0; i < selectBoxOptionControllers.size(); i++) {
+			GUISelectBoxOptionController selectBoxOptionController = selectBoxOptionControllers.get(i);
+			// determine selected idx
+			if (selectBoxOptionController.isSelected() == true) {
+				selectBoxOptionControllerIdx = i;
+				break;
+			}
+		}
+
+		//
+		return selectBoxOptionControllerIdx;
+	}
+
+	/**
+	 * Select next node
+	 */
+	protected void selectNext() {
+		// determine select box option controllers
+		determineSelectBoxOptionControllers();
+
+		// determine current selected option index
+		int selectBoxOptionControllerIdx = getSelectedOptionIdx();
+
+		// unselect all selections
+		unselect();
+
+		// determine new selection idx
+		selectBoxOptionControllerIdx = (selectBoxOptionControllerIdx + 1) % selectBoxOptionControllers.size();
+		if (selectBoxOptionControllerIdx < 0) selectBoxOptionControllerIdx += selectBoxOptionControllers.size();
+
+		// select
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).select();
+	}
+
+	/**
+	 * Select previous
+	 */
+	protected void selectPrevious() {
+		// determine select box option controllers
+		determineSelectBoxOptionControllers();
+
+		// determine current selected option index
+		int selectBoxOptionControllerIdx = getSelectedOptionIdx();
+
+		// unselect all selections
+		unselect();
+
+		// determine new selection idx
+		selectBoxOptionControllerIdx = (selectBoxOptionControllerIdx - 1) % selectBoxOptionControllers.size();
+		if (selectBoxOptionControllerIdx < 0) selectBoxOptionControllerIdx += selectBoxOptionControllers.size();
+
+		// select
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).select();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
@@ -80,7 +157,32 @@ public final class GUISelectBoxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		// no op for now
+		if (node == this.node) {
+			switch (event.getKeyCode()) {
+				case GUIKeyboardEvent.KEYCODE_UP:
+					{
+						// set event processed
+						event.setProcessed(true);
+
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							selectPrevious();
+						}
+					}
+					break;
+				case GUIKeyboardEvent.KEYCODE_DOWN:
+					{
+						// set event processed
+						event.setProcessed(true);
+
+						// check if key pressed
+						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+							selectNext();
+						}
+					}
+					break;
+			}
+		}
 	}
 
 	/*

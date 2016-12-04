@@ -34,6 +34,13 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	}
 
 	/**
+	 * @return is selected
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
+
+	/**
 	 * Select
 	 */
 	public void select() {
