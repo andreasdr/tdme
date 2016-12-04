@@ -62,7 +62,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	/**
 	 * Determine select box option controllers
 	 */
-	private void determineSelectBoxOptionControllers() {
+	private void determineTabControllers() {
 		tabControllers.clear();
 		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
 		for (int i = 0; i < childControllerNodes.size(); i++) {
@@ -97,7 +97,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 */
 	protected void selectNext() {
 		// determine select box option controllers
-		determineSelectBoxOptionControllers();
+		determineTabControllers();
 
 		// determine current selected option index
 		int tabControllerIdx = getSelectedTabIdx();
@@ -122,7 +122,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 */
 	protected void selectPrevious() {
 		// determine select box option controllers
-		determineSelectBoxOptionControllers();
+		determineTabControllers();
 
 		// determine current selected option index
 		int tabControllerIdx = getSelectedTabIdx();
