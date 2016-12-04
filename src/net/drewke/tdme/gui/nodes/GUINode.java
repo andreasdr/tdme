@@ -663,12 +663,23 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * Set conditions met for the while tree
+	 */
+	public void setConditionsMet() {
+		// check conditions
+		conditionsMet = checkConditions();
+	}
+
+	/**
 	 * Render
 	 * 
 	 * @param gui renderer
 	 * @param floating nodes
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
 		// screen dimension
 		float screenWidth = guiRenderer.getGUI().getWidth();
 		float screenHeight = guiRenderer.getGUI().getHeight();

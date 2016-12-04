@@ -111,6 +111,9 @@ public final class GUISpaceNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
 	}

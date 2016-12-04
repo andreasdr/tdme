@@ -243,6 +243,7 @@ public final class GUI implements MouseListener, KeyListener {
 			guiRenderer.setGUI(this);
 			engine.initGUIMode();
 			guiRenderer.initRendering();
+			screen.setConditionsMet();
 			screen.render(guiRenderer);
 			guiRenderer.doneRendering();
 			engine.doneGUIMode();

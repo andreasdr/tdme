@@ -114,8 +114,7 @@ public final class GUIImageNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
-		// check if conditions apply
-		conditionsMet = checkConditions();
+		// check if conditions were met
 		if (conditionsMet == false) return;
 
 		// call parent renderer

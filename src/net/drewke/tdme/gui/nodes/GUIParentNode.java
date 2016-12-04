@@ -204,11 +204,28 @@ public abstract class GUIParentNode extends GUINode {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINode#setConditionsMet()
+	 */
+	public void setConditionsMet() {
+		// check conditions
+		conditionsMet = checkConditions();
+
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		//
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode guiSubNode = subNodes.get(i);
+			guiSubNode.setConditionsMet();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
 	 */
 	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
-		// check if conditions apply
-		conditionsMet = checkConditions();
+		// check if conditions were met
 		if (conditionsMet == false) return;
 
 		// call parent renderer

@@ -112,6 +112,9 @@ public final class GUIParser {
 		// parse GUI nodes
 		parseGUINode(guiScreenNode, guiScreenNode, xmlRoot, null);
 
+		// set conditions met
+		guiScreenNode.setConditionsMet();
+
 		// determine focussed nodes
 		guiScreenNode.focusNextNode();
 

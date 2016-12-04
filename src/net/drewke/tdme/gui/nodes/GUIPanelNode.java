@@ -54,17 +54,4 @@ public final class GUIPanelNode extends GUILayoutNode {
 		return "panel";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
-	 */
-	public void render(GUIRenderer guiRenderer, ArrayList<GUINode> floatingNodes) {
-		// check if conditions apply
-		conditionsMet = checkConditions();
-		if (conditionsMet == false) return;
-
-		// call parent renderer
-		super.render(guiRenderer, floatingNodes);
-	}
-
 }
