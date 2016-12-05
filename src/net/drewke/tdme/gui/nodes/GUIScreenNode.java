@@ -16,7 +16,7 @@ import net.drewke.tdme.utils.HashMap;
  */
 public final class GUIScreenNode extends GUIParentNode {
 
-	private static GUIColor foccussedBorderColor = null;
+	private GUIColor foccussedBorderColor = null;
 
 	private int nodeCounter;
 
@@ -31,10 +31,10 @@ public final class GUIScreenNode extends GUIParentNode {
 	private ArrayList<GUIElementNode> focusableNodes;
 	private GUIElementNode focussedNode;
 
-	private GUIColor focussedNodeBorderLeftColor;
-	private GUIColor focussedNodeBorderRightColor;
-	private GUIColor focussedNodeBorderTopColor;
-	private GUIColor focussedNodeBorderBottomColor;
+	private GUIColor unfocussedNodeBorderLeftColor;
+	private GUIColor unfocussedNodeBorderRightColor;
+	private GUIColor unfocussedNodeBorderTopColor;
+	private GUIColor unfocussedNodeBorderBottomColor;
 
 	/**
 	 * Constructor
@@ -69,10 +69,10 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.floatingNodes = new ArrayList<GUINode>();
 		this.focusableNodes = new ArrayList<GUIElementNode>();
 		this.focussedNode = null;
-		this.focussedNodeBorderLeftColor = null;
-		this.focussedNodeBorderRightColor = null;
-		this.focussedNodeBorderTopColor = null;
-		this.focussedNodeBorderBottomColor = null;
+		this.unfocussedNodeBorderLeftColor = null;
+		this.unfocussedNodeBorderRightColor = null;
+		this.unfocussedNodeBorderTopColor = null;
+		this.unfocussedNodeBorderBottomColor = null;
 		this.invalidateFocussedNode = true;
 	}
 
@@ -187,7 +187,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	/**
 	 * @return focussed border color
 	 */
-	public static GUIColor getFoccussedBorderColor() {
+	public GUIColor getFoccussedBorderColor() {
 		return foccussedBorderColor;
 	}
 
@@ -266,10 +266,10 @@ public final class GUIScreenNode extends GUIParentNode {
 		// unfocus current focussed element
 		if (focussedNode != null) {
 			focussedNode.getActiveConditions().remove(GUIElementNode.CONDITION_FOCUS);
-			focussedNode.border.topColor = focussedNodeBorderTopColor;
-			focussedNode.border.leftColor = focussedNodeBorderLeftColor;
-			focussedNode.border.bottomColor = focussedNodeBorderBottomColor;
-			focussedNode.border.rightColor = focussedNodeBorderRightColor;
+			focussedNode.border.topColor = unfocussedNodeBorderTopColor;
+			focussedNode.border.leftColor = unfocussedNodeBorderLeftColor;
+			focussedNode.border.bottomColor = unfocussedNodeBorderBottomColor;
+			focussedNode.border.rightColor = unfocussedNodeBorderRightColor;
 			if (focussedNode.controller != null) focussedNode.controller.onFocusLost();
 		}
 	}
@@ -281,10 +281,10 @@ public final class GUIScreenNode extends GUIParentNode {
 		// focus new focus node
 		if (focussedNode != null) {
 			focussedNode.getActiveConditions().add(GUIElementNode.CONDITION_FOCUS);
-			focussedNodeBorderTopColor = focussedNode.border.topColor;
-			focussedNodeBorderLeftColor = focussedNode.border.leftColor;
-			focussedNodeBorderBottomColor = focussedNode.border.bottomColor;
-			focussedNodeBorderRightColor = focussedNode.border.rightColor;
+			unfocussedNodeBorderTopColor = focussedNode.border.topColor;
+			unfocussedNodeBorderLeftColor = focussedNode.border.leftColor;
+			unfocussedNodeBorderBottomColor = focussedNode.border.bottomColor;
+			unfocussedNodeBorderRightColor = focussedNode.border.rightColor;
 			focussedNode.border.topColor = foccussedBorderColor;
 			focussedNode.border.leftColor = foccussedBorderColor;
 			focussedNode.border.bottomColor = foccussedBorderColor;

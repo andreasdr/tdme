@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.elements;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
@@ -20,7 +21,13 @@ public final class GUITabController extends GUINodeController {
 	private static final String CONDITION_UNSELECTED = "unselected";
 
 	private GUINode tabsNode;
+	private GUINode tabsHeaderNode;
 	private boolean selected;
+
+	private GUIColor unfocussedNodeBorderLeftColor;
+	private GUIColor unfocussedNodeBorderRightColor;
+	private GUIColor unfocussedNodeBorderTopColor;
+	private GUIColor unfocussedNodeBorderBottomColor;
 
 	/**
 	 * GUI Checkbox controller
@@ -29,7 +36,12 @@ public final class GUITabController extends GUINodeController {
 	protected GUITabController(GUINode node) {
 		super(node);
 		this.tabsNode = null;
+		this.tabsHeaderNode = null;
 		this.selected = false;
+		this.unfocussedNodeBorderLeftColor = null;
+		this.unfocussedNodeBorderRightColor = null;
+		this.unfocussedNodeBorderTopColor = null;
+		this.unfocussedNodeBorderBottomColor = null;
 	}
 
 	/**
@@ -49,6 +61,30 @@ public final class GUITabController extends GUINodeController {
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 		this.selected = selected;
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+
+		// handle focus, alter border depending on tabs header node focus and selection state
+		if (((GUITabsHeaderController)tabsHeaderNode.getController()).hasFocus() == true) {
+			if (selected == true) {
+				GUIColor focussedBorderColor = node.getScreenNode().getFoccussedBorderColor();
+				GUINode.Border border = node.getBorder();
+				border.topColor = focussedBorderColor;
+				border.leftColor = focussedBorderColor; 
+				border.bottomColor = focussedBorderColor;
+				border.rightColor = focussedBorderColor;
+			} else {
+				GUINode.Border border = node.getBorder();
+				border.topColor = unfocussedNodeBorderTopColor;
+				border.leftColor = unfocussedNodeBorderLeftColor;
+				border.bottomColor = unfocussedNodeBorderBottomColor;
+				border.rightColor = unfocussedNodeBorderRightColor;
+			}
+		} else {
+			GUINode.Border border = node.getBorder();
+			border.topColor = unfocussedNodeBorderTopColor;
+			border.leftColor = unfocussedNodeBorderLeftColor;
+			border.bottomColor = unfocussedNodeBorderBottomColor;
+			border.rightColor = unfocussedNodeBorderRightColor;
+		}
 	}
 
 	/*
@@ -58,6 +94,17 @@ public final class GUITabController extends GUINodeController {
 	public void init() {
 		// get "tabs" node
 		tabsNode = ((GUIParentNode)node).getParentControllerNode().getParentControllerNode();
+
+		// get "tabs header" node
+		tabsHeaderNode = ((GUIParentNode)node).getParentControllerNode();
+
+		// store original border
+		GUINode.Border border = node.getBorder();
+		unfocussedNodeBorderTopColor = border.topColor;
+		unfocussedNodeBorderLeftColor = border.leftColor;
+		unfocussedNodeBorderBottomColor = border.bottomColor;
+		unfocussedNodeBorderRightColor = border.rightColor;
+
 		// set initial state
 		setSelected(selected);
 	}

@@ -50,6 +50,13 @@ public final class GUITabsHeaderController extends GUINodeController {
 	}
 
 	/**
+	 * @return has focus
+	 */
+	public boolean hasFocus() {
+		return hasFocus;
+	}
+
+	/**
 	 * Unselect all nodes
 	 */
 	protected void unselect() {
@@ -146,6 +153,27 @@ public final class GUITabsHeaderController extends GUINodeController {
 		guiTabsController.setTabContentSelected(tabControllers.get(tabControllerIdx).getNode().getId());
 	}
 
+	/**
+	 * Select current
+	 */
+	protected void selectCurrent() {
+		// determine select box option controllers
+		determineTabControllers();
+
+		// determine current selected option index
+		int tabControllerIdx = getSelectedTabIdx();
+
+		// unselect all selections
+		unselect();
+
+		// select
+		tabControllers.get(tabControllerIdx).setSelected(true);
+
+		// select tab content
+		GUITabsController guiTabsController = (GUITabsController)tabsNode.getController();
+		guiTabsController.setTabContentSelected(tabControllers.get(tabControllerIdx).getNode().getId());
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
@@ -192,6 +220,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 */
 	public void onFocusGained() {
 		hasFocus = true;
+		selectCurrent();
 	}
 
 	/*
@@ -200,6 +229,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	 */
 	public void onFocusLost() {
 		hasFocus = false;
+		selectCurrent();
 	}
 
 }
