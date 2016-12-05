@@ -188,6 +188,10 @@ public abstract class GUINode {
 		this.alignments = alignments;
 		this.requestedConstraints = requestedConstraints;
 		this.computedConstraints = new ComputedConstraints();
+		this.computedConstraints.alignmentLeft = 0;
+		this.computedConstraints.alignmentTop = 0;
+		this.computedConstraints.contentAlignmentLeft = 0;
+		this.computedConstraints.contentAlignmentTop = 0;
 		this.backgroundColor = backgroundColor;
 		this.border = border;
 		this.padding = padding;
@@ -336,12 +340,6 @@ public abstract class GUINode {
 				parentNodeContentHeight, 
 				requestedConstraints.height
 			);
-
-		// reset additional constraints
-		computedConstraints.alignmentLeft = 0;
-		computedConstraints.alignmentTop = 0;
-		computedConstraints.contentAlignmentLeft = 0;
-		computedConstraints.contentAlignmentTop = 0;
 
 		//
 		computeContentAlignment();
@@ -612,9 +610,8 @@ public abstract class GUINode {
 		return guiNodeConditions;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINode#render(net.drewke.tdme.gui.GUIRenderer)
+	/**
+	 * @return conditions met
 	 */
 	protected boolean checkConditions() {
 		ArrayList<String> showOn = this.showOn.conditions;
@@ -695,14 +692,14 @@ public abstract class GUINode {
 		//	TODO: render background image
 		if (backgroundColor != GUIColor.TRANSPARENT) {
 			// element location and dimensions
-			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left;
-			float top = computedConstraints.top + computedConstraints.alignmentTop + border.top;
+			float left = computedConstraints.left + computedConstraints.alignmentLeft;
+			float top = computedConstraints.top + computedConstraints.alignmentTop;
 			float width = computedConstraints.width - border.left - border.right;
 			float height = computedConstraints.height - border.top - border.bottom;
-	
+
 			// background color
 			float[] bgColorData = backgroundColor.getData();
-	
+
 			// render background
 			guiRenderer.bindTexture(0);
 			guiRenderer.addQuad(

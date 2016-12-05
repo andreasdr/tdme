@@ -265,7 +265,7 @@ public class GUILayoutNode extends GUIParentNode {
 							}
 						}
 					}
-					
+
 					// do horizontal alignments, take border, padding into account
 					switch (alignments.horizontal) {
 						case LEFT:
