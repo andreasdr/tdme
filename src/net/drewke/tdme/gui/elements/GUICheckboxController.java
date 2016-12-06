@@ -32,7 +32,7 @@ public final class GUICheckboxController extends GUINodeController {
 	/**
 	 * @return is checked
 	 */
-	public boolean isChecked() {
+	protected boolean isChecked() {
 		return checked;
 	}
 
@@ -40,7 +40,7 @@ public final class GUICheckboxController extends GUINodeController {
 	 * Set checked
 	 * @param checked
 	 */
-	public void setChecked(boolean checked) {
+	protected void setChecked(boolean checked) {
 		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
 		nodeConditions.remove(this.checked == true?CONDITION_CHECKED:CONDITION_UNCHECKED);
 		this.checked = checked;
