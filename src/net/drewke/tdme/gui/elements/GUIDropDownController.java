@@ -53,7 +53,7 @@ public final class GUIDropDownController extends GUINodeController {
 	/**
 	 * @return drop down open state
 	 */
-	public boolean isOpen() {
+	protected boolean isOpen() {
 		return isOpen;
 	}
 
@@ -74,7 +74,7 @@ public final class GUIDropDownController extends GUINodeController {
 	/**
 	 * Toggle open state
 	 */
-	public void toggleOpenState() {
+	protected void toggleOpenState() {
 		((GUIElementNode)node).getActiveConditions().remove(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 		arrowNode.getActiveConditions().remove(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 		isOpen = isOpen == true?false:true;
@@ -118,7 +118,7 @@ public final class GUIDropDownController extends GUINodeController {
 	/**
 	 * Select next node
 	 */
-	protected void selectNext() {
+	private void selectNext() {
 		// determine select box option controllers
 		determineDropDownOptionControllers();
 
@@ -139,7 +139,7 @@ public final class GUIDropDownController extends GUINodeController {
 	/**
 	 * Select previous
 	 */
-	protected void selectPrevious() {
+	private void selectPrevious() {
 		// determine select box option controllers
 		determineDropDownOptionControllers();
 

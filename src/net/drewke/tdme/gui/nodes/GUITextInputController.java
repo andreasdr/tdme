@@ -45,14 +45,14 @@ public final class GUITextInputController extends GUINodeController {
 	/**
 	 * @return index
 	 */
-	public int getIndex() {
+	protected int getIndex() {
 		return index;
 	}
 
 	/**
 	 * Reset cursor mode
 	 */
-	public void resetCursorMode() {
+	protected void resetCursorMode() {
 		cursorModeStarted = System.currentTimeMillis();
 		cursorMode = CursorMode.SHOW;
 	}
@@ -60,7 +60,7 @@ public final class GUITextInputController extends GUINodeController {
 	/**
 	 * @return cursor mode
 	 */
-	public CursorMode getCursorMode() {
+	protected CursorMode getCursorMode() {
 		// if not yet started?
 		if (cursorModeStarted == -1) {
 			// reset

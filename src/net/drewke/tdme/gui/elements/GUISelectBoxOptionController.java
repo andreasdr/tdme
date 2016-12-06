@@ -36,14 +36,14 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	/**
 	 * @return is selected
 	 */
-	public boolean isSelected() {
+	protected boolean isSelected() {
 		return selected;
 	}
 
 	/**
 	 * Select
 	 */
-	public void select() {
+	protected void select() {
 		// select current
 		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
@@ -55,7 +55,7 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	 * Unselect
 	 * @param checked
 	 */
-	public void unselect() {
+	protected void unselect() {
 		// unselect current
 		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);

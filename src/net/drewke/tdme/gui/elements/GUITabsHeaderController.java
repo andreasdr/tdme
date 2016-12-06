@@ -54,7 +54,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	/**
 	 * @return has focus
 	 */
-	public boolean hasFocus() {
+	protected boolean hasFocus() {
 		return hasFocus;
 	}
 
@@ -108,7 +108,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	/**
 	 * Select next node
 	 */
-	protected void selectNext() {
+	private void selectNext() {
 		// determine select box option controllers
 		determineTabControllers();
 
@@ -133,7 +133,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	/**
 	 * Select previous
 	 */
-	protected void selectPrevious() {
+	private void selectPrevious() {
 		// determine select box option controllers
 		determineTabControllers();
 
@@ -158,7 +158,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 	/**
 	 * Select current
 	 */
-	protected void selectCurrent() {
+	private void selectCurrent() {
 		// determine select box option controllers
 		determineTabControllers();
 

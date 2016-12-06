@@ -47,7 +47,7 @@ public final class GUITabController extends GUINodeController {
 	/**
 	 * @return is checked
 	 */
-	public boolean isSelected() {
+	protected boolean isSelected() {
 		return selected;
 	}
 
@@ -55,7 +55,7 @@ public final class GUITabController extends GUINodeController {
 	 * Set checked
 	 * @param selected
 	 */
-	public void setSelected(boolean selected) {
+	protected void setSelected(boolean selected) {
 		// remove old selection condition, add new selection condition
 		GUINodeConditions nodeConditions = ((GUIElementNode)this.node).getActiveConditions();
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
