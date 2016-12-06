@@ -692,8 +692,8 @@ public abstract class GUINode {
 		//	TODO: render background image
 		if (backgroundColor != GUIColor.TRANSPARENT) {
 			// element location and dimensions
-			float left = computedConstraints.left + computedConstraints.alignmentLeft;
-			float top = computedConstraints.top + computedConstraints.alignmentTop;
+			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left;
+			float top = computedConstraints.top + computedConstraints.alignmentTop + border.top;
 			float width = computedConstraints.width - border.left - border.right;
 			float height = computedConstraints.height - border.top - border.bottom;
 
