@@ -19,34 +19,34 @@
 					<panel width="100%" height="100%" padding="10" horizontal-align="center" alignment="horizontal">
 						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
 							<panel padding="2" width="100%" alignment="horizontal">
-								<checkbox id="checkbox1" />
+								<checkbox name="checkbox1" value="1" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" height="100%" vertical-align="center" />
 							</panel>
 							<panel padding="2" width="100%" alignment="horizontal">
-								<checkbox id="checkbox2" />
+								<checkbox name="checkbox2" value="1" selected="true" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" height="100%" vertical-align="center"  />
 							</panel>
 							<panel padding="2" width="100%" alignment="horizontal">
-								<checkbox id="checkbox3" />
+								<checkbox name="checkbox3" value="1" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" height="100%" vertical-align="center" />
 							</panel>
 						</panel>
 						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
 							<panel padding="2" width="100%" alignment="horizontal">
-								<radiobutton id="radio1" value="radio" />
+								<radiobutton name="radio" value="1" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
 							</panel>
 							<panel padding="2" width="100%" alignment="horizontal">
-								<radiobutton id="radio2" value="radio" />
+								<radiobutton name="radio" value="2" selected="true" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
 							</panel>
 							<panel padding="2" width="100%" alignment="horizontal">
-								<radiobutton id="radio3" value="radio" />
+								<radiobutton name="radio" value="3" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
 							</panel>
@@ -66,10 +66,10 @@
 						</panel>
 						<space height="10" />
 						<panel horizontal-align="center" alignment="none" width="80%">
-							<selectbox id="select">
-								<selectbox-option id="select1" text="Select Me!" />
-								<selectbox-option id="select2" text="Why not selecting me?" />
-								<selectbox-option id="select3" text="You should select me" />
+							<selectbox name="select">
+								<selectbox-option text="Select Me!" value="1" />
+								<selectbox-option text="Why not selecting me?" value="2" selected="true" />
+								<selectbox-option text="You should select me" value="3" />
 							</selectbox>
 						</panel>
 					</panel>
@@ -84,17 +84,17 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 						</element>
 						<space height="*" />
-						<button id="test_text_button" text="Test text button" />
+						<button id="test_text_button" name="button" text="Test text button" />
 						<space height="*" />
 					</panel>
 				</tab-content>
 				<tab-content tab-id="tab4">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
 						<panel horizontal-align="center" alignment="vertical" width="80%">
-							<dropdown text="Click me and select a drop down option">
-								<dropdown-option id="dropdown1" text="I am a good option!" />
-								<dropdown-option id="dropdown2" text="Me feels better I guess?!" />
-								<dropdown-option id="dropdown3" text="Just opt for me!" />
+							<dropdown name="select" text="Click me and select a drop down option">
+								<dropdown-option text="I am a good option!" value="1" />
+								<dropdown-option text="Me feels better I guess?!" value="2" selected="true" />
+								<dropdown-option text="Just opt for me!" value="3" />
 							</dropdown>
 							<space height="20" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
@@ -107,7 +107,7 @@
 				</tab-content>
 				<tab-content tab-id="tab5">
 					<panel padding="10" horizontal-align="center" vertical-align="center" alignment="none" width="100%" height="auto">
-						<input id="input" width="80%" text="Enter some text here" />
+						<input name="input" width="80%" text="Enter some text here" />
 					</panel>
 				</tab-content>
 			</tabs-content>
