@@ -51,7 +51,7 @@ import org.w3c.dom.ls.LSSerializer;
  */
 public final class GUIParser {
 
-	public static HashMap<String, GUIElement> elements;
+	private static HashMap<String, GUIElement> elements = new HashMap<String, GUIElement>();
 
 	/**
 	 * Parses a GUI XML file
@@ -121,7 +121,7 @@ public final class GUIParser {
 	 * @param gui parent node
 	 * @param xml parent node
 	 */
-	protected static void parseGUINode(GUIScreenNode guiScreenNode, GUIParentNode guiParentNode, Element xmlParentNode, GUIElement guiElement) throws Exception {
+	private static void parseGUINode(GUIScreenNode guiScreenNode, GUIParentNode guiParentNode, Element xmlParentNode, GUIElement guiElement) throws Exception {
 		//
 		GUINodeController guiElementController = null;
 		boolean guiElementControllerInstalled = false;
@@ -541,7 +541,7 @@ public final class GUIParser {
 	 * @param parent
 	 * @return children
 	 */
-	protected static List<Element> getChildrenTags(Element parent) {
+	private static List<Element> getChildrenTags(Element parent) {
 		List<Element> nodeList = new ArrayList<Element>();
 		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
@@ -557,7 +557,7 @@ public final class GUIParser {
 	 * @param node
 	 * @return string
 	 */
-	public static String getInnerXml(Node node) {
+	private static String getInnerXml(Node node) {
 	    DOMImplementationLS lsImpl = (DOMImplementationLS)node.getOwnerDocument().getImplementation().getFeature("LS", "3.0");
 	    LSSerializer lsSerializer = lsImpl.createLSSerializer();
 	    NodeList childNodes = node.getChildNodes();
@@ -570,14 +570,24 @@ public final class GUIParser {
 	    return result;
 	}
 
+	/**
+	 * Add GUI element
+	 * @param guiElement
+	 * @throws GUIParserException
+	 */
+	public static void addElement(GUIElement guiElement) throws GUIParserException {
+		if (elements.get(guiElement.getName()) != null) {
+			throw new GUIParserException("Element with given name '" + guiElement.getName() + "' already exists");
+		}
+		elements.put(guiElement.getName(), guiElement);
+	}
+
 	// 
 	static {
-		elements = new HashMap<String, GUIElement>();
-
 		// add check box
 		try {
 			GUIElement guiElement = new GUICheckbox();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -585,7 +595,7 @@ public final class GUIParser {
 		// add radio button
 		try {
 			GUIElement guiElement = new GUIRadioButton();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -593,7 +603,7 @@ public final class GUIParser {
 		// add select box
 		try {
 			GUIElement guiElement = new GUISelectBox();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -601,7 +611,7 @@ public final class GUIParser {
 		// add select box option
 		try {
 			GUIElement guiElement = new GUISelectBoxOption();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -609,7 +619,7 @@ public final class GUIParser {
 		// add drop down
 		try {
 			GUIElement guiElement = new GUIDropDown();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -617,7 +627,7 @@ public final class GUIParser {
 		// add drop down option
 		try {
 			GUIElement guiElement = new GUIDropDownOption();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -625,7 +635,7 @@ public final class GUIParser {
 		// add tabs
 		try {
 			GUIElement guiElement = new GUITabs();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -633,7 +643,7 @@ public final class GUIParser {
 		// add tabs-header
 		try {
 			GUIElement guiElement = new GUITabsHeader();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -641,7 +651,7 @@ public final class GUIParser {
 		// add tab
 		try {
 			GUIElement guiElement = new GUITab();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -649,7 +659,7 @@ public final class GUIParser {
 		// add tab-contents
 		try {
 			GUIElement guiElement = new GUITabsContent();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -657,7 +667,7 @@ public final class GUIParser {
 		// add tab-content
 		try {
 			GUIElement guiElement = new GUITabContent();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -665,7 +675,7 @@ public final class GUIParser {
 		// add button
 		try {
 			GUIElement guiElement = new GUIButton();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -673,7 +683,7 @@ public final class GUIParser {
 		// add input
 		try {
 			GUIElement guiElement = new GUIInput();
-			elements.put(guiElement.getName(), guiElement);
+			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
