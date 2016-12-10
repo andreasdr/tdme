@@ -1,4 +1,4 @@
-<element id="{$id}" width="{$width}" height="{$height}" background-color="#f0f0f0" border="1" border-color="#000000" focusable="true">
+<element id="{$id}" width="{$width}" height="{$height}" background-color="#f0f0f0" border="1" border-color="#000000" name="{$name}" focusable="true">
 	<layout alignment="vertical" width="100%">
 		<panel id="{$id}_panel" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
 			<panel width="100%" padding="10" alignment="horizontal">

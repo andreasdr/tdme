@@ -1,4 +1,4 @@
-<element id="{$id}" width="{$width}" height="{$height}" border="1" border-color="black" focusable="true"> 
+<element id="{$id}" width="{$width}" height="{$height}" border="1" border-color="black" name="{$name}" focusable="true"> 
 	<panel alignment="vertical" padding="10" width="{$width}" height="{$height}" background-color="#f0f0f0">
 		{$innerXml}
 	</panel>

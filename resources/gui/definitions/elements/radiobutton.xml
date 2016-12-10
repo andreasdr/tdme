@@ -1,4 +1,4 @@
-<element id="{$id}" name="{$name}" focusable="true">
+<element id="{$id}" name="{$name}" value="{$value}" selected="{$selected}" focusable="true">
 	<!-- unselected, no mouse over -->
 	<image effect-color-mul="#8080A0" hide-on="focus,selected,mouseover" src="resources/gui/images/elements/radiobutton/unselected.png" />
 	<!-- unselected, mouse over -->

@@ -1,4 +1,4 @@
-<element id="{$id}" width="auto" height="auto" horizontal-align="center" vertical-align="center" border="2" border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" focusable="true">
+<element id="{$id}" width="auto" height="auto" horizontal-align="center" vertical-align="center" border="2" border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" name="{$name}" value="{$value}" focusable="true">
 	<!-- unselected, no mouse over -->
 	<panel width="{$width}" height="{$height}" padding="10" hide-on="mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
 		<space width="*" />

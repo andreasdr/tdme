@@ -1,4 +1,4 @@
-<element id="{$id}" width="100%" height="auto">
+<element id="{$id}" width="100%" height="auto" value="{$value}" selected="{$selected}">
 	<!-- unselected, no mouse over -->
 	<text id="{$id}_unselected" padding-top="2" padding-bottom="2" width="100%" hide-on="selected,mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 	<!-- unselected, mouse over -->
