@@ -18,6 +18,9 @@ public final class GUIElementNode extends GUIParentNode {
 	protected static final String CONDITION_FOCUS = "focus";
 
 	protected String name;
+	protected String value;
+	protected boolean selected;
+
 	protected GUINodeConditions activeConditions = new GUINodeConditions();
 
 	protected boolean focusable;
@@ -30,12 +33,16 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
+	 * @param background color
 	 * @param border
 	 * @param padding
 	 * @param show on
 	 * @param hide on
-	 * @param background color
-	 * @param background image
+	 * @param name
+	 * @param value
+	 * @param selected
+	 * @param focusable
+	 * @throws GUIParserException
 	 */
 	public GUIElementNode(
 		GUIScreenNode screenNode,
@@ -50,12 +57,16 @@ public final class GUIElementNode extends GUIParentNode {
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn, 
 		String name,
+		String value,
+		boolean selected,
 		boolean focusable
 		) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		// name
 		this.name = name;
+		this.value = value;
+		this.selected = selected;
 		this.focusable = focusable;
 	}
 

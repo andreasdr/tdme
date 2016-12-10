@@ -323,6 +323,8 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("name"),
+					node.getAttribute("value"),
+					node.getAttribute("selected").trim().equalsIgnoreCase("true"),
 					node.getAttribute("focusable").trim().equalsIgnoreCase("true")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
