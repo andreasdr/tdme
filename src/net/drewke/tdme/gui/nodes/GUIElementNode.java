@@ -187,6 +187,13 @@ public final class GUIElementNode extends GUIParentNode {
 	}
 
 	/**
+	 * @return value
+	 */
+	public String getValue() {
+		return value;
+	}
+
+	/**
 	 * @return active conditions
 	 */
 	public GUINodeConditions getActiveConditions() {

@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.nodes;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
@@ -35,6 +36,8 @@ public final class GUIScreenNode extends GUIParentNode {
 	private GUIColor unfocussedNodeBorderRightColor;
 	private GUIColor unfocussedNodeBorderTopColor;
 	private GUIColor unfocussedNodeBorderBottomColor;
+
+	private ArrayList<GUIActionListener> actionListener;
 
 	/**
 	 * Constructor
@@ -74,6 +77,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.unfocussedNodeBorderTopColor = null;
 		this.unfocussedNodeBorderBottomColor = null;
 		this.invalidateFocussedNode = true;
+		this.actionListener = new ArrayList<GUIActionListener>();
 	}
 
 	/**
@@ -404,6 +408,32 @@ public final class GUIScreenNode extends GUIParentNode {
 		if (event.isProcessed() == false &&
 			focussedNode != null) {
 			focussedNode.handleKeyboardEvent(event);
+		}
+	}
+
+	/**
+	 * Add action listener
+	 * @param listener
+	 */
+	public void addActionListener(GUIActionListener listener) {
+		actionListener.add(listener);
+	}
+
+	/**
+	 * Remove action listener
+	 * @param listener
+	 */
+	public void removeActionListener(GUIActionListener listener) {
+		actionListener.remove(listener);
+	}
+
+	/**
+	 * Delegate action performed
+	 * @param node
+	 */
+	public void delegateActionPerformed(GUIElementNode node) {
+		for (int i = 0; i < actionListener.size(); i++) {
+			actionListener.get(i).actionPerformed(node);
 		}
 	}
 

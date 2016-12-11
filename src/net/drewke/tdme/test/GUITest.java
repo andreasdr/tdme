@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.GUIActionListener;
+import net.drewke.tdme.gui.nodes.GUIElementNode;
 
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.event.WindowListener;
@@ -50,6 +52,11 @@ public class GUITest implements GLEventListener, WindowListener {
 		try {
 			engine.getGUI().addScreen("test", GUIParser.parse("resources/gui/definitions", "test.xml"));
 			engine.getGUI().getScreen("test").setScreenSize(640, 480);
+			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
+				public void actionPerformed(GUIElementNode node) {
+					System.out.println(node.getId() + ".actionPerformed()");
+				}
+			});
 			engine.getGUI().getScreen("test").layout();
 			System.out.println(engine.getGUI().getScreen("test").toString());
 		} catch (Exception exception) {

@@ -50,9 +50,9 @@ public final class GUIButtonController extends GUINodeController {
 
 			// check if mouse released
 			if (event.getType() == Type.MOUSE_RELEASED) {
-				//
-				System.out.println(node.getId() + ": BUTTON CLICKED");
-	
+				// delegate action performed
+				node.getScreenNode().delegateActionPerformed((GUIElementNode)node);
+
 				// set focussed node
 				node.getScreenNode().setFoccussedNode((GUIElementNode)node);	
 			}
@@ -73,8 +73,8 @@ public final class GUIButtonController extends GUINodeController {
 
 						// check if key pressed
 						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
-							//
-							System.out.println(node.getId() + ": BUTTON CLICKED");
+							// delegate action performed
+							node.getScreenNode().delegateActionPerformed((GUIElementNode)node);
 						}
 					}
 					break;
