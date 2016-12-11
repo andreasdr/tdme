@@ -39,6 +39,8 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	private ArrayList<GUIActionListener> actionListener;
 
+	private ArrayList<GUINode> childControllerNodes;
+
 	/**
 	 * Constructor
 	 * @param parent node
@@ -78,6 +80,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.unfocussedNodeBorderBottomColor = null;
 		this.invalidateFocussedNode = true;
 		this.actionListener = new ArrayList<GUIActionListener>();
+		this.childControllerNodes = new ArrayList<GUINode>();
 	}
 
 	/**
@@ -434,6 +437,43 @@ public final class GUIScreenNode extends GUIParentNode {
 	public void delegateActionPerformed(GUIElementNode node) {
 		for (int i = 0; i < actionListener.size(); i++) {
 			actionListener.get(i).actionPerformed(node);
+		}
+	}
+
+	/**
+	 * Get values
+	 */
+	public void getValues(HashMap<String, String> values) {
+		// clear values
+		values.clear();
+
+		// determine screen child controller nodes
+		getChildControllerNodes(childControllerNodes);
+
+		// iterate nodes
+		for (int i = 0; i < childControllerNodes.size(); i++) {
+			GUINode childControllerNode = childControllerNodes.get(i);
+
+			// skip on non element nodes
+			if (childControllerNode instanceof GUIElementNode == false) continue;
+
+			// cast to element node
+			GUIElementNode guiElementNode = ((GUIElementNode)childControllerNode);
+
+			// get controller
+			GUINodeController guiElementNodeController = guiElementNode.getController();
+
+			// does the controller provides a value
+			if (guiElementNodeController.hasValue()) {
+				String name = guiElementNode.getName();
+				String value = guiElementNodeController.getValue();
+				String currentValue = values.get(name);
+
+				// if not yet set, do it
+				if (currentValue == null || currentValue.length() == 0) {
+					values.put(name, value);
+				}
+			}
 		}
 	}
 

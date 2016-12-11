@@ -199,4 +199,32 @@ public final class GUISelectBoxController extends GUINodeController {
 	public void onFocusLost() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#hasValue()
+	 */
+	public boolean hasValue() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
+	 */
+	public String getValue() {
+		// determine select box option controllers
+		determineSelectBoxOptionControllers();
+
+		// return selected value if exists
+		for (int i = 0; i < selectBoxOptionControllers.size(); i++) {
+			GUISelectBoxOptionController selectBoxOptionController = selectBoxOptionControllers.get(i);
+			if (selectBoxOptionController.isSelected() == true) {
+				return ((GUIElementNode)selectBoxOptionController.getNode()).getValue();
+			}
+		}
+
+		// otherwise return empty string
+		return "";
+	}
+
 }

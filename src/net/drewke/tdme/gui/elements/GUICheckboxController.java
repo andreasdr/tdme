@@ -127,4 +127,20 @@ public final class GUICheckboxController extends GUINodeController {
 	public void onFocusLost() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#hasValue()
+	 */
+	public boolean hasValue() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
+	 */
+	public String getValue() {
+		return checked == true?((GUIElementNode)node).getValue():"";
+	}
+
 }

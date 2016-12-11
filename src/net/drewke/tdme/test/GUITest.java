@@ -7,6 +7,7 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.utils.HashMap;
 
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.event.WindowListener;
@@ -55,6 +56,9 @@ public class GUITest implements GLEventListener, WindowListener {
 			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
 				public void actionPerformed(GUIElementNode node) {
 					System.out.println(node.getId() + ".actionPerformed()");
+					HashMap<String,String> values = new HashMap<String,String>();
+					node.getScreenNode().getValues(values);
+					System.out.println(values);
 				}
 			});
 			engine.getGUI().getScreen("test").layout();

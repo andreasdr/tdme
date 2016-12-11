@@ -158,4 +158,20 @@ public final class GUIRadioButtonController extends GUINodeController {
 	public void onFocusLost() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#hasValue()
+	 */
+	public boolean hasValue() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
+	 */
+	public String getValue() {
+		return selected == true?((GUIElementNode)node).getValue():"";
+	}
+
 }

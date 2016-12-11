@@ -6,6 +6,7 @@ import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUITextInputNode;
 
 /**
  * GUI input controller
@@ -13,6 +14,8 @@ import net.drewke.tdme.gui.nodes.GUINodeController;
  * @version $Id$
  */
 public final class GUIInputController extends GUINodeController {
+
+	private GUITextInputNode textInputNode;
 
 	/**
 	 * GUI Checkbox controller
@@ -27,6 +30,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
+		textInputNode = (GUITextInputNode)node.getScreenNode().getNodeById(node.getId() + "_text-input");
 	}
 
 	/*
@@ -73,6 +77,22 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusLost()
 	 */
 	public void onFocusLost() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#hasValue()
+	 */
+	public boolean hasValue() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
+	 */
+	public String getValue() {
+		return textInputNode.getText();
 	}
 
 }

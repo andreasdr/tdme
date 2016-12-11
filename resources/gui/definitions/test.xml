@@ -91,7 +91,7 @@
 				<tab-content tab-id="tab4">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
 						<panel horizontal-align="center" alignment="vertical" width="80%">
-							<dropdown name="select" text="Click me and select a drop down option">
+							<dropdown name="dropdown" text="Click me and select a drop down option">
 								<dropdown-option text="I am a good option!" value="1" />
 								<dropdown-option text="Me feels better I guess?!" value="2" selected="true" />
 								<dropdown-option text="Just opt for me!" value="3" />

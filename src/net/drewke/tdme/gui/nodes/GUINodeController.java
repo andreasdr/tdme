@@ -61,4 +61,14 @@ public abstract class GUINodeController {
 	 */
 	public abstract void onFocusLost();
 
+	/**
+	 * @return has value
+	 */
+	public abstract boolean hasValue();
+
+	/**
+	 * @return value
+	 */
+	public abstract String getValue();
+
 }
