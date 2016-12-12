@@ -1,7 +1,5 @@
 package net.drewke.tdme.gui.elements;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -71,8 +69,11 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	 */
 	public void init() {
 		selectBoxNode = ((GUIParentNode)node).getParentControllerNode();
-		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
-		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+		if (selected == true) {
+			select();
+		} else {
+			unselect();
+		}
 	}
 
 	/*

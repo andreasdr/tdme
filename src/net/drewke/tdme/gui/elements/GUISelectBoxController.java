@@ -9,7 +9,6 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
-import net.drewke.tdme.gui.nodes.GUITextInputNode;
 
 /**
  * GUI select box controller
