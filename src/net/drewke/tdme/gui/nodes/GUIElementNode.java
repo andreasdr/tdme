@@ -194,6 +194,13 @@ public final class GUIElementNode extends GUIParentNode {
 	}
 
 	/**
+	 * @return is selected
+	 */
+	public boolean isSelected() {
+		return selected;
+	}
+
+	/**
 	 * @return active conditions
 	 */
 	public GUINodeConditions getActiveConditions() {

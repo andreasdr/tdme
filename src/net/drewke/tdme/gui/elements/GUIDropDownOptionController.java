@@ -29,7 +29,9 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	 */
 	protected GUIDropDownOptionController(GUINode node) {
 		super(node);
-		this.selected = false;
+
+		// derive if selected from node default
+		this.selected = ((GUIElementNode)node).isSelected();
 	}
 
 	/**
@@ -73,8 +75,11 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	 */
 	public void init() {
 		dropDownNode = ((GUIParentNode)node).getParentControllerNode();
-		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
-		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+		if (selected == true) {
+			select();
+		} else {
+			unselect();
+		}
 	}
 
 	/*

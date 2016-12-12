@@ -26,7 +26,9 @@ public final class GUICheckboxController extends GUINodeController {
 	 */
 	protected GUICheckboxController(GUINode node) {
 		super(node);
-		this.checked = false;
+
+		// derive if selected from node default
+		this.checked = ((GUIElementNode)node).isSelected();
 	}
 
 	/**

@@ -31,7 +31,9 @@ public final class GUIRadioButtonController extends GUINodeController {
 	 */
 	protected GUIRadioButtonController(GUINode node) {
 		super(node);
-		this.selected = false;
+
+		// derive if selected from node default
+		this.selected = ((GUIElementNode)node).isSelected();
 
 		// add to nodes
 		//	check if group exists
@@ -57,7 +59,7 @@ public final class GUIRadioButtonController extends GUINodeController {
 	 * Select
 	 * @param checked
 	 */
-	protected void select() {
+	public void select() {
 		ArrayList<GUIElementNode> radioButtonGroupNodes = radioButtonGroupNodesByName.get(this.node.getScreenNode().getId() + "_radiobuttongroup_" + ((GUIElementNode)this.node).getName());
 		// unselect all radio buttons
 		if (radioButtonGroupNodes != null) {

@@ -30,7 +30,9 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	 */
 	protected GUISelectBoxOptionController(GUINode node) {
 		super(node);
-		this.selected = false;
+
+		// derive if selected from node default
+		this.selected = ((GUIElementNode)node).isSelected();
 	}
 
 	/**
