@@ -442,6 +442,7 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	/**
 	 * Get values
+	 * @param values
 	 */
 	public void getValues(HashMap<String, String> values) {
 		// clear values
@@ -479,6 +480,7 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	/**
 	 * Set values
+	 * @param values
 	 */
 	public void setValues(HashMap<String, String> values) {
 		// determine screen child controller nodes
