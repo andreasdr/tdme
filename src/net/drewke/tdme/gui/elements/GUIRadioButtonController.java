@@ -177,4 +177,14 @@ public final class GUIRadioButtonController extends GUINodeController {
 		return selected == true?((GUIElementNode)node).getValue():"";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 */
+	public void setValue(String value) {
+		if (((GUIElementNode)node).getValue().equals(value) == true) {
+			select();
+		}
+	}
+
 }

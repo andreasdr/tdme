@@ -71,4 +71,10 @@ public abstract class GUINodeController {
 	 */
 	public abstract String getValue();
 
+	/**
+	 * Set value
+	 * @param value
+	 */
+	public abstract void setValue(String value);
+
 }

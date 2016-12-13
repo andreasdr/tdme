@@ -95,4 +95,12 @@ public final class GUIInputController extends GUINodeController {
 		return textInputNode.getText();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 */
+	public void setValue(String value) {
+		textInputNode.setText(value);
+	}
+
 }

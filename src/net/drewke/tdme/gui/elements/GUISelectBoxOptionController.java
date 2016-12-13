@@ -142,4 +142,12 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 */
+	public void setValue(String value) {
+		// no op
+	}
+
 }

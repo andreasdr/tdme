@@ -277,4 +277,25 @@ public final class GUIDropDownController extends GUINodeController {
 		return "";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 */
+	public void setValue(String value) {
+		// determine select box option controllers
+		determineDropDownOptionControllers();
+
+		// unselect all selections
+		unselect();
+
+		// determine new selection
+		for (int i = 0; i < dropDownOptionControllers.size(); i++) {
+			GUIDropDownOptionController dropDownOptionController = dropDownOptionControllers.get(i);
+			if (((GUIElementNode)dropDownOptionController.getNode()).getValue().equals(value)) {
+				dropDownOptionController.select();
+				break;
+			}
+		}
+	}
+
 }

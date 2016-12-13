@@ -226,4 +226,25 @@ public final class GUISelectBoxController extends GUINodeController {
 		return "";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 */
+	public void setValue(String value) {
+		// determine select box option controllers
+		determineSelectBoxOptionControllers();
+
+		// unselect all selections
+		unselect();
+
+		// determine new selection
+		for (int i = 0; i < selectBoxOptionControllers.size(); i++) {
+			GUISelectBoxOptionController selectBoxOptionController = selectBoxOptionControllers.get(i);
+			if (((GUIElementNode)selectBoxOptionController.getNode()).getValue().equals(value)) {
+				selectBoxOptionController.select();
+				break;
+			}
+		}
+	}
+
 }

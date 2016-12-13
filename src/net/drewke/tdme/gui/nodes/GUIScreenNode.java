@@ -477,4 +477,34 @@ public final class GUIScreenNode extends GUIParentNode {
 		}
 	}
 
+	/**
+	 * Set values
+	 */
+	public void setValues(HashMap<String, String> values) {
+		// determine screen child controller nodes
+		getChildControllerNodes(childControllerNodes);
+
+		// iterate nodes
+		for (int i = 0; i < childControllerNodes.size(); i++) {
+			GUINode childControllerNode = childControllerNodes.get(i);
+
+			// skip on non element nodes
+			if (childControllerNode instanceof GUIElementNode == false) continue;
+
+			// cast to element node
+			GUIElementNode guiElementNode = ((GUIElementNode)childControllerNode);
+
+			// get controller
+			GUINodeController guiElementNodeController = guiElementNode.getController();
+
+			// does the controller provides a value
+			if (guiElementNodeController.hasValue()) {
+				String name = guiElementNode.getName();
+				String newValue = values.get(name);
+				if (newValue == null) continue;
+				guiElementNodeController.setValue(newValue);
+			}
+		}
+	}
+
 }

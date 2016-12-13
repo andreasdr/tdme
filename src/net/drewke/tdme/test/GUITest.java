@@ -59,6 +59,15 @@ public class GUITest implements GLEventListener, WindowListener {
 					HashMap<String,String> values = new HashMap<String,String>();
 					node.getScreenNode().getValues(values);
 					System.out.println(values);
+					values.clear();
+					values.put("select", "1"); 
+					values.put("input", "Enter some more text here!"); 
+					values.put("checkbox1", "1"); 
+					values.put("checkbox2", "1"); 
+					values.put("checkbox3", "1"); 
+					values.put("dropdown", "3"); 
+					values.put("radio", "3");
+					node.getScreenNode().setValues(values);
 				}
 			});
 			engine.getGUI().getScreen("test").layout();
