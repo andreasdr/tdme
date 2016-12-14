@@ -204,6 +204,9 @@ public final class GUITabController extends GUINodeController {
 
 		// select tab content
 		guiTabsController.setTabContentSelected(node.getId());
+		
+		//
+		node.getScreenNode().invalidateFocussedNode();
 	}
 
 }
