@@ -190,4 +190,20 @@ public final class GUITabController extends GUINodeController {
 		// no op
 	}
 
+	/**
+	 * Select this tab
+	 */
+	public void selectTab() {
+		GUITabsController guiTabsController = (GUITabsController)tabsNode.getController();
+
+		// unselect all tabs
+		guiTabsController.unselect();
+
+		// select current
+		setSelected(true);
+
+		// select tab content
+		guiTabsController.setTabContentSelected(node.getId());
+	}
+
 }

@@ -38,17 +38,9 @@ public final class GUITabsController extends GUINodeController {
 			GUINode childControllerNode = childControllerNodes.get(i);
 			GUINodeController childController = childControllerNode.getController(); 
 			if (childController instanceof GUITabController) {
-				((GUITabController)childController).setSelected(true);
-				break;
-			}
-		}
-
-		// select first content tab
-		for (int i = 0; i < childControllerNodes.size(); i++) {
-			GUINode childControllerNode = childControllerNodes.get(i);
-			GUINodeController childController = childControllerNode.getController(); 
-			if (childController instanceof GUITabContentController) {
-				((GUITabContentController)childController).setSelected(true);
+				GUITabController tabController = (GUITabController)childController;
+				tabController.setSelected(true);
+				setTabContentSelected(tabController.getNode().getId());
 				break;
 			}
 		}
