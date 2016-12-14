@@ -7,6 +7,7 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.elements.GUITabController;
 import net.drewke.tdme.gui.events.GUIActionListener;
+import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.utils.HashMap;
 
@@ -55,7 +56,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			engine.getGUI().addScreen("test", GUIParser.parse("resources/gui/definitions", "test.xml"));
 			engine.getGUI().getScreen("test").setScreenSize(640, 480);
 			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
-				public void actionPerformed(GUIElementNode node) {
+				public void onActionPerformed(GUIElementNode node) {
 					// action performed
 					System.out.println(node.getId() + ".actionPerformed()");
 
@@ -77,6 +78,11 @@ public class GUITest implements GLEventListener, WindowListener {
 
 					// test GUI tab controller select tab method
 					((GUITabController)node.getScreenNode().getNodeById("tab1").getController()).selectTab();
+				}
+			});
+			engine.getGUI().getScreen("test").addChangeListener(new GUIChangeListener() {
+				public void onValueChanged(GUIElementNode node) {
+					System.out.println(node.getName() + ":onValueChanged: " + node.getController().getValue());
 				}
 			});
 			engine.getGUI().getScreen("test").layout();

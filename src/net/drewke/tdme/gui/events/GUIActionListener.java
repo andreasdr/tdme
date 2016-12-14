@@ -10,9 +10,9 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 public interface GUIActionListener {
 
 	/**
-	 * Action performed
+	 * On action performed
 	 * @param element node
 	 */
-	public void actionPerformed(GUIElementNode node);
+	public void onActionPerformed(GUIElementNode node);
 
 }

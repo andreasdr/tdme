@@ -116,6 +116,9 @@ public final class GUIRadioButtonController extends GUINodeController {
 	
 				// set focussed node
 				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+
+				// delegate change event
+				node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 			}
 		}
 	}
@@ -136,6 +139,9 @@ public final class GUIRadioButtonController extends GUINodeController {
 						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 							// select
 							select();
+
+							// delegate change event
+							node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 						}
 					}
 					break;

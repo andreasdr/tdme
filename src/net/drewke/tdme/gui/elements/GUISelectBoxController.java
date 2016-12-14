@@ -166,6 +166,9 @@ public final class GUISelectBoxController extends GUINodeController {
 						// check if key pressed
 						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 							selectPrevious();
+
+							// delegate change event
+							node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 						}
 					}
 					break;
@@ -177,6 +180,9 @@ public final class GUISelectBoxController extends GUINodeController {
 						// check if key pressed
 						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 							selectNext();
+
+							// delegate change event
+							node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 						}
 					}
 					break;

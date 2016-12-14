@@ -81,6 +81,9 @@ public final class GUICheckboxController extends GUINodeController {
 			if (event.getType() == Type.MOUSE_RELEASED) {
 				//
 				setChecked(checked == true?false:true);
+
+				// delegate change event
+				node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 	
 				// set focussed node
 				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
@@ -104,6 +107,9 @@ public final class GUICheckboxController extends GUINodeController {
 						if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 							// toggle
 							setChecked(checked == true?false:true);
+
+							// delegate change event
+							node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 						}
 					}
 					break;

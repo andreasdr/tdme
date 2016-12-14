@@ -107,6 +107,9 @@ public final class GUIDropDownOptionController extends GUINodeController {
 				((GUIDropDownController)dropDownNode.getController()).unselect();
 				select();
 				((GUIDropDownController)dropDownNode.getController()).toggleOpenState();
+
+				// delegate change event
+				node.getScreenNode().delegateValueChanged((GUIElementNode)dropDownNode);
 			}
 		}
 	}

@@ -100,6 +100,9 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 				//
 				((GUISelectBoxController)selectBoxNode.getController()).unselect();
 				select();
+
+				// delegate change event
+				node.getScreenNode().delegateValueChanged((GUIElementNode)selectBoxNode);
 			}
 		}
 	}

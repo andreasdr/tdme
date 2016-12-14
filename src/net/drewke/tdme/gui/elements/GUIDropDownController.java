@@ -198,6 +198,9 @@ public final class GUIDropDownController extends GUINodeController {
 								toggleOpenState();
 							} else {
 								selectPrevious();
+
+								// delegate change event
+								node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 							}
 						}
 					}
@@ -213,6 +216,9 @@ public final class GUIDropDownController extends GUINodeController {
 								toggleOpenState();
 							} else {
 								selectNext();
+
+								// delegate change event
+								node.getScreenNode().delegateValueChanged((GUIElementNode)node);
 							}
 						}
 					}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIActionListener;
+import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
@@ -38,6 +39,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	private GUIColor unfocussedNodeBorderBottomColor;
 
 	private ArrayList<GUIActionListener> actionListener;
+	private ArrayList<GUIChangeListener> changeListener;
 
 	private ArrayList<GUINode> childControllerNodes;
 
@@ -80,6 +82,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.unfocussedNodeBorderBottomColor = null;
 		this.invalidateFocussedNode = true;
 		this.actionListener = new ArrayList<GUIActionListener>();
+		this.changeListener = new ArrayList<GUIChangeListener>();
 		this.childControllerNodes = new ArrayList<GUINode>();
 	}
 
@@ -436,7 +439,33 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void delegateActionPerformed(GUIElementNode node) {
 		for (int i = 0; i < actionListener.size(); i++) {
-			actionListener.get(i).actionPerformed(node);
+			actionListener.get(i).onActionPerformed(node);
+		}
+	}
+
+	/**
+	 * Add change listener
+	 * @param listener
+	 */
+	public void addChangeListener(GUIChangeListener listener) {
+		changeListener.add(listener);
+	}
+
+	/**
+	 * Remove change listener
+	 * @param listener
+	 */
+	public void removeChangeListener(GUIChangeListener listener) {
+		changeListener.remove(listener);
+	}
+
+	/**
+	 * Delegate value changed
+	 * @param node
+	 */
+	public void delegateValueChanged(GUIElementNode node) {
+		for (int i = 0; i < changeListener.size(); i++) {
+			changeListener.get(i).onValueChanged(node);
 		}
 	}
 

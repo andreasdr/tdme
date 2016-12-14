@@ -127,6 +127,9 @@ public final class GUITextInputController extends GUINodeController {
 					);
 					index++;
 					resetCursorMode();
+
+					// delegate change event
+					node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
 				}
 			} else {
 				switch (event.getKeyCode()) {
@@ -173,6 +176,9 @@ public final class GUITextInputController extends GUINodeController {
 									);
 									index--;
 									resetCursorMode();
+
+									// delegate change event
+									node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
 								}
 							}
 						}
@@ -192,6 +198,9 @@ public final class GUITextInputController extends GUINodeController {
 									);
 									index--;
 									resetCursorMode();
+
+									// delegate change event
+									node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
 								}
 							}
 						}
