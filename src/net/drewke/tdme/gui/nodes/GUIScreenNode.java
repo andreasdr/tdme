@@ -437,9 +437,9 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * Delegate action performed
 	 * @param node
 	 */
-	public void delegateActionPerformed(GUIElementNode node) {
+	public void delegateActionPerformed(GUIActionListener.Type type, GUIElementNode node) {
 		for (int i = 0; i < actionListener.size(); i++) {
-			actionListener.get(i).onActionPerformed(node);
+			actionListener.get(i).onActionPerformed(type, node);
 		}
 	}
 

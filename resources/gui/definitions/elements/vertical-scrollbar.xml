@@ -1,5 +1,5 @@
 <panel id="{$id}" width="{$width}" height="{$height}" alignment="horizontal">
-	<panel id="{$id}_content_panel" horizontal-align="center" alignment="vertical" width="*" height="100%">
+	<panel id="{$id}_content_panel" horizontal-align="{$horizontal-align}" vertical-align="{$vertical-align}" alignment="{$alignment}" width="*" height="100%">
 		{$innerXml}
 	</panel>
 	<panel id="{$id}_scrollbar_panel" border="1" border-color="#8080A0" alignment="vertical" width="auto" height="100%">

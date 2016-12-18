@@ -62,15 +62,15 @@ public abstract class GUINode {
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
-	static class ComputedConstraints {
-		protected int left;
-		protected int top;
-		protected int width;
-		protected int height;
-		protected int alignmentLeft;
-		protected int alignmentTop;
-		protected int contentAlignmentLeft;
-		protected int contentAlignmentTop;
+	public static class ComputedConstraints {
+		public int left;
+		public int top;
+		public int width;
+		public int height;
+		public int alignmentLeft;
+		public int alignmentTop;
+		public int contentAlignmentLeft;
+		public int contentAlignmentTop;
 		public String toString() {
 			return 
 				left + ", " +
@@ -228,13 +228,6 @@ public abstract class GUINode {
 	}
 
 	/**
-	 * @return border
-	 */
-	public Border getBorder() {
-		return border;
-	}
-
-	/**
 	 * @return is content node
 	 */
 	protected abstract boolean isContentNode();
@@ -272,6 +265,13 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * @return border
+	 */
+	public Border getBorder() {
+		return border;
+	}
+
+	/**
 	 * @return requested constraints
 	 */
 	protected RequestedConstraints getRequestsConstraints() {
@@ -281,7 +281,7 @@ public abstract class GUINode {
 	/**
 	 * @return computed constraints
 	 */
-	protected ComputedConstraints getComputedConstraints() {
+	public ComputedConstraints getComputedConstraints() {
 		return computedConstraints;
 	}
 

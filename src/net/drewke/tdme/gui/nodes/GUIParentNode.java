@@ -17,6 +17,9 @@ public abstract class GUIParentNode extends GUINode {
 
 	protected ArrayList<GUINode> subNodes;
 
+	protected float renderOffsetX;
+	protected float renderOffsetY;
+
 	/**
 	 * Constructor
 	 * @param screen node
@@ -48,6 +51,8 @@ public abstract class GUIParentNode extends GUINode {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		subNodes = new ArrayList<GUINode>();
+		renderOffsetX = 0.0f;
+		renderOffsetY = 0.0f;
 	}
 
 	/**
@@ -55,6 +60,36 @@ public abstract class GUIParentNode extends GUINode {
 	 */
 	public ArrayList<GUINode> getSubNodes() {
 		return subNodes;
+	}
+
+	/**
+	 * @return render offset x
+	 */
+	public float getRenderOffsetX() {
+		return renderOffsetX;
+	}
+
+	/**
+	 * Set render offset x
+	 * @param render offset x
+	 */
+	public void setRenderOffsetX(float renderOffsetX) {
+		this.renderOffsetX = renderOffsetX;
+	}
+
+	/**
+	 * @return render offset y
+	 */
+	public float getRenderOffsetY() {
+		return renderOffsetY;
+	}
+
+	/**
+	 * Set render offset y
+	 * @param render offset y
+	 */
+	public void setRenderOffsetY(float renderOffsetY) {
+		this.renderOffsetY = renderOffsetY;
 	}
 
 	/**
@@ -246,6 +281,14 @@ public abstract class GUIParentNode extends GUINode {
 			((screenHeight - top - height) / (screenHeight / 2f)) - 1f
 		);
 
+		// store current render offset
+		float renderOffsetX = guiRenderer.getRenderOffsetX();
+		float renderOffsetY = guiRenderer.getRenderOffsetY();
+
+		// render offsets
+		guiRenderer.addRenderOffsetX(this.renderOffsetX / screenWidth);
+		guiRenderer.addRenderOffsetY(this.renderOffsetY / screenHeight);
+
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
 
@@ -266,9 +309,19 @@ public abstract class GUIParentNode extends GUINode {
 				((screenHeight - top - height) / (screenHeight / 2f)) - 1f
 			);
 
+			// render offsets
+			guiRenderer.setRenderOffsetX(renderOffsetX);
+			guiRenderer.setRenderOffsetY(renderOffsetY);
+			guiRenderer.addRenderOffsetX(this.renderOffsetX / screenWidth);
+			guiRenderer.addRenderOffsetY(this.renderOffsetY / screenHeight);
+
 			// render sub nodes
 			guiSubNode.render(guiRenderer, floatingNodes);
 		}
+
+		// render offsets
+		guiRenderer.setRenderOffsetX(renderOffsetX);
+		guiRenderer.setRenderOffsetY(renderOffsetY);
 	}
 
 	/*

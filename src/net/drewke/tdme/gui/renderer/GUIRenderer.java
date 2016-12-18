@@ -37,10 +37,14 @@ public final class GUIRenderer {
 	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 	// render area
-	private float renderAreaLeft;
-	private float renderAreaTop;
-	private float renderAreaRight;
-	private float renderAreaBottom;
+	private float renderAreaLeft = 0f;
+	private float renderAreaTop = 0f;
+	private float renderAreaRight = 0f;
+	private float renderAreaBottom = 0f;
+
+	// render offset
+	private float renderOffsetX = 0f;
+	private float renderOffsetY = 0f;
 
 	// quad data
 	private float[] quadVertices = 
@@ -214,6 +218,52 @@ public final class GUIRenderer {
 	}
 
 	/**
+	 * @return render offset x
+	 */
+	public float getRenderOffsetX() {
+		return renderOffsetX;
+	}
+
+	/**
+	 * Set render offset x
+	 * @param render offset x
+	 */
+	public void setRenderOffsetX(float renderOffsetX) {
+		this.renderOffsetX = renderOffsetX;
+	}
+
+	/**
+	 * Add render offset x
+	 * @param render offset x
+	 */
+	public void addRenderOffsetX(float renderOffsetX) {
+		this.renderOffsetX+= renderOffsetX;
+	}
+
+	/**
+	 * @return render offset y
+	 */
+	public float getRenderOffsetY() {
+		return renderOffsetY;
+	}
+
+	/**
+	 * Set render offset y
+	 * @param render offset y
+	 */
+	public void setRenderOffsetY(float renderOffsetY) {
+		this.renderOffsetY = renderOffsetY;
+	}
+
+	/**
+	 * Add render offset y
+	 * @param render offset y
+	 */
+	public void addRenderOffsetY(float renderOffsetY) {
+		this.renderOffsetY+= renderOffsetY;
+	}
+
+	/**
 	 * Add quad
 	 *
 	 * 	Note: quad vertices order
@@ -278,6 +328,12 @@ public final class GUIRenderer {
 			return;
 		}
 
+		// take render offset x and y into account
+		y1+= renderOffsetY;
+		y2+= renderOffsetY;
+		y3+= renderOffsetY;
+		y4+= renderOffsetY;
+
 		// Note: 
 		//	top = +1, bottom = -1 
 		//	left = -1, right = +1
@@ -312,9 +368,17 @@ public final class GUIRenderer {
 		// clip 3,4 y values
 		if (quadBottom < renderAreaBottom) {
 			tv3 = tv1 + ((tv3 - tv1) * ((y1 - renderAreaBottom) / (y1 - y3)));
-			tv4 = tv2 + ((tv4 - tv2) * ((y1 - renderAreaBottom) / (y1 - y4)));
+			tv4 = tv2 + ((tv4 - tv2) * ((y2 - renderAreaBottom) / (y1 - y4)));
 			y3 = renderAreaBottom;
 			y4 = renderAreaBottom;
+		}
+
+		// clip 1,2 y values
+		if (quadTop > renderAreaTop) {
+			tv1 = tv1 + ((tv3 - tv1) * ((y1 - renderAreaTop) / (y1 - y3)));
+			tv2 = tv2 + ((tv4 - tv2) * ((y2 - renderAreaTop) / (y1 - y4)));
+			y1 = renderAreaTop;
+			y2 = renderAreaTop;
 		}
 
 		// quad component 1

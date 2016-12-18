@@ -54,6 +54,9 @@ public final class GUIVerticalScrollbar extends GUIElement {
 		attributes.put("id", screenNode.allocateNodeId());
 		attributes.put("width", "100%");
 		attributes.put("height", "100%");
+		attributes.put("horizontal-align", "left");
+		attributes.put("vertical-align", "top");
+		attributes.put("alignment", "vertical");
 		return attributes;
 	}
 
@@ -62,7 +65,7 @@ public final class GUIVerticalScrollbar extends GUIElement {
 	 * @see net.drewke.tdme.gui.elements.GUIElement#createController(net.drewke.tdme.gui.nodes.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return null;
+		return new GUIVerticalScrollbarController(node);
 	}
 
 }
