@@ -36,6 +36,12 @@ public final class GUIRenderer {
 	private FloatBuffer fbColors = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 	private FloatBuffer fbTextureCoordinates = ByteBuffer.allocateDirect(QUAD_COUNT * 6 * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
+	// render area
+	private float renderAreaLeft;
+	private float renderAreaTop;
+	private float renderAreaRight;
+	private float renderAreaBottom;
+
 	// quad data
 	private float[] quadVertices = 
 		{
@@ -191,8 +197,34 @@ public final class GUIRenderer {
 	}
 
 	/**
+	 * Set render area
+	 * @param left
+	 * @param top
+	 * @param right
+	 * @param bottom
+	 */
+	public void setRenderArea(
+		float left, float top,
+		float right, float bottom
+	) {
+		renderAreaLeft = left;
+		renderAreaTop = top;
+		renderAreaRight = right;
+		renderAreaBottom = bottom;
+	}
+
+	/**
 	 * Add quad
+	 *
+	 * 	Note: quad vertices order
 	 * 
+	 * 		1    2
+	 * 		+----+
+	 * 		|    |
+	 * 		|    |
+	 * 		+----+
+	 * 		4    3
+	 *
 	 * @param x 1
 	 * @param y 1
 	 * @param color red 1
@@ -246,6 +278,45 @@ public final class GUIRenderer {
 			return;
 		}
 
+		// Note: 
+		//	top = +1, bottom = -1 
+		//	left = -1, right = +1
+		// check if quad bottom is > render area top
+		float quadBottom = y3;
+		if (quadBottom > renderAreaTop) {
+			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadBottom > renderAreaTop)");
+			return;			
+		} 
+
+		// check if quad top is < render area bottom
+		float quadTop = y1;
+		if (quadTop < renderAreaBottom) {
+			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadTop < renderAreaBottom)");
+			return;			
+		}
+
+		// check if quad left > render area right
+		float quadLeft = x1;
+		if (quadLeft > renderAreaRight) {
+			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadLeft > renderAreaRight)");
+			return;			
+		} 
+
+		// check if quad right < render area left
+		float quadRight = x2;
+		if (quadRight < renderAreaLeft) {
+			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadRight < renderAreaLeft)");
+			return;			
+		} 
+
+		// clip 3,4 y values
+		if (quadBottom < renderAreaBottom) {
+			tv3 = tv1 + ((tv3 - tv1) * ((y1 - renderAreaBottom) / (y1 - y3)));
+			tv4 = tv2 + ((tv4 - tv2) * ((y1 - renderAreaBottom) / (y1 - y4)));
+			y3 = renderAreaBottom;
+			y4 = renderAreaBottom;
+		}
+
 		// quad component 1
 		int quad = 0;
 		quadVertices[quad * 3 + 0] = x1;
@@ -294,7 +365,7 @@ public final class GUIRenderer {
 		quadTextureCoordinates[quad * 2 + 0] = tu4;
 		quadTextureCoordinates[quad * 2 + 1] = tv4;
 
-		// put quads to direct float buffers
+		// put quad to direct float buffers
 		fbVertices.put(quadVertices);
 		fbColors.put(quadColors);
 		fbTextureCoordinates.put(quadTextureCoordinates);

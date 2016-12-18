@@ -9,13 +9,13 @@ import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
 /**
- * GUI tab content element
+ * GUI vertical scrollbar element
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUITabContent extends GUIElement {
+public final class GUIVerticalScrollbar extends GUIElement {
 
-	private static final String NAME = "tab-content";
+	private static final String NAME = "vertical-scrollbar";
 
 	private HashMap<String, String> attributes;
 	private String template;
@@ -23,9 +23,10 @@ public final class GUITabContent extends GUIElement {
 	/**
 	 * Constructor
 	 */
-	public GUITabContent() throws IOException {
+	public GUIVerticalScrollbar() throws IOException {
 		attributes = new HashMap<String, String>();
-		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "tab-content.xml");
+		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "vertical-scrollbar.xml");
+		System.out.println(template);
 	}
 
 	/*
@@ -51,8 +52,8 @@ public final class GUITabContent extends GUIElement {
 	public HashMap<String, String> getAttributes(GUIScreenNode screenNode) {
 		attributes.clear();
 		attributes.put("id", screenNode.allocateNodeId());
-		attributes.put("horizontal-align", "center");
-		attributes.put("vertical-align", "center");
+		attributes.put("width", "100%");
+		attributes.put("height", "100%");
 		return attributes;
 	}
 
@@ -61,7 +62,7 @@ public final class GUITabContent extends GUIElement {
 	 * @see net.drewke.tdme.gui.elements.GUIElement#createController(net.drewke.tdme.gui.nodes.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return new GUITabContentController(node);
+		return null;
 	}
 
 }

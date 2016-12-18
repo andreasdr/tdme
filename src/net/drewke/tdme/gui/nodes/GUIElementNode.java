@@ -68,6 +68,10 @@ public final class GUIElementNode extends GUIParentNode {
 		this.value = value;
 		this.selected = selected;
 		this.focusable = focusable;
+
+		// controller
+		this.controller = new GUIElementController(this);
+		this.controller.init();
 	}
 
 	/**

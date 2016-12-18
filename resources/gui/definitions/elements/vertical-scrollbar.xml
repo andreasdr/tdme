@@ -1,0 +1,28 @@
+<panel id="{$id}" width="{$width}" height="{$height}" alignment="horizontal">
+	<panel id="{$id}_content_panel" horizontal-align="center" alignment="vertical" width="*" height="100%">
+		{$innerXml}
+	</panel>
+	<panel id="{$id}_scrollbar_panel" border="1" border-color="#8080A0" alignment="vertical" width="auto" height="100%">
+		<element id="{$id}_scrollbar_panel_up" width="22" height="22" horizontal-align="center" vertical-align="center" focusable="true">
+			<!-- no mouse over -->
+			<image effect-color-mul="#8080A0" hide-on="focus,mouseover" src="resources/gui/images/elements/scrollarea/arrow-up.png" horizontal-align="center" vertical-align="center" />
+			<!-- mouse over -->
+			<image effect-color-mul="#8080FF" hide-on="focus" src="resources/gui/images/elements/scrollarea/arrow-up.png" horizontal-align="center" vertical-align="center" />
+			<!-- focus -->
+			<image effect-color-mul="#FF4040" show-on="focus" hide-on="click" src="resources/gui/images/elements/scrollarea/arrow-up.png" horizontal-align="center" vertical-align="center" />
+			<!-- click -->
+			<image effect-color-mul="#FF8080" show-on="click" src="resources/gui/images/elements/scrollarea/arrow-up.png" horizontal-align="center" vertical-align="center" />
+		</element>
+		<space id="{$id}_scrollbar_panel_bar" height="*" />
+		<element id="{$id}_scrollbar_panel_down" width="22" height="22" horizontal-align="center" vertical-align="center" focusable="true">
+			<!-- no mouse over -->
+			<image effect-color-mul="#8080A0" hide-on="focus,mouseover" src="resources/gui/images/elements/scrollarea/arrow-down.png" horizontal-align="center" vertical-align="center" />
+			<!-- mouse over -->
+			<image effect-color-mul="#8080FF" hide-on="focus" src="resources/gui/images/elements/scrollarea/arrow-down.png" horizontal-align="center" vertical-align="center" />
+			<!-- focus -->
+			<image effect-color-mul="#FF4040" show-on="focus" src="resources/gui/images/elements/scrollarea/arrow-down.png" horizontal-align="center" vertical-align="center" />
+			<!-- click -->
+			<image effect-color-mul="#FF8080" show-on="click" src="resources/gui/images/elements/scrollarea/arrow-down.png" horizontal-align="center" vertical-align="center" />
+		</element>
+	</panel>
+</panel>

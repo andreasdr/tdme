@@ -57,27 +57,30 @@ public class GUITest implements GLEventListener, WindowListener {
 			engine.getGUI().getScreen("test").setScreenSize(640, 480);
 			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
 				public void onActionPerformed(GUIElementNode node) {
-					// action performed
-					System.out.println(node.getId() + ".actionPerformed()");
-
-					// test get values
-					HashMap<String,String> values = new HashMap<String,String>();
-					node.getScreenNode().getValues(values);
-					System.out.println(values);
-
-					// test set values
-					values.clear();
-					values.put("select", "1"); 
-					values.put("input", "Enter some more text here!"); 
-					values.put("checkbox1", "1"); 
-					values.put("checkbox2", "1"); 
-					values.put("checkbox3", "1"); 
-					values.put("dropdown", "3"); 
-					values.put("radio", "3");
-					node.getScreenNode().setValues(values);
-
-					// test GUI tab controller select tab method
-					((GUITabController)node.getScreenNode().getNodeById("tab1").getController()).selectTab();
+					// check if button pressed
+					if (node.getName().equals("button")) {
+						// action performed
+						System.out.println(node.getId() + ".actionPerformed()");
+	
+						// test get values
+						HashMap<String,String> values = new HashMap<String,String>();
+						node.getScreenNode().getValues(values);
+						System.out.println(values);
+	
+						// test set values
+						values.clear();
+						values.put("select", "1"); 
+						values.put("input", "Enter some more text here!"); 
+						values.put("checkbox1", "1"); 
+						values.put("checkbox2", "1"); 
+						values.put("checkbox3", "1"); 
+						values.put("dropdown", "3"); 
+						values.put("radio", "3");
+						node.getScreenNode().setValues(values);
+	
+						// test GUI tab controller select tab method
+						((GUITabController)node.getScreenNode().getNodeById("tab1").getController()).selectTab();
+					}
 				}
 			});
 			engine.getGUI().getScreen("test").addChangeListener(new GUIChangeListener() {

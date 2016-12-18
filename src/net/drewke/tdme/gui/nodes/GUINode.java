@@ -63,9 +63,9 @@ public abstract class GUINode {
 	 * @version $Id$
 	 */
 	static class ComputedConstraints {
-		protected int left; 
+		protected int left;
 		protected int top;
-		protected int width; 
+		protected int width;
 		protected int height;
 		protected int alignmentLeft;
 		protected int alignmentTop;

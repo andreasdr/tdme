@@ -228,6 +228,24 @@ public abstract class GUIParentNode extends GUINode {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
+		// screen dimension
+		float screenWidth = guiRenderer.getGUI().getWidth();
+		float screenHeight = guiRenderer.getGUI().getHeight();
+
+		// element location and dimensions
+		float left = computedConstraints.left + computedConstraints.alignmentLeft;
+		float top = computedConstraints.top + computedConstraints.alignmentTop;
+		float width = computedConstraints.width;
+		float height = computedConstraints.height;
+
+		// render area
+		guiRenderer.setRenderArea(
+			((left) / (screenWidth / 2f)) - 1f, 
+			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
+			((left + width) / (screenWidth / 2f)) - 1f, 
+			((screenHeight - top - height) / (screenHeight / 2f)) - 1f
+		);
+
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
 
@@ -239,6 +257,16 @@ public abstract class GUIParentNode extends GUINode {
 				floatingNodes.add(guiSubNode);
 				continue;
 			}
+
+			// render area
+			guiRenderer.setRenderArea(
+				((left) / (screenWidth / 2f)) - 1f, 
+				((screenHeight - top) / (screenHeight / 2f)) - 1f, 
+				((left + width) / (screenWidth / 2f)) - 1f, 
+				((screenHeight - top - height) / (screenHeight / 2f)) - 1f
+			);
+
+			// render sub nodes
 			guiSubNode.render(guiRenderer, floatingNodes);
 		}
 	}

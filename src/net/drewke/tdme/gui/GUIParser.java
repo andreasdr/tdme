@@ -22,6 +22,7 @@ import net.drewke.tdme.gui.elements.GUITabContent;
 import net.drewke.tdme.gui.elements.GUITabs;
 import net.drewke.tdme.gui.elements.GUITabsContent;
 import net.drewke.tdme.gui.elements.GUITabsHeader;
+import net.drewke.tdme.gui.elements.GUIVerticalScrollbar;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIImageNode;
@@ -685,6 +686,14 @@ public final class GUIParser {
 		// add input
 		try {
 			GUIElement guiElement = new GUIInput();
+			addElement(guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add vertical scrollbar
+		try {
+			GUIElement guiElement = new GUIVerticalScrollbar();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
