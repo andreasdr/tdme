@@ -52,6 +52,11 @@ public abstract class GUINodeController {
 	public abstract void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event);
 
 	/**
+	 * Tick method will be executed once per frame
+	 */
+	public abstract void tick();
+
+	/**
 	 * On focus gained
 	 */
 	public abstract void onFocusGained();

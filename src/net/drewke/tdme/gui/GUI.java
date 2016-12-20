@@ -244,6 +244,7 @@ public final class GUI implements MouseListener, KeyListener {
 			engine.initGUIMode();
 			guiRenderer.initRendering();
 			screen.setConditionsMet();
+			screen.tick();
 			screen.render(guiRenderer);
 			guiRenderer.doneRendering();
 			engine.doneGUIMode();

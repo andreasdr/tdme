@@ -145,6 +145,12 @@ public final class GUIRenderer {
 	 * Init rendering
 	 */
 	public void initRendering() {
+		// render to full screen
+		setRenderAreaLeft(-1f);
+		setRenderAreaTop(+1);
+		setRenderAreaRight(+1);
+		setRenderAreaBottom(-1f);
+
 		// init gui
 		Engine.getGUIShader().useProgram();
 		renderer.enableClientState(renderer.CLIENTSTATE_VERTEX_ARRAY);
@@ -201,20 +207,95 @@ public final class GUIRenderer {
 	}
 
 	/**
-	 * Set render area
-	 * @param left
-	 * @param top
-	 * @param right
-	 * @param bottom
+	 * @return render area left
 	 */
-	public void setRenderArea(
-		float left, float top,
-		float right, float bottom
-	) {
-		renderAreaLeft = left;
-		renderAreaTop = top;
-		renderAreaRight = right;
-		renderAreaBottom = bottom;
+	public float getRenderAreaLeft() {
+		return renderAreaLeft;
+	}
+
+	/**
+	 * Set up render area left
+	 * @param render area left
+	 */
+	public void setRenderAreaLeft(float renderAreaLeft) {
+		this.renderAreaLeft = renderAreaLeft;
+	}
+
+	/**
+	 * Set sub render area left
+	 * @param render area left
+	 */
+	public void setSubRenderAreaLeft(float renderAreaLeft) {
+		this.renderAreaLeft = renderAreaLeft > this.renderAreaLeft?renderAreaLeft:this.renderAreaLeft;
+	}
+
+	/**
+	 * @return render area top
+	 */
+	public float getRenderAreaTop() {
+		return renderAreaTop;
+	}
+
+	/**
+	 * Set up render area top
+	 * @param render area top
+	 */
+	public void setRenderAreaTop(float renderAreaTop) {
+		this.renderAreaTop = renderAreaTop;
+	}
+
+	/**
+	 * Set sub render area top
+	 * @param render area top
+	 */
+	public void setSubRenderAreaTop(float renderAreaTop) {
+		this.renderAreaTop = renderAreaTop < this.renderAreaTop?renderAreaTop:this.renderAreaTop;
+	}
+
+	/**
+	 * @return render area right
+	 */
+	public float getRenderAreaRight() {
+		return renderAreaRight;
+	}
+
+	/**
+	 * Set up render area right
+	 * @param render area right
+	 */
+	public void setRenderAreaRight(float renderAreaRight) {
+		this.renderAreaRight = renderAreaRight;
+	}
+
+	/**
+	 * Set sub render area right
+	 * @param render area right
+	 */
+	public void setSubRenderAreaRight(float renderAreaRight) {
+		this.renderAreaRight = renderAreaRight < this.renderAreaRight?renderAreaRight:this.renderAreaRight;
+	}
+
+	/**
+	 * @return render area bottom
+	 */
+	public float getRenderAreaBottom() {
+		return renderAreaBottom;
+	}
+
+	/**
+	 * Set up render area bottom
+	 * @param render area bottom
+	 */
+	public void setRenderAreaBottom(float renderAreaBottom) {
+		this.renderAreaBottom = renderAreaBottom;
+	}
+
+	/**
+	 * Set sub render area bottom
+	 * @param render area bottom
+	 */
+	public void setSubRenderAreaBottom(float renderAreaBottom) {
+		this.renderAreaBottom = renderAreaBottom > this.renderAreaBottom?renderAreaBottom:this.renderAreaBottom;
 	}
 
 	/**
@@ -233,14 +314,6 @@ public final class GUIRenderer {
 	}
 
 	/**
-	 * Add render offset x
-	 * @param render offset x
-	 */
-	public void addRenderOffsetX(float renderOffsetX) {
-		this.renderOffsetX+= renderOffsetX;
-	}
-
-	/**
 	 * @return render offset y
 	 */
 	public float getRenderOffsetY() {
@@ -253,14 +326,6 @@ public final class GUIRenderer {
 	 */
 	public void setRenderOffsetY(float renderOffsetY) {
 		this.renderOffsetY = renderOffsetY;
-	}
-
-	/**
-	 * Add render offset y
-	 * @param render offset y
-	 */
-	public void addRenderOffsetY(float renderOffsetY) {
-		this.renderOffsetY+= renderOffsetY;
 	}
 
 	/**

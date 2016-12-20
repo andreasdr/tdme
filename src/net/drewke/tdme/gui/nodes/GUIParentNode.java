@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.math.MathTools;
 
 /**
  * A parent node supporting child notes
@@ -17,8 +18,8 @@ public abstract class GUIParentNode extends GUINode {
 
 	protected ArrayList<GUINode> subNodes;
 
-	protected float renderOffsetX;
-	protected float renderOffsetY;
+	protected float childrenRenderOffSetX;
+	protected float childrenRenderOffSetY;
 
 	/**
 	 * Constructor
@@ -28,12 +29,11 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param flow
 	 * @param alignments
 	 * @param requested constraints
+	 * @oaram background color
 	 * @param border
 	 * @param padding
 	 * @param show on
-	 * @param hide on
-	 * @oaram background color
-	 * @param background image 
+	 * @param hide on 
 	 */
 	protected GUIParentNode(
 		GUIScreenNode screenNode,
@@ -50,9 +50,9 @@ public abstract class GUIParentNode extends GUINode {
 		) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
-		subNodes = new ArrayList<GUINode>();
-		renderOffsetX = 0.0f;
-		renderOffsetY = 0.0f;
+		this.subNodes = new ArrayList<GUINode>();
+		this.childrenRenderOffSetX = 0f;
+		this.childrenRenderOffSetY = 0f;
 	}
 
 	/**
@@ -63,33 +63,33 @@ public abstract class GUIParentNode extends GUINode {
 	}
 
 	/**
-	 * @return render offset x
+	 * @return children render offset x
 	 */
-	public float getRenderOffsetX() {
-		return renderOffsetX;
+	public float getChildrenRenderOffSetX() {
+		return childrenRenderOffSetX;
 	}
 
 	/**
-	 * Set render offset x
-	 * @param render offset x
+	 * Set children render offset x
+	 * @param children render offset x
 	 */
-	public void setRenderOffsetX(float renderOffsetX) {
-		this.renderOffsetX = renderOffsetX;
+	public void setChildrenRenderOffSetX(float childrenRenderOffSetX) {
+		this.childrenRenderOffSetX = childrenRenderOffSetX;
 	}
 
 	/**
-	 * @return render offset y
+	 * @return children render offset y
 	 */
-	public float getRenderOffsetY() {
-		return renderOffsetY;
+	public float getChildrenRenderOffSetY() {
+		return childrenRenderOffSetY;
 	}
 
 	/**
-	 * Set render offset y
-	 * @param render offset y
+	 * Set children render offset y
+	 * @param children render offset y
 	 */
-	public void setRenderOffsetY(float renderOffsetY) {
-		this.renderOffsetY = renderOffsetY;
+	public void setChildrenRenderOffSetY(float childrenRenderOffSetY) {
+		this.childrenRenderOffSetY = childrenRenderOffSetY;
 	}
 
 	/**
@@ -263,6 +263,12 @@ public abstract class GUIParentNode extends GUINode {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
+		// store render area current
+		float renderAreaLeftCurrent = guiRenderer.getRenderAreaLeft();
+		float renderAreaTopCurrent = guiRenderer.getRenderAreaTop();
+		float renderAreaRightCurrent = guiRenderer.getRenderAreaRight();
+		float renderAreaBottomCurrent = guiRenderer.getRenderAreaBottom();
+
 		// screen dimension
 		float screenWidth = guiRenderer.getGUI().getWidth();
 		float screenHeight = guiRenderer.getGUI().getHeight();
@@ -273,21 +279,37 @@ public abstract class GUIParentNode extends GUINode {
 		float width = computedConstraints.width;
 		float height = computedConstraints.height;
 
-		// render area
-		guiRenderer.setRenderArea(
-			((left) / (screenWidth / 2f)) - 1f, 
-			((screenHeight - top) / (screenHeight / 2f)) - 1f, 
-			((left + width) / (screenWidth / 2f)) - 1f, 
-			((screenHeight - top - height) / (screenHeight / 2f)) - 1f
-		);
-
 		// store current render offset
-		float renderOffsetX = guiRenderer.getRenderOffsetX();
-		float renderOffsetY = guiRenderer.getRenderOffsetY();
+		float renderOffsetXCurrent = guiRenderer.getRenderOffsetX();
+		float renderOffsetYCurrent = guiRenderer.getRenderOffsetY(); 
+
+		// determine render offsets
+		float renderOffsetXPixel = 0f;
+		float renderOffsetYPixel = 0f;
+		for (GUIParentNode parentNode = this; parentNode != null; parentNode = parentNode.parentNode) {
+			renderOffsetXPixel+= parentNode.childrenRenderOffSetX;
+			renderOffsetYPixel+= parentNode.childrenRenderOffSetY;
+		}
+
+		// new render offsets
+		float renderOffsetX = renderOffsetXPixel / (screenWidth / 2f);
+		float renderOffsetY = renderOffsetYPixel / (screenHeight / 2f);
+
+		// render area
+		float renderAreaLeft = ((left) / (screenWidth / 2f)) - 1f;
+		float renderAreaTop = ((screenHeight - top) / (screenHeight / 2f)) + renderOffsetYCurrent - 1f;
+		float renderAreaRight = ((left + width) / (screenWidth / 2f)) - 1f;
+		float renderAreaBottom = ((screenHeight - top - height) / (screenHeight / 2f)) + renderOffsetYCurrent - 1f;
+
+		// render area
+		guiRenderer.setSubRenderAreaLeft(renderAreaLeft);
+		guiRenderer.setSubRenderAreaTop(renderAreaTop);
+		guiRenderer.setSubRenderAreaRight(renderAreaRight);
+		guiRenderer.setSubRenderAreaBottom(renderAreaBottom);
 
 		// render offsets
-		guiRenderer.addRenderOffsetX(this.renderOffsetX / screenWidth);
-		guiRenderer.addRenderOffsetY(this.renderOffsetY / screenHeight);
+		guiRenderer.setRenderOffsetX(renderOffsetX);
+		guiRenderer.setRenderOffsetY(renderOffsetY);
 
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
@@ -301,27 +323,35 @@ public abstract class GUIParentNode extends GUINode {
 				continue;
 			}
 
-			// render area
-			guiRenderer.setRenderArea(
-				((left) / (screenWidth / 2f)) - 1f, 
-				((screenHeight - top) / (screenHeight / 2f)) - 1f, 
-				((left + width) / (screenWidth / 2f)) - 1f, 
-				((screenHeight - top - height) / (screenHeight / 2f)) - 1f
-			);
+			// restore render area
+			guiRenderer.setRenderAreaLeft(renderAreaLeftCurrent);
+			guiRenderer.setRenderAreaTop(renderAreaTopCurrent);
+			guiRenderer.setRenderAreaRight(renderAreaRightCurrent);
+			guiRenderer.setRenderAreaBottom(renderAreaBottomCurrent);
+
+			// set up sub render area
+			guiRenderer.setSubRenderAreaLeft(renderAreaLeft);
+			guiRenderer.setSubRenderAreaTop(renderAreaTop);
+			guiRenderer.setSubRenderAreaRight(renderAreaRight);
+			guiRenderer.setSubRenderAreaBottom(renderAreaBottom);
 
 			// render offsets
 			guiRenderer.setRenderOffsetX(renderOffsetX);
 			guiRenderer.setRenderOffsetY(renderOffsetY);
-			guiRenderer.addRenderOffsetX(this.renderOffsetX / screenWidth);
-			guiRenderer.addRenderOffsetY(this.renderOffsetY / screenHeight);
 
 			// render sub nodes
 			guiSubNode.render(guiRenderer, floatingNodes);
 		}
 
-		// render offsets
-		guiRenderer.setRenderOffsetX(renderOffsetX);
-		guiRenderer.setRenderOffsetY(renderOffsetY);
+		// restore render offsets
+		guiRenderer.setRenderOffsetX(renderOffsetXCurrent);
+		guiRenderer.setRenderOffsetY(renderOffsetYCurrent);
+
+		// restore render area
+		guiRenderer.setRenderAreaLeft(renderAreaLeftCurrent);
+		guiRenderer.setRenderAreaTop(renderAreaTopCurrent);
+		guiRenderer.setRenderAreaRight(renderAreaRightCurrent);
+		guiRenderer.setRenderAreaBottom(renderAreaBottomCurrent);
 	}
 
 	/*
@@ -331,6 +361,13 @@ public abstract class GUIParentNode extends GUINode {
 	public void handleMouseEvent(GUIMouseEvent event) {
 		// check if conditions were met
 		if (conditionsMet == false) return;
+ 
+		int eventX = event.getX();
+		int eventY = event.getY();
+
+		// take render offsets into account
+		event.setX(eventX + (int)childrenRenderOffSetX);
+		event.setY(eventY + (int)childrenRenderOffSetY);
 
 		// delegate event to sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
@@ -340,6 +377,10 @@ public abstract class GUIParentNode extends GUINode {
 
 		//
 		super.handleMouseEvent(event);
+
+		// reset event x, y
+		event.setX(eventX);
+		event.setY(eventY);
 	}
 
 	/*
@@ -358,6 +399,24 @@ public abstract class GUIParentNode extends GUINode {
 
 		//
 		super.handleKeyboardEvent(event);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINode#tick()
+	 */
+	public void tick() {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// delegate event to sub nodes
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode subNode = subNodes.get(i);
+			subNode.tick();
+		}
+
+		//
+		super.tick();
 	}
 
 	/*

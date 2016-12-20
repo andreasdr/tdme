@@ -24,6 +24,7 @@ public final class GUIPanelNode extends GUILayoutNode {
 	 * @param padding
 	 * @param show on
 	 * @param hide on
+	 * @param scrollable
 	 * @param background color
 	 * @param background image
 	 * @param alignment

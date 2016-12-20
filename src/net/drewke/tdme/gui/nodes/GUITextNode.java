@@ -81,7 +81,7 @@ public final class GUITextNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
-	protected int getContentWidth() {
+	public int getContentWidth() {
 		return font.getTextWidth(text) + border.left + border.right + padding.left + padding.right;
 	}
 
@@ -89,7 +89,7 @@ public final class GUITextNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
-	protected int getContentHeight() {
+	public int getContentHeight() {
 		return font.getTextHeight(text) + border.top + border.bottom + padding.top + padding.bottom;
 	}
 	

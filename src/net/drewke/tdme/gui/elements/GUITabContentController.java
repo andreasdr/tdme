@@ -83,6 +83,15 @@ public final class GUITabContentController extends GUINodeController {
 		// no op for now
 	}
 
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#tick()
+	 */
+	public void tick() {
+		// no op
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusGained()

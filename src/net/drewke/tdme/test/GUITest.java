@@ -58,7 +58,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
 				public void onActionPerformed(GUIActionListener.Type type, GUIElementNode node) {
 					// check if button pressed
-					if (node.getName().equals("button")) {
+					if (type == Type.PERFORMED && node.getName().equals("button")) {
 						// action performed
 						System.out.println(node.getId() + ".actionPerformed()");
 	

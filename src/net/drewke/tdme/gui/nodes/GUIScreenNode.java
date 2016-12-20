@@ -65,7 +65,8 @@ public final class GUIScreenNode extends GUIParentNode {
 		Border border, 
 		Padding padding,
 		GUINodeConditions showOn, 
-		GUINodeConditions hideOn
+		GUINodeConditions hideOn,
+		boolean scrollable
 		) throws GUIParserException {
 		super(null, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.foccussedBorderColor = new GUIColor("#FF4040");
@@ -111,14 +112,14 @@ public final class GUIScreenNode extends GUIParentNode {
 	/**
 	 * @return content width
 	 */
-	protected int getContentWidth() {
+	public int getContentWidth() {
 		return -1;
 	}
 
 	/**
 	 * @return content height
 	 */
-	protected int getContentHeight() {
+	public int getContentHeight() {
 		return -1;
 	}
 

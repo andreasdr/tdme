@@ -12,12 +12,15 @@ import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
  */
 public class GUIElementController extends GUINodeController {
 
+	private boolean isActionPerforming;
+
 	/**
 	 * GUI element controller
 	 * @param node
 	 */
 	protected GUIElementController(GUINode node) {
 		super(node);
+		this.isActionPerforming = false;
 	}
 
 	/*
@@ -46,14 +49,25 @@ public class GUIElementController extends GUINodeController {
 			// set event processed
 			event.setProcessed(true);
 
+			// check if performing
+			if (event.getType() == Type.MOUSE_PRESSED ||
+				event.getType() == Type.MOUSE_DRAGGED) {
+				isActionPerforming = true;
+			} else
 			// check if mouse released
 			if (event.getType() == Type.MOUSE_RELEASED) {
+				//
+				isActionPerforming = false;
+
 				// delegate action performed
 				node.getScreenNode().delegateActionPerformed(GUIActionListener.Type.PERFORMED, (GUIElementNode)node);
 
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)node);	
+				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
 			}
+		} else {
+			// no anymore performing
+			isActionPerforming = false;
 		}
 	}
 
@@ -81,6 +95,18 @@ public class GUIElementController extends GUINodeController {
 						break;
 					}
 			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#tick()
+	 */
+	public void tick() {
+		// check if performing
+		if (isActionPerforming == true) {
+			// yep, delegate action performing
+			node.getScreenNode().delegateActionPerformed(GUIActionListener.Type.PERFORMING, (GUIElementNode)node);
 		}
 	}
 

@@ -107,7 +107,8 @@ public final class GUIParser {
 				xmlRoot.getAttribute("padding-bottom") 
 			),
 			GUINode.createConditions(xmlRoot.getAttribute("show-on")),
-			GUINode.createConditions(xmlRoot.getAttribute("hide-on"))
+			GUINode.createConditions(xmlRoot.getAttribute("hide-on")),
+			xmlRoot.getAttribute("scrollable").trim().equalsIgnoreCase("true")
 		);
 
 		// parse GUI nodes

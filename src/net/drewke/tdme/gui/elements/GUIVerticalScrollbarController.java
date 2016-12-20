@@ -34,15 +34,17 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 		node.getScreenNode().addActionListener(new GUIActionListener() {
 			public void onActionPerformed(Type type, GUIElementNode node) {
 				if (node == upArrowNode) {
-					float renderOffsetY = contentNode.getRenderOffsetY() - 1f;
-					if (renderOffsetY < 0f) renderOffsetY = 0f;
-					contentNode.setRenderOffsetY(renderOffsetY);
+					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() - 1f;
+					if (childrenRenderOffsetY < 0f) childrenRenderOffsetY = 0f;
+					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
 				} else
 				if (node == downArrowNode) {
-					float contentHeight = contentNode.getComputedConstraints().height;
-					float renderOffsetY = contentNode.getRenderOffsetY() + 1f;
-					if (renderOffsetY > contentHeight) renderOffsetY = contentHeight;
-					contentNode.setRenderOffsetY(renderOffsetY);
+					float contentHeight = contentNode.getContentHeight();
+					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() + 1f;
+					if (childrenRenderOffsetY > contentHeight - contentNode.getComputedConstraints().height) {
+						childrenRenderOffsetY = contentHeight - contentNode.getComputedConstraints().height;
+					}
+					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
 				}
 			}
 		});
@@ -71,9 +73,18 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#tick()
+	 */
+	public void tick() {
+		// no op
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusGained()
 	 */
 	public void onFocusGained() {
+		// no op
 	}
 
 	/*
@@ -81,6 +92,7 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusLost()
 	 */
 	public void onFocusLost() {
+		// no op
 	}
 
 	/*

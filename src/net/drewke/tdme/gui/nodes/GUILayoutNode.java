@@ -40,7 +40,7 @@ public class GUILayoutNode extends GUIParentNode {
 		Border border, 
 		Padding padding, 
 		GUINodeConditions showOn, 
-		GUINodeConditions hideOn, 
+		GUINodeConditions hideOn,
 		Alignment alignment
 		) throws GUIParserException {
 		//
@@ -67,7 +67,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
-	protected int getContentWidth() {
+	public int getContentWidth() {
 		// determine content width
 		int width = 0;
 		if (alignment == Alignment.HORIZONTAL) {
@@ -112,7 +112,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
-	protected int getContentHeight() {
+	public int getContentHeight() {
 		// determine content height
 		int height = 0;
 		if (alignment == Alignment.VERTICAL) {

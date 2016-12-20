@@ -235,17 +235,17 @@ public abstract class GUINode {
 	/**
 	 * @return content width including border, margin
 	 */
-	protected abstract int getContentWidth();
+	public abstract int getContentWidth();
 
 	/**
 	 * @return content height including border, margin
 	 */
-	protected abstract int getContentHeight();
+	public abstract int getContentHeight();
 
 	/**
 	 * @return auto width if auto width requested or content width
 	 */
-	protected int getAutoWidth() {
+	public int getAutoWidth() {
 		if (requestedConstraints.widthType == RequestedConstraintsType.AUTO) {
 			return getContentWidth();
 		} else {
@@ -256,7 +256,7 @@ public abstract class GUINode {
 	/**
 	 * @return auto height if auto height requested or content height
 	 */
-	protected int getAutoHeight() {
+	public int getAutoHeight() {
 		if (requestedConstraints.heightType == RequestedConstraintsType.AUTO) {
 			return getContentHeight();
 		} else {
@@ -929,6 +929,17 @@ public abstract class GUINode {
 
 		// otherwise call controller
 		node.controller.handleKeyboardEvent(this, event);
+	}
+
+	/**
+	 * Tick method will be executed once per frame
+	 */
+	public void tick() {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// call controller tick
+		if (controller != null) controller.tick();
 	}
 
 	/**

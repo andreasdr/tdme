@@ -87,7 +87,7 @@ public final class GUIImageNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentWidth()
 	 */
-	protected int getContentWidth() {
+	public int getContentWidth() {
 		return (texture != null?texture.getWidth():0) + border.left + border.right + padding.left + padding.right;
 	}
 
@@ -95,7 +95,7 @@ public final class GUIImageNode extends GUINode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
-	protected int getContentHeight() {
+	public int getContentHeight() {
 		return (texture != null?texture.getHeight():0) + border.top + border.bottom + padding.top + padding.bottom;
 	}
 	

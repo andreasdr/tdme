@@ -93,7 +93,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#getContentWidth()
 	 */
-	protected int getContentWidth() {
+	public int getContentWidth() {
 		// determine content width
 		int width = 0;
 		for (int i = 0; i < subNodes.size(); i++) {
@@ -116,7 +116,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINode#getContentHeight()
 	 */
-	protected int getContentHeight() {
+	public int getContentHeight() {
 		// determine content height
 		int height = 0;
 		for (int i = 0; i < subNodes.size(); i++) {
