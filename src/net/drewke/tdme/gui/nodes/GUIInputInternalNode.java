@@ -3,17 +3,17 @@ package net.drewke.tdme.gui.nodes;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUI;
-import net.drewke.tdme.gui.nodes.GUITextInputController.CursorMode;
+import net.drewke.tdme.gui.nodes.GUIInputInternalController.CursorMode;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
- * GUI text input node
+ * GUI input internal node
  * 
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUITextInputNode extends GUINode {
+public final class GUIInputInternalNode extends GUINode {
 
 	private GUIFont font;
 	private GUIColor color;
@@ -36,7 +36,7 @@ public final class GUITextInputNode extends GUINode {
 	 * @param text
 	 * @throws Exception
 	 */
-	public GUITextInputNode(
+	public GUIInputInternalNode(
 		GUIScreenNode screenNode, 
 		GUIParentNode parentNode,
 		String id, 
@@ -62,7 +62,7 @@ public final class GUITextInputNode extends GUINode {
 		this.font.init();
 
 		// controller
-		this.controller = new GUITextInputController(this);
+		this.controller = new GUIInputInternalController(this);
 		this.controller.init();
 	}
 
@@ -153,7 +153,7 @@ public final class GUITextInputNode extends GUINode {
 		);
 
 		// get controller
-		GUITextInputController controller = (GUITextInputController)this.controller;
+		GUIInputInternalController controller = (GUIInputInternalController)this.controller;
 
 		// check if to show cursor
 		if (controller.getCursorMode() == CursorMode.SHOW) {

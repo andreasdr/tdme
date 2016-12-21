@@ -28,9 +28,9 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#init()
 	 */
 	public void init() {
-		final GUIParentNode contentNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_content_panel");
-		final GUIElementNode upArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_panel_up");
-		final GUIElementNode downArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_panel_down");
+		final GUIParentNode contentNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_content_layout");
+		final GUIElementNode upArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_up");
+		final GUIElementNode downArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_down");
 		node.getScreenNode().addActionListener(new GUIActionListener() {
 			public void onActionPerformed(Type type, GUIElementNode node) {
 				if (node == upArrowNode) {

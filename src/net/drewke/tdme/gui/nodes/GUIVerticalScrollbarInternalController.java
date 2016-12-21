@@ -1,41 +1,33 @@
-package net.drewke.tdme.gui.elements;
+package net.drewke.tdme.gui.nodes;
 
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
-import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
-import net.drewke.tdme.gui.nodes.GUIElementNode;
-import net.drewke.tdme.gui.nodes.GUINode;
-import net.drewke.tdme.gui.nodes.GUINodeController;
-import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 
 /**
- * GUI input controller
+ * GUI Scrollbar controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUIInputController extends GUINodeController {
-
-	private GUIInputInternalNode textInputNode;
+public class GUIVerticalScrollbarInternalController extends GUINodeController {
 
 	/**
-	 * GUI Checkbox controller
+	 * Constructor
 	 * @param node
 	 */
-	protected GUIInputController(GUINode node) {
+	protected GUIVerticalScrollbarInternalController(GUINode node) {
 		super(node);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#init()
 	 */
 	public void init() {
-		textInputNode = (GUIInputInternalNode)node.getScreenNode().getNodeById(node.getId() + "_text-input");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#dispose()
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#dispose()
 	 */
 	public void dispose() {
 	}
@@ -45,16 +37,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
-		if (node == this.node &&
-			node.isEventBelongingToNode(event) && 
-			event.getButton() == 1) {
-
-			// set focussed node
-			node.getScreenNode().setFoccussedNode((GUIElementNode)node);
-
-			// set event processed
-			event.setProcessed(true);
-		}
+		// TODO Auto-generated method stub
 	}
 
 	/*
@@ -62,7 +45,8 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		// no op for now
+		// TODO Auto-generated method stub
+		
 	}
 
 	/*
@@ -70,7 +54,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#tick()
 	 */
 	public void tick() {
-		// no op
+		// TODO Auto-generated method stub
 	}
 
 	/*
@@ -78,6 +62,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusGained()
 	 */
 	public void onFocusGained() {
+		// no op
 	}
 
 	/*
@@ -85,6 +70,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusLost()
 	 */
 	public void onFocusLost() {
+		// no op
 	}
 
 	/*
@@ -92,7 +78,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#hasValue()
 	 */
 	public boolean hasValue() {
-		return true;
+		return false;
 	}
 
 	/*
@@ -100,7 +86,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
 	public String getValue() {
-		return textInputNode.getText();
+		return null;
 	}
 
 	/*
@@ -108,7 +94,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
 	 */
 	public void setValue(String value) {
-		textInputNode.setText(value);
+		// no op
 	}
 
 }

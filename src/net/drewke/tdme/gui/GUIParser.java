@@ -26,6 +26,7 @@ import net.drewke.tdme.gui.elements.GUIVerticalScrollbar;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIImageNode;
+import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 import net.drewke.tdme.gui.nodes.GUILayoutNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
@@ -33,8 +34,8 @@ import net.drewke.tdme.gui.nodes.GUIPanelNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUISpaceNode;
-import net.drewke.tdme.gui.nodes.GUITextInputNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.gui.nodes.GUIVerticalScrollbarInternalNode;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
@@ -447,9 +448,9 @@ public final class GUIParser {
 					guiElementControllerInstalled = true;
 				}
 			} else 
-			if (node.getNodeName().equals("text-input")) {
+			if (node.getNodeName().equals("input-internal")) {
 				// TODO: validate root node
-				GUITextInputNode guiTextInputNode = new GUITextInputNode(
+				GUIInputInternalNode guiInputInternalNode = new GUIInputInternalNode(
 					guiScreenNode,
 					guiParentNode, 
 					node.getAttribute("id"), 
@@ -490,13 +491,63 @@ public final class GUIParser {
 					node.getAttribute("color"),
 					node.getAttribute("text")
 				);
-				guiParentNode.getSubNodes().add(guiTextInputNode);
-				if (guiScreenNode.addNode(guiTextInputNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiTextInputNode.getId() + "'");
+				guiParentNode.getSubNodes().add(guiInputInternalNode);
+				if (guiScreenNode.addNode(guiInputInternalNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiInputInternalNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiTextInputNode.setController(guiElementController = guiElement.createController(guiTextInputNode));
+					guiInputInternalNode.setController(guiElementController = guiElement.createController(guiInputInternalNode));
+					guiElementControllerInstalled = true;
+				}
+			} else 
+			if (node.getNodeName().equals("vertical-scrollbar-internal")) {
+				// TODO: validate root node
+				GUIVerticalScrollbarInternalNode guiVerticalScrollbarInternalNode = new GUIVerticalScrollbarInternalNode(
+					guiScreenNode,
+					guiParentNode, 
+					node.getAttribute("id"), 
+					GUINode.createFlow(node.getAttribute("flow")),
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
+					GUINode.createRequestedConstraints(
+						node.getAttribute("left"), 
+						node.getAttribute("top"), 
+						node.getAttribute("width"), 
+						node.getAttribute("height")
+					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
+					GUINode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUINode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
+					),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on"))
+				);
+				guiParentNode.getSubNodes().add(guiVerticalScrollbarInternalNode);
+				if (guiScreenNode.addNode(guiVerticalScrollbarInternalNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiVerticalScrollbarInternalNode.getId() + "'");
+				}
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiVerticalScrollbarInternalNode.setController(guiElementController = guiElement.createController(guiVerticalScrollbarInternalNode));
 					guiElementControllerInstalled = true;
 				}
 			} else {

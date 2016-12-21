@@ -5,11 +5,11 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 
 /**
- * GUI input controller
+ * GUI input internal controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUITextInputController extends GUINodeController {
+public final class GUIInputInternalController extends GUINodeController {
 
 	private final static long CURSOR_MODE_DURATION = 500L;
 
@@ -23,7 +23,7 @@ public final class GUITextInputController extends GUINodeController {
 	 * GUI Checkbox controller
 	 * @param node
 	 */
-	protected GUITextInputController(GUINode node) {
+	protected GUIInputInternalController(GUINode node) {
 		super(node);
 		this.index = 0;
 	}
@@ -93,7 +93,7 @@ public final class GUITextInputController extends GUINodeController {
 			event.getButton() == 1) {
 
 			//
-			GUITextInputNode textInputNode = ((GUITextInputNode)node);
+			GUIInputInternalNode textInputNode = ((GUIInputInternalNode)node);
 			index = textInputNode.getFont().getTextIndexByX(
 				textInputNode.getText(), 
 				event.getX() - (textInputNode.computedConstraints.left + textInputNode.computedConstraints.alignmentLeft + textInputNode.border.left + textInputNode.padding.left)
@@ -111,7 +111,7 @@ public final class GUITextInputController extends GUINodeController {
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
 		if (node == this.node) {
-			GUITextInputNode textInputNode = ((GUITextInputNode)node);
+			GUIInputInternalNode textInputNode = ((GUIInputInternalNode)node);
 			char keyChar = event.getKeyChar();
 			if (keyChar >= 32 && keyChar < 127) {
 				// set event processed
