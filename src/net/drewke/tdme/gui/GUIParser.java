@@ -539,7 +539,10 @@ public final class GUIParser {
 						node.getAttribute("padding-bottom") 
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
-					GUINode.createConditions(node.getAttribute("hide-on"))
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					GUINode.getRequestedColor(node.getAttribute("color-none"), GUIColor.BLACK),
+					GUINode.getRequestedColor(node.getAttribute("color-mouseover"), GUIColor.BLACK),
+					GUINode.getRequestedColor(node.getAttribute("color-dragging"), GUIColor.BLACK)
 				);
 				guiParentNode.getSubNodes().add(guiVerticalScrollbarInternalNode);
 				if (guiScreenNode.addNode(guiVerticalScrollbarInternalNode) == false) {

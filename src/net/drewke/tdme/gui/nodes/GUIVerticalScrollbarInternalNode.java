@@ -6,7 +6,9 @@ import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 public class GUIVerticalScrollbarInternalNode extends GUINode {
 
-	private GUIColor barColor;
+	private GUIColor barColorNone;
+	private GUIColor barColorMouseOver;
+	private GUIColor barColorDragging;
 
 	/**
 	 * Constructor
@@ -33,12 +35,17 @@ public class GUIVerticalScrollbarInternalNode extends GUINode {
 		Border border, 
 		Padding padding,
 		GUINodeConditions showOn, 
-		GUINodeConditions hideOn) {
+		GUINodeConditions hideOn,
+		GUIColor barColorNone,
+		GUIColor barColorMouseOver,
+		GUIColor barColorDragging) {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		//
 		this.controller = new GUIVerticalScrollbarInternalController(this);
-		this.barColor = GUIColor.BLACK;
+		this.barColorNone = barColorNone;
+		this.barColorMouseOver = barColorMouseOver;
+		this.barColorDragging = barColorDragging;
 	}
 
 	/*
@@ -105,7 +112,18 @@ public class GUIVerticalScrollbarInternalNode extends GUINode {
 		float height = barHeight;
 
 		// background color
-		float[] barColorArray = barColor.getData();
+		float[] barColorArray = null;
+		switch (controller.getState()) {
+			case NONE:
+				barColorArray = barColorNone.getData();
+				break;
+			case MOUSEOVER:
+				barColorArray = barColorMouseOver.getData();
+				break;
+			case DRAGGING:
+				barColorArray = barColorDragging.getData();
+				break;
+		}
 
 		// render background
 		guiRenderer.bindTexture(0);

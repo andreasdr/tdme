@@ -13,7 +13,7 @@
 			<!-- click -->
 			<image effect-color-mul="#FF8080" show-on="click" src="resources/gui/images/elements/scrollarea/arrow-up.png" horizontal-align="center" vertical-align="center" />
 		</element>
-		<vertical-scrollbar-internal id="{$id}_scrollbar_layout_bar" width="100%" height="*" />
+		<vertical-scrollbar-internal id="{$id}_scrollbar_layout_bar" width="100%" height="*" color-none="#8080A0" color-mouseover="#8080FF" color-dragging="#FF8080" />
 		<element id="{$id}_scrollbar_vertical_layout_down" width="22" height="22" horizontal-align="center" vertical-align="center" focusable="true">
 			<!-- no mouse over -->
 			<image effect-color-mul="#8080A0" hide-on="focus,mouseover" src="resources/gui/images/elements/scrollarea/arrow-down.png" horizontal-align="center" vertical-align="center" />

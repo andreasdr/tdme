@@ -11,9 +11,10 @@ import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
  */
 public class GUIVerticalScrollbarInternalController extends GUINodeController {
 
+	public enum State {NONE, MOUSEOVER, DRAGGING};
 
 	private GUILayoutNode contentNode;
-	private boolean dragging = false;
+	private State state = State.NONE;
 	private int mouseYOffset = -1;
 
 	/**
@@ -37,6 +38,13 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#dispose()
 	 */
 	public void dispose() {
+	}
+
+	/**
+	 * @return state
+	 */
+	public State getState() {
+		return state;
 	}
 
 	/**
@@ -90,30 +98,39 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
-		if (node == this.node &&
-			event.getButton() == 1) {
+		// skip if not this node
+		if (node != this.node) return;
+
+		// mouse moved state
+		if (node.isEventBelongingToNode(event) == true &&
+			event.getType() == Type.MOUSE_MOVED) {
+			//
+			state = State.MOUSEOVER;
+
+			// set event processed
+			event.setProcessed(true);
+		} else
+		if (event.getButton() == 1) {
 			if (node.isEventBelongingToNode(event) == true &&
 				event.getType() == Type.MOUSE_PRESSED) {
 				//
-				GUIVerticalScrollbarInternalNode verticalScrollbarInternalNode = ((GUIVerticalScrollbarInternalNode)node);
 				float barTop = getBarTop();
 				float barHeight = getBarHeight();
 				if (event.getY() >= barTop &&
 					event.getY() < barTop + barHeight) {
 					mouseYOffset = (int)(event.getY() - barTop);
-					dragging = true;
+					state = State.DRAGGING;
 				}
 			} else
-			if (dragging == true &&
+			if (state == State.DRAGGING &&
 				event.getType() == Type.MOUSE_RELEASED ) {
 				//
 				mouseYOffset = -1;
-				dragging = false;
+				state = State.NONE;
 			} else
-			if (dragging == true &&
+			if (state == State.DRAGGING &&
 				event.getType() == Type.MOUSE_DRAGGED) {
 				//
-				GUIVerticalScrollbarInternalNode verticalScrollbarInternalNode = ((GUIVerticalScrollbarInternalNode)node);
 				float barTop = getBarTop();
 				float draggedY = event.getY() - barTop - mouseYOffset;
 				setDraggedY(draggedY);
@@ -121,6 +138,8 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 
 			// set event processed
 			event.setProcessed(true);
+		} else {
+			state = State.NONE;
 		}
 	}
 
