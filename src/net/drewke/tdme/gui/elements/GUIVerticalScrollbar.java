@@ -26,7 +26,6 @@ public final class GUIVerticalScrollbar extends GUIElement {
 	public GUIVerticalScrollbar() throws IOException {
 		attributes = new HashMap<String, String>();
 		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "vertical-scrollbar.xml");
-		System.out.println(template);
 	}
 
 	/*
