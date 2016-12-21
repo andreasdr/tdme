@@ -7,7 +7,6 @@ import net.drewke.tdme.gui.renderer.GUIRenderer;
 public class GUIVerticalScrollbarInternalNode extends GUINode {
 
 	private GUIColor barColor;
-	private GUILayoutNode contentNode;
 
 	/**
 	 * Constructor
@@ -40,7 +39,6 @@ public class GUIVerticalScrollbarInternalNode extends GUINode {
 		//
 		this.controller = new GUIVerticalScrollbarInternalController(this);
 		this.barColor = GUIColor.BLACK;
-		this.contentNode = (GUILayoutNode)screenNode.getNodeById(getParentControllerNode().id + "_content_layout");
 	}
 
 	/*
@@ -94,16 +92,15 @@ public class GUIVerticalScrollbarInternalNode extends GUINode {
 		float screenWidth = guiRenderer.getGUI().getWidth();
 		float screenHeight = guiRenderer.getGUI().getHeight();
 
+		GUIVerticalScrollbarInternalController controller = (GUIVerticalScrollbarInternalController)this.controller;
+
 		// bar constraints
-		float childrenRenderOffsetY = contentNode.childrenRenderOffSetY;
-		float elementHeight = contentNode.computedConstraints.height;
-		float contentHeight = contentNode.getContentHeight();
-		float scrollableHeight = contentHeight - elementHeight;
-		float barHeight = (computedConstraints.height - border.top - border.bottom) * (elementHeight / contentHeight); 
+		float barHeight = controller.getBarHeight(); 
+		float barTop = controller.getBarTop();
 
 		// element location and dimensions
 		float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left;
-		float top = computedConstraints.top + computedConstraints.alignmentTop + border.top + (childrenRenderOffsetY * ((computedConstraints.height - barHeight) / scrollableHeight));
+		float top = barTop;
 		float width = computedConstraints.width - border.left - border.right;
 		float height = barHeight;
 
