@@ -450,7 +450,7 @@ public final class GUIRenderer {
 			y2 = renderAreaTop;
 		}
 
-		// clip 1,4 y values
+		// clip 1,4 x values
 		if (quadLeft < renderAreaLeft) {
 			tu1 = tu1 + ((tu2 - tu1) * ((renderAreaLeft - x1) / (x2 - x1)));
 			tu4 = tu4 + ((tu3 - tu4) * ((renderAreaLeft - x4) / (x3 - x4)));
@@ -458,7 +458,7 @@ public final class GUIRenderer {
 			x4 = renderAreaLeft;
 		}
 
-		// clip 1,4 y values
+		// clip 2,3 x values
 		if (quadRight > renderAreaRight) {
 			tu2 = tu2 - ((tu2 - tu1) * ((x2 - renderAreaRight) / (x2 - x1)));
 			tu3 = tu3 - ((tu3 - tu4) * ((x3 - renderAreaRight) / (x3 - x4)));
