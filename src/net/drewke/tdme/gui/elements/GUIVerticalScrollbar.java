@@ -56,6 +56,7 @@ public final class GUIVerticalScrollbar extends GUIElement {
 		attributes.put("horizontal-align", "left");
 		attributes.put("vertical-align", "top");
 		attributes.put("alignment", "vertical");
+		attributes.put("background-color", "transparent");
 		return attributes;
 	}
 

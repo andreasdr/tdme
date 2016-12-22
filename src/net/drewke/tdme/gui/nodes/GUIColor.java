@@ -27,7 +27,8 @@ public final class GUIColor {
 		BLACK,
 		RED,
 		GREEN,
-		BLUE
+		BLUE,
+		TRANSPARENT
 	};
 
 	// predefined color names
@@ -36,7 +37,8 @@ public final class GUIColor {
 		"BLACK",
 		"RED",
 		"GREEN",
-		"BLUE"
+		"BLUE",
+		"TRANSPARENT"
 	};
 	
 	private float[] data;

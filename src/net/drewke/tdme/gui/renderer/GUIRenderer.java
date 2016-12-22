@@ -450,22 +450,20 @@ public final class GUIRenderer {
 			y2 = renderAreaTop;
 		}
 
-		// clip 2,3 x values
-		//	TODO: this is a bit broken currently, needs a fix
-		if (quadRight > renderAreaRight) {
-			tu2 = tu1 + ((tu2 - tu1) * ((renderAreaRight - x2) / (x2 - x1)));
-			tu3 = tu4 + ((tu3 - tu4) * ((renderAreaRight - x3) / (x3 - x4)));
-			x2 = renderAreaRight;
-			x3 = renderAreaRight;
+		// clip 1,4 y values
+		if (quadLeft < renderAreaLeft) {
+			tu1 = tu1 + ((tu2 - tu1) * ((renderAreaLeft - x1) / (x2 - x1)));
+			tu4 = tu4 + ((tu3 - tu4) * ((renderAreaLeft - x4) / (x3 - x4)));
+			x1 = renderAreaLeft;
+			x4 = renderAreaLeft;
 		}
 
 		// clip 1,4 y values
-		//	TODO: this is a bit broken currently, needs a fix
-		if (quadLeft < renderAreaLeft) {
-			tv1 = tv1 + ((tv1 - tv2) * ((renderAreaLeft - x1) / (x2 - x1)));
-			tv4 = tv4 + ((tv4 - tv3) * ((renderAreaLeft - x4) / (x3 - x4)));
-			x1 = renderAreaLeft;
-			x4 = renderAreaLeft;
+		if (quadRight > renderAreaRight) {
+			tu2 = tu2 - ((tu2 - tu1) * ((x2 - renderAreaRight) / (x2 - x1)));
+			tu3 = tu3 - ((tu3 - tu4) * ((x3 - renderAreaRight) / (x3 - x4)));
+			x2 = renderAreaRight;
+			x3 = renderAreaRight;
 		}
 
 		// quad component 1
