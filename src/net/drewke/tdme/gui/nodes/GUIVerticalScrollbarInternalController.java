@@ -123,6 +123,18 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 				//
 				float barTop = getBarTop();
 				float barHeight = getBarHeight();
+				if (event.getY() < barTop) {
+					float elementHeight = contentNode.computedConstraints.height;
+					float contentHeight = contentNode.getContentHeight();
+					float scrollableHeight = contentHeight - elementHeight;
+					setDraggedY(-elementHeight * ((node.computedConstraints.height - barHeight) / scrollableHeight));
+				} else
+				if (event.getY() > barTop + barHeight) {
+					float elementHeight = contentNode.computedConstraints.height;
+					float contentHeight = contentNode.getContentHeight();
+					float scrollableHeight = contentHeight - elementHeight;
+					setDraggedY(+elementHeight * ((node.computedConstraints.height - barHeight) / scrollableHeight));
+				} else
 				if (event.getY() >= barTop &&
 					event.getY() < barTop + barHeight) {
 					mouseYOffset = (int)(event.getY() - barTop);
