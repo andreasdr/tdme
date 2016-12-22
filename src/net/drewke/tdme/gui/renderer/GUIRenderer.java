@@ -394,6 +394,10 @@ public final class GUIRenderer {
 		}
 
 		// take render offset x and y into account
+		x1-= renderOffsetX;
+		x2-= renderOffsetX;
+		x3-= renderOffsetX;
+		x4-= renderOffsetX;
 		y1+= renderOffsetY;
 		y2+= renderOffsetY;
 		y3+= renderOffsetY;
@@ -444,6 +448,24 @@ public final class GUIRenderer {
 			tv2 = tv2 + ((tv4 - tv2) * ((y2 - renderAreaTop) / (y1 - y4)));
 			y1 = renderAreaTop;
 			y2 = renderAreaTop;
+		}
+
+		// clip 2,3 x values
+		//	TODO: this is a bit broken currently, needs a fix
+		if (quadRight > renderAreaRight) {
+			tu2 = tu1 + ((tu2 - tu1) * ((renderAreaRight - x2) / (x2 - x1)));
+			tu3 = tu4 + ((tu3 - tu4) * ((renderAreaRight - x3) / (x3 - x4)));
+			x2 = renderAreaRight;
+			x3 = renderAreaRight;
+		}
+
+		// clip 1,4 y values
+		//	TODO: this is a bit broken currently, needs a fix
+		if (quadLeft < renderAreaLeft) {
+			tv1 = tv1 + ((tv1 - tv2) * ((renderAreaLeft - x1) / (x2 - x1)));
+			tv4 = tv4 + ((tv4 - tv3) * ((renderAreaLeft - x4) / (x3 - x4)));
+			x1 = renderAreaLeft;
+			x4 = renderAreaLeft;
 		}
 
 		// quad component 1

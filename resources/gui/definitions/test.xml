@@ -126,33 +126,13 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="At vero eos et accusam et justo duo dolores et ea rebum" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Stet clita kasd gubergren" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ccc pre eee" color="#000000" />
-							<vertical-scrollbar id="eee" width="100%" height="100">
-								<layout background-color="#a08080" id="fff" alignment="vertical" width="100%" height="auto">
+							<horizontal-scrollbar id="eee" width="100%" height="100">
+								<layout background-color="#a08080" id="fff" alignment="vertical" width="auto" height="auto">
 									<text font="resources/gui/fonts/Foo_25.fnt" text="eee begin" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="labore et dolore magna aliquyam erat" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="At vero eos et accusam et justo duo dolores et ea rebum" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Stet clita kasd gubergren" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="no sea takimata sanctus est Lorem ipsum dolor sit amet" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Duis autem vel eum iriure dolor" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="in hendrerit in vulputate velit esse molestie consequat" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="vel illum dolore eu feugiat nulla facilisis" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="at vero eros et accumsan et iusto" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="odio dignissim qui blandit praesent" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="luptatum zzril delenit augue duis" color="#000000" />
-									<button id="ggg" name="button2" text="I agree eee" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="dolore te feugait nulla facilisi" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="eee end" color="#000000" />
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet, sed diam voluptua. in hendrerit in vulputate velit esse molestie consequat.consetetur sadipscing elitr." color="#000000" />
+									<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt, consetetur sadipscing elitr, ut labore et dolore magna aliquyam erat. Lorem ipsum dolor sit amet, consetetur sadipscing elitr." color="#000000" />
 								</layout>
-							</vertical-scrollbar>
+							</horizontal-scrollbar>
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ccc post eee" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="no sea takimata sanctus est Lorem ipsum dolor sit amet" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Duis autem vel eum iriure dolor" color="#000000" />

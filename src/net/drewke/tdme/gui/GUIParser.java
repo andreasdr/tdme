@@ -13,6 +13,7 @@ import net.drewke.tdme.gui.elements.GUICheckbox;
 import net.drewke.tdme.gui.elements.GUIDropDown;
 import net.drewke.tdme.gui.elements.GUIDropDownOption;
 import net.drewke.tdme.gui.elements.GUIElement;
+import net.drewke.tdme.gui.elements.GUIHorizontalScrollbar;
 import net.drewke.tdme.gui.elements.GUIInput;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
 import net.drewke.tdme.gui.elements.GUISelectBox;
@@ -25,6 +26,7 @@ import net.drewke.tdme.gui.elements.GUITabsHeader;
 import net.drewke.tdme.gui.elements.GUIVerticalScrollbar;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUIHorizontalScrollbarInternalNode;
 import net.drewke.tdme.gui.nodes.GUIImageNode;
 import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 import net.drewke.tdme.gui.nodes.GUILayoutNode;
@@ -553,6 +555,59 @@ public final class GUIParser {
 					guiVerticalScrollbarInternalNode.setController(guiElementController = guiElement.createController(guiVerticalScrollbarInternalNode));
 					guiElementControllerInstalled = true;
 				}
+			} else
+			if (node.getNodeName().equals("horizontal-scrollbar-internal")) {
+				// TODO: validate root node
+				GUIHorizontalScrollbarInternalNode guiHorizontalScrollbarInternalNode = new GUIHorizontalScrollbarInternalNode(
+					guiScreenNode,
+					guiParentNode, 
+					node.getAttribute("id"), 
+					GUINode.createFlow(node.getAttribute("flow")),
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")							
+					),
+					GUINode.createRequestedConstraints(
+						node.getAttribute("left"), 
+						node.getAttribute("top"), 
+						node.getAttribute("width"), 
+						node.getAttribute("height")
+					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), GUIColor.TRANSPARENT),
+					GUINode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUINode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
+					),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					GUINode.getRequestedColor(node.getAttribute("color-none"), GUIColor.BLACK),
+					GUINode.getRequestedColor(node.getAttribute("color-mouseover"), GUIColor.BLACK),
+					GUINode.getRequestedColor(node.getAttribute("color-dragging"), GUIColor.BLACK)
+				);
+				guiParentNode.getSubNodes().add(guiHorizontalScrollbarInternalNode);
+				if (guiScreenNode.addNode(guiHorizontalScrollbarInternalNode) == false) {
+					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiHorizontalScrollbarInternalNode.getId() + "'");
+				}
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiHorizontalScrollbarInternalNode.setController(guiElementController = guiElement.createController(guiHorizontalScrollbarInternalNode));
+					guiElementControllerInstalled = true;
+				}
 			} else {
 				// Try to load from GUI elements
 				GUIElement newGuiElement = elements.get(node.getNodeName());
@@ -749,6 +804,14 @@ public final class GUIParser {
 		// add vertical scrollbar
 		try {
 			GUIElement guiElement = new GUIVerticalScrollbar();
+			addElement(guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add horizontal scrollbar
+		try {
+			GUIElement guiElement = new GUIHorizontalScrollbar();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
