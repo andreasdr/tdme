@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.gui.nodes.GUIVerticalScrollbarInternalController;
 
 /**
  * GUI vertical scroll bar controller
@@ -34,12 +35,29 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 		node.getScreenNode().addActionListener(new GUIActionListener() {
 			public void onActionPerformed(Type type, GUIElementNode node) {
 				if (node == upArrowNode) {
+					// determine scrollable height
+					float elementHeight = contentNode.getComputedConstraints().height;
+					float contentHeight = contentNode.getContentHeight();
+					float scrollableHeight = contentHeight - elementHeight;
+
+					// skip if no scrollable height
+					if (scrollableHeight <= 0f) return;
+
+					// set up children render offset y and clip it
 					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() - 1f;
 					if (childrenRenderOffsetY < 0f) childrenRenderOffsetY = 0f;
 					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
 				} else
 				if (node == downArrowNode) {
+					// determine scrollable height
+					float elementHeight = contentNode.getComputedConstraints().height;
 					float contentHeight = contentNode.getContentHeight();
+					float scrollableHeight = contentHeight - elementHeight;
+
+					// skip if no scrollable height
+					if (scrollableHeight <= 0f) return;
+
+					// set up children render offset y and clip it
 					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() + 1f;
 					if (childrenRenderOffsetY > contentHeight - contentNode.getComputedConstraints().height) {
 						childrenRenderOffsetY = contentHeight - contentNode.getComputedConstraints().height;
