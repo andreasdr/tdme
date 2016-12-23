@@ -10,7 +10,7 @@ import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 
 /**
- * GUI vertical scroll bar controller
+ * GUI scroll area controller
  * @author Andreas Drewke
  * @version $Id$
  */

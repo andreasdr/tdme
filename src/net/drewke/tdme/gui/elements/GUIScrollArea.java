@@ -9,7 +9,7 @@ import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
 /**
- * GUI vertical scrollbar element
+ * GUI scroll area element
  * @author Andreas Drewke
  * @version $Id$
  */
