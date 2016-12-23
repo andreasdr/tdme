@@ -14,13 +14,13 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIScrollbarsController extends GUINodeController {
+public class GUIScrollAreaController extends GUINodeController {
 
 	/**
 	 * Constructor
 	 * @param node
 	 */
-	protected GUIScrollbarsController(GUINode node) {
+	protected GUIScrollAreaController(GUINode node) {
 		super(node);
 	}
 

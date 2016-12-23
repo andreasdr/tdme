@@ -13,9 +13,9 @@ import net.drewke.tdme.utils.HashMap;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUIHorizontalScrollbar extends GUIElement {
+public final class GUIScrollArea extends GUIElement {
 
-	private static final String NAME = "horizontal-scrollbar";
+	private static final String NAME = "scrollarea";
 
 	private HashMap<String, String> attributes;
 	private String template;
@@ -23,9 +23,9 @@ public final class GUIHorizontalScrollbar extends GUIElement {
 	/**
 	 * Constructor
 	 */
-	public GUIHorizontalScrollbar() throws IOException {
+	public GUIScrollArea() throws IOException {
 		attributes = new HashMap<String, String>();
-		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "horizontal-scrollbar.xml");
+		template = FileSystem.getInstance().getContent("resources/gui/definitions/elements", "scrollarea.xml");
 	}
 
 	/*
@@ -65,7 +65,7 @@ public final class GUIHorizontalScrollbar extends GUIElement {
 	 * @see net.drewke.tdme.gui.elements.GUIElement#createController(net.drewke.tdme.gui.nodes.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return new GUIHorizontalScrollbarController(node);
+		return new GUIScrollAreaController(node);
 	}
 
 }

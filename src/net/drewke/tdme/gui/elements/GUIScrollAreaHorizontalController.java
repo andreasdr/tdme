@@ -14,13 +14,13 @@ import net.drewke.tdme.gui.nodes.GUIVerticalScrollbarInternalController;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIVerticalScrollbarController extends GUINodeController {
+public class GUIScrollAreaHorizontalController extends GUINodeController {
 
 	/**
 	 * Constructor
 	 * @param node
 	 */
-	protected GUIVerticalScrollbarController(GUINode node) {
+	protected GUIScrollAreaHorizontalController(GUINode node) {
 		super(node);
 	}
 
@@ -30,39 +30,39 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 	 */
 	public void init() {
 		final GUIParentNode contentNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_content_layout");
-		final GUIElementNode upArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_up");
-		final GUIElementNode downArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_down");
+		final GUIElementNode leftArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_horizontal_layout_left");
+		final GUIElementNode rightArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_horizontal_layout_right");
 		node.getScreenNode().addActionListener(new GUIActionListener() {
 			public void onActionPerformed(Type type, GUIElementNode node) {
-				if (node == upArrowNode) {
-					// determine scrollable height
-					float elementHeight = contentNode.getComputedConstraints().height;
-					float contentHeight = contentNode.getContentHeight();
-					float scrollableHeight = contentHeight - elementHeight;
+				if (node == leftArrowNode) {
+					// determine scrollable width
+					float elementWidth = contentNode.getComputedConstraints().width;
+					float contentWidth = contentNode.getContentWidth();
+					float scrollableWidth = contentWidth - elementWidth;
 
-					// skip if no scrollable height
-					if (scrollableHeight <= 0f) return;
+					// skip if no scrollable width
+					if (scrollableWidth <= 0f) return;
 
-					// set up children render offset y and clip it
-					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() - 1f;
-					if (childrenRenderOffsetY < 0f) childrenRenderOffsetY = 0f;
-					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
+					// set up children render offset X and clip it
+					float childrenRenderOffsetX = contentNode.getChildrenRenderOffSetX() - 1f;
+					if (childrenRenderOffsetX < 0f) childrenRenderOffsetX = 0f;
+					contentNode.setChildrenRenderOffSetX(childrenRenderOffsetX);
 				} else
-				if (node == downArrowNode) {
-					// determine scrollable height
-					float elementHeight = contentNode.getComputedConstraints().height;
-					float contentHeight = contentNode.getContentHeight();
-					float scrollableHeight = contentHeight - elementHeight;
+				if (node == rightArrowNode) {
+					// determine scrollable width
+					float elementWidth = contentNode.getComputedConstraints().width;
+					float contentWidth = contentNode.getContentWidth();
+					float scrollableWidth = contentWidth - elementWidth;
 
-					// skip if no scrollable height
-					if (scrollableHeight <= 0f) return;
+					// skip if no scrollable width
+					if (scrollableWidth <= 0f) return;
 
-					// set up children render offset y and clip it
-					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() + 1f;
-					if (childrenRenderOffsetY > contentHeight - contentNode.getComputedConstraints().height) {
-						childrenRenderOffsetY = contentHeight - contentNode.getComputedConstraints().height;
+					// set up children render offset x and clip it
+					float childrenRenderOffsetX = contentNode.getChildrenRenderOffSetX() + 1f;
+					if (childrenRenderOffsetX > contentWidth - contentNode.getComputedConstraints().width) {
+						childrenRenderOffsetX = contentWidth - contentNode.getComputedConstraints().width;
 					}
-					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
+					contentNode.setChildrenRenderOffSetX(childrenRenderOffsetX);
 				}
 			}
 		});

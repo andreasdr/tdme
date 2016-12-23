@@ -112,7 +112,7 @@
 					</panel>
 				</tab-content>
 				<tab-content tab-id="tab6" horizontal-align="center" vertical-align="center">
-					<scrollbars id="bbb" width="100%" height="100%">
+					<scrollarea id="bbb" width="100%" height="100%">
 						<layout id="ccc" alignment="vertical" width="auto" height="auto">
 							<text font="resources/gui/fonts/Foo_25.fnt" text="START" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
@@ -143,7 +143,7 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="END" color="#000000" />
 						</layout>
-					</scrollbars>
+					</scrollarea>
 				</tab-content>
 			</tabs-content>
 		</tabs>

@@ -13,10 +13,10 @@ import net.drewke.tdme.gui.elements.GUICheckbox;
 import net.drewke.tdme.gui.elements.GUIDropDown;
 import net.drewke.tdme.gui.elements.GUIDropDownOption;
 import net.drewke.tdme.gui.elements.GUIElement;
-import net.drewke.tdme.gui.elements.GUIHorizontalScrollbar;
+import net.drewke.tdme.gui.elements.GUIScrollAreaHorizontal;
 import net.drewke.tdme.gui.elements.GUIInput;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
-import net.drewke.tdme.gui.elements.GUIScrollbars;
+import net.drewke.tdme.gui.elements.GUIScrollArea;
 import net.drewke.tdme.gui.elements.GUISelectBox;
 import net.drewke.tdme.gui.elements.GUISelectBoxOption;
 import net.drewke.tdme.gui.elements.GUITab;
@@ -24,7 +24,7 @@ import net.drewke.tdme.gui.elements.GUITabContent;
 import net.drewke.tdme.gui.elements.GUITabs;
 import net.drewke.tdme.gui.elements.GUITabsContent;
 import net.drewke.tdme.gui.elements.GUITabsHeader;
-import net.drewke.tdme.gui.elements.GUIVerticalScrollbar;
+import net.drewke.tdme.gui.elements.GUIScrollAreaVertical;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIHorizontalScrollbarInternalNode;
@@ -804,7 +804,7 @@ public final class GUIParser {
 
 		// add vertical scrollbar
 		try {
-			GUIElement guiElement = new GUIVerticalScrollbar();
+			GUIElement guiElement = new GUIScrollAreaVertical();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -812,7 +812,7 @@ public final class GUIParser {
 
 		// add horizontal scrollbar
 		try {
-			GUIElement guiElement = new GUIHorizontalScrollbar();
+			GUIElement guiElement = new GUIScrollAreaHorizontal();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -820,7 +820,7 @@ public final class GUIParser {
 
 		// add scrollbars
 		try {
-			GUIElement guiElement = new GUIScrollbars();
+			GUIElement guiElement = new GUIScrollArea();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
