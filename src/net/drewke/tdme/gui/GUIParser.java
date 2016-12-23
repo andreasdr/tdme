@@ -16,6 +16,7 @@ import net.drewke.tdme.gui.elements.GUIElement;
 import net.drewke.tdme.gui.elements.GUIHorizontalScrollbar;
 import net.drewke.tdme.gui.elements.GUIInput;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
+import net.drewke.tdme.gui.elements.GUIScrollbars;
 import net.drewke.tdme.gui.elements.GUISelectBox;
 import net.drewke.tdme.gui.elements.GUISelectBoxOption;
 import net.drewke.tdme.gui.elements.GUITab;
@@ -812,6 +813,14 @@ public final class GUIParser {
 		// add horizontal scrollbar
 		try {
 			GUIElement guiElement = new GUIHorizontalScrollbar();
+			addElement(guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add scrollbars
+		try {
+			GUIElement guiElement = new GUIScrollbars();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();

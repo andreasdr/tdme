@@ -112,8 +112,9 @@
 					</panel>
 				</tab-content>
 				<tab-content tab-id="tab6" horizontal-align="center" vertical-align="center">
-					<vertical-scrollbar id="bbb" width="100%" height="100%">
-						<layout id="ccc" alignment="vertical" width="100%" height="auto">
+					<scrollbars id="bbb" width="100%" height="100%">
+						<layout id="ccc" alignment="vertical" width="auto" height="auto">
+							<text font="resources/gui/fonts/Foo_25.fnt" text="START" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
@@ -126,13 +127,9 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="At vero eos et accusam et justo duo dolores et ea rebum" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Stet clita kasd gubergren" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ccc pre eee" color="#000000" />
-							<horizontal-scrollbar id="eee" width="100%" height="100" background-color="#a08080">
-								<layout id="fff" alignment="vertical" width="auto" height="auto">
-									<text font="resources/gui/fonts/Foo_25.fnt" text="eee begin" color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet, sed diam voluptua. in hendrerit in vulputate velit esse molestie consequat.consetetur sadipscing elitr." color="#000000" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt, consetetur sadipscing elitr, ut labore et dolore magna aliquyam erat. Lorem ipsum dolor sit amet, consetetur sadipscing elitr." color="#000000" />
-								</layout>
-							</horizontal-scrollbar>
+							<text font="resources/gui/fonts/Foo_25.fnt" text="eee begin" color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet, sed diam voluptua. in hendrerit in vulputate velit esse molestie consequat.consetetur sadipscing elitr." color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="Left. Sed diam nonumy eirmod tempor invidunt, consetetur sadipscing elitr, ut labore et dolore magna aliquyam erat. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Right." color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ccc post eee" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="no sea takimata sanctus est Lorem ipsum dolor sit amet" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Duis autem vel eum iriure dolor" color="#000000" />
@@ -144,8 +141,9 @@
 							<button id="ddd" name="button2" text="I agree ccc" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="dolore te feugait nulla facilisi" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet" color="#000000" />
+							<text font="resources/gui/fonts/Foo_25.fnt" text="END" color="#000000" />
 						</layout>
-					</vertical-scrollbar>
+					</scrollbars>
 				</tab-content>
 			</tabs-content>
 		</tabs>

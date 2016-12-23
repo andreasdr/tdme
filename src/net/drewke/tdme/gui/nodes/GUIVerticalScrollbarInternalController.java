@@ -23,7 +23,9 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 	 */
 	protected GUIVerticalScrollbarInternalController(GUINode node) {
 		super(node);
-		this.contentNode = (GUILayoutNode)node.getScreenNode().getNodeById(node.getParentControllerNode().id + "_scrollbar_vertical_content_layout");
+		System.out.println(node.getParentControllerNode().id + "_scrollbar_content_layout");
+		this.contentNode = (GUILayoutNode)node.getScreenNode().getNodeById(node.getParentControllerNode().id + "_scrollbar_content_layout");
+		System.out.println("GUIVerticalScrollbarInternalController:" + this.contentNode);
 	}
 
 	/*

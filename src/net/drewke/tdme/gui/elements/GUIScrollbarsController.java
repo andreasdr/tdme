@@ -3,24 +3,24 @@ package net.drewke.tdme.gui.elements;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.events.GUIActionListener.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
-import net.drewke.tdme.gui.nodes.GUIVerticalScrollbarInternalController;
 
 /**
  * GUI vertical scroll bar controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public class GUIVerticalScrollbarController extends GUINodeController {
+public class GUIScrollbarsController extends GUINodeController {
 
 	/**
 	 * Constructor
 	 * @param node
 	 */
-	protected GUIVerticalScrollbarController(GUINode node) {
+	protected GUIScrollbarsController(GUINode node) {
 		super(node);
 	}
 
@@ -32,6 +32,8 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 		final GUIParentNode contentNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_content_layout");
 		final GUIElementNode upArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_up");
 		final GUIElementNode downArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_down");
+		final GUIElementNode leftArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_horizontal_layout_left");
+		final GUIElementNode rightArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_horizontal_layout_right");
 		node.getScreenNode().addActionListener(new GUIActionListener() {
 			public void onActionPerformed(Type type, GUIElementNode node) {
 				if (node == upArrowNode) {
@@ -63,6 +65,36 @@ public class GUIVerticalScrollbarController extends GUINodeController {
 						childrenRenderOffsetY = contentHeight - contentNode.getComputedConstraints().height;
 					}
 					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
+				} else
+				if (node == leftArrowNode) {
+					// determine scrollable width
+					float elementWidth = contentNode.getComputedConstraints().width;
+					float contentWidth = contentNode.getContentWidth();
+					float scrollableWidth = contentWidth - elementWidth;
+
+					// skip if no scrollable width
+					if (scrollableWidth <= 0f) return;
+
+					// set up children render offset X and clip it
+					float childrenRenderOffsetX = contentNode.getChildrenRenderOffSetX() - 1f;
+					if (childrenRenderOffsetX < 0f) childrenRenderOffsetX = 0f;
+					contentNode.setChildrenRenderOffSetX(childrenRenderOffsetX);
+				} else
+				if (node == rightArrowNode) {
+					// determine scrollable width
+					float elementWidth = contentNode.getComputedConstraints().width;
+					float contentWidth = contentNode.getContentWidth();
+					float scrollableWidth = contentWidth - elementWidth;
+
+					// skip if no scrollable width
+					if (scrollableWidth <= 0f) return;
+
+					// set up children render offset x and clip it
+					float childrenRenderOffsetX = contentNode.getChildrenRenderOffSetX() + 1f;
+					if (childrenRenderOffsetX > contentWidth - contentNode.getComputedConstraints().width) {
+						childrenRenderOffsetX = contentWidth - contentNode.getComputedConstraints().width;
+					}
+					contentNode.setChildrenRenderOffSetX(childrenRenderOffsetX);
 				}
 			}
 		});
