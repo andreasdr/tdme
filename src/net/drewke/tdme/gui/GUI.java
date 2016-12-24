@@ -297,6 +297,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setX(event.getX());
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
+		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
+		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
+		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
 		mouseEvents.add(guiMouseEvent);
 	}
 
@@ -325,6 +328,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setX(event.getX());
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
+		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
+		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
+		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
 		mouseEvents.add(guiMouseEvent);
 	}
 
@@ -339,6 +345,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setX(event.getX());
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
+		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
+		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
+		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
 		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);	
 	}
@@ -355,6 +364,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
 		guiMouseEvent.setProcessed(false);
+		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
+		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
+		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
 		mouseEvents.add(guiMouseEvent);
 
 		// add additional mouse moved event
@@ -366,6 +378,17 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseWheelMoved(MouseEvent event) {
+		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
+		guiMouseEvent.setTime(System.currentTimeMillis());
+		guiMouseEvent.setType(Type.MOUSE_WHEEL_MOVED);
+		guiMouseEvent.setX(event.getX());
+		guiMouseEvent.setY(event.getY());
+		guiMouseEvent.setButton(event.getButton());
+		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
+		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
+		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
+		guiMouseEvent.setProcessed(false);
+		mouseEvents.add(guiMouseEvent);
 	}
 
 	/*

@@ -7,7 +7,7 @@ package net.drewke.tdme.gui.events;
  */
 public class GUIMouseEvent {
 
-	public enum Type {NONE, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_MOVED, MOUSE_DRAGGED};
+	public enum Type {NONE, MOUSE_WHEEL_MOVED, MOUSE_PRESSED, MOUSE_RELEASED, MOUSE_MOVED, MOUSE_DRAGGED};
 
 	private long time;
 
@@ -16,6 +16,10 @@ public class GUIMouseEvent {
 	private int x;
 	private int y;
 	private int button;
+
+	private float wheelX;
+	private float wheelY;
+	private float wheelZ;
 
 	private boolean processed;
 
@@ -32,6 +36,9 @@ public class GUIMouseEvent {
 		this.x = -1;
 		this.y = -1;
 		this.button = -1;
+		this.wheelX = 0f;
+		this.wheelY = 0f;
+		this.wheelZ = 0f;
 		this.processed = false;
 	}
 
@@ -111,6 +118,51 @@ public class GUIMouseEvent {
 	}
 
 	/**
+	 * @return wheel x
+	 */
+	public float getWheelX() {
+		return wheelX;
+	}
+
+	/**
+	 * Set up wheel x
+	 * @param wheel x
+	 */
+	public void setWheelX(float wheelX) {
+		this.wheelX = wheelX;
+	}
+
+	/**
+	 * @return wheel y
+	 */
+	public float getWheelY() {
+		return wheelY;
+	}
+
+	/**
+	 * Set up wheel y
+	 * @param wheel y
+	 */
+	public void setWheelY(float wheelY) {
+		this.wheelY = wheelY;
+	}
+
+	/**
+	 * @return wheel z
+	 */
+	public float getWheelZ() {
+		return wheelZ;
+	}
+
+	/**
+	 * Set up wheel z
+	 * @param wheel z
+	 */
+	public void setWheelZ(float wheelZ) {
+		this.wheelZ = wheelZ;
+	}
+
+	/**
 	 * @return processed
 	 */
 	public boolean isProcessed() {
@@ -131,7 +183,9 @@ public class GUIMouseEvent {
 	 */
 	public String toString() {
 		return "GUIMouseEvent [time=" + time + ", type=" + type + ", x=" + x
-				+ ", y=" + y + ", button=" + button + "]";
+				+ ", y=" + y + ", button=" + button + ", wheelX=" + wheelX
+				+ ", wheelY=" + wheelY + ", wheelZ=" + wheelZ + ", processed="
+				+ processed + "]";
 	}
 
 }
