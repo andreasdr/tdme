@@ -44,9 +44,9 @@ public class GUIScrollAreaVerticalController extends GUINodeController {
 					if (scrollableHeight <= 0f) return;
 
 					// set up children render offset y and clip it
-					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() - 1f;
+					float childrenRenderOffsetY = contentNode.getChildrenRenderOffsetY() - 1f;
 					if (childrenRenderOffsetY < 0f) childrenRenderOffsetY = 0f;
-					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
+					contentNode.setChildrenRenderOffsetY(childrenRenderOffsetY);
 				} else
 				if (node == downArrowNode) {
 					// determine scrollable height
@@ -58,11 +58,11 @@ public class GUIScrollAreaVerticalController extends GUINodeController {
 					if (scrollableHeight <= 0f) return;
 
 					// set up children render offset y and clip it
-					float childrenRenderOffsetY = contentNode.getChildrenRenderOffSetY() + 1f;
+					float childrenRenderOffsetY = contentNode.getChildrenRenderOffsetY() + 1f;
 					if (childrenRenderOffsetY > contentHeight - contentNode.getComputedConstraints().height) {
 						childrenRenderOffsetY = contentHeight - contentNode.getComputedConstraints().height;
 					}
-					contentNode.setChildrenRenderOffSetY(childrenRenderOffsetY);
+					contentNode.setChildrenRenderOffsetY(childrenRenderOffsetY);
 				}
 			}
 		});

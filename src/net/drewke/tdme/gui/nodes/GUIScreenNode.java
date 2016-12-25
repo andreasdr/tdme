@@ -8,6 +8,7 @@ import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.nodes.GUIParentNode.Overflow;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
 
@@ -48,6 +49,8 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param parent node
 	 * @param id
 	 * @param flow
+	 * @param overflow x
+	 * @param overflow y
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -59,6 +62,8 @@ public final class GUIScreenNode extends GUIParentNode {
 		GUIParentNode parentNode, 
 		String id, 
 		Flow flow,
+		Overflow overflowX,
+		Overflow overflowY,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -68,7 +73,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		GUINodeConditions hideOn,
 		boolean scrollable
 		) throws GUIParserException {
-		super(null, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(null, parentNode, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.foccussedBorderColor = new GUIColor("#FF4040");
 		this.nodeCounter = 0;
 		this.screenWidth = 0;

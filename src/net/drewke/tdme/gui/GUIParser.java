@@ -80,6 +80,8 @@ public final class GUIParser {
 			null, 
 			xmlRoot.getAttribute("id"),
 			GUINode.createFlow(xmlRoot.getAttribute("flow")),
+			GUIParentNode.createOverflow(xmlRoot.getAttribute("overflow-x")),
+			GUIParentNode.createOverflow(xmlRoot.getAttribute("overflow-y")),
 			GUINode.createAlignments(
 				xmlRoot.getAttribute("horizontal-align"), 
 				xmlRoot.getAttribute("vertical-align")							
@@ -140,6 +142,8 @@ public final class GUIParser {
 					guiParentNode, 
 					node.getAttribute("id"),
 					GUINode.createFlow(node.getAttribute("flow")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-x")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-y")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -243,6 +247,8 @@ public final class GUIParser {
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-x")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-y")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							
@@ -296,6 +302,8 @@ public final class GUIParser {
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-x")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-y")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
 						node.getAttribute("vertical-align")							

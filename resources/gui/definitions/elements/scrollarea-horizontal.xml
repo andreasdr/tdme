@@ -1,5 +1,5 @@
 <layout id="{$id}" width="{$width}" height="{$height}" alignment="vertical" background-color="{$background-color}">
-	<layout id="{$id}_scrollarea_content_layout" horizontal-align="{$horizontal-align}" vertical-align="{$vertical-align}" alignment="{$alignment}" width="100%" height="*">
+	<layout id="{$id}_scrollarea_content_layout" horizontal-align="{$horizontal-align}" vertical-align="{$vertical-align}" alignment="{$alignment}" overflow-x="scroll" width="100%" height="*">
 		{$innerXml}
 	</layout>
 	<layout id="{$id}_scrollbar_horizontal_layout" border="1" border-color="#8080A0" alignment="horizontal" width="100%" height="auto" background-color="white">

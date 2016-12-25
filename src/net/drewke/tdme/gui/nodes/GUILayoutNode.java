@@ -5,6 +5,7 @@ import net.drewke.tdme.gui.nodes.GUINode.AlignmentHorizontal;
 import net.drewke.tdme.gui.nodes.GUINode.AlignmentVertical;
 import net.drewke.tdme.gui.nodes.GUINode.Alignments;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.nodes.GUIParentNode.Overflow;
 
 public class GUILayoutNode extends GUIParentNode {
 
@@ -18,6 +19,8 @@ public class GUILayoutNode extends GUIParentNode {
 	 * @param parent node
 	 * @param id
 	 * @param flow
+	 * @param overflow x
+	 * @param overflow y
 	 * @param alignments
 	 * @param requested constraints
 	 * @param border
@@ -33,6 +36,8 @@ public class GUILayoutNode extends GUIParentNode {
 		GUIParentNode parentNode, 
 		String id, 
 		Flow flow,
+		Overflow overflowX,
+		Overflow overflowY,
 		Alignments alignments, 
 		RequestedConstraints 
 		requestedConstraints,
@@ -44,7 +49,7 @@ public class GUILayoutNode extends GUIParentNode {
 		Alignment alignment
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.alignment = alignment;
 	}
 

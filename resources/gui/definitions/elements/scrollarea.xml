@@ -1,6 +1,6 @@
 <layout id="{$id}" width="{$width}" height="{$height}" alignment="vertical" background-color="{$background-color}">
 	<layout id="{$id}_scrollarea_vertical_inner" width="{$width}" height="*" alignment="horizontal" background-color="{$background-color}">
-		<layout id="{$id}_scrollarea_content_layout" horizontal-align="{$horizontal-align}" vertical-align="{$vertical-align}" alignment="{$alignment}" width="*" height="100%">
+		<layout id="{$id}_scrollarea_content_layout" horizontal-align="{$horizontal-align}" vertical-align="{$vertical-align}" alignment="{$alignment}" overflow-x="scroll" overflow-y="scroll" width="*" height="100%">
 			{$innerXml}
 		</layout>
 		<layout id="{$id}_scrollbar_vertical_layout" border="1" border-color="#8080A0" alignment="vertical" width="auto" height="100%"  background-color="white">

@@ -65,7 +65,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 		float elementWidth = contentNode.computedConstraints.width;
 		float contentWidth = contentNode.getContentWidth();
 		float scrollableWidth = contentWidth - elementWidth;
-		float childrenRenderOffsetX = contentNode.childrenRenderOffSetX;
+		float childrenRenderOffsetX = contentNode.childrenRenderOffsetX;
 		float barWidth = (node.computedConstraints.width - node.border.left - node.border.right) * (elementWidth / contentWidth);
 		return node.computedConstraints.left + node.computedConstraints.alignmentLeft + node.border.left + (childrenRenderOffsetX * ((node.computedConstraints.width - barWidth) / scrollableWidth));
 	}
@@ -87,7 +87,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 
 		// determine render offset x
 		float childrenRenderOffsetX =
-			contentNode.getChildrenRenderOffSetX() +
+			contentNode.getChildrenRenderOffsetX() +
 			(draggedX * (scrollableWidth / (node.computedConstraints.width - barWidth)));
 
 		// clip to min, max
@@ -95,7 +95,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 		if (childrenRenderOffsetX > scrollableWidth) childrenRenderOffsetX = scrollableWidth;
 
 		// set new children render offset X
-		contentNode.setChildrenRenderOffSetX(
+		contentNode.setChildrenRenderOffsetX(
 			childrenRenderOffsetX
 		);
 	}

@@ -44,9 +44,9 @@ public class GUIScrollAreaHorizontalController extends GUINodeController {
 					if (scrollableWidth <= 0f) return;
 
 					// set up children render offset X and clip it
-					float childrenRenderOffsetX = contentNode.getChildrenRenderOffSetX() - 1f;
+					float childrenRenderOffsetX = contentNode.getChildrenRenderOffsetX() - 1f;
 					if (childrenRenderOffsetX < 0f) childrenRenderOffsetX = 0f;
-					contentNode.setChildrenRenderOffSetX(childrenRenderOffsetX);
+					contentNode.setChildrenRenderOffsetX(childrenRenderOffsetX);
 				} else
 				if (node == rightArrowNode) {
 					// determine scrollable width
@@ -58,11 +58,11 @@ public class GUIScrollAreaHorizontalController extends GUINodeController {
 					if (scrollableWidth <= 0f) return;
 
 					// set up children render offset x and clip it
-					float childrenRenderOffsetX = contentNode.getChildrenRenderOffSetX() + 1f;
+					float childrenRenderOffsetX = contentNode.getChildrenRenderOffsetX() + 1f;
 					if (childrenRenderOffsetX > contentWidth - contentNode.getComputedConstraints().width) {
 						childrenRenderOffsetX = contentWidth - contentNode.getComputedConstraints().width;
 					}
-					contentNode.setChildrenRenderOffSetX(childrenRenderOffsetX);
+					contentNode.setChildrenRenderOffsetX(childrenRenderOffsetX);
 				}
 			}
 		});

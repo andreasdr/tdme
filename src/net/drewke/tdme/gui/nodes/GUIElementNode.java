@@ -1,7 +1,5 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 
@@ -31,6 +29,8 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param parent node
 	 * @param id
 	 * @param flow
+	 * @param overflow x
+	 * @param overflow y
 	 * @param alignments
 	 * @param requested constraints
 	 * @param background color
@@ -49,6 +49,8 @@ public final class GUIElementNode extends GUIParentNode {
 		GUIParentNode parentNode, 
 		String id, 
 		Flow flow,
+		Overflow overflowX,
+		Overflow overflowY,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -62,7 +64,7 @@ public final class GUIElementNode extends GUIParentNode {
 		boolean focusable
 		) throws GUIParserException {
 		//
-		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(screenNode, parentNode, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		// name
 		this.name = name;
 		this.value = value;

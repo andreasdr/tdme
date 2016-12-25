@@ -65,7 +65,7 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 		float elementHeight = contentNode.computedConstraints.height;
 		float contentHeight = contentNode.getContentHeight();
 		float scrollableHeight = contentHeight - elementHeight;
-		float childrenRenderOffsetY = contentNode.childrenRenderOffSetY;
+		float childrenRenderOffsetY = contentNode.childrenRenderOffsetY;
 		float barHeight = (node.computedConstraints.height - node.border.top - node.border.bottom) * (elementHeight / contentHeight);
 		return node.computedConstraints.top + node.computedConstraints.alignmentTop + node.border.top + (childrenRenderOffsetY * ((node.computedConstraints.height - barHeight) / scrollableHeight));
 	}
@@ -87,7 +87,7 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 
 		// determine render offset y
 		float childrenRenderOffsetY =
-			contentNode.getChildrenRenderOffSetY() +
+			contentNode.getChildrenRenderOffsetY() +
 			(draggedY * (scrollableHeight / (node.computedConstraints.height - barHeight)));
 
 		// clip to min, max
@@ -95,7 +95,7 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 		if (childrenRenderOffsetY > scrollableHeight) childrenRenderOffsetY = scrollableHeight;
 
 		// set new children render offset Y
-		contentNode.setChildrenRenderOffSetY(
+		contentNode.setChildrenRenderOffsetY(
 			childrenRenderOffsetY
 		);
 	}

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
-import net.drewke.tdme.math.MathTools;
 
 /**
  * A parent node supporting child notes
@@ -16,10 +16,15 @@ import net.drewke.tdme.math.MathTools;
  */
 public abstract class GUIParentNode extends GUINode {
 
+	enum Overflow {HIDDEN, SCROLL};
+
 	protected ArrayList<GUINode> subNodes;
 
-	protected float childrenRenderOffSetX;
-	protected float childrenRenderOffSetY;
+	protected Overflow overflowX;
+	protected Overflow overflowY;
+
+	protected float childrenRenderOffsetX;
+	protected float childrenRenderOffsetY;
 
 	/**
 	 * Constructor
@@ -27,6 +32,8 @@ public abstract class GUIParentNode extends GUINode {
 	 * @param parent node
 	 * @param id
 	 * @param flow
+	 * @param overflow x
+	 * @param overflow y
 	 * @param alignments
 	 * @param requested constraints
 	 * @oaram background color
@@ -40,6 +47,8 @@ public abstract class GUIParentNode extends GUINode {
 		GUIParentNode parentNode, 
 		String id, 
 		Flow flow,
+		Overflow overflowX,
+		Overflow overflowY,
 		Alignments alignments, 
 		RequestedConstraints requestedConstraints,
 		GUIColor backgroundColor,
@@ -51,8 +60,10 @@ public abstract class GUIParentNode extends GUINode {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.subNodes = new ArrayList<GUINode>();
-		this.childrenRenderOffSetX = 0f;
-		this.childrenRenderOffSetY = 0f;
+		this.overflowX = overflowX;
+		this.overflowY = overflowY;
+		this.childrenRenderOffsetX = 0f;
+		this.childrenRenderOffsetY = 0f;
 	}
 
 	/**
@@ -63,33 +74,56 @@ public abstract class GUIParentNode extends GUINode {
 	}
 
 	/**
+	 * @return overflow x
+	 */
+	public Overflow getOverflowX() {
+		return overflowX;
+	}
+
+	/**
+	 * @return overflow y
+	 */
+	public Overflow getOverflowY() {
+		return overflowY;
+	}
+
+	/**
+	 * Create flow
+	 * @param flow
+	 * @return flow
+	 */
+	public static Overflow createOverflow(String overflow) {
+		return Overflow.valueOf(overflow != null && overflow.length() > 0?overflow.toUpperCase():"HIDDEN");
+	}
+
+	/**
 	 * @return children render offset x
 	 */
-	public float getChildrenRenderOffSetX() {
-		return childrenRenderOffSetX;
+	public float getChildrenRenderOffsetX() {
+		return childrenRenderOffsetX;
 	}
 
 	/**
 	 * Set children render offset x
 	 * @param children render offset x
 	 */
-	public void setChildrenRenderOffSetX(float childrenRenderOffSetX) {
-		this.childrenRenderOffSetX = childrenRenderOffSetX;
+	public void setChildrenRenderOffsetX(float childrenRenderOffSetX) {
+		this.childrenRenderOffsetX = childrenRenderOffSetX;
 	}
 
 	/**
 	 * @return children render offset y
 	 */
-	public float getChildrenRenderOffSetY() {
-		return childrenRenderOffSetY;
+	public float getChildrenRenderOffsetY() {
+		return childrenRenderOffsetY;
 	}
 
 	/**
 	 * Set children render offset y
 	 * @param children render offset y
 	 */
-	public void setChildrenRenderOffSetY(float childrenRenderOffSetY) {
-		this.childrenRenderOffSetY = childrenRenderOffSetY;
+	public void setChildrenRenderOffsetY(float childrenRenderOffSetY) {
+		this.childrenRenderOffsetY = childrenRenderOffSetY;
 	}
 
 	/**
@@ -287,8 +321,8 @@ public abstract class GUIParentNode extends GUINode {
 		float renderOffsetXPixel = 0f;
 		float renderOffsetYPixel = 0f;
 		for (GUIParentNode parentNode = this; parentNode != null; parentNode = parentNode.parentNode) {
-			renderOffsetXPixel+= parentNode.childrenRenderOffSetX;
-			renderOffsetYPixel+= parentNode.childrenRenderOffSetY;
+			renderOffsetXPixel+= parentNode.childrenRenderOffsetX;
+			renderOffsetYPixel+= parentNode.childrenRenderOffsetY;
 		}
 
 		// new render offsets
@@ -361,13 +395,58 @@ public abstract class GUIParentNode extends GUINode {
 	public void handleMouseEvent(GUIMouseEvent event) {
 		// check if conditions were met
 		if (conditionsMet == false) return;
- 
+
+		// mouse wheel event?
+		if (isEventBelongingToNode(event) == true &&
+			event.getType() == Type.MOUSE_WHEEL_MOVED) {
+
+			// check for overflow x
+			if (event.getWheelX() != 0f && overflowX == Overflow.SCROLL) {
+				childrenRenderOffsetX-= event.getWheelX();
+
+				//
+				float elementWidth = this.computedConstraints.width;
+				float contentWidth = this.getContentWidth();
+				float scrollableWidth = contentWidth - elementWidth;
+
+				// clip to min, max
+				if (childrenRenderOffsetX < 0) childrenRenderOffsetX = 0;
+				if (childrenRenderOffsetX > scrollableWidth) childrenRenderOffsetX = scrollableWidth;
+
+				// set event processed
+				event.setProcessed(true);
+
+				// exit
+				return;
+			}
+
+			// check for overflow y
+			if (event.getWheelY() != 0f && overflowY == Overflow.SCROLL) {
+				childrenRenderOffsetY-= event.getWheelY();
+
+				//
+				float elementHeight = this.computedConstraints.height;
+				float contentHeight = this.getContentHeight();
+				float scrollableHeight = contentHeight - elementHeight;
+
+				// clip to min, max
+				if (childrenRenderOffsetY < 0) childrenRenderOffsetY = 0;
+				if (childrenRenderOffsetY > scrollableHeight) childrenRenderOffsetY = scrollableHeight;
+
+				// set event processed
+				event.setProcessed(true);
+
+				// exit
+				return;
+			}
+		}
+
 		int eventX = event.getX();
 		int eventY = event.getY();
 
 		// take render offsets into account
-		event.setX(eventX + (int)childrenRenderOffSetX);
-		event.setY(eventY + (int)childrenRenderOffSetY);
+		event.setX(eventX + (int)childrenRenderOffsetX);
+		event.setY(eventY + (int)childrenRenderOffsetY);
 
 		// delegate event to sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
