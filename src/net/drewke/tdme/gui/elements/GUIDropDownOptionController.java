@@ -53,7 +53,7 @@ public final class GUIDropDownOptionController extends GUINodeController {
 
 		// set text from option to heading text
 		GUITextNode dropDownOptionTextNode = (GUITextNode)node.getScreenNode().getNodeById(node.getId() + "_unselected");
-		GUITextNode dropDownTextNode = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_panel_text");
+		GUITextNode dropDownTextNode = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_text");
 		dropDownTextNode.setText(dropDownOptionTextNode.getText());
 	}
 

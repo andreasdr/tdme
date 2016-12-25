@@ -23,6 +23,8 @@ public final class GUIDropDownController extends GUINodeController {
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 	private ArrayList<GUIDropDownOptionController> dropDownOptionControllers = new ArrayList<GUIDropDownOptionController>();
 	private boolean isOpen = false;
+
+	private GUIParentNode dropDownNode = null;
 	private GUIElementNode arrowNode = null;
 
 	/**
@@ -38,7 +40,8 @@ public final class GUIDropDownController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		arrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_panel_arrow");
+		dropDownNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_layout_horizontal");
+		arrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_arrow");
 		((GUIElementNode)node).getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 		arrowNode.getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 	}
@@ -163,7 +166,7 @@ public final class GUIDropDownController extends GUINodeController {
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		// check if our node was clicked
-		if (node == this.node &&
+		if (node == this.dropDownNode &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			// set event processed
@@ -175,7 +178,7 @@ public final class GUIDropDownController extends GUINodeController {
 				toggleOpenState();
 	
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+				node.getScreenNode().setFoccussedNode((GUIElementNode)this.node);
 			}
 		}
 	}
@@ -258,9 +261,11 @@ public final class GUIDropDownController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#onFocusLost()
 	 */
 	public void onFocusLost() {
+		/*
 		if (isOpen() == true) {
 			toggleOpenState();
 		}
+		*/
 	}
 
 	/*
