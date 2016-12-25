@@ -74,7 +74,16 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		dropDownNode = ((GUIParentNode)node).getParentControllerNode();
+		// determine drop down node
+		dropDownNode = node.getParentControllerNode();
+		while(true == true) {
+			dropDownNode = dropDownNode.getParentControllerNode();
+			if (dropDownNode.getController() instanceof GUIDropDownController) {
+				break;
+			}
+		}
+
+		// init state
 		if (selected == true) {
 			select();
 		} else {
