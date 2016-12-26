@@ -160,6 +160,15 @@ public final class Vector2 {
 	}
 
 	/**
+	 * @return the vectors length
+	 */
+	public float computeLength() {
+		return (float)Math.sqrt(
+			(data[0] * data[0]) + (data[1] * data[1])
+		);
+	}
+
+	/**
 	 * @return vector as array
 	 */
 	public float[] getArray() {
