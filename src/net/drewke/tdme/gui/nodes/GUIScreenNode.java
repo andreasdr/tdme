@@ -8,7 +8,6 @@ import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
-import net.drewke.tdme.gui.nodes.GUIParentNode.Overflow;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
 

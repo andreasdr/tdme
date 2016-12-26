@@ -7,7 +7,6 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
-import net.drewke.tdme.gui.nodes.GUIParentNode;
 
 /**
  * GUI select box option controller
@@ -106,9 +105,12 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 
 			// check if mouse released
 			if (event.getType() == Type.MOUSE_PRESSED) {
-				//
+				// unselect all options, select this option 
 				((GUISelectBoxController)selectBoxNode.getController()).unselect();
 				select();
+
+				// set focussed node
+				node.getScreenNode().setFoccussedNode((GUIElementNode)selectBoxNode);
 
 				// delegate change event
 				node.getScreenNode().delegateValueChanged((GUIElementNode)selectBoxNode);
