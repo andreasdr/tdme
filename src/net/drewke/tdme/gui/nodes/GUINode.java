@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
+import net.drewke.tdme.gui.nodes.GUIParentNode.Overflow;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
@@ -955,6 +956,62 @@ public abstract class GUINode {
 	 */
 	public void setController(GUINodeController controller) {
 		this.controller = controller;
+	}
+
+	/**
+	 * Scroll to node Y
+	 */
+	public void scrollToNodeY() {
+		// find parent
+		GUIParentNode scrollYParentNode = this.parentNode;
+		while (true == true) {
+			if (scrollYParentNode.overflowY == Overflow.SCROLL) {
+				break;
+			}
+			scrollYParentNode = scrollYParentNode.parentNode;
+			if (scrollYParentNode == null) return;
+		}
+
+		// check if above viewport 
+		if (computedConstraints.top < scrollYParentNode.childrenRenderOffsetY + scrollYParentNode.computedConstraints.top) {
+			scrollYParentNode.childrenRenderOffsetY = computedConstraints.top - scrollYParentNode.computedConstraints.top;
+		}
+
+		// check if below viewport 
+		if (computedConstraints.top + computedConstraints.height > scrollYParentNode.childrenRenderOffsetY + scrollYParentNode.computedConstraints.top + scrollYParentNode.computedConstraints.height) {
+			scrollYParentNode.childrenRenderOffsetY = computedConstraints.top + computedConstraints.height - scrollYParentNode.computedConstraints.top - scrollYParentNode.computedConstraints.height;
+		}
+
+		// scoll parent node into view
+		scrollYParentNode.scrollToNodeY();
+	}
+
+	/**
+	 * Scroll to node X
+	 */
+	public void scrollToNodeX() {
+		// find parent
+		GUIParentNode scrollXParentNode = this.parentNode;
+		while (true == true) {
+			if (scrollXParentNode.overflowX == Overflow.SCROLL) {
+				break;
+			}
+			scrollXParentNode = scrollXParentNode.parentNode;
+			if (scrollXParentNode == null) return;
+		}
+
+		// check if left of viewport 
+		if (computedConstraints.left < scrollXParentNode.childrenRenderOffsetX + scrollXParentNode.computedConstraints.left) {
+			scrollXParentNode.childrenRenderOffsetX = computedConstraints.left - scrollXParentNode.computedConstraints.left;
+		}
+
+		// check if right of viewport 
+		if (computedConstraints.left + computedConstraints.width > scrollXParentNode.childrenRenderOffsetX + scrollXParentNode.computedConstraints.left + scrollXParentNode.computedConstraints.width) {
+			scrollXParentNode.childrenRenderOffsetX = computedConstraints.left + computedConstraints.width - scrollXParentNode.computedConstraints.left - scrollXParentNode.computedConstraints.width;
+		}
+
+		// scoll parent node into view
+		scrollXParentNode.scrollToNodeX();
 	}
 
 	/**

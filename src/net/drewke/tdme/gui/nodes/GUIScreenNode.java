@@ -357,6 +357,10 @@ public final class GUIScreenNode extends GUIParentNode {
 	
 			// focus current focussed element
 			focusNode();
+
+			// scroll to node
+			focussedNode.scrollToNodeX();
+			focussedNode.scrollToNodeY();
 		}
 	}
 
@@ -387,6 +391,10 @@ public final class GUIScreenNode extends GUIParentNode {
 	
 			// focus current focussed element
 			focusNode();
+
+			// scroll to node
+			focussedNode.scrollToNodeX();
+			focussedNode.scrollToNodeY();
 		}
 	}
 

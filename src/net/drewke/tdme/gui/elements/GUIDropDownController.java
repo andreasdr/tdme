@@ -137,6 +137,8 @@ public final class GUIDropDownController extends GUINodeController {
 
 		// select
 		dropDownOptionControllers.get(selectBoxOptionControllerIdx).select();
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
 	}
 
 	/**
@@ -158,6 +160,8 @@ public final class GUIDropDownController extends GUINodeController {
 
 		// select
 		dropDownOptionControllers.get(selectBoxOptionControllerIdx).select();
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
 	}
 
 	/*

@@ -107,6 +107,8 @@ public final class GUISelectBoxController extends GUINodeController {
 
 		// select
 		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).select();
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
 	}
 
 	/**
@@ -128,6 +130,8 @@ public final class GUISelectBoxController extends GUINodeController {
 
 		// select
 		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).select();
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
 	}
 
 	/*
