@@ -121,14 +121,14 @@
 								<scrollarea-vertical id="sadd" width="100%" height="80">
 									<dropdown-option text="Option A" value="1" />
 									<dropdown-option text="Option B" value="2" />
-									<dropdown-option text="Option C" value="3" selected="true" />
+									<dropdown-option text="Option C" value="3"/>
 									<dropdown-option text="Option D" value="4" />
 									<dropdown-option text="Option E" value="5" />
 									<dropdown-option text="Option F" value="6" />
 									<dropdown-option text="Option G" value="7" />
 									<dropdown-option text="Option H" value="8" />
 									<dropdown-option text="Option I" value="9" />
-									<dropdown-option text="Option J" value="10" />
+									<dropdown-option text="Option J" value="10" selected="true" />
 									<dropdown-option text="Option K" value="11" />
 									<dropdown-option text="Option L" value="12" />
 									<dropdown-option text="Option M" value="13" />
