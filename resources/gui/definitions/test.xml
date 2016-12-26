@@ -1,5 +1,5 @@
 <screen id="test" background-color="#202020">
-	<panel border="1" border-color="#ffffff" left="5%" top="5%" width="90%" height="90%" alignment="vertical"
+	<panel border="1" border-color="#404040" left="5%" top="5%" width="90%" height="90%" alignment="vertical"
 		background-color="#808080" horizontal-align="center"> 
 		<space height="5%" />
 		<panel width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">

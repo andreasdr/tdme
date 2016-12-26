@@ -2,8 +2,8 @@
 	<layout id="{$id}_scrollarea_content_layout" horizontal-align="{$horizontal-align}" vertical-align="{$vertical-align}" alignment="{$alignment}" overflow-x="scroll" width="100%" height="*">
 		{$innerXml}
 	</layout>
-	<layout id="{$id}_scrollbar_horizontal_layout" border="1" border-color="#8080A0" alignment="horizontal" width="100%" height="auto" background-color="white">
-		<element id="{$id}_scrollbar_horizontal_layout_left" width="22" height="22" horizontal-align="center" vertical-align="center" focusable="true">
+	<layout id="{$id}_scrollbar_horizontal_layout" alignment="horizontal" width="100%" height="auto" background-color="white">
+		<element id="{$id}_scrollbar_horizontal_layout_left" border="1" border-color="#8080A0" width="24" height="24" horizontal-align="center" vertical-align="center" focusable="true">
 			<!-- no mouse over -->
 			<image effect-color-mul="#8080A0" hide-on="focus,mouseover" src="resources/gui/images/elements/scrollarea/arrow-left.png" horizontal-align="center" vertical-align="center" />
 			<!-- mouse over -->
@@ -13,8 +13,8 @@
 			<!-- click -->
 			<image effect-color-mul="#FF8080" show-on="click" src="resources/gui/images/elements/scrollarea/arrow-left.png" horizontal-align="center" vertical-align="center" />
 		</element>
-		<horizontal-scrollbar-internal id="{$id}_scrollbar_horizontal_layout_bar" width="*" height="100%" color-none="#8080A0" color-mouseover="#8080FF" color-dragging="#FF8080" />
-		<element id="{$id}_scrollbar_horizontal_layout_right" width="22" height="22" horizontal-align="center" vertical-align="center" focusable="true">
+		<horizontal-scrollbar-internal id="{$id}_scrollbar_horizontal_layout_bar" border-top="1" border-bottom="1" border-color="#8080A0" width="*" height="100%" color-none="#8080A0" color-mouseover="#8080FF" color-dragging="#FF8080" />
+		<element id="{$id}_scrollbar_horizontal_layout_right" border="1" border-color="#8080A0" width="24" height="24" horizontal-align="center" vertical-align="center" focusable="true">
 			<!-- no mouse over -->
 			<image effect-color-mul="#8080A0" hide-on="focus,mouseover" src="resources/gui/images/elements/scrollarea/arrow-right.png" horizontal-align="center" vertical-align="center" />
 			<!-- mouse over -->

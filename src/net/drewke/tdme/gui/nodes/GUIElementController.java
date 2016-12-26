@@ -50,20 +50,19 @@ public class GUIElementController extends GUINodeController {
 			event.setProcessed(true);
 
 			// check if performing
-			if (event.getType() == Type.MOUSE_PRESSED ||
-				event.getType() == Type.MOUSE_DRAGGED) {
+			if (event.getType() == Type.MOUSE_PRESSED) {
+				isActionPerforming = true;
+
+				// set focussed node
+				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+			} else
+			if (event.getType() == Type.MOUSE_DRAGGED) {
 				isActionPerforming = true;
 			} else
 			// check if mouse released
 			if (event.getType() == Type.MOUSE_RELEASED) {
 				//
 				isActionPerforming = false;
-
-				// delegate action performed
-				node.getScreenNode().delegateActionPerformed(GUIActionListener.Type.PERFORMED, (GUIElementNode)node);
-
-				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
 			}
 		} else {
 			// no anymore performing
