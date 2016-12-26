@@ -63,6 +63,9 @@ public class GUIElementController extends GUINodeController {
 			if (event.getType() == Type.MOUSE_RELEASED) {
 				//
 				isActionPerforming = false;
+
+				// delegate action performed
+				node.getScreenNode().delegateActionPerformed(GUIActionListener.Type.PERFORMED, (GUIElementNode)node);
 			}
 		} else {
 			// no anymore performing
