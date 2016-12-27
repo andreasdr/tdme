@@ -859,17 +859,75 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * @return compute parent children render offset X total
+	 */
+	protected float computeParentChildrenRenderOffsetXTotal() {
+		float childrenRenderOffSetX = 0f;
+
+		// take parent nodes into account
+		GUIParentNode parentNode = this.parentNode;
+		while (parentNode != null) {
+			childrenRenderOffSetX+= parentNode.childrenRenderOffsetX;
+			parentNode = parentNode.parentNode;
+		}
+
+		//
+		return childrenRenderOffSetX;
+	}
+
+	/**
+	 * @return compute children render offset Y total
+	 */
+	protected float computeParentChildrenRenderOffsetYTotal() {
+		float childrenRenderOffSetY = 0f;
+
+		// take parent nodes into account
+		GUIParentNode parentNode = this.parentNode;
+		while (parentNode != null) {
+			childrenRenderOffSetY+= parentNode.childrenRenderOffsetY;
+			parentNode = parentNode.parentNode;
+		}
+
+		//
+		return childrenRenderOffSetY;
+	}
+
+	/**
 	 * Is event belonging to node
 	 * @param event
 	 * @return boolean
 	 */
 	public boolean isEventBelongingToNode(GUIMouseEvent event) {
-		int eventX = event.getX();
-		int eventY = event.getY();
+		int eventXScreen = event.getX();
+		int eventYScreen = event.getY();
+
+		// check parent nodes
+		GUIParentNode parentNode = this.parentNode;
+		while (parentNode != null) {
+			// floating nodes have no parent nodes to check 
+			if (parentNode.flow == Flow.FLOATING) break;
+
+			// take parent children render offset into account
+			float eventX = eventXScreen + parentNode.computeParentChildrenRenderOffsetXTotal();
+			float eventY = eventYScreen + parentNode.computeParentChildrenRenderOffsetYTotal();
+			if ((eventX >= parentNode.computedConstraints.left + parentNode.computedConstraints.alignmentLeft &&
+				eventX < parentNode.computedConstraints.left + parentNode.computedConstraints.alignmentLeft + parentNode.computedConstraints.width &&
+				eventY >= parentNode.computedConstraints.top + parentNode.computedConstraints.alignmentTop && 
+				eventY < parentNode.computedConstraints.top + parentNode.computedConstraints.alignmentTop + parentNode.computedConstraints.height) == false) {
+				//
+				return false;
+			}
+			parentNode = parentNode.parentNode;
+		}
+
+		// take parent children render offset into account
+		float eventX = eventXScreen + computeParentChildrenRenderOffsetXTotal();
+		float eventY = eventYScreen + computeParentChildrenRenderOffsetYTotal();
+
+		// check node
 		return
 			eventX >= computedConstraints.left + computedConstraints.alignmentLeft && eventX < computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
 			eventY >= computedConstraints.top + computedConstraints.alignmentTop && eventY < computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
-
 	}
 
 	/**

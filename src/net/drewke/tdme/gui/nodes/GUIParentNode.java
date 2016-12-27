@@ -441,13 +441,6 @@ public abstract class GUIParentNode extends GUINode {
 			}
 		}
 
-		int eventX = event.getX();
-		int eventY = event.getY();
-
-		// take render offsets into account
-		event.setX(eventX + (int)childrenRenderOffsetX);
-		event.setY(eventY + (int)childrenRenderOffsetY);
-
 		// delegate event to sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode subNode = subNodes.get(i);
@@ -456,10 +449,6 @@ public abstract class GUIParentNode extends GUINode {
 
 		//
 		super.handleMouseEvent(event);
-
-		// reset event x, y
-		event.setX(eventX);
-		event.setY(eventY);
 	}
 
 	/*
