@@ -126,6 +126,10 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 
 				// delegate change event
 				node.getScreenNode().delegateValueChanged((GUIElementNode)selectBoxNode);
+
+				//
+				node.scrollToNodeX();
+				node.scrollToNodeY();
 			}
 		}
 	}

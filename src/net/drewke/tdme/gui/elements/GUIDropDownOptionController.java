@@ -130,6 +130,10 @@ public final class GUIDropDownOptionController extends GUINodeController {
 
 				// delegate change event
 				node.getScreenNode().delegateValueChanged((GUIElementNode)dropDownNode);
+
+				//
+				node.scrollToNodeX();
+				node.scrollToNodeY();
 			}
 		}
 	}
