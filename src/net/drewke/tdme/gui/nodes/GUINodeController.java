@@ -38,6 +38,11 @@ public abstract class GUINodeController {
 	public abstract void dispose();
 
 	/**
+	 * Post layout event
+	 */
+	public abstract void postLayout();
+
+	/**
 	 * Handle mouse event
 	 * @param node
 	 * @param event

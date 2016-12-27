@@ -73,6 +73,15 @@ public class GUIScrollAreaHorizontalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#dispose()
 	 */
 	public void dispose() {
+		// no op
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#postLayout()
+	 */
+	public void postLayout() {
+		// no op
 	}
 
 	/*

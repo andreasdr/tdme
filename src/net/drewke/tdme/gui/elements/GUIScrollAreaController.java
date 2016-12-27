@@ -109,6 +109,14 @@ public class GUIScrollAreaController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#postLayout()
+	 */
+	public void postLayout() {
+		// no op
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {

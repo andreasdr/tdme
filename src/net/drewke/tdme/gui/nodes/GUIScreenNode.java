@@ -134,6 +134,18 @@ public final class GUIScreenNode extends GUIParentNode {
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).layout();
 		}
+
+		// determine screen child controller nodes
+		getChildControllerNodes(childControllerNodes);
+
+		// call controller.postLayout()
+		for (int i = 0; i < childControllerNodes.size(); i++) {
+			GUINode node = childControllerNodes.get(i);
+			GUINodeController controller = node.getController();
+			if (controller != null) {
+				controller.postLayout();
+			}
+		}
 	}
 
 	/**

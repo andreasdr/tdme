@@ -93,6 +93,17 @@ public final class GUIDropDownOptionController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#postLayout()
+	 */
+	public void postLayout() {
+		if (selected == true) {
+			node.scrollToNodeX();
+			node.scrollToNodeY();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#dispose()
 	 */
 	public void dispose() {

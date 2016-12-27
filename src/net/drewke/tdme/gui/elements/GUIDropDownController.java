@@ -53,6 +53,14 @@ public final class GUIDropDownController extends GUINodeController {
 	public void dispose() {
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#postLayout()
+	 */
+	public void postLayout() {
+		// no op
+	}
+
 	/**
 	 * @return drop down open state
 	 */
