@@ -982,7 +982,7 @@ public abstract class GUINode {
 			scrollYParentNode.childrenRenderOffsetY = computedConstraints.top + computedConstraints.height - scrollYParentNode.computedConstraints.top - scrollYParentNode.computedConstraints.height;
 		}
 
-		// scoll parent node into view
+		// scroll parent node into view
 		scrollYParentNode.scrollToNodeY();
 	}
 
@@ -1010,7 +1010,7 @@ public abstract class GUINode {
 			scrollXParentNode.childrenRenderOffsetX = computedConstraints.left + computedConstraints.width - scrollXParentNode.computedConstraints.left - scrollXParentNode.computedConstraints.width;
 		}
 
-		// scoll parent node into view
+		// scroll parent node into view
 		scrollXParentNode.scrollToNodeX();
 	}
 
