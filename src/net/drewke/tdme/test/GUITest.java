@@ -69,12 +69,12 @@ public class GUITest implements GLEventListener, WindowListener {
 	
 						// test set values
 						values.clear();
-						values.put("select", "8"); 
+						values.put("select", "8");
 						values.put("input", "Enter some more text here!"); 
 						values.put("checkbox1", "1"); 
 						values.put("checkbox2", "1"); 
 						values.put("checkbox3", "1"); 
-						values.put("dropdown", "11"); 
+						values.put("dropdown", "11");
 						values.put("radio", "3");
 						node.getScreenNode().setValues(values);
 	
