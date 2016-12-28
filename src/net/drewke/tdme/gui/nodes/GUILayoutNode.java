@@ -189,15 +189,31 @@ public class GUILayoutNode extends GUIParentNode {
 							finalNodesHeight+= guiSubNode.computedConstraints.height;
 						}
 					}
+
 					// set vertical stars
+					float verticalStarPixelRest = 0f;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
-							guiSubNode.computedConstraints.height = (height - nodesHeight) / starCount;
+							// node star height as float
+							float nodeStarHeight = ((float)height - (float)nodesHeight) / (float)starCount;
+							// as int
+							int nodeStarHeightInt = (int)nodeStarHeight;
+							// save remaining pixel
+							verticalStarPixelRest+= nodeStarHeight - nodeStarHeightInt;
+							// if remaining pixel > 1 take into account for this node
+							if ((int)verticalStarPixelRest > 0) {
+								nodeStarHeightInt+= (int)verticalStarPixelRest;
+								verticalStarPixelRest-= (int)verticalStarPixelRest;
+							}
+
+							// set up height
+							guiSubNode.computedConstraints.height = nodeStarHeightInt;
 							if (guiSubNode.computedConstraints.height < 0) {
 								guiSubNode.computedConstraints.height = 0;
 							}
 							finalNodesHeight+= guiSubNode.computedConstraints.height;
+
 							// layout sub node, sub nodes, second pass
 							if (guiSubNode instanceof GUIParentNode) {
 								((GUIParentNode)guiSubNode).layoutSubNodes();
@@ -255,15 +271,31 @@ public class GUILayoutNode extends GUIParentNode {
 							finalNodesWidth+= guiSubNode.computedConstraints.width;
 						}
 					}
+
 					// set horizontal stars
+					float horizontalStarPixelRest = 0f;
 					for (int i = 0; i < subNodes.size(); i++) {
 						GUINode guiSubNode = subNodes.get(i);
 						if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
-							guiSubNode.computedConstraints.width = (width - nodesWidth) / starCount;
+							// node star width as float
+							float nodeStarWidth = ((float)width - (float)nodesWidth) / (float)starCount;
+							// as int
+							int nodeStarWidthInt = (int)nodeStarWidth;
+							// save remaining pixel
+							horizontalStarPixelRest+= nodeStarWidth - nodeStarWidthInt;
+							// if remaining pixel > 1 take into account for this node
+							if ((int)horizontalStarPixelRest > 0) {
+								nodeStarWidthInt+= (int)horizontalStarPixelRest;
+								horizontalStarPixelRest-= (int)horizontalStarPixelRest;
+							}
+
+							// set up width
+							guiSubNode.computedConstraints.width = nodeStarWidthInt;
 							if (guiSubNode.computedConstraints.width < 0) {
 								guiSubNode.computedConstraints.width = 0;
 							}
 							finalNodesWidth+= guiSubNode.computedConstraints.width;
+
 							// layout sub node sub nodes, second pass
 							if (guiSubNode instanceof GUIParentNode) {
 								((GUIParentNode)guiSubNode).layoutSubNodes();
