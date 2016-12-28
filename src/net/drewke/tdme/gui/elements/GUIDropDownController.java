@@ -322,8 +322,11 @@ public final class GUIDropDownController extends GUINodeController {
 		// determine new selection
 		for (int i = 0; i < dropDownOptionControllers.size(); i++) {
 			GUIDropDownOptionController dropDownOptionController = dropDownOptionControllers.get(i);
-			if (((GUIElementNode)dropDownOptionController.getNode()).getValue().equals(value)) {
+			GUIElementNode dropDownOptionNode = ((GUIElementNode)dropDownOptionController.getNode());
+			if (dropDownOptionNode.getValue().equals(value)) {
 				dropDownOptionController.select();
+				dropDownOptionNode.scrollToNodeX();
+				dropDownOptionNode.scrollToNodeY();
 				break;
 			}
 		}

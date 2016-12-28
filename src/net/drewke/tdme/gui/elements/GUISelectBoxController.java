@@ -254,8 +254,11 @@ public final class GUISelectBoxController extends GUINodeController {
 		// determine new selection
 		for (int i = 0; i < selectBoxOptionControllers.size(); i++) {
 			GUISelectBoxOptionController selectBoxOptionController = selectBoxOptionControllers.get(i);
-			if (((GUIElementNode)selectBoxOptionController.getNode()).getValue().equals(value)) {
+			GUIElementNode selectBoxOptionNode = (GUIElementNode)selectBoxOptionController.getNode();
+			if (selectBoxOptionNode.getValue().equals(value)) {
 				selectBoxOptionController.select();
+				selectBoxOptionNode.scrollToNodeX();
+				selectBoxOptionNode.scrollToNodeY();
 				break;
 			}
 		}
