@@ -110,9 +110,9 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 						</element>
 						<space height="*" />
-						<button id="test_text_button" name="button" text="Test text button" />
+						<button id="test_text_button" name="button" text="Test get/setValues()" />
 						<space height="*" />
-						<button id="test_text_button2" name="button2" text="Test text button 2" />
+						<button id="test_text_button2" name="button2" text="Test manipulating GUI" />
 						<space height="*" />
 					</panel>
 				</tab-content>

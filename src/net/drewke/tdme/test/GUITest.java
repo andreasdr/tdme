@@ -126,6 +126,9 @@ public class GUITest implements GLEventListener, WindowListener {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+
+						// test GUI tab controller select tab method
+						((GUITabController)node.getScreenNode().getNodeById("tab2").getController()).selectTab();
 					}
 				}
 			});
