@@ -58,7 +58,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			engine.getGUI().getScreen("test").setScreenSize(640, 480);
 			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
 				public void onActionPerformed(GUIActionListener.Type type, GUIElementNode node) {
-					// check if button pressed
+					// check if button 1 is pressed
 					if (type == Type.PERFORMED && node.getName().equals("button")) {
 						// action performed
 						System.out.println(node.getId() + ".actionPerformed()");
@@ -82,30 +82,47 @@ public class GUITest implements GLEventListener, WindowListener {
 						// test GUI tab controller select tab method
 						((GUITabController)node.getScreenNode().getNodeById("tab1").getController()).selectTab();
 					} else
-					// check if button pressed
+					// check if button 2 is pressed
 					if (type == Type.PERFORMED && node.getName().equals("button2")) {
 						try {
-							GUIParentNode parentNode = (GUIParentNode)(node.getScreenNode().getNodeById("dropdown_panel"));
-							parentNode.clearSubNodes();
-							GUIParser.parse(
-								parentNode, 
-								"<dropdown name=\"dropdown\" text=\"Click me and select a drop down option\">" +
-								"	<scrollarea-vertical id=\"sadd\" width=\"100%\" height=\"80\">" +
-								"		<dropdown-option text=\"Option 1\" value=\"1\" />" +
-								"		<dropdown-option text=\"Option 2\" value=\"2\" />" +
-								"		<dropdown-option text=\"Option 3\" value=\"3\" />" +
-								"		<dropdown-option text=\"Option 4\" value=\"4\" />" +
-								"		<dropdown-option text=\"Option 5\" value=\"5\" />" +
-								"		<dropdown-option text=\"Option 6\" value=\"6\" />" +
-								"		<dropdown-option text=\"Option 7\" value=\"7\" />" +
-								"		<dropdown-option text=\"Option 8\" value=\"8\" selected=\"true\" />" +
-								"		<dropdown-option text=\"Option 9\" value=\"9\" />" +
-								"		<dropdown-option text=\"Option 10\" value=\"10\" />" +
-								"	</scrollarea-vertical>" +
-								"</dropdown>"
-							);
-							parentNode.getScreenNode().layout();
-							System.out.println(parentNode.toString());
+							{
+								GUIParentNode parentNode = (GUIParentNode)(node.getScreenNode().getNodeById("sadd_inner"));
+								parentNode.clearSubNodes();
+								GUIParser.parse(
+									parentNode, 
+									"<dropdown-option text=\"Option 1\" value=\"1\" />" +
+									"<dropdown-option text=\"Option 2\" value=\"2\" />" +
+									"<dropdown-option text=\"Option 3\" value=\"3\" />" +
+									"<dropdown-option text=\"Option 4\" value=\"4\" />" +
+									"<dropdown-option text=\"Option 5\" value=\"5\" />" +
+									"<dropdown-option text=\"Option 6\" value=\"6\" />" +
+									"<dropdown-option text=\"Option 7\" value=\"7\" />" +
+									"<dropdown-option text=\"Option 8\" value=\"8\" selected=\"true\" />" +
+									"<dropdown-option text=\"Option 9\" value=\"9\" />" +
+									"<dropdown-option text=\"Option 10\" value=\"10\" />"
+								);
+								parentNode.getScreenNode().layout();
+							}
+
+							{
+								//
+								GUIParentNode parentNode = (GUIParentNode)(node.getScreenNode().getNodeById("sasb_inner"));
+								parentNode.clearSubNodes();
+								GUIParser.parse(
+									parentNode, 
+									"<selectbox-option text=\"Option 1\" value=\"1\" />" +
+									"<selectbox-option text=\"Option 2\" value=\"2\" />" +
+									"<selectbox-option text=\"Option 3\" value=\"3\" />" +
+									"<selectbox-option text=\"Option 4\" value=\"4\" selected=\"true\" />" +
+									"<selectbox-option text=\"Option 5\" value=\"5\" />" +
+									"<selectbox-option text=\"Option 6\" value=\"6\" />" +
+									"<selectbox-option text=\"Option 7\" value=\"7\" />" +
+									"<selectbox-option text=\"Option 8\" value=\"8\" />" +
+									"<selectbox-option text=\"Option 9\" value=\"9\" />" +
+									"<selectbox-option text=\"Option 10\" value=\"10\" />"
+								);
+								parentNode.getScreenNode().layout();
+							}
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

@@ -23,7 +23,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 	 */
 	protected GUIHorizontalScrollbarInternalController(GUINode node) {
 		super(node);
-		this.contentNode = (GUILayoutNode)node.getScreenNode().getNodeById(node.getParentControllerNode().id + "_scrollarea_content_layout");
+		this.contentNode = (GUILayoutNode)node.getScreenNode().getNodeById(node.getParentControllerNode().id + "_inner");
 	}
 
 	/*
