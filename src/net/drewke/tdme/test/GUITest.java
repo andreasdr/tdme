@@ -9,6 +9,7 @@ import net.drewke.tdme.gui.elements.GUITabController;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.utils.HashMap;
 
 import com.jogamp.newt.event.WindowEvent;
@@ -80,6 +81,34 @@ public class GUITest implements GLEventListener, WindowListener {
 	
 						// test GUI tab controller select tab method
 						((GUITabController)node.getScreenNode().getNodeById("tab1").getController()).selectTab();
+					} else
+					// check if button pressed
+					if (type == Type.PERFORMED && node.getName().equals("button2")) {
+						try {
+							GUIParentNode parentNode = (GUIParentNode)(node.getScreenNode().getNodeById("dropdown_panel"));
+							parentNode.clearSubNodes();
+							GUIParser.parse(
+								parentNode, 
+								"<dropdown name=\"dropdown\" text=\"Click me and select a drop down option\">" +
+								"	<scrollarea-vertical id=\"sadd\" width=\"100%\" height=\"80\">" +
+								"		<dropdown-option text=\"Option 1\" value=\"1\" />" +
+								"		<dropdown-option text=\"Option 2\" value=\"2\" />" +
+								"		<dropdown-option text=\"Option 3\" value=\"3\" />" +
+								"		<dropdown-option text=\"Option 4\" value=\"4\" />" +
+								"		<dropdown-option text=\"Option 5\" value=\"5\" />" +
+								"		<dropdown-option text=\"Option 6\" value=\"6\" />" +
+								"		<dropdown-option text=\"Option 7\" value=\"7\" />" +
+								"		<dropdown-option text=\"Option 8\" value=\"8\" selected=\"true\" />" +
+								"		<dropdown-option text=\"Option 9\" value=\"9\" />" +
+								"		<dropdown-option text=\"Option 10\" value=\"10\" />" +
+								"	</scrollarea-vertical>" +
+								"</dropdown>"
+							);
+							parentNode.getScreenNode().layout();
+							System.out.println(parentNode.toString());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			});

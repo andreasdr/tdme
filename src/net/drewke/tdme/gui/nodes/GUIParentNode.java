@@ -67,10 +67,28 @@ public abstract class GUIParentNode extends GUINode {
 	}
 
 	/**
-	 * @return sub nodes
+	 * Clear sub nodes
 	 */
-	public ArrayList<GUINode> getSubNodes() {
-		return subNodes;
+	public void clearSubNodes() {
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode node = subNodes.get(i);
+			screenNode.removeNode(node);
+			if (node instanceof GUIParentNode) {
+				((GUIParentNode)node).clearSubNodes();
+			}
+		}
+		subNodes.clear();
+	}
+
+	/**
+	 * Add sub node
+	 * @param node
+	 */
+	public void addSubNode(GUINode node) throws GUIParserException {
+		if (screenNode.addNode(node) == false) {
+			throw new GUIParserException("Screen '" + screenNode.id + "' already has a node attached with given node id '" + node.id + "'");
+		}
+		subNodes.add(node);
 	}
 
 	/**

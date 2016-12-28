@@ -196,7 +196,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param node
 	 * @return success
 	 */
-	public boolean addNode(GUINode node) {
+	protected boolean addNode(GUINode node) {
 		// having a node without a ID is valid, this node will not be added
 		if (node.id.length() == 0) {
 			node.id = allocateNodeId();
@@ -209,6 +209,16 @@ public final class GUIScreenNode extends GUIParentNode {
 
 		// nope, add node
 		nodesById.put(node.id, node);
+		return true;
+	}
+
+	/**
+	 * Add node
+	 * @param node
+	 * @return success
+	 */
+	protected boolean removeNode(GUINode node) {
+		nodesById.remove(node.id);
 		return true;
 	}
 

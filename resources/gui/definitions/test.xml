@@ -112,11 +112,13 @@
 						<space height="*" />
 						<button id="test_text_button" name="button" text="Test text button" />
 						<space height="*" />
+						<button id="test_text_button2" name="button2" text="Test text button 2" />
+						<space height="*" />
 					</panel>
 				</tab-content>
 				<tab-content tab-id="tab4" vertical-align="top">
 					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
-						<panel horizontal-align="center" alignment="vertical" width="80%">
+						<panel id="dropdown_panel" horizontal-align="center" alignment="vertical" width="80%">
 							<dropdown name="dropdown" text="Click me and select a drop down option">
 								<scrollarea-vertical id="sadd" width="100%" height="80">
 									<dropdown-option text="Option A" value="1" />
