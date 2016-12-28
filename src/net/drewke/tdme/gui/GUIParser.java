@@ -60,9 +60,9 @@ public final class GUIParser {
 
 	/**
 	 * Parses a GUI XML file
-	 * @param pathName
-	 * @param fileName
-	 * @return Model instance
+	 * @param path name
+	 * @param file name
+	 * @return GUI screen node
 	 * @throws IOException
 	 */
 	public static GUIScreenNode parse(String pathName, String fileName) throws Exception {
@@ -76,8 +76,7 @@ public final class GUIParser {
 		if (xmlRoot.getNodeName().equals("screen") == false) {
 			throw new GUIParserException("XML root node must be <screen>");
 		}
-		guiScreenNode = new GUIScreenNode(
-			null, 
+		guiScreenNode = new GUIScreenNode( 
 			xmlRoot.getAttribute("id"),
 			GUINode.createFlow(xmlRoot.getAttribute("flow")),
 			GUIParentNode.createOverflow(xmlRoot.getAttribute("overflow-x")),
@@ -118,18 +117,20 @@ public final class GUIParser {
 		);
 
 		// parse GUI nodes
-		parseGUINode(guiScreenNode, guiScreenNode, xmlRoot, null);
+		parseGUINode(guiScreenNode, xmlRoot, null);
 
 		//
 		return guiScreenNode;
 	}
 
 	/**
-	 * Parse node
+	 * Parse GUI node
 	 * @param gui parent node
 	 * @param xml parent node
+	 * @param gui element
+	 * @throws Exception
 	 */
-	private static void parseGUINode(GUIScreenNode guiScreenNode, GUIParentNode guiParentNode, Element xmlParentNode, GUIElement guiElement) throws Exception {
+	private static void parseGUINode(GUIParentNode guiParentNode, Element xmlParentNode, GUIElement guiElement) throws Exception {
 		//
 		GUINodeController guiElementController = null;
 		boolean guiElementControllerInstalled = false;
@@ -138,7 +139,7 @@ public final class GUIParser {
 			if (node.getNodeName().equals("layout")) {
 				// TODO: validate root node
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"),
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -179,8 +180,8 @@ public final class GUIParser {
 					GUILayoutNode.createAlignment(node.getAttribute("alignment"))
 				);
 				guiParentNode.getSubNodes().add(guiLayoutNode);
-				if (guiScreenNode.addNode(guiLayoutNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiLayoutNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiLayoutNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiLayoutNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -188,12 +189,12 @@ public final class GUIParser {
 					guiElementControllerInstalled = true;
 				}
 				// parse child nodes
-				parseGUINode(guiScreenNode, guiLayoutNode, node, null);	
+				parseGUINode(guiLayoutNode, node, null);
 			} else
 			if (node.getNodeName().equals("space")) {
 				// TODO: validate root node
 				GUISpaceNode guiSpaceNode = new GUISpaceNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"),
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -231,8 +232,8 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on"))
 				);
 				guiParentNode.getSubNodes().add(guiSpaceNode);
-				if (guiScreenNode.addNode(guiSpaceNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiSpaceNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiSpaceNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiSpaceNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -243,7 +244,7 @@ public final class GUIParser {
 			if (node.getNodeName().equals("panel")) {
 				// TODO: validate root node
 				GUIPanelNode guiPanelNode = new GUIPanelNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -284,8 +285,8 @@ public final class GUIParser {
 					GUILayoutNode.createAlignment(node.getAttribute("alignment"))
 				);
 				guiParentNode.getSubNodes().add(guiPanelNode);
-				if (guiScreenNode.addNode(guiPanelNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiPanelNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiPanelNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiPanelNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -293,12 +294,12 @@ public final class GUIParser {
 					guiElementControllerInstalled = true;
 				}
 				// parse child nodes
-				parseGUINode(guiScreenNode, guiPanelNode, node, null);	
+				parseGUINode(guiPanelNode, node, null);
 			} else
 			if (node.getNodeName().equals("element")) {
 				// TODO: validate root node
 				GUIElementNode guiElementNode = new GUIElementNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -342,8 +343,8 @@ public final class GUIParser {
 					node.getAttribute("focusable").trim().equalsIgnoreCase("true")
 				);
 				guiParentNode.getSubNodes().add(guiElementNode);
-				if (guiScreenNode.addNode(guiElementNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiElementNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiElementNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiElementNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -351,12 +352,12 @@ public final class GUIParser {
 					guiElementControllerInstalled = true;
 				}
 				// parse child nodes
-				parseGUINode(guiScreenNode, guiElementNode, node, null);	
+				parseGUINode(guiElementNode, node, null);
 			} else
 			if (node.getNodeName().equals("image")) {
 				// TODO: validate root node
 				GUIImageNode guiImageNode = new GUIImageNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"),
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -397,8 +398,8 @@ public final class GUIParser {
 					GUINode.getRequestedColor(node.getAttribute("effect-color-add"), GUIColor.EFFECT_COLOR_ADD)
 				);
 				guiParentNode.getSubNodes().add(guiImageNode);
-				if (guiScreenNode.addNode(guiImageNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiImageNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiImageNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiImageNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -409,7 +410,7 @@ public final class GUIParser {
 			if (node.getNodeName().equals("text")) {
 				// TODO: validate root node
 				GUITextNode guiTextNode = new GUITextNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -450,8 +451,8 @@ public final class GUIParser {
 					node.getAttribute("text")
 				);
 				guiParentNode.getSubNodes().add(guiTextNode);
-				if (guiScreenNode.addNode(guiTextNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiTextNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiTextNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiTextNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -462,7 +463,7 @@ public final class GUIParser {
 			if (node.getNodeName().equals("input-internal")) {
 				// TODO: validate root node
 				GUIInputInternalNode guiInputInternalNode = new GUIInputInternalNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -503,8 +504,8 @@ public final class GUIParser {
 					node.getAttribute("text")
 				);
 				guiParentNode.getSubNodes().add(guiInputInternalNode);
-				if (guiScreenNode.addNode(guiInputInternalNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiInputInternalNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiInputInternalNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiInputInternalNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -515,7 +516,7 @@ public final class GUIParser {
 			if (node.getNodeName().equals("vertical-scrollbar-internal")) {
 				// TODO: validate root node
 				GUIVerticalScrollbarInternalNode guiVerticalScrollbarInternalNode = new GUIVerticalScrollbarInternalNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -556,8 +557,8 @@ public final class GUIParser {
 					GUINode.getRequestedColor(node.getAttribute("color-dragging"), GUIColor.BLACK)
 				);
 				guiParentNode.getSubNodes().add(guiVerticalScrollbarInternalNode);
-				if (guiScreenNode.addNode(guiVerticalScrollbarInternalNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiVerticalScrollbarInternalNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiVerticalScrollbarInternalNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiVerticalScrollbarInternalNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -568,7 +569,7 @@ public final class GUIParser {
 			if (node.getNodeName().equals("horizontal-scrollbar-internal")) {
 				// TODO: validate root node
 				GUIHorizontalScrollbarInternalNode guiHorizontalScrollbarInternalNode = new GUIHorizontalScrollbarInternalNode(
-					guiScreenNode,
+					guiParentNode.getScreenNode(),
 					guiParentNode, 
 					node.getAttribute("id"), 
 					GUINode.createFlow(node.getAttribute("flow")),
@@ -609,8 +610,8 @@ public final class GUIParser {
 					GUINode.getRequestedColor(node.getAttribute("color-dragging"), GUIColor.BLACK)
 				);
 				guiParentNode.getSubNodes().add(guiHorizontalScrollbarInternalNode);
-				if (guiScreenNode.addNode(guiHorizontalScrollbarInternalNode) == false) {
-					throw new GUIParserException("Screen '" + guiScreenNode.getId() + "' already has a node attached with given node id '" + guiHorizontalScrollbarInternalNode.getId() + "'");
+				if (guiParentNode.getScreenNode().addNode(guiHorizontalScrollbarInternalNode) == false) {
+					throw new GUIParserException("Screen '" + guiParentNode.getScreenNode().getId() + "' already has a node attached with given node id '" + guiHorizontalScrollbarInternalNode.getId() + "'");
 				}
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
@@ -626,7 +627,7 @@ public final class GUIParser {
 
 				// create final template, replace attributes
 				String newGuiElementTemplate = newGuiElement.getTemplate();
-				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes(guiScreenNode);
+				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes(guiParentNode.getScreenNode());
 				for (int i = 0; i < node.getAttributes().getLength(); i++) {
 					Node attribute = node.getAttributes().item(i);
 					newGuiElementAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
@@ -648,7 +649,7 @@ public final class GUIParser {
 						).getBytes()
 					)
 				);
-				parseGUINode(guiScreenNode, guiParentNode, newGuiElementDocument.getDocumentElement(), newGuiElement);
+				parseGUINode(guiParentNode, newGuiElementDocument.getDocumentElement(), newGuiElement);
 			}
 		}
 

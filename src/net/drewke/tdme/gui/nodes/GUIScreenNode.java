@@ -57,8 +57,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param show on
 	 * @param hide on
 	 */
-	public GUIScreenNode(
-		GUIParentNode parentNode, 
+	public GUIScreenNode( 
 		String id, 
 		Flow flow,
 		Overflow overflowX,
@@ -72,7 +71,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		GUINodeConditions hideOn,
 		boolean scrollable
 		) throws GUIParserException {
-		super(null, parentNode, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
+		super(null, null, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.foccussedBorderColor = new GUIColor("#FF4040");
 		this.nodeCounter = 0;
 		this.screenWidth = 0;
@@ -89,6 +88,8 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.actionListener = new ArrayList<GUIActionListener>();
 		this.changeListener = new ArrayList<GUIChangeListener>();
 		this.childControllerNodes = new ArrayList<GUINode>();
+		this.screenNode = this;
+		this.parentNode = null;
 	}
 
 	/**
