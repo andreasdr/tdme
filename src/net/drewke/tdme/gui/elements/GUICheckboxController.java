@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI Checkbox controller
@@ -19,6 +20,7 @@ public final class GUICheckboxController extends GUINodeController {
 	private static final String CONDITION_UNCHECKED = "unchecked";
 
 	private boolean checked;
+	private MutableString value;
 
 	/**
 	 * GUI Checkbox controller
@@ -29,6 +31,7 @@ public final class GUICheckboxController extends GUINodeController {
 
 		// derive if selected from node default
 		this.checked = ((GUIElementNode)node).isSelected();
+		this.value = new MutableString();
 	}
 
 	/**
@@ -164,16 +167,20 @@ public final class GUICheckboxController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
-		return checked == true?((GUIElementNode)node).getValue():"";
+	public MutableString getValue() {
+		value.reset();
+		if (checked == true) {
+			value.append(((GUIElementNode)node).getValue());
+		}
+		return value;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
-		setChecked(((GUIElementNode)node).getValue().equals(value));
+	public void setValue(MutableString value) {
+		setChecked(value.equals(((GUIElementNode)node).getValue()));
 	}
 
 }

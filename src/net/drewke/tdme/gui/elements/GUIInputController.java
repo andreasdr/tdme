@@ -2,11 +2,11 @@ package net.drewke.tdme.gui.elements;
 
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
-import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
-import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI input controller
@@ -107,16 +107,17 @@ public final class GUIInputController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
+	public MutableString getValue() {
 		return textInputNode.getText();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
-		textInputNode.setText(value);
+	public void setValue(MutableString value) {
+		textInputNode.getText().reset();
+		textInputNode.getText().append(value);
 	}
 
 }

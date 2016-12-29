@@ -10,6 +10,7 @@ import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.utils.HashMap;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI Checkbox controller
@@ -24,6 +25,8 @@ public final class GUIRadioButtonController extends GUINodeController {
 	private boolean selected;
 
 	private static HashMap<String, ArrayList<GUIElementNode>> radioButtonGroupNodesByName = new HashMap<String, ArrayList<GUIElementNode>>();
+
+	private MutableString value = new MutableString();
 
 	/**
 	 * GUI Checkbox controller
@@ -195,16 +198,20 @@ public final class GUIRadioButtonController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
-		return selected == true?((GUIElementNode)node).getValue():"";
+	public MutableString getValue() {
+		value.reset();
+		if (selected == true) {
+			value.append(((GUIElementNode)node).getValue());
+		}
+		return value;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
-		if (((GUIElementNode)node).getValue().equals(value) == true) {
+	public void setValue(MutableString value) {
+		if (value.equals(((GUIElementNode)node).getValue()) == true) {
 			select();
 		}
 	}

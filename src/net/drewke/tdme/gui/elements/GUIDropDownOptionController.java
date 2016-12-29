@@ -7,11 +7,11 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
-import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.utils.MutableString;
 
 /**
- * GUI select box option controller
+ * GUI drop down option controller
  * @author Andreas Drewke
  * @version $Id$
  */
@@ -54,7 +54,8 @@ public final class GUIDropDownOptionController extends GUINodeController {
 		// set text from option to heading text
 		GUITextNode dropDownOptionTextNode = (GUITextNode)node.getScreenNode().getNodeById(node.getId() + "_unselected");
 		GUITextNode dropDownTextNode = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_text");
-		dropDownTextNode.setText(dropDownOptionTextNode.getText());
+		dropDownTextNode.getText().reset();
+		dropDownTextNode.getText().append(dropDownOptionTextNode.getText());
 	}
 
 	/**
@@ -181,15 +182,15 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
+	public MutableString getValue() {
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
+	public void setValue(MutableString value) {
 		// no op
 	}
 

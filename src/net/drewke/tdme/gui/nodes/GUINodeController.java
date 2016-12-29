@@ -2,6 +2,7 @@ package net.drewke.tdme.gui.nodes;
 
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI element controller
@@ -79,12 +80,12 @@ public abstract class GUINodeController {
 	/**
 	 * @return value
 	 */
-	public abstract String getValue();
+	public abstract MutableString getValue();
 
 	/**
 	 * Set value
 	 * @param value
 	 */
-	public abstract void setValue(String value);
+	public abstract void setValue(MutableString value);
 
 }

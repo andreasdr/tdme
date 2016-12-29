@@ -10,6 +10,7 @@ import net.drewke.tdme.engine.fileio.textures.TextureLoader;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI Font
@@ -264,7 +265,7 @@ public final class GUIFont {
 	 * @param text
 	 * @param color
 	 */
-	public void drawString(GUIRenderer guiRenderer, int x, int y, String text, GUIColor color) {
+	public void drawString(GUIRenderer guiRenderer, int x, int y, MutableString text, GUIColor color) {
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.setFontColor(color);
 		y-= getYOffset(text) / 2;
@@ -301,7 +302,7 @@ public final class GUIFont {
 	 * @param text
 	 * @param index
 	 */
-	public int getTextIndexX(String text, int index) {
+	public int getTextIndexX(MutableString text, int index) {
 		int x = 0;
 		for (int i = 0; i < index && i < text.length(); i++) {
 			int id = text.charAt(i);
@@ -333,7 +334,7 @@ public final class GUIFont {
 	 * @param text
 	 * @param relative x
 	 */
-	public int getTextIndexByX(String text, int textX) {
+	public int getTextIndexByX(MutableString text, int textX) {
 		int x = 0;
 		int index = 0;
 		for (; index < text.length(); index++) {
@@ -372,7 +373,7 @@ public final class GUIFont {
 	 * @param text The text that is to be tested
 	 * @return The yoffset from the y draw location at which text will start
 	 */
-	public int getYOffset(String text) {
+	public int getYOffset(MutableString text) {
 		int minYOffset = 10000;
 		for (int i=0;i < text.length(); i++) {
 			int id = text.charAt(i);
@@ -390,7 +391,7 @@ public final class GUIFont {
 	 * @param text
 	 * @return text height
 	 */
-	public int getTextHeight(String text) {
+	public int getTextHeight(MutableString text) {
 		int maxHeight = 0;
 		for (int i=0;i < text.length();i++) {
 			int id = text.charAt(i);
@@ -411,7 +412,7 @@ public final class GUIFont {
 	 * @param text
 	 * @return text width
 	 */
-	public int getTextWidth(String text) {
+	public int getTextWidth(MutableString text) {
 		int width = 0;
 		for (int i=0;i < text.length();i++) {
 			int id = text.charAt(i);

@@ -41,6 +41,7 @@ import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.gui.nodes.GUIVerticalScrollbarInternalNode;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
+import net.drewke.tdme.utils.MutableString;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -498,7 +499,7 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
-					node.getAttribute("text")
+					new MutableString(node.getAttribute("text"))
 				);
 				guiParentNode.addSubNode(guiTextNode);
 				// install gui element controller if not yet done
@@ -548,7 +549,7 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
-					node.getAttribute("text")
+					new MutableString(node.getAttribute("text"))
 				);
 				guiParentNode.addSubNode(guiInputInternalNode);
 				// install gui element controller if not yet done

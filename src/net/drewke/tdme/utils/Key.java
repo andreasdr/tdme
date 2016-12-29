@@ -75,8 +75,9 @@ public final class Key {
 		hash = 0;
 	}
 
-	/**
-	 * @return hash code
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
 		int h = hash;

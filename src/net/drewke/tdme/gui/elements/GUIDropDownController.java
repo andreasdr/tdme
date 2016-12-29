@@ -9,9 +9,10 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.utils.MutableString;
 
 /**
- * GUI select box controller
+ * GUI drop down controller
  * @author Andreas Drewke
  * @version $Id$
  */
@@ -26,6 +27,8 @@ public final class GUIDropDownController extends GUINodeController {
 
 	private GUIParentNode dropDownNode = null;
 	private GUIElementNode arrowNode = null;
+
+	private MutableString value = new MutableString();
 
 	/**
 	 * Constructor
@@ -292,7 +295,10 @@ public final class GUIDropDownController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
+	public MutableString getValue() {
+		//
+		value.reset();
+
 		// determine select box option controllers
 		determineDropDownOptionControllers();
 
@@ -300,19 +306,19 @@ public final class GUIDropDownController extends GUINodeController {
 		for (int i = 0; i < dropDownOptionControllers.size(); i++) {
 			GUIDropDownOptionController dropDownOptionController = dropDownOptionControllers.get(i);
 			if (dropDownOptionController.isSelected() == true) {
-				return ((GUIElementNode)dropDownOptionController.getNode()).getValue();
+				value.append(((GUIElementNode)dropDownOptionController.getNode()).getValue());
 			}
 		}
 
 		//
-		return "";
+		return value;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
+	public void setValue(MutableString value) {
 		// determine select box option controllers
 		determineDropDownOptionControllers();
 
@@ -323,7 +329,7 @@ public final class GUIDropDownController extends GUINodeController {
 		for (int i = 0; i < dropDownOptionControllers.size(); i++) {
 			GUIDropDownOptionController dropDownOptionController = dropDownOptionControllers.get(i);
 			GUIElementNode dropDownOptionNode = ((GUIElementNode)dropDownOptionController.getNode());
-			if (dropDownOptionNode.getValue().equals(value)) {
+			if (value.equals(dropDownOptionNode.getValue())) {
 				dropDownOptionController.select();
 				dropDownOptionNode.scrollToNodeX();
 				dropDownOptionNode.scrollToNodeY();

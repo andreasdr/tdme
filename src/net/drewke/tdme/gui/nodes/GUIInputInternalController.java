@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.nodes;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI input internal controller
@@ -129,12 +130,7 @@ public final class GUIInputInternalController extends GUINodeController {
 
 				// check if key pressed
 				if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
-					String text = textInputNode.getText();
-					textInputNode.setText(
-						text.substring(0, index) +
-						keyChar +
-						text.substring(index, text.length())
-					);
+					textInputNode.getText().insert(index, event.getKeyChar());
 					index++;
 					resetCursorMode();
 
@@ -179,11 +175,7 @@ public final class GUIInputInternalController extends GUINodeController {
 							// check if key pressed
 							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 								if (index > 0) {
-									String text = textInputNode.getText();
-									textInputNode.setText(
-										text.substring(0, index - 1) +
-										text.substring(index, text.length())
-									);
+									textInputNode.getText().delete(index - 1, 1);
 									index--;
 									resetCursorMode();
 
@@ -200,12 +192,8 @@ public final class GUIInputInternalController extends GUINodeController {
 
 							// check if key pressed
 							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
-								String text = textInputNode.getText();
-								if (index < text.length()) {
-									textInputNode.setText(
-										text.substring(0, index) +
-										text.substring(index + 1, text.length())
-									);
+								if (index < textInputNode.getText().length()) {
+									textInputNode.getText().delete(index, 1);
 									index--;
 									resetCursorMode();
 
@@ -254,15 +242,15 @@ public final class GUIInputInternalController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
+	public MutableString getValue() {
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
+	public void setValue(MutableString value) {
 		// no op
 	}
 

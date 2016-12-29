@@ -6,6 +6,7 @@ import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.nodes.GUIInputInternalController.CursorMode;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI input internal node
@@ -17,7 +18,7 @@ public final class GUIInputInternalNode extends GUINode {
 
 	private GUIFont font;
 	private GUIColor color;
-	private String text;
+	private MutableString text;
 
 	/**
 	 * Constructor
@@ -50,7 +51,7 @@ public final class GUIInputInternalNode extends GUINode {
 		GUINodeConditions hideOn, 
 		String font, 
 		String color, 
-		String text
+		MutableString text
 		) throws Exception {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
@@ -107,16 +108,8 @@ public final class GUIInputInternalNode extends GUINode {
 	/**
 	 * @return text
 	 */
-	public String getText() {
+	public MutableString getText() {
 		return text;
-	}
-
-	/**
-	 * Set text
-	 * @param text
-	 */
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	/*

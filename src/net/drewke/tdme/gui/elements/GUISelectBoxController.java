@@ -8,6 +8,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI select box controller
@@ -18,6 +19,8 @@ public final class GUISelectBoxController extends GUINodeController {
 
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 	private ArrayList<GUISelectBoxOptionController> selectBoxOptionControllers = new ArrayList<GUISelectBoxOptionController>();
+
+	private MutableString value = new MutableString();
 
 	/**
 	 * Constructor
@@ -224,7 +227,9 @@ public final class GUISelectBoxController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
-	public String getValue() {
+	public MutableString getValue() {
+		value.reset();
+
 		// determine select box option controllers
 		determineSelectBoxOptionControllers();
 
@@ -232,19 +237,19 @@ public final class GUISelectBoxController extends GUINodeController {
 		for (int i = 0; i < selectBoxOptionControllers.size(); i++) {
 			GUISelectBoxOptionController selectBoxOptionController = selectBoxOptionControllers.get(i);
 			if (selectBoxOptionController.isSelected() == true) {
-				return ((GUIElementNode)selectBoxOptionController.getNode()).getValue();
+				value.append(((GUIElementNode)selectBoxOptionController.getNode()).getValue());
 			}
 		}
 
 		// otherwise return empty string
-		return "";
+		return value;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(java.lang.String)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
-	public void setValue(String value) {
+	public void setValue(MutableString value) {
 		// determine select box option controllers
 		determineSelectBoxOptionControllers();
 
@@ -255,7 +260,7 @@ public final class GUISelectBoxController extends GUINodeController {
 		for (int i = 0; i < selectBoxOptionControllers.size(); i++) {
 			GUISelectBoxOptionController selectBoxOptionController = selectBoxOptionControllers.get(i);
 			GUIElementNode selectBoxOptionNode = (GUIElementNode)selectBoxOptionController.getNode();
-			if (selectBoxOptionNode.getValue().equals(value)) {
+			if (value.equals(selectBoxOptionNode.getValue()) == true) {
 				selectBoxOptionController.select();
 				selectBoxOptionNode.scrollToNodeX();
 				selectBoxOptionNode.scrollToNodeY();

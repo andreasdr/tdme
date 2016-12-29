@@ -10,6 +10,7 @@ import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI Screen Node
@@ -509,7 +510,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * Get values
 	 * @param values
 	 */
-	public void getValues(HashMap<String, String> values) {
+	public void getValues(HashMap<String, MutableString> values) {
 		// clear values
 		values.clear();
 
@@ -532,8 +533,8 @@ public final class GUIScreenNode extends GUIParentNode {
 			// does the controller provides a value
 			if (guiElementNodeController.hasValue()) {
 				String name = guiElementNode.getName();
-				String value = guiElementNodeController.getValue();
-				String currentValue = values.get(name);
+				MutableString value = guiElementNodeController.getValue();
+				MutableString currentValue = values.get(name);
 
 				// if not yet set, do it
 				if (currentValue == null || currentValue.length() == 0) {
@@ -547,7 +548,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * Set values
 	 * @param values
 	 */
-	public void setValues(HashMap<String, String> values) {
+	public void setValues(HashMap<String, MutableString> values) {
 		// determine screen child controller nodes
 		getChildControllerNodes(childControllerNodes);
 
@@ -567,7 +568,7 @@ public final class GUIScreenNode extends GUIParentNode {
 			// does the controller provides a value
 			if (guiElementNodeController.hasValue()) {
 				String name = guiElementNode.getName();
-				String newValue = values.get(name);
+				MutableString newValue = values.get(name);
 				if (newValue == null) continue;
 				guiElementNodeController.setValue(newValue);
 			}

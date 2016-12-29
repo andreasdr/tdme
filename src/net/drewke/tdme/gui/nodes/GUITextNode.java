@@ -3,9 +3,9 @@ package net.drewke.tdme.gui.nodes;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUI;
-import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI text node
@@ -17,7 +17,7 @@ public final class GUITextNode extends GUINode {
 
 	private GUIFont font;
 	private GUIColor color;
-	private String text;
+	private MutableString text;
 
 	/**
 	 * Constructor
@@ -50,7 +50,7 @@ public final class GUITextNode extends GUINode {
 		GUINodeConditions hideOn, 
 		String font, 
 		String color, 
-		String text
+		MutableString text
 		) throws Exception {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
@@ -96,16 +96,8 @@ public final class GUITextNode extends GUINode {
 	/**
 	 * @return text
 	 */
-	public String getText() {
+	public MutableString getText() {
 		return text;
-	}
-
-	/**
-	 * Set text
-	 * @param text
-	 */
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	/*

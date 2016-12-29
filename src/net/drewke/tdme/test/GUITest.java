@@ -11,6 +11,7 @@ import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.utils.HashMap;
+import net.drewke.tdme.utils.MutableString;
 
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.event.WindowListener;
@@ -64,19 +65,19 @@ public class GUITest implements GLEventListener, WindowListener {
 						System.out.println(node.getId() + ".actionPerformed()");
 	
 						// test get values
-						HashMap<String,String> values = new HashMap<String,String>();
+						HashMap<String,MutableString> values = new HashMap<String,MutableString>();
 						node.getScreenNode().getValues(values);
 						System.out.println(values);
 	
 						// test set values
 						values.clear();
-						values.put("select", "8");
-						values.put("input", "Enter some more text here!"); 
-						values.put("checkbox1", "1"); 
-						values.put("checkbox2", "1"); 
-						values.put("checkbox3", "1"); 
-						values.put("dropdown", "11");
-						values.put("radio", "3");
+						values.put("select", new MutableString("8"));
+						values.put("input", new MutableString("Enter some more text here!")); 
+						values.put("checkbox1", new MutableString("1")); 
+						values.put("checkbox2", new MutableString("1")); 
+						values.put("checkbox3", new MutableString("1")); 
+						values.put("dropdown", new MutableString("11"));
+						values.put("radio", new MutableString("3"));
 						node.getScreenNode().setValues(values);
 	
 						// test GUI tab controller select tab method
