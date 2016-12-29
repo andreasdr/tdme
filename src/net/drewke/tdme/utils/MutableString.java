@@ -67,6 +67,15 @@ public final class MutableString {
 	}
 
 	/**
+	 * Set character
+	 * @param c
+	 */
+	public void set(char c) {
+		reset();
+		append(c);
+	}
+
+	/**
 	 * Append character
 	 * @param c
 	 */
@@ -93,6 +102,15 @@ public final class MutableString {
 	}
 
 	/**
+	 * Set string
+	 * @param s
+	 */
+	public void set(String s) {
+		reset();
+		append(s);
+	}
+
+	/**
 	 * Append string
 	 * @param s
 	 */
@@ -113,6 +131,15 @@ public final class MutableString {
 	}
  
 	/**
+	 * Set mutable string 
+	 * @param s
+	 */
+	public void set(MutableString s) {
+		reset();
+		append(s);
+	}
+
+	/**
 	 * Append mutable string
 	 * @param s
 	 */
@@ -130,6 +157,15 @@ public final class MutableString {
 		for (int i = 0; i < s.length(); i++) {
 			insert(idx + i, s.charAt(i));
 		}
+	}
+
+	/**
+	 * Set integer
+	 * @param i
+	 */
+	public void set(int i) {
+		reset();
+		append(i);
 	}
 
 	/**
@@ -166,9 +202,20 @@ public final class MutableString {
 	}
 
 	/**
+	 * Set float
+	 * @param f
+	 * @param decimals
+	 */
+	public void set(float f, int decimals) {
+		reset();
+		append(f, decimals);
+	}
+
+	/**
 	 * Append float with given decimals
 	 * @see http://stackoverflow.com/questions/7123490/how-compiler-is-converting-integer-to-string-and-vice-versa
-	 * @param i
+	 * @param f
+	 * @param decimals
 	 */
 	public void append(float f, int decimals) {
 		insert(length, f, decimals);
