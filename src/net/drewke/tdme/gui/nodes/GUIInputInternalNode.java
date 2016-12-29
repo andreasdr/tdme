@@ -16,9 +16,24 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUIInputInternalNode extends GUINode {
 
+	/**
+	 * Create max length
+	 * @param s
+	 * @return max length
+	 */
+	public static int createMaxLength(String s) {
+		try {
+			int maxLength = Integer.parseInt(s);
+			return maxLength;
+		} catch (NumberFormatException nfe) {
+			return 0;
+		}
+	}
+
 	private GUIFont font;
 	private GUIColor color;
 	private MutableString text;
+	private int maxLength;
 
 	/**
 	 * Constructor
@@ -51,13 +66,15 @@ public final class GUIInputInternalNode extends GUINode {
 		GUINodeConditions hideOn, 
 		String font, 
 		String color, 
-		MutableString text
+		MutableString text,
+		int maxLength
 		) throws Exception {
 		//
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
 		this.text = text;
+		this.maxLength = maxLength;
 
 		// init font
 		this.font.init();
@@ -110,6 +127,13 @@ public final class GUIInputInternalNode extends GUINode {
 	 */
 	public MutableString getText() {
 		return text;
+	}
+
+	/**
+	 * @return max length
+	 */
+	public int getMaxLength() {
+		return maxLength;
 	}
 
 	/*

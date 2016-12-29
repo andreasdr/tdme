@@ -130,12 +130,16 @@ public final class GUIInputInternalController extends GUINodeController {
 
 				// check if key pressed
 				if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
-					textInputNode.getText().insert(index, event.getKeyChar());
-					index++;
-					resetCursorMode();
+					if (textInputNode.getMaxLength() == 0 || 
+						textInputNode.getText().length() < textInputNode.getMaxLength()) {
+						//
+						textInputNode.getText().insert(index, event.getKeyChar());
+						index++;
+						resetCursorMode();
 
-					// delegate change event
-					node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
+						// delegate change event
+						node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
+					}
 				}
 			} else {
 				switch (event.getKeyCode()) {

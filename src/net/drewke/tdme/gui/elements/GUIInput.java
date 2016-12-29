@@ -54,6 +54,7 @@ public final class GUIInput extends GUIElement {
 		attributes.put("width", "auto");
 		attributes.put("height", "auto");
 		attributes.put("text", "");
+		attributes.put("maxlength", "0");
 		return attributes;
 	}
 

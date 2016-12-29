@@ -549,7 +549,8 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
-					new MutableString(node.getAttribute("text"))
+					new MutableString(node.getAttribute("text")),
+					GUIInputInternalNode.createMaxLength(node.getAttribute("maxlength"))
 				);
 				guiParentNode.addSubNode(guiInputInternalNode);
 				// install gui element controller if not yet done
