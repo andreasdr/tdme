@@ -201,7 +201,6 @@ public final class GUIParser {
 		boolean guiElementControllerInstalled = false;
 		// parse sub nodes
 		for (Element node: getChildrenTags(xmlParentNode)) {
-			System.out.println(node.getNodeName());
 			if (node.getNodeName().equals("layout")) {
 				// TODO: validate root node
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(

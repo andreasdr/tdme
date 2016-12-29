@@ -138,7 +138,6 @@ public class GUITest implements GLEventListener, WindowListener {
 				}
 			});
 			engine.getGUI().getScreen("test").layout();
-			System.out.println(engine.getGUI().getScreen("test").toString());
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}

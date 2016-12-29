@@ -235,8 +235,6 @@ public final class GUI implements MouseListener, KeyListener {
 			if (screen.getScreenWidth() != width || screen.getScreenHeight() != height) {
 				screen.setScreenSize(width, height);
 				screen.layout();
-				// debugging
-				System.out.println(screen);
 			}
 
 			// render
