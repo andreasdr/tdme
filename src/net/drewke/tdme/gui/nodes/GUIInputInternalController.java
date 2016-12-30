@@ -3,6 +3,9 @@ package net.drewke.tdme.gui.nodes;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUINode.Border;
+import net.drewke.tdme.gui.nodes.GUINode.ComputedConstraints;
+import net.drewke.tdme.gui.nodes.GUINode.Padding;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -19,6 +22,7 @@ public final class GUIInputInternalController extends GUINodeController {
 	private long cursorModeStarted = -1L;
 	private CursorMode cursorMode = CursorMode.SHOW;
 	private int index;
+	private int offset;
 
 	/**
 	 * GUI Checkbox controller
@@ -27,6 +31,7 @@ public final class GUIInputInternalController extends GUINodeController {
 	protected GUIInputInternalController(GUINode node) {
 		super(node);
 		this.index = 0;
+		this.offset = 0;
 	}
 
 	/*
@@ -58,6 +63,13 @@ public final class GUIInputInternalController extends GUINodeController {
 	 */
 	protected int getIndex() {
 		return index;
+	}
+
+	/**
+	 * @return offset
+	 */
+	protected int getOffset() {
+		return offset;
 	}
 
 	/**
@@ -107,12 +119,44 @@ public final class GUIInputInternalController extends GUINodeController {
 			GUIInputInternalNode textInputNode = ((GUIInputInternalNode)node);
 			index = textInputNode.getFont().getTextIndexByX(
 				textInputNode.getText(), 
+				offset,
+				0,
 				event.getX() - (textInputNode.computedConstraints.left + textInputNode.computedConstraints.alignmentLeft + textInputNode.border.left + textInputNode.padding.left)
 			);
 			resetCursorMode();
 
 			// set event processed
 			event.setProcessed(true);
+		}
+	}
+
+	/**
+	 * Check and correct offset
+	 */
+	private void checkOffset() {
+		// check offset left
+		if (index < offset) {
+			offset = index;
+			return;
+		}
+
+		// check offset right
+		GUIInputInternalNode textInputNode = ((GUIInputInternalNode)node);
+
+		//
+		ComputedConstraints textInputNodeConstraints = textInputNode.computedConstraints;
+		Border textInputNodeBorder = textInputNode.border;
+		Padding textInputNodePadding = textInputNode.padding;
+		int textInputNodeWidth = textInputNodeConstraints.width - textInputNodeBorder.left - textInputNodeBorder.right - textInputNodePadding.left - textInputNodePadding.right;
+
+		// determine chars max to render in input field beginning from offset
+		int charsMax =
+			textInputNode.getFont().getTextIndexByX(textInputNode.getText(), offset, 0, textInputNodeWidth) -
+			offset;
+
+		// correct offset
+		if (index - offset >= charsMax) {
+			offset = index - charsMax;
 		}
 	}
 
@@ -137,6 +181,9 @@ public final class GUIInputInternalController extends GUINodeController {
 						index++;
 						resetCursorMode();
 
+						//
+						checkOffset();
+
 						// delegate change event
 						node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
 					}
@@ -152,6 +199,11 @@ public final class GUIInputInternalController extends GUINodeController {
 							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 								if (index > 0) {
 									index--;
+
+									//
+									checkOffset();
+
+									//
 									resetCursorMode();
 								}
 							}
@@ -166,6 +218,11 @@ public final class GUIInputInternalController extends GUINodeController {
 							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 								if (index < textInputNode.getText().length()) {
 									index++;
+
+									//
+									checkOffset();
+
+									//
 									resetCursorMode();
 								}
 							}
@@ -181,6 +238,11 @@ public final class GUIInputInternalController extends GUINodeController {
 								if (index > 0) {
 									textInputNode.getText().delete(index - 1, 1);
 									index--;
+
+									//
+									checkOffset();
+
+									//
 									resetCursorMode();
 
 									// delegate change event
@@ -198,7 +260,6 @@ public final class GUIInputInternalController extends GUINodeController {
 							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
 								if (index < textInputNode.getText().length()) {
 									textInputNode.getText().delete(index, 1);
-									index--;
 									resetCursorMode();
 
 									// delegate change event

@@ -160,17 +160,19 @@ public final class GUIInputInternalNode extends GUINode {
 		// call parent renderer
 		super.render(guiRenderer, floatingNodes);
 
+		// get controller
+		GUIInputInternalController controller = (GUIInputInternalController)this.controller;
+
 		// draw string
 		font.drawString(
 			guiRenderer, 
 			computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.contentAlignmentLeft, 
 			computedConstraints.top  + computedConstraints.alignmentTop + computedConstraints.contentAlignmentTop, 
 			text, 
+			controller.getOffset(),
+			0,
 			color
 		);
-
-		// get controller
-		GUIInputInternalController controller = (GUIInputInternalController)this.controller;
 
 		// check if to show cursor
 		if (controller.getCursorMode() == CursorMode.SHOW) {
@@ -179,7 +181,7 @@ public final class GUIInputInternalNode extends GUINode {
 			float screenHeight = guiRenderer.getGUI().getHeight();
 
 			// element location and dimensions
-			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left + padding.left + font.getTextIndexX(text, controller.getIndex());
+			float left = computedConstraints.left + computedConstraints.alignmentLeft + border.left + padding.left + font.getTextIndexX(text, controller.getOffset(), 0, controller.getIndex());
 			float top = computedConstraints.top + computedConstraints.alignmentTop + border.top + padding.top;
 			float width = 2;
 			float height = computedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;

@@ -263,13 +263,16 @@ public final class GUIFont {
 	 * @param x
 	 * @param y
 	 * @param text
+	 * @param offset
+	 * @param length or 0 if full length
 	 * @param color
 	 */
-	public void drawString(GUIRenderer guiRenderer, int x, int y, MutableString text, GUIColor color) {
+	public void drawString(GUIRenderer guiRenderer, int x, int y, MutableString text, int offset, int length, GUIColor color) {
 		guiRenderer.bindTexture(textureId);
 		guiRenderer.setFontColor(color);
 		y-= getYOffset(text) / 2;
-		for (int i=0;i < text.length(); i++) {
+		if (length == 0) length = text.length();
+		for (int i = offset; i < text.length() && i < length; i++) {
 			int id = text.charAt(i);
 			if (id >= chars.length) {
 				continue;
@@ -300,11 +303,15 @@ public final class GUIFont {
 	/**
 	 * Get text index X of given text and index
 	 * @param text
+	 * @param offset
+	 * @param length or 0 if full length
 	 * @param index
+	 * @return text index x
 	 */
-	public int getTextIndexX(MutableString text, int index) {
+	public int getTextIndexX(MutableString text, int offset, int length, int index) {
+		if (length == 0) length = text.length();
 		int x = 0;
-		for (int i = 0; i < index && i < text.length(); i++) {
+		for (int i = offset; i < index && i < text.length() && i < length; i++) {
 			int id = text.charAt(i);
 			if (id >= chars.length) {
 				continue;
@@ -332,12 +339,16 @@ public final class GUIFont {
 	/**
 	 * Get text index by text and X in space of text
 	 * @param text
-	 * @param relative x
+	 * @param offset
+	 * @param length or 0 if full length
+	 * @param text X
+	 * @return text index
 	 */
-	public int getTextIndexByX(MutableString text, int textX) {
+	public int getTextIndexByX(MutableString text, int offset, int length, int textX) {
 		int x = 0;
-		int index = 0;
-		for (; index < text.length(); index++) {
+		int index = offset;
+		if (length == 0) length = text.length();
+		for (; index < text.length() && index < length; index++) {
 			int id = text.charAt(index);
 			if (id >= chars.length) {
 				continue;
@@ -360,7 +371,7 @@ public final class GUIFont {
 			*/
 
 			// check if character was hit
-			if (x  - xAdvance / 2 > textX) {
+			if (x - xAdvance / 2 > textX) {
 				return index;
 			}
 		}

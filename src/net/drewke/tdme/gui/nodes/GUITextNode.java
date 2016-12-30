@@ -127,7 +127,9 @@ public final class GUITextNode extends GUINode {
 			guiRenderer, 
 			computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.contentAlignmentLeft, 
 			computedConstraints.top  + computedConstraints.alignmentTop + computedConstraints.contentAlignmentTop, 
-			text, 
+			text,
+			0,
+			0,
 			color
 		);
 	}

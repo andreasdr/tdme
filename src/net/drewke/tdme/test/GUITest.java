@@ -72,10 +72,10 @@ public class GUITest implements GLEventListener, WindowListener {
 						// test set values
 						values.clear();
 						values.put("select", new MutableString("8"));
-						values.put("input", new MutableString("Enter some more text here!")); 
-						values.put("checkbox1", new MutableString("1")); 
-						values.put("checkbox2", new MutableString("1")); 
-						values.put("checkbox3", new MutableString("1")); 
+						values.put("input", new MutableString("Enter some more text here!"));
+						values.put("checkbox1", new MutableString("1"));
+						values.put("checkbox2", new MutableString("1"));
+						values.put("checkbox3", new MutableString("1"));
 						values.put("dropdown", new MutableString("11"));
 						values.put("radio", new MutableString("3"));
 						node.getScreenNode().setValues(values);
