@@ -116,8 +116,7 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
 	public void setValue(MutableString value) {
-		textInputNode.getText().reset();
-		textInputNode.getText().append(value);
+		textInputNode.getText().set(value);
 	}
 
 }
