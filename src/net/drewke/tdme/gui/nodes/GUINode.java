@@ -895,9 +895,10 @@ public abstract class GUINode {
 	/**
 	 * Is event belonging to node
 	 * @param event
+	 * @param x,y position in node coordinate system 
 	 * @return boolean
 	 */
-	public boolean isEventBelongingToNode(GUIMouseEvent event) {
+	public boolean isEventBelongingToNode(GUIMouseEvent event, int[] position) {
 		int eventXScreen = event.getX();
 		int eventYScreen = event.getY();
 
@@ -925,9 +926,28 @@ public abstract class GUINode {
 		float eventY = eventYScreen + computeParentChildrenRenderOffsetYTotal();
 
 		// check node
-		return
+		boolean belongsToElement =
 			eventX >= computedConstraints.left + computedConstraints.alignmentLeft && eventX < computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width &&
 			eventY >= computedConstraints.top + computedConstraints.alignmentTop && eventY < computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
+
+
+		// compute position
+		if (belongsToElement == true && position != null) {
+			position[0] = (int)(eventX - (computedConstraints.left + computedConstraints.alignmentLeft));
+			position[1] = (int)(eventY - (computedConstraints.top + computedConstraints.alignmentTop));
+		}
+
+		//
+		return belongsToElement;
+	}
+
+	/**
+	 * Is event belonging to node
+	 * @param event
+	 * @return boolean
+	 */
+	public boolean isEventBelongingToNode(GUIMouseEvent event) {
+		return isEventBelongingToNode(event, null);
 	}
 
 	/**
