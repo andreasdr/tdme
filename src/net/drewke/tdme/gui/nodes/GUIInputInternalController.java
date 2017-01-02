@@ -1,5 +1,7 @@
 package net.drewke.tdme.gui.nodes;
 
+import java.util.Arrays;
+
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -16,6 +18,7 @@ import net.drewke.tdme.utils.MutableString;
 public final class GUIInputInternalController extends GUINodeController {
 
 	private final static long CURSOR_MODE_DURATION = 500L;
+	private final static long DRAGGING_CALMDOWN = 50L;
 
 	public enum CursorMode {SHOW, HIDE};
 
@@ -23,6 +26,9 @@ public final class GUIInputInternalController extends GUINodeController {
 	private CursorMode cursorMode = CursorMode.SHOW;
 	private int index;
 	private int offset;
+	private boolean isDragging;
+	private int[] dragPosition;
+	private long draggingTickLast = -1L;
 
 	/**
 	 * GUI Checkbox controller
@@ -32,6 +38,8 @@ public final class GUIInputInternalController extends GUINodeController {
 		super(node);
 		this.index = 0;
 		this.offset = 0;
+		this.isDragging = false;
+		this.dragPosition = new int[] {0,0};
 	}
 
 	/*
@@ -108,10 +116,15 @@ public final class GUIInputInternalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// mouse released
 		if (node == this.node &&
-			node.isEventBelongingToNode(event) && 
+			event.getType() == Type.MOUSE_RELEASED == true) {
+			isDragging = false;
+		} else
+		// mouse click, dragging on node
+		if (node == this.node &&
+			node.isEventBelongingToNode(event) == true &&
 			(event.getType() == Type.MOUSE_PRESSED == true ||
-			event.getType() == Type.MOUSE_RELEASED == true ||
 			event.getType() == Type.MOUSE_DRAGGED == true) &&
 			event.getButton() == 1) {
 
@@ -127,6 +140,15 @@ public final class GUIInputInternalController extends GUINodeController {
 
 			// set event processed
 			event.setProcessed(true);
+
+			//
+			isDragging = true;
+			dragPosition[0] = 0;
+			dragPosition[1] = 0;
+		} else
+		if (isDragging == true) {
+			// determine new dragging position, if dragging
+			node.getEventOffNodeRelativePosition(event, dragPosition);
 		}
 	}
 
@@ -278,7 +300,41 @@ public final class GUIInputInternalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#tick()
 	 */
 	public void tick() {
-		// no op
+		// dragging
+		if (isDragging == true) {
+			long now = System.currentTimeMillis();
+
+			// calm down
+			if (draggingTickLast != -1L && now - draggingTickLast < DRAGGING_CALMDOWN) {
+				return;
+			}
+
+			// dragging last time
+			draggingTickLast = now;
+
+			// do the job
+			GUIInputInternalNode textInputNode = ((GUIInputInternalNode)node);
+
+			// check if to scroll
+			//	left?
+			if (dragPosition[0] < 0) {
+				if (index > 0) {
+					index--;
+
+					//
+					checkOffset();
+				}
+			} else
+			// 	right?
+			if (dragPosition[0] > 0) {
+				if (index < textInputNode.getText().length()) {
+					index++;
+
+					//
+					checkOffset();
+				}
+			}
+		}
 	}
 
 	/*

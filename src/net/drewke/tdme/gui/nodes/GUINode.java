@@ -951,6 +951,47 @@ public abstract class GUINode {
 	}
 
 	/**
+	 * Get event off node relative position
+	 * @param event
+	 * @param x,y position (will return x = 0 if in node on x axis, will return x < 0  (-pixel) if on the left of element, x > 0 (+pixel) if on the right of element, y behaves analogous to x)  
+	 * @return void
+	 */
+	public void getEventOffNodeRelativePosition(GUIMouseEvent event, int[] position) {
+		int eventXScreen = event.getX();
+		int eventYScreen = event.getY();
+
+		// take parent children render offset into account
+		float eventX = eventXScreen + computeParentChildrenRenderOffsetXTotal();
+		float eventY = eventYScreen + computeParentChildrenRenderOffsetYTotal();
+
+		// constraints
+		float left = computedConstraints.left + computedConstraints.alignmentLeft;
+		float right = computedConstraints.left + computedConstraints.alignmentLeft + computedConstraints.width;
+		float top = computedConstraints.top + computedConstraints.alignmentTop;
+		float bottom = computedConstraints.top + computedConstraints.alignmentTop + computedConstraints.height;
+
+		// x
+		if (eventX < left) {
+			position[0] = (int)(eventX - left);
+		} else
+		if (eventX > right) {
+			position[0] = (int)(eventX - right);
+		} else {
+			position[0] = 0;
+		}
+
+		// y
+		if (eventY < top) {
+			position[1] = (int)(eventY - top); 
+		} else
+		if (eventY > bottom) {
+			position[1] = (int)(eventY - bottom);
+		} else {
+			position[1] = 0;
+		}
+	}
+
+	/**
 	 * @return first parent node in tree with controller node attached
 	 */
 	public GUINode getParentControllerNode() {
