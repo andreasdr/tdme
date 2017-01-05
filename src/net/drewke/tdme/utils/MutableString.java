@@ -249,6 +249,43 @@ public final class MutableString {
 		hash = 0;
 	}
 
+	/**
+	 * Returns the character index where string s have been found or -1 if not found 
+	 * @param string
+	 * @param index
+	 * @return index where string has been found or -1
+	 */
+	public int indexOf(MutableString s, int idx) {
+		for (int i = idx; i < length; i++) {
+			boolean found = true;
+			for (int j = 0; j < s.length; j++) {
+				if (i + j >= length) {
+					found = false;
+					break;
+				};
+				if (data[i + j] != s.data[j]) {
+					found = false;
+					break;
+				}
+			}
+			if (found == true) {
+				return i;
+			}
+		}
+
+		// not found
+		return -1;
+	}
+
+	/**
+	 * Returns the character index where string s have been found or -1 if not found 
+	 * @param string
+	 * @return index where string has been found or -1
+	 */
+	public int indexOf(MutableString s) {
+		return indexOf(s, 0);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -273,19 +310,6 @@ public final class MutableString {
 		if (length != s2.length) return false;
 		for (int i = 0; i < length; i++) {
 			if (data[i] != s2.data[i]) return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Equals 
-	 * @param string 2
-	 * @return string 2 equals this string
-	 */
-	public boolean equals(String s2) {
-		if (length != s2.length()) return false;
-		for (int i = 0; i < length; i++) {
-			if (data[i] != s2.charAt(i)) return false;
 		}
 		return true;
 	}

@@ -17,10 +17,13 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUISelectBoxMultipleController extends GUINodeController {
 
+	private final static char VALUE_DELIMITER = '|';
+
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 	private ArrayList<GUISelectBoxMultipleOptionController> selectBoxMultipleOptionControllers = new ArrayList<GUISelectBoxMultipleOptionController>();
 
 	private MutableString value = new MutableString();
+	private MutableString searchValue = new MutableString();
 
 	/**
 	 * Constructor
@@ -52,6 +55,20 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 */
 	public void postLayout() {
 		// no op
+	}
+
+	/**
+	 * Unselect all nodes
+	 */
+	protected void unselect() {
+		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
+		for (int i = 0; i < childControllerNodes.size(); i++) {
+			GUINode childControllerNode = childControllerNodes.get(i);
+			GUINodeController childController = childControllerNode.getController(); 
+			if (childController instanceof GUISelectBoxMultipleOptionController) {
+				((GUISelectBoxMultipleOptionController)childController).unselect();
+			}
+		}
 	}
 
 	/**
@@ -249,20 +266,23 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#getValue()
 	 */
 	public MutableString getValue() {
-		/*
 		value.reset();
 
 		// determine select box option controllers
-		determineSelectBoxOptionControllers();
+		determineSelectBoxMultipleOptionControllers();
 
-		// return selected value if exists
+		// return selected values if exists
 		for (int i = 0; i < selectBoxMultipleOptionControllers.size(); i++) {
 			GUISelectBoxMultipleOptionController selectBoxOptionController = selectBoxMultipleOptionControllers.get(i);
 			if (selectBoxOptionController.isSelected() == true) {
 				value.append(((GUIElementNode)selectBoxOptionController.getNode()).getValue());
+				value.append(VALUE_DELIMITER);
 			}
 		}
-		*/
+
+		if (value.length() > 0) {
+			value.insert(0, VALUE_DELIMITER);
+		}
 
 		// otherwise return empty string
 		return value;
@@ -273,22 +293,30 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setValue(net.drewke.tdme.utils.MutableString)
 	 */
 	public void setValue(MutableString value) {
-		/*
 		// determine select box option controllers
-		determineSelectBoxOptionControllers();
+		determineSelectBoxMultipleOptionControllers();
+
+		// unselect all selections
+		unselect();
 
 		// determine new selection
 		for (int i = 0; i < selectBoxMultipleOptionControllers.size(); i++) {
 			GUISelectBoxMultipleOptionController selectBoxOptionController = selectBoxMultipleOptionControllers.get(i);
 			GUIElementNode selectBoxOptionNode = (GUIElementNode)selectBoxOptionController.getNode();
-			if (value.equals(selectBoxOptionNode.getValue()) == true) {
+
+			// set up value we search for
+			searchValue.reset();
+			searchValue.append(VALUE_DELIMITER);
+			searchValue.append(selectBoxOptionNode.getValue());
+			searchValue.append(VALUE_DELIMITER);
+
+			// check if value
+			if (value.indexOf(searchValue) != -1) {
 				selectBoxOptionController.select();
 				selectBoxOptionNode.scrollToNodeX();
 				selectBoxOptionNode.scrollToNodeY();
-				break;
 			}
 		}
-		*/
 	}
 
 }

@@ -78,6 +78,7 @@ public class GUITest implements GLEventListener, WindowListener {
 						values.put("checkbox3", new MutableString("1"));
 						values.put("dropdown", new MutableString("11"));
 						values.put("radio", new MutableString("3"));
+						values.put("selectmultiple", new MutableString("|1|2|3|15|16|17|"));
 						node.getScreenNode().setValues(values);
 	
 						// test GUI tab controller select tab method
