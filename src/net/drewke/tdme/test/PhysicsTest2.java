@@ -30,7 +30,7 @@ import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
- * Engine test
+ * Engine with physics test 2
  * @author andreas.drewke
  * @version $Id$
  */

@@ -24,7 +24,7 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
- * GUI Test 3
+ * GUI Test
  * @author Andreas Drewke
  * @version $Id$
  */
