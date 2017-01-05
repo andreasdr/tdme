@@ -40,7 +40,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author andreas.drewke
  * @version $Id$
  */
-public final class PhysicsTest implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public final class PhysicsTest1 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
 
 	private final static int RIGID_TYPEID_STANDARD = 1;
 
@@ -93,7 +93,7 @@ public final class PhysicsTest implements GLEventListener, MouseListener, MouseM
 		});
 
 		// event listener
-		PhysicsTest physicsTest = new PhysicsTest(glCanvas);
+		PhysicsTest1 physicsTest = new PhysicsTest1(glCanvas);
 		glCanvas.addGLEventListener(physicsTest);
 		glCanvas.addMouseListener(physicsTest);
 		glCanvas.addMouseMotionListener(physicsTest);
@@ -107,7 +107,7 @@ public final class PhysicsTest implements GLEventListener, MouseListener, MouseM
 	 * @param gl
 	 *            canvas
 	 */
-	public PhysicsTest(GLCanvas glCanvas) {
+	public PhysicsTest1(GLCanvas glCanvas) {
 		keyLeft = false;
 		keyRight = false;
 		keyUp = false;

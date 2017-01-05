@@ -31,6 +31,30 @@ public final class ConvexMesh implements BoundingVolume {
 	protected float sphereRadius;
 
 	/**
+	 * Create convex meshes from terrain model
+	 * @param model
+	 * @param convex meshes
+	 */
+	public static void createTerrainConvexMeshes(Object3DModel model, ArrayList<ConvexMesh> convexMeshes) {
+		// please note: no optimizations yet
+		Triangle[] triangles = model.getFaceTriangles(); 
+		for (int i = 0; i < triangles.length; i++) {
+			// have original triangle cloned
+			Triangle[] convexMeshTriangles = new Triangle[2];
+			convexMeshTriangles[0] = (Triangle)triangles[i].clone();
+
+			// clone original again and add some height that a convex mesh body will be shaped 
+			convexMeshTriangles[1] = (Triangle)convexMeshTriangles[0].clone();
+			convexMeshTriangles[1].getVertices()[0].addY(-1f);
+			convexMeshTriangles[1].getVertices()[1].addY(-1f);
+			convexMeshTriangles[1].getVertices()[2].addY(-1f);
+
+			// add to convex meshes
+			convexMeshes.add(new ConvexMesh(convexMeshTriangles));
+		}
+	}
+
+	/**
 	 * Public constructor
 	 * @param model
 	 */
