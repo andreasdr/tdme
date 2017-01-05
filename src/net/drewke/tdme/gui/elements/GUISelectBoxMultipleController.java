@@ -11,7 +11,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * GUI select box controller
+ * GUI select box multiple controller
  * @author Andreas Drewke
  * @version $Id$
  */

@@ -10,7 +10,7 @@ import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * GUI select box option controller
+ * GUI select box multiple option controller
  * @author Andreas Drewke
  * @version $Id$
  */

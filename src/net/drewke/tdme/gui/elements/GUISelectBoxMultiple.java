@@ -9,7 +9,7 @@ import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
 /**
- * GUI select box
+ * GUI select box multiple element
  * @author Andreas Drewke
  * @version $Id$
  */
