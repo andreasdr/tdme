@@ -78,10 +78,10 @@ public final class GUIDropDownOptionController extends GUINodeController {
 		// determine drop down node
 		dropDownNode = node.getParentControllerNode();
 		while(true == true) {
-			dropDownNode = dropDownNode.getParentControllerNode();
 			if (dropDownNode.getController() instanceof GUIDropDownController) {
 				break;
 			}
+			dropDownNode = dropDownNode.getParentControllerNode();
 		}
 
 		// init state

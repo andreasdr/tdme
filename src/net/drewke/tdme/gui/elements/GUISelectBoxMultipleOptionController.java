@@ -117,10 +117,10 @@ public final class GUISelectBoxMultipleOptionController extends GUINodeControlle
 		// determine drop down node
 		selectBoxMultipleNode = node.getParentControllerNode();
 		while(true == true) {
-			selectBoxMultipleNode = selectBoxMultipleNode.getParentControllerNode();
 			if (selectBoxMultipleNode.getController() instanceof GUISelectBoxMultipleController) {
 				break;
 			}
+			selectBoxMultipleNode = selectBoxMultipleNode.getParentControllerNode();
 		}
 
 		// set initial state
