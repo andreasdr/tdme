@@ -389,11 +389,31 @@ public final class GUI implements MouseListener, KeyListener {
 		mouseEvents.add(guiMouseEvent);
 	}
 
+	/**
+	 * Fake mouse moved event
+	 */
+	private void fakeMouseMovedEvent() {
+		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
+		guiMouseEvent.setTime(System.currentTimeMillis());
+		guiMouseEvent.setType(Type.MOUSE_MOVED);
+		guiMouseEvent.setX(-10000);
+		guiMouseEvent.setY(-10000);
+		guiMouseEvent.setButton(0);
+		guiMouseEvent.setWheelX(0f);
+		guiMouseEvent.setWheelY(0f);
+		guiMouseEvent.setWheelZ(0f);
+		mouseEvents.add(guiMouseEvent);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent event) {
+		// fake mouse moved event to hide current mouse overs
+		fakeMouseMovedEvent();
+
+		//
 		GUIKeyboardEvent guiKeyboardEvent = keyboardEventsPool.allocate();
 		guiKeyboardEvent.setTime(System.currentTimeMillis());
 		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_PRESSED);
@@ -412,6 +432,10 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyReleased(KeyEvent event) {
+		// fake mouse moved event to hide current mouse overs
+		fakeMouseMovedEvent();
+
+		//
 		GUIKeyboardEvent guiKeyboardEvent = keyboardEventsPool.allocate();
 		guiKeyboardEvent.setTime(System.currentTimeMillis());
 		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_RELEASED);
