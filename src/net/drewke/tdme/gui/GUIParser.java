@@ -19,6 +19,8 @@ import net.drewke.tdme.gui.elements.GUIScrollArea;
 import net.drewke.tdme.gui.elements.GUIScrollAreaHorizontal;
 import net.drewke.tdme.gui.elements.GUIScrollAreaVertical;
 import net.drewke.tdme.gui.elements.GUISelectBox;
+import net.drewke.tdme.gui.elements.GUISelectBoxMultiple;
+import net.drewke.tdme.gui.elements.GUISelectBoxMultipleOption;
 import net.drewke.tdme.gui.elements.GUISelectBoxOption;
 import net.drewke.tdme.gui.elements.GUITab;
 import net.drewke.tdme.gui.elements.GUITabContent;
@@ -774,6 +776,22 @@ public final class GUIParser {
 		// add select box option
 		try {
 			GUIElement guiElement = new GUISelectBoxOption();
+			addElement(guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add select box multiple
+		try {
+			GUIElement guiElement = new GUISelectBoxMultiple();
+			addElement(guiElement);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// add select box multiple option
+		try {
+			GUIElement guiElement = new GUISelectBoxMultipleOption();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();
