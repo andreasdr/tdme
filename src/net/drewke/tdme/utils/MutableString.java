@@ -306,7 +306,21 @@ public final class MutableString {
 	 * @param string 2
 	 * @return string 2 equals this string
 	 */
+	public boolean equals(String s2) {
+		if (length != s2.length()) return false;
+		for (int i = 0; i < length; i++) {
+			if (data[i] != s2.charAt(i)) return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Equals
+	 * @param string 2
+	 * @return string 2 equals this string
+	 */
 	public boolean equals(MutableString s2) {
+		if (this == s2) return true;
 		if (length != s2.length) return false;
 		for (int i = 0; i < length; i++) {
 			if (data[i] != s2.data[i]) return false;
