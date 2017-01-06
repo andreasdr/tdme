@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.utils.MutableString;
 
@@ -20,7 +21,7 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	private static final String CONDITION_SELECTED = "selected";
 	private static final String CONDITION_UNSELECTED = "unselected";
 
-	private GUINode dropDownNode;
+	private GUIParentNode dropDownNode;
 	private boolean selected;
 
 	/**
@@ -98,8 +99,8 @@ public final class GUIDropDownOptionController extends GUINodeController {
 	 */
 	public void postLayout() {
 		if (selected == true) {
-			node.scrollToNodeX();
-			node.scrollToNodeY();
+			node.scrollToNodeX(dropDownNode);
+			node.scrollToNodeY(dropDownNode);
 		}
 	}
 
@@ -133,8 +134,8 @@ public final class GUIDropDownOptionController extends GUINodeController {
 				node.getScreenNode().delegateValueChanged((GUIElementNode)dropDownNode);
 
 				//
-				node.scrollToNodeX();
-				node.scrollToNodeY();
+				node.scrollToNodeX(dropDownNode);
+				node.scrollToNodeY(dropDownNode);
 			}
 		}
 	}

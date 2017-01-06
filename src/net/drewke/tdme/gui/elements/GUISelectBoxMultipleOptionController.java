@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -22,7 +23,7 @@ public final class GUISelectBoxMultipleOptionController extends GUINodeControlle
 	private static final String CONDITION_FOCUSSED = "focussed";
 	private static final String CONDITION_UNFOCUSSED = "unfocussed";
 
-	private GUINode selectBoxMultipleNode;
+	private GUIParentNode selectBoxMultipleNode;
 	private boolean selected;
 	private boolean focussed;
 
@@ -145,8 +146,8 @@ public final class GUISelectBoxMultipleOptionController extends GUINodeControlle
 	 */
 	public void postLayout() {
 		if (selected == true) {
-			node.scrollToNodeX();
-			node.scrollToNodeY();
+			node.scrollToNodeX(selectBoxMultipleNode);
+			node.scrollToNodeY(selectBoxMultipleNode);
 		}
 	}
 
@@ -180,8 +181,8 @@ public final class GUISelectBoxMultipleOptionController extends GUINodeControlle
 				node.getScreenNode().delegateValueChanged((GUIElementNode)selectBoxMultipleNode);
 
 				//
-				node.scrollToNodeX();
-				node.scrollToNodeY();
+				node.scrollToNodeX(selectBoxMultipleNode);
+				node.scrollToNodeY(selectBoxMultipleNode);
 			}
 		}
 	}

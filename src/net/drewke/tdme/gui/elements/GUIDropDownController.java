@@ -148,8 +148,8 @@ public final class GUIDropDownController extends GUINodeController {
 
 		// select
 		dropDownOptionControllers.get(selectBoxOptionControllerIdx).select();
-		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
-		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX(dropDownNode);
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY(dropDownNode);
 	}
 
 	/**
@@ -171,8 +171,8 @@ public final class GUIDropDownController extends GUINodeController {
 
 		// select
 		dropDownOptionControllers.get(selectBoxOptionControllerIdx).select();
-		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
-		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX(dropDownNode);
+		dropDownOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY(dropDownNode);
 	}
 
 	/*
@@ -331,8 +331,8 @@ public final class GUIDropDownController extends GUINodeController {
 			GUIElementNode dropDownOptionNode = ((GUIElementNode)dropDownOptionController.getNode());
 			if (value.equals(dropDownOptionNode.getValue())) {
 				dropDownOptionController.select();
-				dropDownOptionNode.scrollToNodeX();
-				dropDownOptionNode.scrollToNodeY();
+				dropDownOptionNode.scrollToNodeX(dropDownNode);
+				dropDownOptionNode.scrollToNodeY(dropDownNode);
 				break;
 			}
 		}

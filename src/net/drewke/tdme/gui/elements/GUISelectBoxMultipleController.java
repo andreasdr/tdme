@@ -137,8 +137,8 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 
 		// focus
 		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).focus();
-		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeX();
-		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeY();
+		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeX((GUIParentNode)node);
+		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeY((GUIParentNode)node);
 	}
 
 	/**
@@ -160,8 +160,8 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 
 		// select
 		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).focus();
-		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeX();
-		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeY();
+		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeX((GUIParentNode)node);
+		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeY((GUIParentNode)node);
 	}
 
 	/**
@@ -176,8 +176,8 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 
 		// select
 		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).toggle();
-		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeX();
-		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeY();
+		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeX((GUIParentNode)node);
+		selectBoxMultipleOptionControllers.get(selectBoxMultipleOptionControllerIdx).getNode().scrollToNodeY((GUIParentNode)node);
 	}
 
 	/*
@@ -313,8 +313,8 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 			// check if value
 			if (value.indexOf(searchValue) != -1) {
 				selectBoxOptionController.select();
-				selectBoxOptionNode.scrollToNodeX();
-				selectBoxOptionNode.scrollToNodeY();
+				selectBoxOptionNode.scrollToNodeX((GUIParentNode)node);
+				selectBoxOptionNode.scrollToNodeY((GUIParentNode)node);
 			}
 		}
 	}

@@ -994,9 +994,9 @@ public abstract class GUINode {
 	/**
 	 * @return first parent node in tree with controller node attached
 	 */
-	public GUINode getParentControllerNode() {
+	public GUIParentNode getParentControllerNode() {
 		// determine first node up the tree with controller
-		GUINode node = this.parentNode;
+		GUIParentNode node = this.parentNode;
 		while (node != null && node.controller == null) {
 			node = node.parentNode;
 		}
@@ -1081,9 +1081,18 @@ public abstract class GUINode {
 	 * Scroll to node Y
 	 */
 	public void scrollToNodeY() {
+		scrollToNodeY(null);
+	}
+
+	/**
+	 * Scroll to node Y
+	 * @param stop at node to node
+	 */
+	public void scrollToNodeY(GUIParentNode toNode) {
 		// find parent
 		GUIParentNode scrollYParentNode = this.parentNode;
 		while (true == true) {
+			if (scrollYParentNode == toNode || scrollYParentNode == null) return;
 			if (scrollYParentNode.overflowY == Overflow.SCROLL) {
 				break;
 			}
@@ -1102,21 +1111,29 @@ public abstract class GUINode {
 		}
 
 		// scroll parent node into view
-		scrollYParentNode.scrollToNodeY();
+		scrollYParentNode.scrollToNodeY(toNode);
 	}
 
 	/**
 	 * Scroll to node X
 	 */
 	public void scrollToNodeX() {
+		scrollToNodeX(null);
+	}
+
+	/**
+	 * Scroll to node X
+	 * @param stop at node to node
+	 */
+	public void scrollToNodeX(GUIParentNode toNode) {
 		// find parent
 		GUIParentNode scrollXParentNode = this.parentNode;
 		while (true == true) {
+			if (scrollXParentNode == toNode || scrollXParentNode == null) return;
 			if (scrollXParentNode.overflowX == Overflow.SCROLL) {
 				break;
 			}
 			scrollXParentNode = scrollXParentNode.parentNode;
-			if (scrollXParentNode == null) return;
 		}
 
 		// check if left of viewport 
@@ -1130,7 +1147,7 @@ public abstract class GUINode {
 		}
 
 		// scroll parent node into view
-		scrollXParentNode.scrollToNodeX();
+		scrollXParentNode.scrollToNodeX(toNode);
 	}
 
 	/**

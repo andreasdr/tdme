@@ -120,8 +120,8 @@ public final class GUISelectBoxController extends GUINodeController {
 
 		// select
 		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).select();
-		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
-		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX((GUIParentNode)node);
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY((GUIParentNode)node);
 	}
 
 	/**
@@ -143,8 +143,8 @@ public final class GUISelectBoxController extends GUINodeController {
 
 		// select
 		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).select();
-		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX();
-		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY();
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeX((GUIParentNode)node);
+		selectBoxOptionControllers.get(selectBoxOptionControllerIdx).getNode().scrollToNodeY((GUIParentNode)node);
 	}
 
 	/*
@@ -262,8 +262,8 @@ public final class GUISelectBoxController extends GUINodeController {
 			GUIElementNode selectBoxOptionNode = (GUIElementNode)selectBoxOptionController.getNode();
 			if (value.equals(selectBoxOptionNode.getValue()) == true) {
 				selectBoxOptionController.select();
-				selectBoxOptionNode.scrollToNodeX();
-				selectBoxOptionNode.scrollToNodeY();
+				selectBoxOptionNode.scrollToNodeX((GUIParentNode)node);
+				selectBoxOptionNode.scrollToNodeY((GUIParentNode)node);
 				break;
 			}
 		}
