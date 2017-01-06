@@ -4,7 +4,7 @@
 	<!-- unselected, mouse over -->
 	<text id="{$id}_unselected,mouseover" padding-top="2" padding-bottom="2" width="100%" hide-on="selected" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" background-color="#8080c0" />
 	<!-- selected, no mouse over -->
-	<text id="{$id}_selected" padding-top="2" padding-bottom="2" width="100%" hide-on="unselected,mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" background-color="#8080a0" />
+	<text id="{$id}_selected" padding-top="2" padding-bottom="2" width="100%" hide-on="unselected,mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#ffffff" background-color="#8080a0" />
 	<!-- selected, mouse over -->
-	<text id="{$id}_selected,mouseover" padding-top="2" padding-bottom="2" width="100%" hide-on="unselected" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" background-color="#8080c0" />
+	<text id="{$id}_selected,mouseover" padding-top="2" padding-bottom="2" width="100%" hide-on="unselected" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#ffffff" background-color="#8080c0" />
 </element>

@@ -4,9 +4,9 @@
 	<!-- unfocused, unselected, mouse over -->
 	<text padding-top="2" padding-bottom="2" width="100%" hide-on="focussed,selected" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" background-color="#8080c0" />
 	<!-- unfocused, selected, no mouse over -->
-	<text padding-top="2" padding-bottom="2" width="100%" hide-on="focussed,unselected,mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" background-color="#8080a0" />
+	<text padding-top="2" padding-bottom="2" width="100%" hide-on="focussed,unselected,mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#ffffff" background-color="#8080a0" />
 	<!-- unfocused, selected, mouse over -->
-	<text padding-top="2" padding-bottom="2" width="100%" hide-on="focussed,unselected" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" background-color="#8080c0" />
+	<text padding-top="2" padding-bottom="2" width="100%" hide-on="focussed,unselected" show-on="mouseover" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#ffffff" background-color="#8080c0" />
 	<!-- focussed, unselected -->
 	<text padding-top="2" padding-bottom="2" width="100%" hide-on="selected" show-on="focussed" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" background-color="#FF4040" color="#000000" />
 	<!-- focussed, selected -->
