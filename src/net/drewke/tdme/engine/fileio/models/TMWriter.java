@@ -55,6 +55,7 @@ public class TMWriter {
 			}
 
 			// sub groups
+			writeInt(os, model.getSubGroups().size());
 			for (Group group: model.getSubGroups().getValuesIterator()) {
 				writeGroup(os, group);
 			}
