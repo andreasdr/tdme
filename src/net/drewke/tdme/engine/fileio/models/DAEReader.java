@@ -36,20 +36,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Collada DAE parser
+ * Collada DAE reader
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class DAEParser {
+public final class DAEReader {
 
 	/**
-	 * Parses a Collada DAE file
-	 * @param pathName
-	 * @param fileName
+	 * Reads Collada DAE file
+	 * @param path name
+	 * @param file name
+	 * @throws Exception
 	 * @return Model instance
-	 * @throws IOException
 	 */
-	public static Model parse(String pathName, String fileName) throws Exception {
+	public static Model read(String pathName, String fileName) throws Exception {
 		// load dae xml document
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
@@ -93,7 +93,7 @@ public final class DAEParser {
 
 		// check for xml scene id
 		if (xmlSceneId == null) {
-			throw new ParserException("No scene id found");
+			throw new ModelFileIOException("No scene id found");
 		}
 
 		// parse visual scenes
@@ -122,7 +122,7 @@ public final class DAEParser {
 
 				// visual scene root nodes
 				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
-					Group group = parseVisualSceneNode(pathName, model, xmlRoot, xmlNode, fps);
+					Group group = readVisualSceneNode(pathName, model, xmlRoot, xmlNode, fps);
 					if (group != null) {
 						model.getSubGroups().put(group.getId(), group);
 						model.getGroups().put(group.getId(), group);
@@ -171,8 +171,9 @@ public final class DAEParser {
 	}
 
 	/**
-	 * Sets up a group as joint taking all subgroups into account
+	 * Fixes animation length as sometimes they are only given partially, which is not supported by engine
 	 * @param group
+	 * @param frames
 	 */
 	private static void fixAnimationLength(Group root, int frames) {
 		Animation animation = root.getAnimation();
@@ -190,31 +191,35 @@ public final class DAEParser {
 	}
 
 	/**
-	 * Parses a DAE visual scene node
-	 * @param pathName
+	 * Read a DAE visual scene node
+	 * @param path name
 	 * @param model
-	 * @param xmlNode
-	 * @param xmlRoot
+	 * @param xml node
+	 * @param xml root
 	 * @param frames per second
+	 * @throws Exception
+	 * @return group
 	 */
-	private static Group parseVisualSceneNode(String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
+	private static Group readVisualSceneNode(String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
 		List<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
 		if (xmlInstanceControllers.isEmpty() == false) {
-			return parseVisualSceneInstanceController(pathName, model, xmlRoot, xmlNode);
+			return readVisualSceneInstanceController(pathName, model, xmlRoot, xmlNode);
 		} else {
-			return parseNode(pathName, model, xmlRoot, xmlNode, fps);
+			return readNode(pathName, model, xmlRoot, xmlNode, fps);
 		}
 	}
 
 	/**
-	 * Parses a DAE visual scene group node
-	 * @param pathName
+	 * Reads a DAE visual scene group node
+	 * @param path name
 	 * @param model
-	 * @param xmlNode
-	 * @param xmlRoot
+	 * @param xml node
+	 * @param xml root
 	 * @param frames per seconds
+	 * @throws Exception
+	 * @return group
 	 */
-	private static Group parseNode(String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
+	private static Group readNode(String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
 		String xmlNodeId = xmlNode.getAttribute("id");
 		String xmlNodeName = xmlNode.getAttribute("name");
 		if (xmlNodeId.length() == 0) xmlNodeId = xmlNodeName;
@@ -294,7 +299,7 @@ public final class DAEParser {
 
 				// check for sampler source
 				if (xmlSamplerOutputSource == null) {
-					throw new ParserException("Could not fid xml sampler output source for animation for " + xmlNodeId);
+					throw new ModelFileIOException("Could not fid xml sampler output source for animation for " + xmlNodeId);
 				}
 
 				// load animation input matrices
@@ -412,7 +417,7 @@ public final class DAEParser {
 
 		// parse sub groups
 		for(Element _xmlNode: getChildrenByTagName(xmlNode, "node")) {
-			Group _group = parseVisualSceneNode(pathName, model, xmlRoot, _xmlNode, fps);
+			Group _group = readVisualSceneNode(pathName, model, xmlRoot, _xmlNode, fps);
 			if (_group != null) {
 				group.getSubGroups().put(_group.getId(), _group);
 				model.getGroups().put(_group.getId(), _group);
@@ -440,7 +445,7 @@ public final class DAEParser {
 			}
 
 			// parse geometry
-			parseGeometry(pathName, model, group, xmlRoot, xmlInstanceGeometryId, materialSymbols);
+			readGeometry(pathName, model, group, xmlRoot, xmlInstanceGeometryId, materialSymbols);
 
 			//
 			return group;
@@ -459,7 +464,7 @@ public final class DAEParser {
 			if (xmlLibraryNode.getAttribute("id").equals(xmlInstanceNodeId)) {
 				// parse sub groups
 				for(Element _xmlNode: getChildrenByTagName(xmlLibraryNode, "node")) {
-					Group _group = parseVisualSceneNode(pathName, model, xmlRoot, _xmlNode, fps);
+					Group _group = readVisualSceneNode(pathName, model, xmlRoot, _xmlNode, fps);
 					if (_group != null) {
 						group.getSubGroups().put(_group.getId(), _group);
 						model.getGroups().put(_group.getId(), _group);
@@ -481,7 +486,7 @@ public final class DAEParser {
 					}
 
 					// parse geometry
-					parseGeometry(pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
+					readGeometry(pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
 				}
 			}
 		}
@@ -491,15 +496,15 @@ public final class DAEParser {
 	}
 
 	/**
-	 * Parses a instance controller
-	 * @param pathName
+	 * Reads a instance controller
+	 * @param path name
 	 * @param model
-	 * @param xmlRoot
-	 * @param xmlNode
-	 * @return
+	 * @param xml root
+	 * @param xml node
+	 * @return Group
 	 * @throws Exception
 	 */
-	private static Group parseVisualSceneInstanceController(String pathName, Model model, Element xmlRoot, Element xmlNode) throws Exception {
+	private static Group readVisualSceneInstanceController(String pathName, Model model, Element xmlRoot, Element xmlNode) throws Exception {
 		StringTokenizer t;
 
 		String xmlNodeId = xmlNode.getAttribute("id");
@@ -540,7 +545,7 @@ public final class DAEParser {
 
 		// check for xml skin
 		if (xmlSkin == null) {
-			throw new ParserException("skin not found for instance controller " + xmlNodeId);
+			throw new ModelFileIOException("skin not found for instance controller " + xmlNodeId);
 		}
 
 		// get geometry id
@@ -573,7 +578,7 @@ public final class DAEParser {
 		Skinning skinning = group.createSkinning();
 
 		// parse geometry
-		parseGeometry(pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
+		readGeometry(pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
 
 		// parse joints
 		String xmlJointsSource = null;
@@ -590,7 +595,7 @@ public final class DAEParser {
 
 		// check for joints sources
 		if (xmlJointsSource == null) {
-			throw new ParserException("joint source not found for instance controller " + xmlNodeId);
+			throw new ModelFileIOException("joint source not found for instance controller " + xmlNodeId);
 		}
 
 		// parse joint ids
@@ -607,7 +612,7 @@ public final class DAEParser {
 
 		// check for inverse bind matrices source
 		if (xmlJointsInverseBindMatricesSource == null) {
-			throw new ParserException("inverse bind matrices source not found for instance controller " + xmlNodeId);
+			throw new ModelFileIOException("inverse bind matrices source not found for instance controller " + xmlNodeId);
 		}
 
 		// parse joints inverse bind matrix
@@ -645,7 +650,7 @@ public final class DAEParser {
 		for(Element xmlVertexWeightInput: xmlVertexWeightInputs) {
 			if (xmlVertexWeightInput.getAttribute("semantic").equals("JOINT")) {
 				if (xmlVertexWeightInput.getAttribute("source").substring(1).equals(xmlJointsSource) == false) {
-					throw new ParserException("joint inverse bind matrices source do not match");
+					throw new ModelFileIOException("joint inverse bind matrices source do not match");
 				}
 				xmlJointOffset = Integer.parseInt(xmlVertexWeightInput.getAttribute("offset")); 
 			} else
@@ -657,13 +662,13 @@ public final class DAEParser {
 
 		// check for vertex weight parameter 
 		if (xmlJointOffset == -1) {
-			throw new ParserException("xml vertext weight joint offset missing for node " + xmlNodeId);
+			throw new ModelFileIOException("xml vertext weight joint offset missing for node " + xmlNodeId);
 		}
 		if (xmlWeightOffset == -1) {
-			throw new ParserException("xml vertext weight weight offset missing for node " + xmlNodeId);
+			throw new ModelFileIOException("xml vertext weight weight offset missing for node " + xmlNodeId);
 		}
 		if (xmlWeightsSource == null) {
-			throw new ParserException("xml vertext weight weight source missing for node " + xmlNodeId);
+			throw new ModelFileIOException("xml vertext weight weight source missing for node " + xmlNodeId);
 		}
 
 		// parse weights
@@ -712,14 +717,16 @@ public final class DAEParser {
 	}
 
 	/**
-	 * Parses a geometry
-	 * @param pathName
+	 * Reads a geometry
+	 * @param path name
 	 * @param model
 	 * @param group
-	 * @param xmlRoot
-	 * @param xmlNodeId
+	 * @param xml root
+	 * @param xml node id
+	 * @param material symbols
+	 * @throws Exception
 	 */
-	public static void parseGeometry(String pathName, Model model, Group group, Element xmlRoot, String xmlNodeId, HashMap<String, String> materialSymbols) throws Exception {
+	public static void readGeometry(String pathName, Model model, Group group, Element xmlRoot, String xmlNodeId, HashMap<String, String> materialSymbols) throws Exception {
 		StringTokenizer t;
 
 		//
@@ -772,7 +779,7 @@ public final class DAEParser {
 						while (t.hasMoreTokens()) {
 							int vertexCount = Integer.parseInt(t.nextToken());
 							if (vertexCount != 3) {
-								throw new ParserException("we only support triangles in " + xmlNodeId);
+								throw new ModelFileIOException("we only support triangles in " + xmlNodeId);
 							}
 						}
 					}
@@ -798,7 +805,7 @@ public final class DAEParser {
 						Material material = model.getMaterials().get(xmlMaterialId);
 						if (material == null) {
 							// parse material as we do not have it yet
-							material = parseMaterial(pathName, model, xmlRoot, xmlMaterialId);
+							material = readMaterial(pathName, model, xmlRoot, xmlMaterialId);
 						}
 						// set it up
 						facesEntity.setMaterial(material);
@@ -850,12 +857,12 @@ public final class DAEParser {
 
 					// check for triangles vertices sources
 					if (xmlVerticesSource == null) {
-						throw new ParserException("Could not determine triangles vertices source for '" + xmlNodeId + "'");
+						throw new ModelFileIOException("Could not determine triangles vertices source for '" + xmlNodeId + "'");
 					}
 	
 					// check for triangles normals sources
 					if (xmlNormalsSource == null) {
-						throw new ParserException("Could not determine triangles normal source for '" + xmlNodeId + "'");
+						throw new ModelFileIOException("Could not determine triangles normal source for '" + xmlNodeId + "'");
 					}
 	
 					// load vertices, normals, texture coordinates
@@ -1001,14 +1008,15 @@ public final class DAEParser {
 	}
 
 	/**
-	 * Parses a material
-	 * @param pathName
+	 * Reads a material
+	 * @param path name
 	 * @param model
-	 * @param xmlRoot
-	 * @param xmlNodeId
+	 * @param xml root
+	 * @param xml node id
+	 * @return material
 	 * @throws Exception
 	 */
-	public static Material parseMaterial(String pathName, Model model, Element xmlRoot, String xmlNodeId) throws Exception {
+	public static Material readMaterial(String pathName, Model model, Element xmlRoot, String xmlNodeId) throws Exception {
 		// determine effect id
 		String xmlEffectId = null;
 		Element xmlLibraryMaterials = getChildrenByTagName(xmlRoot, "library_materials").get(0);
@@ -1252,7 +1260,7 @@ public final class DAEParser {
 			});
 			tmpFileNameCandidate = fileNameCandidates.length > 0?fileNameCandidates[0]:null;
 		} catch (IOException ioe) {
-			System.out.println("DAEParser::makeDisplacementFilenameCandidate::" + ioe);
+			System.out.println("DAEReader::makeDisplacementFilenameCandidate::" + ioe);
 		}
 		
 		// we are done
@@ -1309,7 +1317,7 @@ public final class DAEParser {
 	}
 	
 	/**
-	 * Returns immediate children by tagnames of parent
+	 * Returns immediate children by tag names of parent
 	 * @param parent
 	 * @param name
 	 * @return children with given name

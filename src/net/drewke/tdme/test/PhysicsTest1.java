@@ -17,7 +17,7 @@ import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.Object3DModel;
 import net.drewke.tdme.engine.Rotation;
-import net.drewke.tdme.engine.fileio.models.DAEParser;
+import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.physics.RigidBody;
 import net.drewke.tdme.engine.physics.World;
@@ -48,7 +48,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 	private final static int BOXSTACK_COUNT = 2;
 	private final static int CAPSULE_COUNT = 10;
 	private final static int SPHERE_COUNT = 10;
-	
+
 	private Engine engine;
 	private FPSAnimator animator;
 
@@ -382,7 +382,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 
 		try {
 			// load barrel, set up bounding volume
-			Model _barrel = DAEParser.parse("resources/models/barrel", "barrel.dae");
+			Model _barrel = DAEReader.read("resources/models/barrel", "barrel.dae");
 			// _barrel.getImportTransformationsMatrix().scale(2f);
 			ConvexMesh barrelBoundingVolume = new ConvexMesh(new Object3DModel(_barrel));
 
@@ -407,7 +407,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 			world.addRigidBody("barrel2", true, RIGID_TYPEID_STANDARD, entity, barrelBoundingVolume, 0f, 1f, 100f, RigidBody.computeInertiaMatrix(barrelBoundingVolume, 100f, 1f, 1f, 1f));
 
 			// load cone, set up bounding volume
-			Model _cone = DAEParser.parse("resources/models/cone", "cone.dae");
+			Model _cone = DAEReader.read("resources/models/cone", "cone.dae");
 			// _barrel.getImportTransformationsMatrix().scale(2f);
 			ConvexMesh coneBoundingVolume = new ConvexMesh(new Object3DModel(_cone));
 
@@ -432,7 +432,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 			world.addRigidBody("cone2", true, RIGID_TYPEID_STANDARD, entity, coneBoundingVolume, 0f, 1f, 100f, RigidBody.computeInertiaMatrix(coneBoundingVolume, 100f, 1f, 1f, 1f));
 
 			// load cone, set up bounding volume
-			Model _tire = DAEParser.parse("resources/models/tire", "tire.dae");
+			Model _tire = DAEReader.read("resources/models/tire", "tire.dae");
 			// _barrel.getImportTransformationsMatrix().scale(2f);
 			ConvexMesh tireBoundingVolume = new ConvexMesh(new Object3DModel(_tire));
 

@@ -18,7 +18,7 @@ import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Rotations;
-import net.drewke.tdme.engine.fileio.models.DAEParser;
+import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.Capsule;
@@ -197,12 +197,12 @@ public final class EngineTestHouse implements GLEventListener, MouseListener, Mo
 		Model _environment = null;
 		try {
 			System.out.println("Loading environment ...");
-			_environment = DAEParser.parse("resources/environment/indoor_outdoor_house", "indoor_outdoor_house.dae");
+			_environment = DAEReader.read("resources/environment/indoor_outdoor_house", "indoor_outdoor_house.dae");
 			System.out.println(ModelUtilities.createBoundingBox(_environment));
 			// System.out.println(_environment);
 
 			System.out.println("Loading player");
-			Model _player = DAEParser.parse("resources/models/dummy", "testDummy_textured.DAE");
+			Model _player = DAEReader.read("resources/models/dummy", "testDummy_textured.DAE");
 			_player.addAnimationSetup("still", 3, 3, true);
 			_player.addAnimationSetup("walk", 0, 18, true);
 

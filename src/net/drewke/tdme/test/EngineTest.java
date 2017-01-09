@@ -22,7 +22,7 @@ import net.drewke.tdme.engine.PointsParticleSystemEntity;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Rotations;
 import net.drewke.tdme.engine.Transformations;
-import net.drewke.tdme.engine.fileio.models.DAEParser;
+import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
@@ -447,7 +447,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		playersBoundingVolumeModel = new ArrayList<Object3D>();
 		playerBoundingVolumesTransformed = new ArrayList<BoundingVolume>();
 		try {
-			Model _barrel = DAEParser.parse("resources/models/barrel", "barrel.dae");
+			Model _barrel = DAEReader.read("resources/models/barrel", "barrel.dae");
 			Object3D barrel = new Object3D("barrel", _barrel);
 			barrelBoundingVolume = new ConvexMesh(new Object3DModel(_barrel));
 			barrel.getTranslation().set(1.5f,0.35f,-2f);
@@ -464,14 +464,14 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			engine.addEntity(farPlane);
 
 			//
-			Model _grass = DAEParser.parse("resources/models/grass", "grass.dae");
+			Model _grass = DAEReader.read("resources/models/grass", "grass.dae");
 			Object3D grass = new Object3D("ground", _grass);
 			grass.getScale().set(8f,1f,8f);
 			grass.update();
 			engine.addEntity(grass);
 
 			// players
-			Model _player = DAEParser.parse("resources/models/dummy", "testDummy_textured.DAE");
+			Model _player = DAEReader.read("resources/models/dummy", "testDummy_textured.DAE");
 			_player.addAnimationSetup("still", 3, 3, true);
 			_player.addAnimationSetup("walk", 0, 18, true);
 
@@ -541,7 +541,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			engine.addEntity(player2BoundingVolume);
 
 			// add cube
-			Model _cube = DAEParser.parse("resources/models/test", "cube.dae");
+			Model _cube = DAEReader.read("resources/models/test", "cube.dae");
 			cube = new Object3D("cube", _cube);
 			cube.getTranslation().add(new Vector3(0f,0f,0f));
 			cube.getScale().set(2f,2f,2f);
@@ -564,7 +564,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			engine.addEntity(cubeBoundingVolumeObject3D);
 
 			// wall
-			Model _wall = DAEParser.parse("resources/models/wall", "wall.dae");
+			Model _wall = DAEReader.read("resources/models/wall", "wall.dae");
 			Object3D wall0 = new Object3D("wall0", _wall);
 			wall0.getTranslation().add(new Vector3(-1.00f,0f,3.00f));
 			wall0.update();

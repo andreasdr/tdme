@@ -19,23 +19,22 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
 
-
 /**
- * Wavefront object Parser
+ * Wavefront object reader
  * @author andreas.drewke
  * @version $Id$
  */
-public final class WFObjParser {
+public final class WFObjReader {
 
 	/**
-	 * Parses a wave front object file
-	 * 	Does no validation yet
-	 * @param pathName
-	 * @param fileName
-	 * @return TDObject instance
+	 * Reads a wave front object file
+	 * @param path name
+	 * @param file name
+	 * @return model
 	 * @throws IOException
+	 * @throws ModelIOException
 	 */
-	public static Model parse(String pathName, String fileName) throws IOException, ParserException {
+	public static Model read(String pathName, String fileName) throws IOException, ModelFileIOException {
 		// create object
 		Model model = new Model(pathName + File.separator + fileName, fileName);	
 
@@ -93,7 +92,7 @@ public final class WFObjParser {
 				// parse
 				if (command.equals("mtllib")) {
 					String materialFileName = arguments;
-					materials = WFObjParser.parseMaterials(pathName, materialFileName);
+					materials = WFObjReader.readMaterials(pathName, materialFileName);
 				} else
 				if (command.equals("v")) {
 					StringTokenizer t = new StringTokenizer(arguments, " ");
@@ -140,7 +139,7 @@ public final class WFObjParser {
 	
 					// check if triangulated
 					if (t.hasMoreTokens()) {
-						throw new ParserException("We only support triangulated meshes");
+						throw new ModelFileIOException("We only support triangulated meshes");
 					}
 
 					Integer mappedVertex = null;
@@ -303,12 +302,12 @@ public final class WFObjParser {
 	}
 
 	/**
-	 * Parse a wavefront object material library
-	 * @param pathName
-	 * @param fileName
+	 * Reads a wavefront object material library
+	 * @param path name
+	 * @param file name
 	 * @return
 	 */
-	private static HashMap<String, Material> parseMaterials(String pathName, String fileName) throws IOException {
+	private static HashMap<String, Material> readMaterials(String pathName, String fileName) throws IOException {
 		HashMap<String, Material> materials = new HashMap<String, Material>();
 		Material current = null;
 		//

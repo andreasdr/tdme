@@ -5,13 +5,13 @@ package net.drewke.tdme.engine.fileio.models;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class ParserException extends Exception {
+public final class ModelFileIOException extends Exception {
 
 	/**
 	 * Public constructor
 	 * @param msg
 	 */
-	public ParserException(String msg) {
+	public ModelFileIOException(String msg) {
 		super(msg);
 	}	
 
