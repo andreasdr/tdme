@@ -3,6 +3,7 @@ package net.drewke.tdme.os;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Interface to file system
@@ -19,6 +20,15 @@ public interface FileSystemInterface {
 	 * @throws IOException
 	 */
 	public InputStream getInputStream(String path, String fileName) throws IOException;
+
+	/**
+	 * Creates output stream by given path name and file name
+	 * @param path
+	 * @param file name
+	 * @return output stream
+	 * @throws IOException
+	 */
+	public OutputStream getOutputStream(String path, String fileName) throws IOException;
 
 	/**
 	 * Get file content

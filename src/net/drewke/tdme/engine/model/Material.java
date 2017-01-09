@@ -129,6 +129,21 @@ public final class Material {
 	}
 
 	/**
+	 * @return texture has transparent pixels
+	 */
+	public boolean hasDiffuseTextureTransparency() {
+		return diffuseTextureTransparency;
+	}
+
+	/**
+	 * Set up if diffuse texture has transparent pixel 
+	 * @param diffuse texture transparency
+	 */
+	public void setDiffuseTextureTransparency(boolean diffuseTextureTransparency) {
+		this.diffuseTextureTransparency = diffuseTextureTransparency;
+	}
+
+	/**
 	 * Checks and set ups diffuse texture transparency
 	 */
 	private void checkDiffuseTextureTransparency() {

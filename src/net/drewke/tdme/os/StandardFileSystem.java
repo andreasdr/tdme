@@ -4,10 +4,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -44,6 +46,24 @@ public final class StandardFileSystem implements FileSystemInterface {
 		is = this.getClass().getClassLoader().getResourceAsStream(path + "/" + fileName);
 		if (is != null) return is;
 		throw new FileNotFoundException(path + "/" + fileName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.os.FileSystemInterface#getOutputStream(java.lang.String, java.lang.String)
+	 */
+	public OutputStream getOutputStream(String path, String fileName) throws IOException {
+		// we only support unix style path names in jar files
+		path = path.replace('\\', '/');
+		// delete current working dir from path name to be able to use jar files
+		String currentPath = new File("").getCanonicalFile().toString().replace('\\', '/');
+		if (path.startsWith(currentPath)) {
+			path = path.substring(currentPath.length() + 1); 
+		}
+		String _fileName = path + File.separator + fileName;
+
+		//
+		return new FileOutputStream(_fileName);
 	}
 
 	/*
