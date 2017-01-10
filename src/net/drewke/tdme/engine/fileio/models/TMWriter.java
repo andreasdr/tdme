@@ -94,8 +94,8 @@ public class TMWriter {
 	 * @throws IOException
 	 */
 	private static void writeShort(OutputStream os, short s) throws IOException {
-		os.write((s >> 0) & 0xff);
 		os.write((s >> 8) & 0xff);
+		os.write((s >> 0) & 0xff);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class TMWriter {
 	}
 
 	/**
-	 * Writes a integer to output stream
+	 * Writes a float to output stream
 	 * @param output stream
 	 * @param float
 	 * @throws IOException
@@ -122,7 +122,7 @@ public class TMWriter {
 	}
 
 	/**
-	 * Writes a integer to output stream
+	 * Writes a string to output stream
 	 * @param output stream
 	 * @param string
 	 * @throws IOException
@@ -140,7 +140,7 @@ public class TMWriter {
 	}
 
 	/**
-	 * Writes a integer to output stream
+	 * Writes a float array to output stream
 	 * @param output stream
 	 * @param float array
 	 * @throws IOException
@@ -241,6 +241,7 @@ public class TMWriter {
 			writeBoolean(os, false);
 		} else {
 			writeBoolean(os, true);
+			writeInt(os, a.getTransformationsMatrices().length);
 			for (int i = 0; i < a.getTransformationsMatrices().length; i++) {
 				writeFloatArray(os, a.getTransformationsMatrices()[i].getArray());
 			}
