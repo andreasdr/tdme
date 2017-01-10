@@ -17,6 +17,7 @@ import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.HashMap;
 
 /**
  * TDME model writer
@@ -55,10 +56,7 @@ public class TMWriter {
 			}
 
 			// sub groups
-			writeInt(os, model.getSubGroups().size());
-			for (Group group: model.getSubGroups().getValuesIterator()) {
-				writeGroup(os, group);
-			}
+			writeSubGroups(os, model.getSubGroups());
 		} catch (IOException ioe) {
 			throw ioe;
 		} finally {
@@ -349,6 +347,19 @@ public class TMWriter {
 	}
 
 	/**
+	 * Write sub groups
+	 * @param output stream
+	 * @param sub groups
+	 * @throws IOException
+	 */
+	private static void writeSubGroups(OutputStream os, HashMap<String, Group> subGroups) throws IOException {
+		writeInt(os, subGroups.size());
+		for (Group subGroup: subGroups.getValuesIterator()) {
+			writeGroup(os, subGroup);
+		}
+	}
+
+	/**
 	 * Write group to output stream
 	 * @param output stream
 	 * @param group
@@ -367,10 +378,7 @@ public class TMWriter {
 		writeAnimation(os, g.getAnimation());
 		writeSkinning(os, g.getSkinning());
 		writeFacesEntities(os, g.getFacesEntities());
-		writeInt(os, g.getSubGroups().size());
-		for (Group subGroup: g.getSubGroups().getValuesIterator()) {
-			writeGroup(os, subGroup);
-		}
+		writeSubGroups(os, g.getSubGroups());
 	}
 
 }
