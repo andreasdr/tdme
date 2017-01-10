@@ -128,9 +128,14 @@ public class TMWriter {
 	 * @throws IOException
 	 */
 	private static void writeString(OutputStream os, String s) throws IOException {
-		writeInt(os, s.length());
-		for (int i = 0; i < s.length(); i++) {
-			writeByte(os, (byte)s.charAt(i));
+		if (s == null) {
+			writeBoolean(os, false);
+		} else {
+			writeBoolean(os, true);
+			writeInt(os, s.length());
+			for (int i = 0; i < s.length(); i++) {
+				writeByte(os, (byte)s.charAt(i));
+			}
 		}
 	}
 
@@ -161,10 +166,14 @@ public class TMWriter {
 		writeFloatArray(os, m.getEmissionColor().getArray());
 		writeFloat(os, m.getShininess());
 		writeBoolean(os, m.hasDiffuseTextureTransparency() == true);
-		writeTexture(os, m.getDiffuseTexture()); 
-		writeTexture(os, m.getSpecularTexture());
-		writeTexture(os, m.getNormalTexture());
-		writeTexture(os, m.getDisplacementTexture());
+		writeString(os, m.getDiffuseTexturePathName());
+		writeString(os, m.getDiffuseTextureFileName());
+		writeString(os, m.getSpecularTexturePathName());
+		writeString(os, m.getSpecularTextureFileName());
+		writeString(os, m.getNormalTexturePathName());
+		writeString(os, m.getNormalTextureFileName());
+		writeString(os, m.getDisplacementTexturePathName());
+		writeString(os, m.getDisplacementTextureFileName());
 	}
 
 	/**
@@ -218,38 +227,6 @@ public class TMWriter {
 			for (int i = 0; i < indices.length; i++) {
 				writeInt(os, indices[i]);
 			}
-		}
-	}
-
-	/**
-	 * Write byte buffer to output stream
-	 * @param output stream
-	 * @param byte buffer
-	 * @throws IOException
-	 */
-	private static void writeByteBuffer(OutputStream os, ByteBuffer bb) throws IOException {
-		writeInt(os, bb.remaining());
-		while (bb.remaining() > 0) {
-			writeByte(os, bb.get());
-		}
-	}
-
-	/**
-	 * Write texture to output stream
-	 * @param output stream
-	 * @param texture
-	 * @throws IOException
-	 */
-	private static void writeTexture(OutputStream os, Texture t) throws IOException {
-		if (t == null) {
-			writeBoolean(os, false);
-		} else {
-			writeBoolean(os, true);
-			writeString(os, t.getId());
-			writeByte(os, (byte)t.getDepth());
-			writeShort(os, (short)t.getTextureWidth());
-			writeShort(os, (short)t.getTextureHeight());
-			writeByteBuffer(os, t.getTextureData());
 		}
 	}
 

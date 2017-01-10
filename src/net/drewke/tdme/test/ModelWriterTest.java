@@ -16,6 +16,10 @@ public class ModelWriterTest {
 		Model barrel = DAEReader.read("resources/models/barrel", "barrel.dae");
 		System.out.println("ModelWriterTest::writing resources/models/tmtests/barrel.tm");
 		TMWriter.write(barrel, "resources/models/tmtests", "barrel.tm");
+		System.out.println("ModelWriterTest::reading resources/models/dummy/testDummy_textured.DAE");
+		Model dummy = DAEReader.read("resources/models/dummy", "testDummy_textured.DAE");
+		System.out.println("ModelWriterTest::writing resources/models/tmtests/testDummy_textured.tm");
+		TMWriter.write(dummy, "resources/models/tmtests", "testDummy_textured.tm");
 	}
 
 }
