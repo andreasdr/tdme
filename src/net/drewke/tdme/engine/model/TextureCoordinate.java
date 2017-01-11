@@ -26,6 +26,15 @@ public final class TextureCoordinate {
 
 	/**
 	 * Public constructor
+	 * @param float array containing u, v values
+	 */
+	public TextureCoordinate(float[] uv) {
+		data = new float[2];
+		System.arraycopy(uv, 0, data, 0, Math.min(uv.length, data.length));
+	}
+
+	/**
+	 * Public constructor
 	 * @param u
 	 * @param v
 	 */

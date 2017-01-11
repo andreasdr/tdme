@@ -56,6 +56,14 @@ public final class Color4 {
 
 	/**
 	 * Set up color
+	 * @param color float array
+	 */
+	public void set(float[] color) {
+		System.arraycopy(color, 0, this.data, 0, Math.min(color.length, data.length));
+	}
+
+	/**
+	 * Set up color
 	 * @param red
 	 * @param green
 	 * @param blue

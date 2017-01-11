@@ -264,10 +264,18 @@ public final class Group {
 
 	/**
 	 * Set up faces entities
-	 * @param faces
+	 * @param faces entity
 	 */
 	public void setFacesEntities(ArrayList<FacesEntity> facesEntities) {
 		this.facesEntities = facesEntities.toArray(new FacesEntity[facesEntities.size()]);
+	}
+
+	/**
+	 * Set up faces entities
+	 * @param faces entity
+	 */
+	public void setFacesEntities(FacesEntity[] facesEntities) {
+		this.facesEntities = facesEntities;
 	}
 
 	/**

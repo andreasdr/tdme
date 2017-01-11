@@ -39,6 +39,14 @@ public final class Skinning {
 	 * Set up weights
 	 * @param weights
 	 */
+	public void setWeights(float[] weights) {
+		this.weights = weights;
+	}
+
+	/**
+	 * Set up weights
+	 * @param weights
+	 */
 	public void setWeights(ArrayList<Float> weights) {
 		this.weights = new float[weights.size()];
 		for(int i = 0; i < this.weights.length; i++) {
@@ -51,6 +59,14 @@ public final class Skinning {
 	 */
 	public Joint[] getJoints() {
 		return joints;
+	}
+
+	/**
+	 * Set up joints
+	 * @param joints
+	 */
+	public void setJoints(Joint[] joints) {
+		this.joints = joints;
 	}
 
 	/**

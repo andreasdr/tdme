@@ -67,9 +67,18 @@ public final class FacesEntity {
 	 */
 	public void setFaces(ArrayList<Face> faces) {
 		this.faces = faces.toArray(new Face[faces.size()]);
-		// determine if the hole entity has texture coordinates available
-		this.textureCoordinatesAvailable = true;
-		this.tangentBitangentAvailable = true;
+		this.textureCoordinatesAvailable = false;
+		this.tangentBitangentAvailable = false;
+	}
+
+	/**
+	 * Set up entity's faces
+	 * @param faces
+	 */
+	public void setFaces(Face[] faces) {
+		this.faces = faces;
+		this.textureCoordinatesAvailable = false;
+		this.tangentBitangentAvailable = false;
 	}
 
 	/**

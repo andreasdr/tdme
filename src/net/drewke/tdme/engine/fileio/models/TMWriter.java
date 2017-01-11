@@ -88,17 +88,6 @@ public class TMWriter {
 	}
 
 	/**
-	 * Writes a short to output stream
-	 * @param output stream
-	 * @param short
-	 * @throws IOException
-	 */
-	private static void writeShort(OutputStream os, short s) throws IOException {
-		os.write((s >> 8) & 0xff);
-		os.write((s >> 0) & 0xff);
-	}
-
-	/**
 	 * Writes a integer to output stream
 	 * @param output stream
 	 * @param int
@@ -165,7 +154,6 @@ public class TMWriter {
 		writeFloatArray(os, m.getSpecularColor().getArray());
 		writeFloatArray(os, m.getEmissionColor().getArray());
 		writeFloat(os, m.getShininess());
-		writeBoolean(os, m.hasDiffuseTextureTransparency() == true);
 		writeString(os, m.getDiffuseTexturePathName());
 		writeString(os, m.getDiffuseTextureFileName());
 		writeString(os, m.getSpecularTexturePathName());
@@ -265,6 +253,7 @@ public class TMWriter {
 				writeBoolean(os, true);
 				writeString(os, fe.getMaterial().getId());
 			}
+			writeInt(os, fe.getFaces().length);
 			for (int j = 0; j < fe.getFaces().length; j++) {
 				Face f = fe.getFaces()[j];
 				writeIndices(os, f.getVertexIndices());
