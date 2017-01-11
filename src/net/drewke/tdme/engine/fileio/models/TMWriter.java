@@ -2,9 +2,7 @@ package net.drewke.tdme.engine.fileio.models;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.ByteBuffer;
 
-import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.model.Animation;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;

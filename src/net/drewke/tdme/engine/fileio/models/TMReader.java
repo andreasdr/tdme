@@ -3,7 +3,6 @@ package net.drewke.tdme.engine.fileio.models;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 import net.drewke.tdme.engine.model.Animation;
 import net.drewke.tdme.engine.model.AnimationSetup;
@@ -33,6 +32,7 @@ public class TMReader {
 	 * @param file name
 	 * @throws IOException
 	 * @throws ModelIOException
+	 * @return model
 	 */
 	public static Model read(String pathName, String fileName) throws IOException, ModelFileIOException {
 		InputStream is = null;
