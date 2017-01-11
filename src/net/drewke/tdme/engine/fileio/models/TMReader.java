@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import net.drewke.tdme.engine.model.Animation;
+import net.drewke.tdme.engine.model.AnimationSetup;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
@@ -281,6 +282,14 @@ public class TMReader {
 			for (int i = 0; i < g.getAnimation().getTransformationsMatrices().length; i++) {
 				g.getAnimation().getTransformationsMatrices()[i].set(readFloatArray(is));
 			}
+
+			// create default animation
+			AnimationSetup defaultAnimation = g.getModel().getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
+			if (defaultAnimation == null) {
+				g.getModel().addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, g.getAnimation().getFrames() - 1, true);
+			}
+
+			//
 			return g.getAnimation();
 		}
 	}

@@ -85,6 +85,7 @@ TDME
 
     - What is WIP
         - GUI system
+        - own more efficient model file format
         - rigid body simulator(needs to be updated to newer "ReactPhysics3D 0.5")
 
     - Technology
