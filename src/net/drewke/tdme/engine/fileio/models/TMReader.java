@@ -13,6 +13,7 @@ import net.drewke.tdme.engine.model.Joint;
 import net.drewke.tdme.engine.model.JointWeight;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
+import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.math.Vector3;
@@ -284,10 +285,7 @@ public class TMReader {
 			}
 
 			// create default animation
-			AnimationSetup defaultAnimation = g.getModel().getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
-			if (defaultAnimation == null) {
-				g.getModel().addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, g.getAnimation().getFrames() - 1, true);
-			}
+			ModelHelper.createDefaultAnimation(g.getModel(), g.getAnimation().getTransformationsMatrices().length);
 
 			//
 			return g.getAnimation();

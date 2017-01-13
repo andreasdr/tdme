@@ -2,6 +2,7 @@ package net.drewke.tdme.engine.model;
 
 import java.util.ArrayList;
 
+import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector2;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.HashMap;
@@ -336,5 +337,90 @@ public final class ModelHelper {
 		skinning.setVerticesJointsWeights(verticesJointsWeights);
 	}
 
+	/**
+	 * Set up joints for skinning groups
+	 * @param model
+	 */
+	public static void setupJoints(Model model) {
+		// determine joints and mark them as joints
+		HashMap<String,Group> groups = model.getGroups();
+		for (Group group: model.getSubGroups().getValuesIterator()) {
+			Skinning skinning = group.getSkinning();
+			// do we have a skinning
+			if (skinning != null) {
+				// yep
+				for(Joint joint: skinning.getJoints()) {
+					setJoint(groups.get(joint.getGroupId()));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Sets up a group as joint taking all subgroups into account
+	 * @param group
+	 */
+	private static void setJoint(Group root) {
+		root.setJoint(true);
+		for (Group group: root.getSubGroups().getValuesIterator()) {
+			setJoint(group);
+		}
+	}
+
+	/**
+	 * Fix animation length
+	 * @param model
+	 */
+	public static void fixAnimationLength(Model model) {
+		// fix animation length
+		AnimationSetup defaultAnimation = model.getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
+		if (defaultAnimation != null) {
+			for (Group group: model.getSubGroups().getValuesIterator()) {
+				fixAnimationLength(group, defaultAnimation.getFrames());
+			}
+		}
+	}
+
+	/**
+	 * Fixes animation length as sometimes they are only given partially, which is not supported by engine
+	 * @param group
+	 * @param frames
+	 */
+	private static void fixAnimationLength(Group root, int frames) {
+		Animation animation = root.getAnimation();
+		Matrix4x4[] transformationsMatrices = new Matrix4x4[0];
+		if (animation != null) {
+			transformationsMatrices = root.getAnimation().getTransformationsMatrices();
+		}
+		animation = root.createAnimation(frames);
+		for (int i = 0; i < transformationsMatrices.length; i++) {
+			animation.getTransformationsMatrices()[i].set(transformationsMatrices[i]);
+		}
+		for (Group group: root.getSubGroups().getValuesIterator()) {
+			fixAnimationLength(group, frames);
+		}
+	}
+
+	/**
+	 * Create default animation
+	 * @param model
+	 * @param frames
+	 */
+	public static void createDefaultAnimation(Model model, int frames) {
+		// add default model animation setup
+		AnimationSetup defaultAnimation = model.getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
+		if (defaultAnimation == null) {
+			model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
+		} else {
+			// check default animation setup
+			if (defaultAnimation.getStartFrame() != 0 || defaultAnimation.getEndFrame() != frames - 1) {
+				System.out.println("Warning: default animation mismatch");
+			}
+			if (frames - 1 > defaultAnimation.getEndFrame()) {
+				System.out.println("Warning: default animation mismatch, will be fixed");
+				model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
+			}
+		}
+	}
 
 }

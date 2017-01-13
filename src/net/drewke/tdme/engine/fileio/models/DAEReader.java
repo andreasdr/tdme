@@ -58,31 +58,8 @@ public final class DAEReader {
 		// 	create object
 		Model model = new Model(pathName + File.separator + fileName, fileName);
 
-		// determine up axis
-		for(Element xmlAsset: getChildrenByTagName(xmlRoot, "asset")) {
-			for(Element xmlAssetUpAxis: getChildrenByTagName(xmlAsset, "up_axis")) {
-				String upAxis = xmlAssetUpAxis.getTextContent();
-				if (upAxis.equalsIgnoreCase("Y_UP")) {
-					// default: do nothing
-				} else 
-				if (upAxis.equalsIgnoreCase("Z_UP")) {
-					// set up import transformation matrix
-					model.getImportTransformationsMatrix().rotate(-90f, new Vector3(1f,0f,0f));
-				} else
-				if (upAxis.equalsIgnoreCase("X_UP")) {
-					// set up import transformation matrix
-					model.getImportTransformationsMatrix().rotate(-90f, new Vector3(0f,1f,0f));
-				} else {
-					System.out.println("Warning: Unknown up axis: " + upAxis);
-				}
-			}
-			for(Element xmlAssetUnit: getChildrenByTagName(xmlAsset, "unit")) {
-				String tmp = null;
-				if ((tmp = xmlAssetUnit.getAttribute("meter")) != null) {
-					model.getImportTransformationsMatrix().scale(Float.parseFloat(tmp));
-				}
-			}
-		}
+		//
+		setupModelImportTransformationsMatrix(xmlRoot, model);
 
 		// parse scene from xml
 		String xmlSceneId = null;
@@ -131,26 +108,11 @@ public final class DAEReader {
 			}
 		}
 
-		// determine joints and mark them as joints
-		HashMap<String,Group> groups = model.getGroups();
-		for (Group group: model.getSubGroups().getValuesIterator()) {
-			Skinning skinning = group.getSkinning();
-			// do we have a skinning
-			if (skinning != null) {
-				// yep
-				for(Joint joint: skinning.getJoints()) {
-					setJoint(groups.get(joint.getGroupId()));
-				}
-			}
-		}
+		// set up joints
+		ModelHelper.setupJoints(model);
 
 		// fix animation length
-		AnimationSetup defaultAnimation = model.getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
-		if (defaultAnimation != null) {
-			for (Group group: model.getSubGroups().getValuesIterator()) {
-				fixAnimationLength(group, defaultAnimation.getFrames());
-			}
-		}
+		ModelHelper.fixAnimationLength(model);
 
 		// prepare for indexed rendering
 		ModelHelper.prepareForIndexedRendering(model);
@@ -160,34 +122,37 @@ public final class DAEReader {
 	}
 
 	/**
-	 * Sets up a group as joint taking all subgroups into account
-	 * @param group
+	 * Set up model import transformations matrix
+	 * @param xml root
+	 * @param model
 	 */
-	private static void setJoint(Group root) {
-		root.setJoint(true);
-		for (Group group: root.getSubGroups().getValuesIterator()) {
-			setJoint(group);
+	private static void setupModelImportTransformationsMatrix(Element xmlRoot, Model model) {
+		// determine up axis
+		for(Element xmlAsset: getChildrenByTagName(xmlRoot, "asset")) {
+			for(Element xmlAssetUpAxis: getChildrenByTagName(xmlAsset, "up_axis")) {
+				String upAxis = xmlAssetUpAxis.getTextContent();
+				if (upAxis.equalsIgnoreCase("Y_UP")) {
+					// default: do nothing
+				} else 
+				if (upAxis.equalsIgnoreCase("Z_UP")) {
+					// set up import transformation matrix
+					model.getImportTransformationsMatrix().rotate(-90f, new Vector3(1f,0f,0f));
+				} else
+				if (upAxis.equalsIgnoreCase("X_UP")) {
+					// set up import transformation matrix
+					model.getImportTransformationsMatrix().rotate(-90f, new Vector3(0f,1f,0f));
+				} else {
+					System.out.println("Warning: Unknown up axis: " + upAxis);
+				}
+			}
+			for(Element xmlAssetUnit: getChildrenByTagName(xmlAsset, "unit")) {
+				String tmp = null;
+				if ((tmp = xmlAssetUnit.getAttribute("meter")) != null) {
+					model.getImportTransformationsMatrix().scale(Float.parseFloat(tmp));
+				}
+			}
 		}
-	}
 
-	/**
-	 * Fixes animation length as sometimes they are only given partially, which is not supported by engine
-	 * @param group
-	 * @param frames
-	 */
-	private static void fixAnimationLength(Group root, int frames) {
-		Animation animation = root.getAnimation();
-		Matrix4x4[] transformationsMatrices = new Matrix4x4[0];
-		if (animation != null) {
-			transformationsMatrices = root.getAnimation().getTransformationsMatrices();
-		}
-		animation = root.createAnimation(frames);
-		for (int i = 0; i < transformationsMatrices.length; i++) {
-			animation.getTransformationsMatrices()[i].set(transformationsMatrices[i]);
-		}
-		for (Group group: root.getSubGroups().getValuesIterator()) {
-			fixAnimationLength(group, frames);
-		}
 	}
 
 	/**
@@ -368,20 +333,8 @@ public final class DAEReader {
 				if (keyFrameTimes != null && keyFrameMatrices != null) {
 					int frames = (int)Math.ceil(keyFrameTimes[keyFrameTimes.length - 1] * fps) + 1;
 
-					// add default model animation setup
-					AnimationSetup defaultAnimation = model.getAnimationSetup(Model.ANIMATIONSETUP_DEFAULT);
-					if (defaultAnimation == null) {
-						model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
-					} else {
-						// check default animation setup
-						if (defaultAnimation.getStartFrame() != 0 || defaultAnimation.getEndFrame() != frames - 1) {
-							System.out.println("Warning: default animation mismatch");
-						}
-						if (frames - 1 > defaultAnimation.getEndFrame()) {
-							System.out.println("Warning: default animation mismatch, will be fixed");
-							model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
-						}
-					}
+					// create default animation
+					ModelHelper.createDefaultAnimation(model, frames);
 
 					//
 					Animation animation = group.createAnimation(frames);
