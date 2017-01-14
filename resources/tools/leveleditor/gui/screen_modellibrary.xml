@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nifty>
+	<screen id="modellibrary" controller="net.drewke.tdme.tools.leveleditor.controller.ModelLibraryController">
+		<layer childLayout="vertical">
+			<panel style="nifty-panel" childLayout="horizontal" width="100%" height="60px" visibleToMouse="true" valign="center">
+			    <panel width="100px" />
+				<text id="screen_caption" color="#ff0000" text="Model Library" font="aurulent-sans-16.fnt" height="30px" width="*" textHAlign="center" />
+				<panel width="100px" childLayout="center">
+   			        <control id="button_model_back" name="button" label="Back" height="30px">
+						<interact onClick="onBack()" />
+					</control>
+				</panel>
+			</panel>
+			<panel style="nifty-panel" childLayout="vertical" width="200px" height="*" visibleToMouse="true" valign="center" align="right">
+   			    <control id="modelchoser_scrollbar" name="scrollPanel" height="*" vertical="true" horizontal="false">
+   			        <panel id="modelchoser" childLayout="vertical" width="200px" height="200px">
+						<interact onClick="onListModelsClick()"/>
+   			    	</panel>
+   			    </control>
+   			    <panel height="5px" />
+			    <panel childLayout="horizontal" width="100%" height="30px" align="center" valign="center">
+			        <panel width="*" />
+			        <control id="button_model_add" name="button" label="+M" height="30px" width="50px" align="center">
+						<interact onClick="onAddModel()" />
+					</control>
+					<panel width="*" />
+			        <control id="button_trigger_add" name="button" label="+T" height="30px" width="50px" align="center">
+						<interact onClick="onAddTrigger()" />
+					</control>
+					<panel width="*" />
+			        <control id="button_model_remove" name="button" label="-" height="30px" width="50px" align="center">
+						<interact onClick="onRemoveModel()" />
+					</control>
+					<panel width="*" />
+			    </panel>
+			</panel>
+		    <control id="tabs_properties" name="tabGroup" childLayout="vertical" width="100%" height="160px" visibleToMouse="true" >
+		        <control id="tabs_properties_display" name="tab" caption="Display">
+	                <panel childLayout="vertical" width="100px" height="90px">
+		                <panel childLayout="horizontal">
+							<control id="display_ground" name="checkbox" checked="true" valign="center" height="30px" />
+							<panel width="5px" />
+							<text color="#ffffff" text="Ground" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+						</panel>
+						<panel height="5px" />
+						<panel childLayout="horizontal">
+							<control id="display_shadowing" name="checkbox" checked="false" valign="center" height="30px" />
+							<panel width="5px" />
+							<text color="#ffffff" text="Shadowing" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+						</panel>
+						<panel height="5px" />
+		                <panel childLayout="horizontal">
+							<control id="display_boundingvolume" name="checkbox" checked="false" valign="center" height="30px" />
+							<panel width="5px" />
+							<text color="#ffffff" text="Bounding Volume" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+						</panel>
+					</panel>
+				</control>
+		        <control id="tabs_properties_model" name="tab" caption="Model" >
+	                <panel childLayout="vertical" width="300px" height="90px" valign="center">
+		                <panel childLayout="horizontal" height="30px">
+							<text color="#ffffff" text="Name" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
+							<panel width="5px" />
+							<control name="textfield" maxLength="255" id="model_name" />
+						</panel>
+						<panel childLayout="horizontal" height="30px">
+							<text color="#ffffff" text="Description" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
+							<panel width="5px" />
+							<control name="textfield" maxLength="255" id="model_description" />
+						</panel>
+						<panel childLayout="horizontal" height="30px">
+							<panel width="*" />            		
+    				        <control id="button_modeldata_apply" name="button" label="Apply" height="30px" width="60px">
+								<interact onClick="onModelDataApply()" />
+							</control>
+						</panel>
+					</panel>
+				</control>
+				<control id="tabs_properties_object_properties" name="tab" caption="Model Properties">
+	    	        <panel childLayout="horizontal" width="700px" height="100%" align="center" valign="center">
+	    	            <panel childLayout="vertical" width="600px" height="100%" valign="center">
+	    	                <panel childLayout="horizontal" height="30px">
+	    	            		<control id="objectproperties_presets" name="dropDown" width="530px" displayItems="4" height="23px">
+    	                		</control>
+    	                		<panel width="10px" />
+     				        	<control id="button_object_properties_presetapply" name="button" label="Apply" height="23px" width="60px">
+									<interact onClick="onObjectPropertyPresetApply()" />
+								</control>            		
+    	                	</panel>
+    	                	<panel height="10px" />
+	    	            	<control id="objectproperties_listbox" name="listBox" width="600px" displayItems="2" selectionMode="single" forceSelection="false" horizontal="off" vertical="on">
+    	                	</control>
+    	                	<panel height="10px" />
+			                <panel childLayout="horizontal" height="30px">
+								<text width="45px"color="#ffffff" text="Name" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+								<panel width="5px" />
+								<control width="240px"name="textfield" maxLength="255" id="object_property_name" />
+								<panel width="20px" />
+								<text width="45px"color="#ffffff" text="Value" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+								<panel width="5px" />
+								<control width="240px"name="textfield" maxLength="255" id="object_property_value" />
+							</panel>
+    	                </panel>
+   	    	            <panel width="20px" />
+	    	            <panel childLayout="vertical" width="80px" height="100%">
+	    	                <panel height="*" />
+				        	<control id="button_object_properties_add" name="button" label="Add" height="30px" width="80px" align="center">
+								<interact onClick="onObjectPropertyAdd()" />
+							</control>
+							<panel height="5px" />
+				        	<control id="button_object_properties_remove" name="button" label="Remove" height="30px" width="80px" align="center">
+								<interact onClick="onObjectPropertyRemove()" />
+							</control>
+							<panel height="5px" />
+				        	<control id="button_object_properties_save" name="button" label="Save" height="30px" width="80px" align="center">
+								<interact onClick="onObjectPropertySave()" />
+							</control>
+   				        	<panel height="*" />
+	    	            </panel>
+					</panel>
+				</control>
+    		    <control id="tabs_properties_pivot" name="tab" caption="Pivot">
+    	            <panel childLayout="vertical" width="200px" height="100%" valign="center">
+    	                <panel height="2px" />
+		                <panel childLayout="horizontal" height="30px">
+							<text width="50px"color="#ffffff" text="X" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+							<panel width="5px" />
+							<control width="150px"name="textfield" maxLength="255" id="pivot_x" />
+						</panel>
+		                <panel childLayout="horizontal" height="30px">
+							<text width="50px"color="#ffffff" text="Y" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+							<panel width="5px" />
+							<control width="150px"name="textfield" maxLength="255" id="pivot_y" />
+						</panel>
+		                <panel childLayout="horizontal" height="30px">
+							<text width="50px"color="#ffffff" text="Z" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+							<panel width="5px" />
+							<control width="150px"name="textfield" maxLength="255" id="pivot_z" />
+						</panel>
+		                <panel childLayout="horizontal" height="30px">
+	                        <panel width="*" />
+				        	<control id="button_pivot_apply" name="button" label="Apply" height="30px" width="80px" align="center">
+								<interact onClick="onPivotApply()" />
+							</control>
+						</panel>
+					</panel>
+				</control>
+    		    <control id="tabs_properties_trigger" name="tab" caption="Trigger">
+    	            <panel childLayout="vertical" width="200px" height="100%" valign="center">
+    	                <panel height="2px" />
+		                <panel childLayout="horizontal" height="30px">
+							<text width="50px"color="#ffffff" text="Width" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+							<panel width="5px" />
+							<control width="150px"name="textfield" maxLength="255" id="trigger_width" />
+						</panel>
+		                <panel childLayout="horizontal" height="30px">
+							<text width="50px"color="#ffffff" text="Height" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+							<panel width="5px" />
+							<control width="150px"name="textfield" maxLength="255" id="trigger_height" />
+						</panel>
+		                <panel childLayout="horizontal" height="30px">
+							<text width="50px"color="#ffffff" text="Depth" font="aurulent-sans-16.fnt" valign="center" height="30px" />
+							<panel width="5px" />
+							<control width="150px"name="textfield" maxLength="255" id="trigger_depth" />
+						</panel>
+		                <panel childLayout="horizontal" height="30px">
+	                        <panel width="*" />
+				        	<control id="button_trigger_apply" name="button" label="Apply" height="30px" width="80px" align="center">
+								<interact onClick="onTriggerApply()" />
+							</control>
+						</panel>
+					</panel>
+				</control>
+			</control>
+		</layer>
+	</screen>
+    <popup id="filedialog_popup" childLayout="center" backgroundColor="#0000">
+    	<panel style="nifty-panel" childLayout="vertical" width="600px" height="380px" visibleToMouse="true"> 
+	        <panel height="5px" />
+       	    <text id="filedialog_popup_caption" color="#ff0000" text="Load" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
+       	   	<panel height="5px" />
+   	    	<control id="filedialog_popup_files" name="listBox" width="560px" height="240px" displayItems="10" selectionMode="Single" forceSelection="false" horizontal="off" vertical="on" />
+   	    	<panel height="5px" />
+       	    <control name="textfield" maxLength="255" width="560" id="filedialog_popup_filename" />
+	        <panel height="*" />
+	        <panel childLayout="horizontal" height="30px">
+	        	<panel width="*" />
+				<control id="filedialog_popup_apply" name="button" label="Apply" height="30px" width="80px" align="center">
+					<interact onClick="applyFileDialogPopUp()" />
+				</control>
+				<panel width="*" />
+				<control id="filedialog_popup_abort" name="button" label="Abort" height="30px" width="80px" align="center">
+					<interact onClick="abortFileDialogPopUp()" />
+				</control>
+				<panel width="*" />
+			</panel>
+	        <panel height="5px" />
+		</panel>
+    </popup>
+    <popup id="error_popup" childLayout="center" backgroundColor="#0000">
+        <panel style="nifty-panel" childLayout="vertical" width="320px" height="200px" visibleToMouse="true">
+	        <panel height="5px" />
+       	    <text id="error_popup_caption" color="#ff0000" text="Error" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
+	        <panel height="*" />
+            <text id="error_popup_message" color="#000000" text="An error occurred" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
+	        <panel height="*" />
+	        <control id="error_popup_ok" name="button" label="Damn!" height="30px" width="80px" align="center">
+				<interact onClick="closeErrorPopUp()" />
+			</control>
+	        <panel height="5px" />
+        </panel>
+    </popup>
+</nifty>

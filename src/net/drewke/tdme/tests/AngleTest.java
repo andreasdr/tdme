@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import net.drewke.tdme.math.Vector3;
 

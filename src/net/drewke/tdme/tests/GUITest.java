@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +55,7 @@ public class GUITest implements GLEventListener, WindowListener {
 
 		//
 		try {
-			engine.getGUI().addScreen("test", GUIParser.parse("resources/gui/definitions", "test.xml"));
+			engine.getGUI().addScreen("test", GUIParser.parse("resources/tests/gui", "test.xml"));
 			engine.getGUI().getScreen("test").setScreenSize(640, 480);
 			engine.getGUI().getScreen("test").addActionListener(new GUIActionListener() {
 				public void onActionPerformed(GUIActionListener.Type type, GUIElementNode node) {

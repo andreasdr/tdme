@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,7 +10,7 @@ import net.drewke.tdme.audio.AudioEntity;
 public final class AudioTest {
 
 	public static void main(String[] args) throws Exception {
-		AudioEntity test = Audio.getInstance().addStream("test", "resources/music", "memento-sanchez_monate_spaeter.ogg");
+		AudioEntity test = Audio.getInstance().addStream("test", "resources/tests/music", "memento-sanchez_monate_spaeter.ogg");
 		test.setLooping(true);
 		test.setFixed(true);
 		test.play();

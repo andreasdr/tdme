@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -447,7 +447,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		playersBoundingVolumeModel = new ArrayList<Object3D>();
 		playerBoundingVolumesTransformed = new ArrayList<BoundingVolume>();
 		try {
-			Model _barrel = DAEReader.read("resources/models/barrel", "barrel.dae");
+			Model _barrel = DAEReader.read("resources/tests/models/barrel", "barrel.dae");
 			Object3D barrel = new Object3D("barrel", _barrel);
 			barrelBoundingVolume = new ConvexMesh(new Object3DModel(_barrel));
 			barrel.getTranslation().set(1.5f,0.35f,-2f);
@@ -464,14 +464,14 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			engine.addEntity(farPlane);
 
 			//
-			Model _grass = DAEReader.read("resources/models/grass", "grass.dae");
+			Model _grass = DAEReader.read("resources/tests/models/grass", "grass.dae");
 			Object3D grass = new Object3D("ground", _grass);
 			grass.getScale().set(8f,1f,8f);
 			grass.update();
 			engine.addEntity(grass);
 
 			// players
-			Model _player = DAEReader.read("resources/models/dummy", "testDummy_textured.DAE");
+			Model _player = DAEReader.read("resources/tests/models/dummy", "testDummy_textured.DAE");
 			_player.addAnimationSetup("still", 3, 3, true);
 			_player.addAnimationSetup("walk", 0, 18, true);
 
@@ -541,7 +541,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			engine.addEntity(player2BoundingVolume);
 
 			// add cube
-			Model _cube = DAEReader.read("resources/models/test", "cube.dae");
+			Model _cube = DAEReader.read("resources/tests/models/test", "cube.dae");
 			cube = new Object3D("cube", _cube);
 			cube.getTranslation().add(new Vector3(0f,0f,0f));
 			cube.getScale().set(2f,2f,2f);
@@ -564,7 +564,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			engine.addEntity(cubeBoundingVolumeObject3D);
 
 			// wall
-			Model _wall = DAEReader.read("resources/models/wall", "wall.dae");
+			Model _wall = DAEReader.read("resources/tests/models/wall", "wall.dae");
 			Object3D wall0 = new Object3D("wall0", _wall);
 			wall0.getTranslation().add(new Vector3(-1.00f,0f,3.00f));
 			wall0.update();

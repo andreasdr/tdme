@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -197,12 +197,12 @@ public final class EngineTestHouse implements GLEventListener, MouseListener, Mo
 		Model _environment = null;
 		try {
 			System.out.println("Loading environment ...");
-			_environment = DAEReader.read("resources/environment/indoor_outdoor_house", "indoor_outdoor_house.dae");
+			_environment = DAEReader.read("resources/tests/environment/indoor_outdoor_house", "indoor_outdoor_house.dae");
 			System.out.println(ModelUtilities.createBoundingBox(_environment));
 			// System.out.println(_environment);
 
 			System.out.println("Loading player");
-			Model _player = DAEReader.read("resources/models/dummy", "testDummy_textured.DAE");
+			Model _player = DAEReader.read("resources/tests/models/dummy", "testDummy_textured.DAE");
 			_player.addAnimationSetup("still", 3, 3, true);
 			_player.addAnimationSetup("walk", 0, 18, true);
 

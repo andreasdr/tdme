@@ -55,7 +55,7 @@ public final class DAEReader {
 		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
 		Element xmlRoot = document.getDocumentElement();
 
-		// 	create object
+		// 	create model
 		Model model = new Model(pathName + File.separator + fileName, fileName);
 
 		//
@@ -119,6 +119,93 @@ public final class DAEReader {
 
 		//
 		return model;
+	}
+
+	/**
+	 * Reads Collada DAE file level
+	 * @param path name
+	 * @param file name
+	 * @throws Exception
+	 * @return Model instance
+	 */
+	public static ArrayList<Model> readAsLevel(String pathName, String fileName) throws Exception {
+		ArrayList<Model> models = new ArrayList<Model>();
+
+		// load dae xml document
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
+		Element xmlRoot = document.getDocumentElement();
+
+		// parse scene from xml
+		String xmlSceneId = null;
+		Element xmlScene = getChildrenByTagName(xmlRoot, "scene").get(0);
+		for(Element xmlInstanceVisualscene: getChildrenByTagName(xmlScene, "instance_visual_scene")) {
+			xmlSceneId = xmlInstanceVisualscene.getAttribute("url").substring(1);
+		}
+
+		// check for xml scene id
+		if (xmlSceneId == null) {
+			throw new ModelFileIOException("No scene id found");
+		}
+
+		// parse visual scenes
+		Element xmlLibraryVisualScenes = getChildrenByTagName(xmlRoot, "library_visual_scenes").get(0);
+		for(Element xmlLibraryVisualScene: getChildrenByTagName(xmlLibraryVisualScenes, "visual_scene")) {
+			String xmlVisualSceneId = xmlLibraryVisualScene.getAttribute("id");
+			if (xmlVisualSceneId.equals(xmlSceneId)) {
+				// default FPS
+				float fps = 30f;
+
+				// parse frames per second
+				List<Element> xmlExtraNodes = getChildrenByTagName(xmlLibraryVisualScene, "extra");
+				if (xmlExtraNodes.isEmpty() == false) {
+					Element xmlExtraNode = xmlExtraNodes.get(0);
+					for (Element xmlTechnique: getChildrenByTagName(xmlExtraNode, "technique")) {
+						List<Element> xmlFrameRateNodes = getChildrenByTagName(xmlTechnique, "frame_rate");
+						if (xmlFrameRateNodes.isEmpty() == false) {
+							fps = Float.parseFloat(xmlFrameRateNodes.get(0).getTextContent());
+							break;
+						}
+					}
+				}
+
+				// visual scene root nodes
+				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
+					// 	create model
+					Model model = new Model(
+						pathName + File.separator + fileName + '-' + xmlNode.getAttribute("id"), 
+						fileName + '-' + xmlNode.getAttribute("id")
+					);
+
+					//
+					setupModelImportTransformationsMatrix(xmlRoot, model);
+
+					// set up frames per seconds
+					model.setFPS(fps);
+
+					Group group = readVisualSceneNode(pathName, model, xmlRoot, xmlNode, fps);
+					if (group != null) {
+						model.getSubGroups().put(group.getId(), group);
+						model.getGroups().put(group.getId(), group);
+					}
+
+					// set up joints
+					ModelHelper.setupJoints(model);
+
+					// fix animation length
+					ModelHelper.fixAnimationLength(model);
+
+					// prepare for indexed rendering
+					ModelHelper.prepareForIndexedRendering(model);
+
+					//
+					models.add(model);
+				}
+			}
+		}
+
+		//
+		return models;
 	}
 
 	/**

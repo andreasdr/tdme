@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
@@ -382,7 +382,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 
 		try {
 			// load barrel, set up bounding volume
-			Model _barrel = DAEReader.read("resources/models/barrel", "barrel.dae");
+			Model _barrel = DAEReader.read("resources/tests/models/barrel", "barrel.dae");
 			// _barrel.getImportTransformationsMatrix().scale(2f);
 			ConvexMesh barrelBoundingVolume = new ConvexMesh(new Object3DModel(_barrel));
 
@@ -407,7 +407,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 			world.addRigidBody("barrel2", true, RIGID_TYPEID_STANDARD, entity, barrelBoundingVolume, 0f, 1f, 100f, RigidBody.computeInertiaMatrix(barrelBoundingVolume, 100f, 1f, 1f, 1f));
 
 			// load cone, set up bounding volume
-			Model _cone = DAEReader.read("resources/models/cone", "cone.dae");
+			Model _cone = DAEReader.read("resources/tests/models/cone", "cone.dae");
 			// _barrel.getImportTransformationsMatrix().scale(2f);
 			ConvexMesh coneBoundingVolume = new ConvexMesh(new Object3DModel(_cone));
 
@@ -432,7 +432,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 			world.addRigidBody("cone2", true, RIGID_TYPEID_STANDARD, entity, coneBoundingVolume, 0f, 1f, 100f, RigidBody.computeInertiaMatrix(coneBoundingVolume, 100f, 1f, 1f, 1f));
 
 			// load cone, set up bounding volume
-			Model _tire = DAEReader.read("resources/models/tire", "tire.dae");
+			Model _tire = DAEReader.read("resources/tests/models/tire", "tire.dae");
 			// _barrel.getImportTransformationsMatrix().scale(2f);
 			ConvexMesh tireBoundingVolume = new ConvexMesh(new Object3DModel(_tire));
 

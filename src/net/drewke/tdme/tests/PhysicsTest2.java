@@ -1,4 +1,4 @@
-package net.drewke.tdme.test;
+package net.drewke.tdme.tests;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;

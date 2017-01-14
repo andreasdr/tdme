@@ -1,6 +1,9 @@
 TDME
 ====
 
+Engine
+------
+
     - What is it?
         - ThreeDeeMiniEngine is a small 3d engine suited for small 3d games written in JAVA
 
@@ -82,6 +85,7 @@ TDME
           - multiple bounding volumes for a rigid body
           - rag doll / joints / springs
         - example games
+        - documentation
 
     - What is WIP
         - GUI system
@@ -101,8 +105,8 @@ TDME
 
     - Links
         - <youtube link here>
-		- TDME Level Editor, https://github.com/andreasdr/tdme-leveleditor
-		- TDME Model Viewer, https://github.com/andreasdr/tdme-viewer
+		- TDME Level Editor, see [README-LevelEditor.md]
+		- TDME Model Viewer, see [README-Viewer.md]
 		- TDME Android, https://github.com/andreasdr/tdme-android
 
     - References
