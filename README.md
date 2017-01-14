@@ -103,10 +103,12 @@ Engine
             - Mac Os X
             - Android
 
+    - Tools
+		- TDME Model Viewer, see [README-Viewer.md](https://github.com/andreasdr/tdme/blob/master/README-Viewer.md)
+		- TDME Level Editor, see [README-LevelEditor.md](https://github.com/andreasdr/tdme/blob/master/README-LevelEditor.md)
+
     - Links
         - <youtube link here>
-		- TDME Level Editor, see [README-LevelEditor.md]
-		- TDME Model Viewer, see [README-Viewer.md]
 		- TDME Android, https://github.com/andreasdr/tdme-android
 
     - References
