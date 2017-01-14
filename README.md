@@ -1,9 +1,6 @@
 TDME
 ====
 
-Engine
-------
-
     - What is it?
         - ThreeDeeMiniEngine is a small 3d engine suited for small 3d games written in JAVA
 
