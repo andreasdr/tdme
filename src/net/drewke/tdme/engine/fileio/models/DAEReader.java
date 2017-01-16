@@ -12,8 +12,9 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.drewke.tdme.engine.Rotation;
+import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.model.Animation;
-import net.drewke.tdme.engine.model.AnimationSetup;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
@@ -27,6 +28,11 @@ import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.tools.leveleditor.files.LevelFileExport;
+import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
+import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
+import net.drewke.tdme.tools.leveleditor.model.LevelEditorObject;
+import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
 import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;
@@ -128,7 +134,16 @@ public final class DAEReader {
 	 * @throws Exception
 	 * @return Model instance
 	 */
-	public static ArrayList<Model> readAsLevel(String pathName, String fileName) throws Exception {
+	public static LevelEditorLevel readLevel(String pathName, String fileName) throws Exception {
+		// (re)create tm files folder
+		File tmFilesFolder = new File(pathName + "/" + fileName + "-models");
+		if (tmFilesFolder.exists()) {
+			tmFilesFolder.delete();
+		}
+		tmFilesFolder.mkdir();
+
+		//
+		LevelEditorLevel levelEditorLevel = new LevelEditorLevel(new ArrayList<PropertyModelClass>());
 		ArrayList<Model> models = new ArrayList<Model>();
 
 		// load dae xml document
@@ -170,6 +185,7 @@ public final class DAEReader {
 				}
 
 				// visual scene root nodes
+				int nodeIdx = 0;
 				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
 					// 	create model
 					Model model = new Model(
@@ -180,11 +196,85 @@ public final class DAEReader {
 					//
 					setupModelImportTransformationsMatrix(xmlRoot, model);
 
+					// translation, scaling, rotation
+					boolean haveTranslation = false;
+					boolean haveScale = false;
+					boolean haveRotationX = false;
+					boolean haveRotationY = false;
+					boolean haveRotationZ = false;
+					Vector3 translation = new Vector3();
+					Vector3 scale = new Vector3();
+					Vector3 rotation = new Vector3();
+
+					// read translation
+					for(Element xmlTranslation: getChildrenByTagName(xmlNode, "translate")) {
+						haveTranslation = true;
+						StringTokenizer t = new StringTokenizer(xmlTranslation.getTextContent(), " \n\r");
+						translation.set(
+							Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken())
+						);
+					}
+
+					// read scale
+					for(Element xmlScale: getChildrenByTagName(xmlNode, "scale")) {
+						haveScale = true;
+						StringTokenizer t = new StringTokenizer(xmlScale.getTextContent(), " \n\r");
+						scale.set(
+							Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken())
+						);
+					}
+
+					// read rotation
+					for(Element xmlRotation: getChildrenByTagName(xmlNode, "rotate")) {
+						StringTokenizer t = new StringTokenizer(xmlRotation.getTextContent(), " \n\r");
+						Float.parseFloat(t.nextToken());
+						Float.parseFloat(t.nextToken());
+						Float.parseFloat(t.nextToken());
+						float angle = Float.parseFloat(t.nextToken());
+						if (xmlRotation.getAttribute("sid").equals("rotationX") == true) {
+							haveRotationX = true;
+							rotation.setX(angle);
+						} else
+						if (xmlRotation.getAttribute("sid").equals("rotationY") == true) {
+							haveRotationY = true;
+							rotation.setY(angle);
+						} else
+						if (xmlRotation.getAttribute("sid").equals("rotationZ") == true) {
+							haveRotationZ = true;
+							rotation.setZ(angle);
+						}
+					}
+
+					// check if we have translation. scale, rotations
+					if (haveTranslation == false ||
+						haveScale == false ||
+						haveRotationX == false ||
+						haveRotationY == false ||
+						haveRotationZ == false) {
+						throw new ModelFileIOException("missing translation, scale or rotations in node " + xmlNode.getAttribute("id"));
+					}
+
+					// apply model import matrix
+					model.getImportTransformationsMatrix().multiply(translation, translation);
+					model.getImportTransformationsMatrix().multiply(scale, scale);
+					model.getImportTransformationsMatrix().multiply(rotation, rotation);
+
+					// no negative scale
+					for (int i = 0; i < scale.getArray().length; i++) {
+						if (scale.getArray()[i] < 0f) scale.getArray()[i]*= -1f;
+					}
+
 					// set up frames per seconds
 					model.setFPS(fps);
 
+					// read sub groups
 					Group group = readVisualSceneNode(pathName, model, xmlRoot, xmlNode, fps);
 					if (group != null) {
+						group.getTransformationsMatrix().identity();
 						model.getSubGroups().put(group.getId(), group);
 						model.getGroups().put(group.getId(), group);
 					}
@@ -198,14 +288,50 @@ public final class DAEReader {
 					// prepare for indexed rendering
 					ModelHelper.prepareForIndexedRendering(model);
 
+					// save model
+					TMWriter.write(model, pathName + "/" + fileName + "-models", xmlNode.getAttribute("id") + ".tm");
+
+					// level editor model
+					LevelEditorModel levelEditorModel = levelEditorLevel.getModelLibrary().addModel(
+						nodeIdx,
+						xmlNode.getAttribute("id"),
+						xmlNode.getAttribute("id"),
+						pathName + "/" + fileName + "-models",
+						xmlNode.getAttribute("id") + ".tm",
+						new Vector3()
+					);
+
+					// level editor object transformations
+					Transformations levelEditorObjectTransformations = new Transformations();
+					levelEditorObjectTransformations.getTranslation().set(translation);
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getX(), new Vector3(1f, 0f, 0f)));
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getY(), new Vector3(0f, 1f, 0f)));
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getZ(), new Vector3(0f, 0f, 1f)));
+					levelEditorObjectTransformations.getScale().set(scale);
+					levelEditorObjectTransformations.update();
+
+					// level editor object
+					LevelEditorObject object = new LevelEditorObject(
+						xmlNode.getAttribute("id"),
+						xmlNode.getAttribute("id"),
+						levelEditorObjectTransformations,
+						levelEditorModel
+					);
+
+					// add object to level
+					levelEditorLevel.addObject(object);
+
 					//
-					models.add(model);
+					nodeIdx++;
 				}
 			}
 		}
 
+		// save level
+		LevelFileExport.export(pathName + "/" + fileName + ".tl", levelEditorLevel);
+
 		//
-		return models;
+		return levelEditorLevel;
 	}
 
 	/**
@@ -239,7 +365,6 @@ public final class DAEReader {
 				}
 			}
 		}
-
 	}
 
 	/**

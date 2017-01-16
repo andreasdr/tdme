@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
+import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -110,6 +111,28 @@ public final class LevelEditorModelLibrary {
 		} else {
 			if (modelFile.getName().toLowerCase().endsWith(".dae")) {
 				Model model = DAEReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
+				BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);
+				Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
+				levelEditorModel = new LevelEditorModel(
+					id == ID_ALLOCATE?allocateModelId():id,
+					LevelEditorModel.ModelType.MODEL,
+					name,
+					description,
+					pathName + File.separator + fileName,
+					model.getId().
+						replace("\\", "_").
+						replace("/", "_").
+						replace(":", "_") +
+						".png",
+					model,
+					null,
+					modelBoundingVolume,
+					boundingBox,
+					pivot
+				);
+			} else
+			if (modelFile.getName().toLowerCase().endsWith(".tm")) {
+				Model model = TMReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
 				BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);
 				Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 				levelEditorModel = new LevelEditorModel(

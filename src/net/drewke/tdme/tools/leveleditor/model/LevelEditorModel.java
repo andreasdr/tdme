@@ -3,6 +3,7 @@ package net.drewke.tdme.tools.leveleditor.model;
 import java.io.File;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.Object3DModel;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.model.Model;
@@ -42,13 +43,15 @@ public final class LevelEditorModel extends Properties {
 	 * Creates a level editor model
 	 * @param id
 	 * @param model type
+	 * @param name
+	 * @param description
 	 * @param file name
 	 * @param thumbnail
 	 * @param model
 	 * @param bounding model mesh file
 	 * @param model bounding volume
-	 * @param bounding box
-	 * @param pivot 
+	 * @param bounding volume
+	 * @param pivot
 	 */
 	public LevelEditorModel(int id, ModelType modelType, String name, String description, String fileName, String thumbnail, Model model, String boundingModelMeshFile, Model modelBoundingVolume, BoundingVolume boundingVolume, Vector3 pivot) {
 		this.id = id;
@@ -61,7 +64,7 @@ public final class LevelEditorModel extends Properties {
 		this.boundingModelMeshFile = boundingModelMeshFile;
 		this.modelBoundingVolume = modelBoundingVolume;
 		this.boundingVolume = boundingVolume;
-		this.boundingBox = Engine.getModelBoundingBox(model);
+		this.boundingBox = ModelUtilities.createBoundingBox(model);
 		this.pivot = pivot;
 	}
 

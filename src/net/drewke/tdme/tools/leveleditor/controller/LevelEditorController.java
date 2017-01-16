@@ -107,7 +107,7 @@ public final class LevelEditorController extends PopUpsController {
 	 * @see de.lessvoid.nifty.screen.ScreenController#bind(de.lessvoid.nifty.Nifty, de.lessvoid.nifty.screen.Screen)
 	 */
 	public void bind(Nifty nifty, Screen screen) {
-		super.bind(nifty, screen, new File(TDMELevelEditor.getInstance().getLevel().getPathName()), "tl");
+		super.bind(nifty, screen, new File(TDMELevelEditor.getInstance().getLevel().getPathName()), "tl,dae");
 		this.nifty = nifty;
 		this.screen = screen;
 		screenCaption = screen.findElementByName("screen_caption");

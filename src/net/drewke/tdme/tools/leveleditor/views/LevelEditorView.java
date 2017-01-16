@@ -13,6 +13,7 @@ import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Timing;
 import net.drewke.tdme.engine.Transformations;
+import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
@@ -1508,6 +1509,14 @@ public final class LevelEditorView extends View  {
 		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
 		selectedModel = null;
 		try {
+			// export level from DAE if requested
+			if (file.toLowerCase().endsWith(".dae") == true) {
+				LevelEditorLevel daeLevel = DAEReader.readLevel(path, file);
+				// adjust file name
+				file+= ".tl";
+			}
+
+			// do import
 			LevelFileImport.doImport(
 				MODEL_ROOT,
 				GAME_ROOT,
@@ -1515,6 +1524,7 @@ public final class LevelEditorView extends View  {
 				file,
 				level
 			);
+
 			// set up map properties
 			controller.setMapProperties(level.getProperties());
 			controller.unsetObjectProperties();
