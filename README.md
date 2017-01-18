@@ -75,8 +75,6 @@ TDME
               - sleeping technology
 
     - What does it (maybe still) lack
-        - GUI system
-    	- own more efficient model file format
         - animation blending
         - physics
           - multiple bounding volumes for a rigid body
