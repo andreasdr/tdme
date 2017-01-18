@@ -12,6 +12,7 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.model.Animation;
@@ -25,6 +26,7 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.subsystems.object.ModelUtilitiesInternal.ModelStatistics;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
@@ -288,7 +290,13 @@ public final class DAEReader {
 					// prepare for indexed rendering
 					ModelHelper.prepareForIndexedRendering(model);
 
-					// TODO: check if empty model
+					// check if empty model
+					ModelStatistics modelStatistics = ModelUtilities.computeModelStatistics(model);
+					if (modelStatistics.getOpaqueFaceCount() == 0 && modelStatistics.getTransparentFaceCount() == 0) {
+						System.out.println("DAEReader::readLevel(): Skipping model '" + model.getName() + "' as is has no faces.");
+						continue;
+					}
+
 					// TODO: check if we have that model already
 
 					// save model
