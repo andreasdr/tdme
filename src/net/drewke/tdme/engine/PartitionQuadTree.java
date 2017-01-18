@@ -1,10 +1,13 @@
-package net.drewke.tdme.engine.physics;
+package net.drewke.tdme.engine;
 
 import java.util.ArrayList;
 
+import net.drewke.tdme.engine.physics.CollisionDetection;
+import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
@@ -15,18 +18,18 @@ import net.drewke.tdme.utils.Pool;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class Partition {
+public final class PartitionQuadTree extends Partition {
 
 	/**
 	 * Partition tree node
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
-	private final static class PartitionTreeNode {
+	private static class PartitionTreeNode {
 		// partition size
 		private float partitionSize;
 
-		// x, y position
+		// x, y, z position
 		private int x;
 		private int y;
 		private int z;
@@ -44,30 +47,33 @@ public final class Partition {
 		private HashMap<Key, PartitionTreeNode> subNodesByCoordinate;
 
 		// or finally our static bounding volumes
-		private ArrayList<RigidBody> partitionRidigBodies;
+		private ArrayList<Entity> partitionObjects;
 	}
 
 	private Key key;
-	private ArrayListIteratorMultiple<RigidBody> rigidBodyIterator;
+	private ArrayListIteratorMultiple<Entity> entityIterator;
 
 	private BoundingBox boundingBox;
 	private Vector3 halfExtension;
 	private Vector3 sideVector;
 	private Vector3 forwardVector;
 	private Vector3 upVector;
-	private Pool<ArrayList<PartitionTreeNode>> rigidBodyPartitionNodesPool;
-	private HashMap<String, ArrayList<PartitionTreeNode>> rigidBodyPartitionNodes;
+	private Pool<ArrayList<PartitionTreeNode>> objectPartitionNodesPool;
+	private HashMap<String, ArrayList<PartitionTreeNode>> objectPartitionNodes;
+	private ArrayList<Entity> visibleEntities;
+	private ArrayListIterator<Entity> visibleEntitiesIterator;
 	private PartitionTreeNode treeRoot = null;
 
 	public final static float PARTITION_SIZE_MIN = 4f;
+	public final static float PARTITION_SIZE_MID = 8f;
 	public final static float PARTITION_SIZE_MAX = 16f;
 
 	/**
 	 * Constructor
 	 */
-	protected Partition() {
+	protected PartitionQuadTree() {
 		this.key = new Key();
-		this.rigidBodyIterator = new ArrayListIteratorMultiple<RigidBody>();
+		this.entityIterator = new ArrayListIteratorMultiple<Entity>();
 		this.boundingBox = new BoundingBox();
 		this.halfExtension = new Vector3();
 		this.sideVector = new Vector3(1f,0f,0f);
@@ -80,12 +86,14 @@ public final class Partition {
 	 * Reset
 	 */
 	protected void reset() {
-		this.rigidBodyPartitionNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
+		this.objectPartitionNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
 			public ArrayList<PartitionTreeNode> instantiate() {
 				return new ArrayList<PartitionTreeNode>();
 			}
 		};
-		this.rigidBodyPartitionNodes = new HashMap<String, ArrayList<PartitionTreeNode>>();
+		this.objectPartitionNodes = new HashMap<String, ArrayList<PartitionTreeNode>>();
+		this.visibleEntities = new ArrayList<Entity>();
+		this.visibleEntitiesIterator = new ArrayListIterator<Entity>(visibleEntities);
 		this.treeRoot = new PartitionTreeNode();
 		this.treeRoot.partitionSize = -1;
 		this.treeRoot.x = -1;
@@ -95,13 +103,14 @@ public final class Partition {
 		this.treeRoot.bv = null;
 		this.treeRoot.subNodes = new ArrayList<PartitionTreeNode>();
 		this.treeRoot.subNodesByCoordinate = new HashMap<Key, PartitionTreeNode>();
-		this.treeRoot.partitionRidigBodies = null;		
+		this.treeRoot.partitionObjects = null;		
 	}
 
 	/**
 	 * Creates a partition
 	 * @param parent
 	 * @param x
+	 * @param y
 	 * @param z
 	 * @param partition size
 	 * @return partition tree node
@@ -127,9 +136,10 @@ public final class Partition {
 					z * partitionSize + partitionSize
 				)
 			);
+		// System.out.println(this.hashCode() + ":" + "FrumstumPartition::createPartition()::" + node.bv);
 		node.subNodes = null;
 		node.subNodesByCoordinate = null;
-		node.partitionRidigBodies = null;
+		node.partitionObjects = null;
 
 		// register in parent sub nodes
 		if (parent.subNodes == null) {
@@ -150,19 +160,6 @@ public final class Partition {
 		key.append(node.z);
 		parent.subNodesByCoordinate.put(key, node);
 
-		/*
-		// 16
-		if (partitionSize == PARTITION_SIZE_MAX) System.out.print("");
-		// 8
-		if (partitionSize == PARTITION_SIZE_MAX / 2f) System.out.print("  ");
-		// 4
-		if (partitionSize == PARTITION_SIZE_MAX / 4f) System.out.print("    ");
-		// 2
-		if (partitionSize == PARTITION_SIZE_MAX / 8f) System.out.print("      ");
-		//
-		System.out.println("create partition (" + x + "/" + y + "/" + z + "/" + partitionSize + "): " + node.bv);
-		*/
-
 		// create sub nodes
 		if (partitionSize > PARTITION_SIZE_MIN) {
 			for (int _y = 0; _y < 2; _y++)
@@ -177,7 +174,7 @@ public final class Partition {
 				);
 			}
 		} else {
-			node.partitionRidigBodies = new ArrayList<RigidBody>();
+			node.partitionObjects = new ArrayList<Entity>();
 		}
 
 		//
@@ -186,22 +183,22 @@ public final class Partition {
 
 	/**
 	 * Adds a object
-	 * @param rigidBody
+	 * @param entity
 	 */
-	protected void addRigidBody(RigidBody rigidBody) {
+	protected void addEntity(Entity entity) {
 		// update if already exists
-		ArrayList<PartitionTreeNode> objectPartitionsVector = rigidBodyPartitionNodes.get(rigidBody.getId());
+		ArrayList<PartitionTreeNode> objectPartitionsVector = objectPartitionNodes.get(entity.getId());
 		if (objectPartitionsVector != null) {
 			while (objectPartitionsVector.size() > 0) {
 				int lastIdx = objectPartitionsVector.size() - 1; 
-				objectPartitionsVector.get(lastIdx).partitionRidigBodies.remove(rigidBody);
+				objectPartitionsVector.get(lastIdx).partitionObjects.remove(entity);
 				objectPartitionsVector.remove(lastIdx);
 			}
 		}
 
 		// determine max first level partition dimension
 		// convert to aabb for fast collision tests
-		BoundingVolume cbv = rigidBody.cbv;
+		BoundingVolume cbv = entity.getBoundingBoxTransformed();
 		Vector3 center = cbv.getCenter();
 		halfExtension.set(
 			cbv.computeDimensionOnAxis(sideVector) + 0.2f,
@@ -245,34 +242,95 @@ public final class Partition {
 			}
 		}
 
-		// add rigid body to tree
-		addToPartitionTree(rigidBody, boundingBox);
+		// add entity to tree
+		addToPartitionTree(entity, boundingBox);
 	}
 
 	/**
 	 * Updates a object
-	 * @param rigidBody
+	 * @param entity
 	 */
-	protected void updateRigidBody(RigidBody rigidBody) {
-		addRigidBody(rigidBody);
+	protected void updateEntity(Entity entity) {
+		addEntity(entity);
 	}
 
 	/**
-	 * Removes a rigidBody
-	 * @param rigidBody
+	 * Removes a entity
+	 * @param entity
 	 */
-	protected void removeRigidBody(RigidBody rigidBody) {
-		ArrayList<PartitionTreeNode> objectPartitionsVector = rigidBodyPartitionNodes.remove(rigidBody.getId());
+	protected void removeEntity(Entity entity) {
+		ArrayList<PartitionTreeNode> objectPartitionsVector = objectPartitionNodes.remove(entity.getId());
 		if (objectPartitionsVector == null) {
-			// rigid body not registered
+			System.out.println("FrustumPartition::removeObject3D(): '" + entity.getId() + "' not registered");
 			return;
 		}
 		while (objectPartitionsVector.size() > 0) {
 			int lastIdx = objectPartitionsVector.size() - 1;
-			objectPartitionsVector.get(lastIdx).partitionRidigBodies.remove(rigidBody);
+			objectPartitionsVector.get(lastIdx).partitionObjects.remove(entity);
 			objectPartitionsVector.remove(lastIdx);
 		}
-		rigidBodyPartitionNodesPool.release(objectPartitionsVector);
+		objectPartitionNodesPool.release(objectPartitionsVector);
+	}
+
+	/**
+	 * Do partition tree lookup
+	 * @param frustum
+	 * @param node
+	 * @param visible entities
+	 * @return
+	 */
+	private int doPartitionTreeLookUpVisibleObjects(Frustum frustum, PartitionTreeNode node, ArrayList<Entity> visibleEntities) {
+		int lookUps = 1;
+		// check if given cbv collides with partition node bv
+		if (frustum.isVisible(node.bv) == false) {
+			return lookUps;
+		}
+
+		// if this node already has the partition cbvs add it to the iterator
+		if (node.partitionObjects != null) {
+			for (int i = 0; i < node.partitionObjects.size(); i++) {
+				Entity entity = node.partitionObjects.get(i);
+				if (entity.isEnabled() == false) continue;
+				boolean hasEntity = false;
+				for (int j = 0; j < visibleEntities.size(); j++) {
+					if (visibleEntities.get(j) == entity) {
+						hasEntity = true;
+						break;
+					}
+				}
+				if (hasEntity == true) continue;
+				lookUps++;
+				if (frustum.isVisible(entity.getBoundingBoxTransformed()) == false) continue;
+				visibleEntities.add(entity);
+			}
+			return lookUps;
+		} else
+		if (node.subNodes != null) {
+			// otherwise check sub nodes
+			for (int i = 0; i < node.subNodes.size(); i++) {
+				lookUps+= doPartitionTreeLookUpVisibleObjects(frustum, node.subNodes.get(i), visibleEntities);
+			}
+			return lookUps;
+		}
+
+		// done
+		return lookUps;
+	}
+
+	/**
+	 * Get static bounding volumes iterator
+	 * @param frustum
+	 * @return vector iterator
+	 */
+	public ArrayListIterator<Entity> getVisibleEntities(Frustum frustum) {
+		// convert to aabb for fast collision tests
+		visibleEntities.clear();
+		int lookUps = 0;
+		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
+			lookUps+=doPartitionTreeLookUpVisibleObjects(frustum, treeRoot.subNodes.get(i), visibleEntities); 
+		}
+		// System.out.println("LooksUps: " + lookUps + ", " + visibleEntities.size());
+		return visibleEntitiesIterator;
 	}
 
 	/**
@@ -281,36 +339,37 @@ public final class Partition {
 	 * @param cbv
 	 * @param cbvsIterator
 	 */
-	private void addToPartitionTree(PartitionTreeNode node, RigidBody rigidBody, BoundingBox cbv) {
+	private void addToPartitionTree(PartitionTreeNode node, Entity entity, BoundingBox cbv) {
 		// check if given cbv collides with partition node bv
 		if (CollisionDetection.doCollideAABBvsAABBFast(node.bv, cbv) == false) {
 			return;
 		}
 
 		// if this node already has the partition cbvs add it to the iterator
-		if (node.partitionRidigBodies != null) {
-			node.partitionRidigBodies.add(rigidBody);
-			ArrayList<PartitionTreeNode> rigidBodyPartitionNodesVector = rigidBodyPartitionNodes.get(rigidBody.getId());
-			if (rigidBodyPartitionNodesVector == null) {
-				rigidBodyPartitionNodesVector = rigidBodyPartitionNodesPool.allocate();
-				rigidBodyPartitionNodes.put(rigidBody.getId(), rigidBodyPartitionNodesVector);
+		if (node.partitionObjects != null) {
+			node.partitionObjects.add(entity);
+			ArrayList<PartitionTreeNode> objectPartitionNodesVector = objectPartitionNodes.get(entity.getId());
+			if (objectPartitionNodesVector == null) {
+				objectPartitionNodesVector = objectPartitionNodesPool.allocate();
+				objectPartitionNodes.put(entity.getId(), objectPartitionNodesVector);
 			}
-			rigidBodyPartitionNodesVector.add(node);
+			objectPartitionNodesVector.add(node);
+			// if (entity.getId().equals("player.0")) System.out.println(this.hashCode() + ":" + "adding " + entity.getId() + " to " + node.x + "," + node.z + "," + node.partitionSize); 
 		} else
 		if (node.subNodes != null) {
 			// otherwise check sub nodes
 			for (int i = 0; i < node.subNodes.size(); i++) {
-				addToPartitionTree(node.subNodes.get(i), rigidBody, cbv);
+				addToPartitionTree(node.subNodes.get(i), entity, cbv);
 			}
 		}
 	}
 
 	/**
-	 * Add rigidBody to tree
+	 * Add entity to tree
 	 */
-	protected void addToPartitionTree(RigidBody rigidBody, BoundingBox cbv) {
+	protected void addToPartitionTree(Entity entity, BoundingBox cbv) {
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
-			addToPartitionTree(treeRoot.subNodes.get(i), rigidBody, cbv); 
+			addToPartitionTree(treeRoot.subNodes.get(i), entity, cbv); 
 		}
 	}
 
@@ -318,17 +377,17 @@ public final class Partition {
 	 * Do partition tree lookup for near entities to cbv
 	 * @param node
 	 * @param cbv
-	 * @param rigidBody iterator
+	 * @param entity iterator
 	 */
-	private int doPartitionTreeLookUpNearEntities(PartitionTreeNode node, BoundingBox cbv, ArrayListIteratorMultiple<RigidBody> objectsIterator) {
+	private int doPartitionTreeLookUpNearEntities(PartitionTreeNode node, BoundingBox cbv, ArrayListIteratorMultiple<Entity> objectsIterator) {
 		// check if given cbv collides with partition node bv
 		if (CollisionDetection.doCollideAABBvsAABBFast(cbv, node.bv) == false) {
 			return 1;
 		}
 
 		// if this node already has the partition cbvs add it to the iterator
-		if (node.partitionRidigBodies != null) {
-			objectsIterator.addVector(node.partitionRidigBodies);
+		if (node.partitionObjects != null) {
+			objectsIterator.addVector(node.partitionObjects);
 			return 1;
 		} else {
 			int lookUps = 1;
@@ -345,7 +404,7 @@ public final class Partition {
 	 * @param cbv
 	 * @return objects near to cbv
 	 */
-	public ArrayListIteratorMultiple<RigidBody> getObjectsNearTo(BoundingVolume cbv) {
+	public ArrayListIteratorMultiple<Entity> getObjectsNearTo(BoundingVolume cbv) {
 		Vector3 center = cbv.getCenter();
 		halfExtension.set(
 			cbv.computeDimensionOnAxis(sideVector) + 0.2f,
@@ -357,12 +416,12 @@ public final class Partition {
 		boundingBox.getMax().set(center);
 		boundingBox.getMax().add(halfExtension);
 		boundingBox.update();
-		rigidBodyIterator.clear();
+		entityIterator.clear();
 		int lookUps = 0;
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
-			lookUps+=doPartitionTreeLookUpNearEntities(treeRoot.subNodes.get(i), boundingBox, rigidBodyIterator); 
+			lookUps+=doPartitionTreeLookUpNearEntities(treeRoot.subNodes.get(i), boundingBox, entityIterator); 
 		}
-		return rigidBodyIterator;
+		return entityIterator;
 	}
 
 	/**
@@ -370,7 +429,7 @@ public final class Partition {
 	 * @param cbv
 	 * @return objects near to cbv
 	 */
-	public ArrayListIteratorMultiple<RigidBody> getObjectsNearTo(Vector3 center) {
+	public ArrayListIteratorMultiple<Entity> getObjectsNearTo(Vector3 center) {
 		halfExtension.set(
 			0.2f,
 			0.2f,
@@ -381,47 +440,12 @@ public final class Partition {
 		boundingBox.getMax().set(center);
 		boundingBox.getMax().add(halfExtension);
 		boundingBox.update();
-		rigidBodyIterator.clear();
+		entityIterator.clear();
 		int lookUps = 0;
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
-			lookUps+=doPartitionTreeLookUpNearEntities(treeRoot.subNodes.get(i), boundingBox, rigidBodyIterator); 
+			lookUps+=doPartitionTreeLookUpNearEntities(treeRoot.subNodes.get(i), boundingBox, entityIterator); 
 		}
-		return rigidBodyIterator;
-	}
-
-	/**
-	 * To string
-	 * @param indent
-	 * @param node
-	 * @return string representation of node
-	 */
-	public String toString(String indent, PartitionTreeNode node) {
-		String result = indent + node.x + "/" + node.y + "/" + node.z + ", size " + node.partitionSize + " / " + node.bv + "\n";
-		if (node.partitionRidigBodies != null) {
-			result+= indent + "  ";
-			for (RigidBody rigidBody: node.partitionRidigBodies) {
-				result+= rigidBody.id + ",";
-			}
-			result+= "\n";
-		}
-		if (node.subNodes != null) {
-			for (PartitionTreeNode subNode: node.subNodes) {
-				result += toString(indent + "  ", subNode);
-			}
-		}
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		String result = "PartitionQuadTree\n";
-		for (PartitionTreeNode subNode: treeRoot.subNodes) {
-			result += toString("  ", subNode);
-		}
-		return result;
+		return entityIterator;
 	}
 
 }

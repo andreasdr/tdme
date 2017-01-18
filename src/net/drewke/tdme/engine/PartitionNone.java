@@ -8,11 +8,11 @@ import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 
 /**
- * Partition Implementation
+ * Partition none implementation
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class PartitionNone {
+public final class PartitionNone extends Partition {
 
 	private ArrayList<Entity> entities = new ArrayList<Entity>();
 	private ArrayListIterator<Entity> arrayListIterator = new ArrayListIterator<Entity>(entities);
@@ -21,7 +21,7 @@ public final class PartitionNone {
 	/**
 	 * Constructor
 	 */
-	protected PartitionNone() {
+	public PartitionNone() {
 		arrayListIteratorMultiple.addVector(entities);
 	}
 

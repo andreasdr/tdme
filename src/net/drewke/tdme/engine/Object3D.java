@@ -43,7 +43,7 @@ public final class Object3D extends Object3DInternal implements Entity {
 	 */
 	public void fromTransformations(Transformations transformations) {
 		super.fromTransformations(transformations);
-		if (engine != null) engine.partition.updateEntity(this);		
+		if (engine != null) engine.partition.updateEntity(this);
 	}
 
 	/*

@@ -8,6 +8,7 @@ import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
+import net.drewke.tdme.engine.PartitionNone;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.model.Color4;
@@ -133,6 +134,7 @@ public final class Tools {
 	 */
 	public static void oseInit(GLAutoDrawable drawable) {
 		osEngine = Engine.createOffScreenInstance(drawable, 128, 128);
+		osEngine.setPartition(new PartitionNone());
 		setDefaultLight(osEngine.getLightAt(0));
 		oseScale = 0.75f;
 		oseLookFromRotations = new Transformations();

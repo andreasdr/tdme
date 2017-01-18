@@ -7,7 +7,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 
 /**
- * Partition Implementation
+ * Partition none implementation
  * @author Andreas Drewke
  * @version $Id$
  */

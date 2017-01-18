@@ -2,6 +2,7 @@ package net.drewke.tdme.engine.subsystems.object;
 
 import net.drewke.tdme.engine.Timing;
 import net.drewke.tdme.engine.model.AnimationSetup;
+import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Material;
@@ -201,7 +202,6 @@ public class ModelUtilitiesInternal {
 		HashMap<String, Integer> materialCountById = new HashMap<String, Integer>();
 		int opaqueFaceCount = 0;
 		int transparentFaceCount = 0;
-		Model model = object3DModelInternal.getModel();
 		for(Object3DGroup object3DGroup: object3DModelInternal.object3dGroups) {
 			// check each faces entity
 			FacesEntity[] facesEntities = object3DGroup.group.getFacesEntities();
@@ -249,6 +249,78 @@ public class ModelUtilitiesInternal {
 
 		//
 		return new ModelStatistics(opaqueFaceCount, transparentFaceCount, materialCount);
+	}
+
+	/**
+	 * Compute if model 1 equals model 2
+	 * @param model 1
+	 * @param model 2
+	 * @return model1 equals model2
+	 */
+	public static boolean equals(Model model1, Model model2) {
+		return ModelUtilitiesInternal.equals(new Object3DModelInternal(model1), new Object3DModelInternal(model2));	
+	}
+
+
+	/**
+	 * Compute if model 1 equals model 2
+	 * @param model 1
+	 * @param model 2
+	 * @return model1 equals model2
+	 */
+	public static boolean equals(Object3DModelInternal object3DModel1Internal, Object3DModelInternal object3DModel2Internal) {
+		// check number of object 3d groups 
+		if (object3DModel1Internal.object3dGroups.length != object3DModel2Internal.object3dGroups.length) return false;
+
+		//
+		for(int i = 0; i < object3DModel1Internal.object3dGroups.length; i++) {
+			Object3DGroup object3DGroupModel1 = object3DModel1Internal.object3dGroups[i];
+			Object3DGroup object3DGroupModel2 = object3DModel2Internal.object3dGroups[i];
+
+			FacesEntity[] facesEntitiesModel1 = object3DGroupModel1.group.getFacesEntities();
+			FacesEntity[] facesEntitiesModel2 = object3DGroupModel2.group.getFacesEntities();
+
+			// check transformation matrix
+			if (object3DGroupModel1.group.getTransformationsMatrix().equals(object3DGroupModel2.group.getTransformationsMatrix()) == false) return false;
+
+			// check number of faces entities
+			if (facesEntitiesModel1.length != facesEntitiesModel2.length) return false;
+
+			// check each faces entity
+			for (int j = 0; j < facesEntitiesModel1.length; j++) {
+				FacesEntity facesEntityModel1 = facesEntitiesModel1[j];
+				FacesEntity facesEntityModel2 = facesEntitiesModel2[j];
+
+				// check material
+				if (facesEntityModel1.getMaterial().getId().equals(facesEntityModel2.getMaterial().getId()) == false) return false;
+
+				// check faces
+				Face[] facesModel1 = facesEntityModel1.getFaces();
+				Face[] facesModel2 = facesEntityModel2.getFaces();
+
+				// number of faces in faces entity
+				if (facesModel1.length != facesModel2.length) return false;
+
+				// face indices
+				for (int k = 0; k < facesModel1.length; k++) {
+					// vertex indices
+					int[] vertexIndicesModel1 = facesModel1[k].getVertexIndices();
+					int[] vertexIndicesModel2 = facesModel2[k].getVertexIndices();
+					if (vertexIndicesModel1[0] != vertexIndicesModel2[0] ||
+						vertexIndicesModel1[1] != vertexIndicesModel2[1] ||
+						vertexIndicesModel1[2] != vertexIndicesModel2[2]) {
+						return false;
+					}
+
+					// TODO: maybe other indices
+				}
+
+				// TODO: check vertices, normals and such
+			}
+		}
+
+		//
+		return true;
 	}
 
 }

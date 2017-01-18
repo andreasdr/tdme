@@ -444,22 +444,22 @@ public final class Matrix4x4 {
 	 */
 	public boolean equals(Matrix4x4 m) {
 		return
-			data[0] == m.data[0] &&
-			data[1] == m.data[1] &&
-			data[2] == m.data[2] &&
-			data[3] == m.data[3] &&
-			data[4] == m.data[4] &&
-			data[5] == m.data[5] &&
-			data[6] == m.data[6] &&
-			data[7] == m.data[7] &&
-			data[8] == m.data[8] &&
-			data[9] == m.data[9] &&
-			data[10] == m.data[10] &&
-			data[11] == m.data[11] &&
-			data[12] == m.data[12] &&
-			data[13] == m.data[13] &&
-			data[14] == m.data[14] &&
-			data[15] == m.data[15];
+			Math.abs(data[0] - m.data[0]) < MathTools.EPSILON &&
+			Math.abs(data[1] - m.data[1]) < MathTools.EPSILON &&
+			Math.abs(data[2] - m.data[2]) < MathTools.EPSILON &&
+			Math.abs(data[3] - m.data[3]) < MathTools.EPSILON &&
+			Math.abs(data[4] - m.data[4]) < MathTools.EPSILON &&
+			Math.abs(data[5] - m.data[5]) < MathTools.EPSILON &&
+			Math.abs(data[6] - m.data[6]) < MathTools.EPSILON &&
+			Math.abs(data[7] - m.data[7]) < MathTools.EPSILON &&
+			Math.abs(data[8] - m.data[8]) < MathTools.EPSILON &&
+			Math.abs(data[9] - m.data[9]) < MathTools.EPSILON &&
+			Math.abs(data[10] - m.data[10]) < MathTools.EPSILON &&
+			Math.abs(data[11] - m.data[11]) < MathTools.EPSILON &&
+			Math.abs(data[12] - m.data[12]) < MathTools.EPSILON &&
+			Math.abs(data[13] - m.data[13]) < MathTools.EPSILON &&
+			Math.abs(data[14] - m.data[14]) < MathTools.EPSILON &&
+			Math.abs(data[15] - m.data[15]) < MathTools.EPSILON;
 	}
 
 	/**

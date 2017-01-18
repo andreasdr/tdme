@@ -26,6 +26,7 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.object.ModelUtilitiesInternal.ModelStatistics;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
@@ -297,20 +298,33 @@ public final class DAEReader {
 						continue;
 					}
 
-					// TODO: check if we have that model already
-
-					// save model
-					TMWriter.write(model, pathName + "/" + fileName + "-models", xmlNode.getAttribute("id") + ".tm");
-
 					// level editor model
-					LevelEditorModel levelEditorModel = levelEditorLevel.getModelLibrary().addModel(
-						nodeIdx,
-						xmlNode.getAttribute("id"),
-						xmlNode.getAttribute("id"),
-						pathName + "/" + fileName + "-models",
-						xmlNode.getAttribute("id") + ".tm",
-						new Vector3()
-					);
+					LevelEditorModel levelEditorModel = null;
+
+					// check if we have that model already
+					for (int i = 0; i < levelEditorLevel.getModelLibrary().getModelCount(); i++) {
+						LevelEditorModel levelEditorModelLibrary = levelEditorLevel.getModelLibrary().getModelAt(i);
+						if (ModelUtilities.equals(model, levelEditorModelLibrary.getModel()) == true) {
+							levelEditorModel = levelEditorModelLibrary;
+							break;
+						}
+					}
+
+					// create level editor model, if not yet exists
+					if (levelEditorModel == null) {
+						// save model
+						TMWriter.write(model, pathName + "/" + fileName + "-models", xmlNode.getAttribute("id") + ".tm");
+
+						// create level editor model
+						levelEditorModel = levelEditorLevel.getModelLibrary().addModel(
+							nodeIdx++,
+							xmlNode.getAttribute("id"),
+							xmlNode.getAttribute("id"),
+							pathName + "/" + fileName + "-models",
+							xmlNode.getAttribute("id") + ".tm",
+							new Vector3()
+						);
+					}
 
 					// level editor object transformations
 					Transformations levelEditorObjectTransformations = new Transformations();
@@ -331,9 +345,6 @@ public final class DAEReader {
 
 					// add object to level
 					levelEditorLevel.addObject(object);
-
-					//
-					nodeIdx++;
 				}
 			}
 		}

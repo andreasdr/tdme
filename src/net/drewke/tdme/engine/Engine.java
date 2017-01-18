@@ -155,7 +155,7 @@ public final class Engine {
 		offScreenEngine.frameBuffer.init();
 		// create camera, frustum partition
 		offScreenEngine.camera = new Camera(renderer);
-		offScreenEngine.partition = new Partition();
+		offScreenEngine.partition = new PartitionQuadTree();
 		// create lights
 		for (int i = 0; i < offScreenEngine.lights.length; i++) offScreenEngine.lights[i] = new Light(renderer, i);
 		// create shadow mapping
@@ -305,10 +305,18 @@ public final class Engine {
 	}
 
 	/**
-	 * @return Partition
+	 * @return partition
 	 */
 	public Partition getPartition() {
 		return partition;
+	}
+
+	/**
+	 * Set partition
+	 * @param partition
+	 */
+	public void setPartition(Partition partition) {
+		this.partition = partition;
 	}
 
 	/**
@@ -464,6 +472,8 @@ public final class Engine {
 		if (entity != null) {
 			entity.dispose();
 			partition.removeEntity(entity);
+			entity.setEngine(null);
+			entity.setRenderer(null);
 		}
 	}
 
@@ -681,7 +691,7 @@ public final class Engine {
 
 		// create camera
 		camera = new Camera(renderer);
-		partition = new Partition();
+		partition = new PartitionQuadTree();
 
 		// create lights
 		for (int i = 0; i < lights.length; i++) lights[i] = new Light(renderer, i);
