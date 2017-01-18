@@ -288,6 +288,9 @@ public final class DAEReader {
 					// prepare for indexed rendering
 					ModelHelper.prepareForIndexedRendering(model);
 
+					// TODO: check if empty model
+					// TODO: check if we have that model already
+
 					// save model
 					TMWriter.write(model, pathName + "/" + fileName + "-models", xmlNode.getAttribute("id") + ".tm");
 
