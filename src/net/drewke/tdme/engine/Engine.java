@@ -106,7 +106,8 @@ public final class Engine {
 	private Matrix4x4 modelViewMatrix;
 	private Matrix4x4 projectionMatrix;
 	private Matrix4x4 tmpMatrix4x4;
-	private Vector3 tmpVector3;
+	private Vector3 tmpVector3a;
+	private Vector3 tmpVector3b;
 	private Vector4 tmpVector4a;
 	private Vector4 tmpVector4b;
 
@@ -245,7 +246,8 @@ public final class Engine {
 
 		// tmp 3d entities
 		tmpMatrix4x4 = new Matrix4x4();
-		tmpVector3 = new Vector3();
+		tmpVector3a = new Vector3();
+		tmpVector3b = new Vector3();
 		tmpVector4a = new Vector4();
 		tmpVector4b = new Vector4();
 
@@ -961,30 +963,53 @@ public final class Engine {
 	 */
 	public Entity getObjectByMousePosition(int mouseX, int mouseY) {
 		// get world coordinate
-		computeWorldCoordinateByMousePosition(mouseX, mouseY, tmpVector3);
+		computeWorldCoordinateByMousePosition(mouseX, mouseY, tmpVector3a);
 
-		// iterate visible objectsById
+		float selectedEntityVolume = Float.MAX_VALUE;
+		Entity selectedEntity = null;
+
+		// iterate visible objects
 		for (int i = 0; i < visibleObjects.size(); i++) {
-			Object3D object3d = visibleObjects.get(i);
-			if (object3d.isPickable() == true &&
-				object3d.getBoundingBoxTransformed().containsPoint(tmpVector3)) {
+			Object3D entity = visibleObjects.get(i);
+			if (entity.isPickable() == true &&
+				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a) == true) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
-				return object3d;
+				float entityVolume =
+					tmpVector3b.set(
+						entity.getBoundingBoxTransformed().getMax()
+					).sub(
+						entity.getBoundingBoxTransformed().getMin()
+					).computeLength();
+				// check if not yet selected entity or its volume smaller than previous match
+				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
+					selectedEntity = entity;
+					selectedEntityVolume = entityVolume;
+				}
 			}
 		}
 
-		// iterate visible objectsById
+		// iterate visible pses
 		for (int i = 0; i < visiblePpses.size(); i++) {
 			PointsParticleSystemEntity entity = visiblePpses.get(i);
 			if (entity.isPickable() == true &&
-				entity.getBoundingBoxTransformed().containsPoint(tmpVector3)) {
+				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
-				return entity;
+				float entityVolume =
+					tmpVector3b.set(
+						entity.getBoundingBoxTransformed().getMax()
+					).sub(
+						entity.getBoundingBoxTransformed().getMin()
+					).computeLength();
+				// check if not yet selected entity or its volume smaller than previous match
+				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
+					selectedEntity = entity;
+					selectedEntityVolume = entityVolume;
+				}
 			}
 		}
 
-		// nothing found
-		return null;
+		//
+		return selectedEntity;
 	}
 
 	/**
