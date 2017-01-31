@@ -119,7 +119,6 @@ public abstract class GL2Renderer extends GLRenderer {
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);						// Black Background
 		gl.glClearDepth(1.0f); 											// Depth Buffer Setup
 		gl.glEnable(GL2.GL_DEPTH_TEST); 								// Enables Depth Testing
-		gl.glFrontFace(GL2.GL_CCW);										// Triangles are in counter clockwise order
 		gl.glEnable(GL2.GL_CULL_FACE);									// The Type Of Depth Testing To Do
 		gl.glDepthFunc(GL2.GL_LEQUAL);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);	// Really Nice Perspective Calculations

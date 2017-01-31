@@ -84,7 +84,6 @@ public abstract class GLES2Renderer extends GLRenderer {
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);						// Black Background
 		gl.glClearDepthf(1.0f); 											// Depth Buffer Setup
 		gl.glEnable(GLES2.GL_DEPTH_TEST); 								// Enables Depth Testing
-		gl.glFrontFace(GLES2.GL_CCW);										// Triangles are in counter clockwise order
 		gl.glEnable(GLES2.GL_CULL_FACE);									// The Type Of Depth Testing To Do
 		gl.glDepthFunc(GLES2.GL_LEQUAL);
 		gl.glEnable(GLES2.GL_TEXTURE_2D);									// enable texture 2d
