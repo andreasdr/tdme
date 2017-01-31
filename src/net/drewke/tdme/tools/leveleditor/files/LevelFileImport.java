@@ -214,13 +214,13 @@ public final class LevelFileImport {
 				(float)jObject.getDouble("sz")
 			);
 			transformations.getRotations().add(
-				new Rotation((float)jObject.getDouble("rx"), new Vector3(1.0f, 0.0f, 0.0f))
-			);
-			transformations.getRotations().add(
 				new Rotation((float)jObject.getDouble("ry"), new Vector3(0.0f, 1.0f, 0.0f))
 			);
 			transformations.getRotations().add(
 				new Rotation((float)jObject.getDouble("rz"), new Vector3(0.0f, 0.0f, 1.0f))
+			);
+			transformations.getRotations().add(
+				new Rotation((float)jObject.getDouble("rx"), new Vector3(1.0f, 0.0f, 0.0f))
 			);
 			transformations.update();
 			LevelEditorObject levelEditorObject = new LevelEditorObject(
@@ -246,6 +246,7 @@ public final class LevelFileImport {
 
 			// check if entity already exists
 			//	small workaround for a bug that would allow to place to objects at same place with same model
+			/*
 			boolean skipObject = false;
 			for (int j = 0; j < level.getObjectCount(); j++) {
 				LevelEditorObject _levelEditorObject = level.getObjectAt(j);
@@ -260,6 +261,7 @@ public final class LevelFileImport {
 
 			// skip on object if requested
 			if (skipObject == true) continue;
+			*/
 
 			// otherwise add
 			level.addObject(levelEditorObject);

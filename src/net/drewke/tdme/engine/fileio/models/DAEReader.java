@@ -26,11 +26,13 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.object.ModelUtilitiesInternal.ModelStatistics;
+import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.tools.leveleditor.Tools;
 import net.drewke.tdme.tools.leveleditor.files.LevelFileExport;
 import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
 import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
@@ -147,7 +149,6 @@ public final class DAEReader {
 
 		//
 		LevelEditorLevel levelEditorLevel = new LevelEditorLevel(new ArrayList<PropertyModelClass>());
-		ArrayList<Model> models = new ArrayList<Model>();
 
 		// load dae xml document
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -200,76 +201,115 @@ public final class DAEReader {
 					setupModelImportTransformationsMatrix(xmlRoot, model);
 
 					// translation, scaling, rotation
-					boolean haveTranslation = false;
-					boolean haveScale = false;
-					boolean haveRotationX = false;
-					boolean haveRotationY = false;
-					boolean haveRotationZ = false;
 					Vector3 translation = new Vector3();
 					Vector3 scale = new Vector3();
 					Vector3 rotation = new Vector3();
 
-					// read translation
-					for(Element xmlTranslation: getChildrenByTagName(xmlNode, "translate")) {
-						haveTranslation = true;
-						StringTokenizer t = new StringTokenizer(xmlTranslation.getTextContent(), " \n\r");
-						translation.set(
-							Float.parseFloat(t.nextToken()),
-							Float.parseFloat(t.nextToken()),
-							Float.parseFloat(t.nextToken())
-						);
+					// set up local transformations matrix
+					Matrix4x4 nodeTransformationsMatrix = null;
+					List<Element> xmlMatrixElements = getChildrenByTagName(xmlNode, "matrix");
+					if (xmlMatrixElements.size() == 1) {
+						String xmlMatrix = xmlMatrixElements.get(0).getTextContent();
+						StringTokenizer t = new StringTokenizer(xmlMatrix, " \n\r");
+
+						// 
+						nodeTransformationsMatrix = new Matrix4x4(
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
+							Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
+						).transpose();
 					}
 
-					// read scale
-					for(Element xmlScale: getChildrenByTagName(xmlNode, "scale")) {
-						haveScale = true;
-						StringTokenizer t = new StringTokenizer(xmlScale.getTextContent(), " \n\r");
-						scale.set(
-							Float.parseFloat(t.nextToken()),
-							Float.parseFloat(t.nextToken()),
-							Float.parseFloat(t.nextToken())
-						);
+					// check if we have node transformations matrix
+					if (nodeTransformationsMatrix == null) {
+						throw new ModelFileIOException("missing node transformations matrix for node " + xmlNode.getAttribute("id"));
 					}
 
-					// read rotation
-					for(Element xmlRotation: getChildrenByTagName(xmlNode, "rotate")) {
-						StringTokenizer t = new StringTokenizer(xmlRotation.getTextContent(), " \n\r");
-						Float.parseFloat(t.nextToken());
-						Float.parseFloat(t.nextToken());
-						Float.parseFloat(t.nextToken());
-						float angle = Float.parseFloat(t.nextToken());
-						if (xmlRotation.getAttribute("sid").equals("rotationX") == true) {
-							haveRotationX = true;
-							rotation.setX(angle);
-						} else
-						if (xmlRotation.getAttribute("sid").equals("rotationY") == true) {
-							haveRotationY = true;
-							rotation.setY(angle);
-						} else
-						if (xmlRotation.getAttribute("sid").equals("rotationZ") == true) {
-							haveRotationZ = true;
-							rotation.setZ(angle);
-						}
+					// extract coordinate axes
+					Vector3 xAxis = new Vector3(
+						nodeTransformationsMatrix.getArray()[0],
+						nodeTransformationsMatrix.getArray()[1],
+						nodeTransformationsMatrix.getArray()[2]
+					);
+					Vector3 yAxis = new Vector3(
+						nodeTransformationsMatrix.getArray()[4],
+						nodeTransformationsMatrix.getArray()[5],
+						nodeTransformationsMatrix.getArray()[6]
+					);
+					Vector3 zAxis = new Vector3(
+						nodeTransformationsMatrix.getArray()[8],
+						nodeTransformationsMatrix.getArray()[9],
+						nodeTransformationsMatrix.getArray()[10]
+					);
+
+					// translation
+					translation.set(
+						nodeTransformationsMatrix.getArray()[12],
+						nodeTransformationsMatrix.getArray()[13],
+						nodeTransformationsMatrix.getArray()[14]
+					);
+
+					// scale
+					scale.set(
+						xAxis.computeLength(),
+						yAxis.computeLength(),
+						zAxis.computeLength()
+					);
+
+					// normalize coordinate axes
+					xAxis.normalize();
+					yAxis.normalize();
+					zAxis.normalize();
+
+					// write back normalized x axis
+					nodeTransformationsMatrix.getArray()[0] = xAxis.getX();
+					nodeTransformationsMatrix.getArray()[1] = xAxis.getY();
+					nodeTransformationsMatrix.getArray()[2] = xAxis.getZ();
+
+					// write back normalized y axis
+					nodeTransformationsMatrix.getArray()[4] = yAxis.getX();
+					nodeTransformationsMatrix.getArray()[5] = yAxis.getY();
+					nodeTransformationsMatrix.getArray()[6] = yAxis.getZ();
+
+					// write back normalized z axis
+					nodeTransformationsMatrix.getArray()[8] = zAxis.getX();
+					nodeTransformationsMatrix.getArray()[9] = zAxis.getY();
+					nodeTransformationsMatrix.getArray()[10] = zAxis.getZ();
+
+					// check if negative scale and rotation
+					// this is for Z-UP currently, handle Y-Up too, need a test model though
+					if (Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, zAxis), yAxis) < 0.0f) {
+						// x axis
+						nodeTransformationsMatrix.getArray()[0] = -xAxis.getX();
+						nodeTransformationsMatrix.getArray()[1] = -xAxis.getY();
+						nodeTransformationsMatrix.getArray()[2] = -xAxis.getZ();
+
+						// y axis
+						nodeTransformationsMatrix.getArray()[4] = -yAxis.getX();
+						nodeTransformationsMatrix.getArray()[5] = -yAxis.getY();
+						nodeTransformationsMatrix.getArray()[6] = -yAxis.getZ();
+
+						// z axis
+						nodeTransformationsMatrix.getArray()[8] = -zAxis.getX();
+						nodeTransformationsMatrix.getArray()[9] = -zAxis.getY();
+						nodeTransformationsMatrix.getArray()[10] = -zAxis.getZ();
+
+						// scale
+						scale.scale(-1f);
 					}
 
-					// check if we have translation. scale, rotations
-					if (haveTranslation == false ||
-						haveScale == false ||
-						haveRotationX == false ||
-						haveRotationY == false ||
-						haveRotationZ == false) {
-						throw new ModelFileIOException("missing translation, scale or rotations in node " + xmlNode.getAttribute("id"));
-					}
+					// determine rotation
+					computeEulerAngles(nodeTransformationsMatrix, rotation);
 
 					// apply model import matrix
 					model.getImportTransformationsMatrix().multiply(translation, translation);
 					model.getImportTransformationsMatrix().multiply(scale, scale);
 					model.getImportTransformationsMatrix().multiply(rotation, rotation);
-
-					// no negative scale
-					for (int i = 0; i < scale.getArray().length; i++) {
-						if (scale.getArray()[i] < 0f) scale.getArray()[i]*= -1f;
-					}
 
 					// set up frames per seconds
 					model.setFPS(fps);
@@ -329,9 +369,9 @@ public final class DAEReader {
 					// level editor object transformations
 					Transformations levelEditorObjectTransformations = new Transformations();
 					levelEditorObjectTransformations.getTranslation().set(translation);
-					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getX(), new Vector3(1f, 0f, 0f)));
 					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getY(), new Vector3(0f, 1f, 0f)));
 					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getZ(), new Vector3(0f, 0f, 1f)));
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getX(), new Vector3(1f, 0f, 0f)));
 					levelEditorObjectTransformations.getScale().set(scale);
 					levelEditorObjectTransformations.update();
 
@@ -387,6 +427,58 @@ public final class DAEReader {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Compute Euler angles (rotation around x, y, z axes)
+	 * @see https://github.com/erich666/GraphicsGems/tree/master/gemsiv/euler_angle
+	 * 
+	 * 		This code repository predates the concept of Open Source, and predates most licenses along such lines. 
+	 * 		As such, the official license truly is:
+	 * 
+	 * 		EULA: The Graphics Gems code is copyright-protected. 
+	 * 		In other words, you cannot claim the text of the code as your own and resell it. 
+	 * 		Using the code is permitted in any program, product, or library, non-commercial or commercial. 
+	 * 		Giving credit is not required, though is a nice gesture. 
+	 * 		The code comes as-is, and if there are any flaws or problems with any Gems code, 
+	 * 		nobody involved with Gems - authors, editors, publishers, or webmasters - are to be held responsible. 
+	 * 		Basically, don't be a jerk, and remember that anything free comes with no guarantee.
+	 * 
+	 * @param matrix
+	 * @param euler
+	 * @param order
+	 */
+	public static void computeEulerAngles(Matrix4x4 matrix, Vector3 euler) {
+		float[] data = matrix.getArray();
+		float[] eulerXYZ = euler.getArray();
+
+		// axes indices in order i,j,k
+		int i = 0;
+		int j = 1;
+		int k = 2;
+
+		// invert
+		int l = 0;
+
+		// compute euler angles in radians
+		float cy = (float)Math.sqrt(data[i + 4 * i] * data[i + 4 * i] + data[j + 4 * i] * data[j + 4 * i]);
+		if (cy > 16f * MathTools.EPSILON) {
+			eulerXYZ[0] = (float)(Math.atan2(data[k + 4 * j], data[k + 4 * k]));
+			eulerXYZ[1] = (float)(Math.atan2(-data[k + 4 * i], cy));
+			eulerXYZ[2] = (float)(Math.atan2(data[j + 4 * i], data[i + 4 * i]));
+		} else {
+			eulerXYZ[0] = (float)(Math.atan2(-data[j + 4 * k], data[j + 4 * j]));
+			eulerXYZ[1] = (float)(Math.atan2(-data[k + 4 * i], cy));
+			eulerXYZ[2] = 0f;
+		}
+
+		// invert
+		if (l == 1) {
+			euler.scale(-1f);
+		}
+
+	    // convert to degrees
+	    euler.scale((float)(180d / Math.PI));
 	}
 
 	/**

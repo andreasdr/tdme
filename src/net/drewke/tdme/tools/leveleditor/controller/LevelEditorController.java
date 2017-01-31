@@ -789,9 +789,9 @@ public final class LevelEditorController extends PopUpsController {
 			float x = Float.parseFloat(objectScaleX.getText());
 			float y = Float.parseFloat(objectScaleY.getText());
 			float z = Float.parseFloat(objectScaleZ.getText());
-			if (x < 0.1f || x > 10f) throw new IllegalArgumentException("x scale must be within 0.1 .. 10");
-			if (y < 0.1f || y > 10f) throw new IllegalArgumentException("y scale must be within 0.1 .. 10");
-			if (z < 0.1f || z > 10f) throw new IllegalArgumentException("z scale must be within 0.1 .. 10");
+			if (x < -10f || x > 10f) throw new IllegalArgumentException("x scale must be within -10 .. +10");
+			if (y < -10f || y > 10f) throw new IllegalArgumentException("y scale must be within -10 .. +10");
+			if (z < -10f || z > 10f) throw new IllegalArgumentException("z scale must be within -10 .. +10");
 			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectScaleApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");

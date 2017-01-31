@@ -131,9 +131,9 @@ public final class LevelFileExport {
 				Transformations transformations = levelEditorObject.getTransformations();
 				Vector3 translation = transformations.getTranslation();
 				Vector3 scale = transformations.getScale();
-				Rotation rotationAroundXAxis = transformations.getRotations().get(0);
-				Rotation rotationAroundYAxis = transformations.getRotations().get(1);
-				Rotation rotationAroundZAxis = transformations.getRotations().get(2);
+				Rotation rotationAroundXAxis = transformations.getRotations().get(2);
+				Rotation rotationAroundYAxis = transformations.getRotations().get(0);
+				Rotation rotationAroundZAxis = transformations.getRotations().get(1);
 				jObject.put("id", levelEditorObject.getId());
 				jObject.put("descr", levelEditorObject.getDescription());
 				jObject.put("mid", levelEditorObject.getModel().getId());

@@ -37,9 +37,12 @@ public abstract class GL3Renderer extends GLRenderer {
 
 		CLEAR_DEPTH_BUFFER_BIT = GL3.GL_DEPTH_BUFFER_BIT;
 		CLEAR_COLOR_BUFFER_BIT = GL3.GL_COLOR_BUFFER_BIT;
-		CULLFACE_FRONT = GL3.GL_FRONT;
 
+		CULLFACE_FRONT = GL3.GL_FRONT;
 		CULLFACE_BACK = GL3.GL_BACK;
+
+		FRONTFACE_CW = GL3.GL_CW;
+		FRONTFACE_CCW = GL3.GL_CCW;
 
 		CLIENTSTATE_TEXTURECOORD_ARRAY = -1;
 		CLIENTSTATE_VERTEX_ARRAY = -1;
@@ -83,7 +86,6 @@ public abstract class GL3Renderer extends GLRenderer {
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);						// Black Background
 		gl.glClearDepth(1.0f); 											// Depth Buffer Setup
 		gl.glEnable(GL3.GL_DEPTH_TEST); 								// Enables Depth Testing
-		gl.glFrontFace(GL3.GL_CCW);										// Triangles are in counter clockwise order
 		gl.glEnable(GL3.GL_CULL_FACE);									// The Type Of Depth Testing To Do
 		gl.glDepthFunc(GL3.GL_LEQUAL);
 		gl.glBlendFunc(GL3.GL_SRC_ALPHA, GL3.GL_ONE_MINUS_SRC_ALPHA);  // enable alpha transparency
@@ -478,6 +480,14 @@ public abstract class GL3Renderer extends GLRenderer {
 	 */
 	final public void setCullFace(int cullFace) {
 		gl.glCullFace(cullFace);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#setFrontFace(int)
+	 */
+	final public void setFrontFace(int frontFace) {
+		gl.glFrontFace(frontFace);
 	}
 
 	/*

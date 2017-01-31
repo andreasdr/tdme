@@ -292,8 +292,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		Vector3 movement = new Vector3();
 
 		// left, right
-		if (keyRight) r.setAngle(r.getAngle() + (135f / fps));
-		if (keyLeft) r.setAngle(r.getAngle() - (135f / fps));
+		if (keyRight) r.setAngle(r.getAngle() - (135f / fps));
+		if (keyLeft) r.setAngle(r.getAngle() + (135f / fps));
 		if (keyRight || keyLeft) {
 			player.update();
 			playerBoundingVolumeTransformed.fromBoundingVolumeWithTransformations(playerBoundingVolume, player);

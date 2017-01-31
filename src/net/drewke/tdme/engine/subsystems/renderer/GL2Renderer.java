@@ -43,8 +43,12 @@ public abstract class GL2Renderer extends GLRenderer {
 
 		CLEAR_DEPTH_BUFFER_BIT = GL2.GL_DEPTH_BUFFER_BIT;
 		CLEAR_COLOR_BUFFER_BIT = GL2.GL_COLOR_BUFFER_BIT;
+
 		CULLFACE_FRONT = GL2.GL_FRONT;
 		CULLFACE_BACK = GL2.GL_BACK;
+
+		FRONTFACE_CW = GL2.GL_CW;
+		FRONTFACE_CCW = GL2.GL_CCW;
 
 		CLIENTSTATE_TEXTURECOORD_ARRAY = GL2.GL_TEXTURE_COORD_ARRAY;
 		CLIENTSTATE_VERTEX_ARRAY = GL2.GL_VERTEX_ARRAY;
@@ -514,6 +518,14 @@ public abstract class GL2Renderer extends GLRenderer {
 	 */
 	final public void setCullFace(int cullFace) {
 		gl.glCullFace(cullFace);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#setFrontFace(int)
+	 */
+	final public void setFrontFace(int frontFace) {
+		gl.glFrontFace(frontFace);
 	}
 
 	/*

@@ -87,9 +87,9 @@ public final class Rotation {
 		this.angle = 2f * (float)Math.acos(quaterionXYZ[3]) / 3.14159265f * 180.0f;
 		float s = (float)Math.sqrt(1f - quaterionXYZ[3] * quaterionXYZ[3]);
 		if (s < 0.001f) {
-			this.axis.set(quaterionXYZ[0], -quaterionXYZ[1], quaterionXYZ[2]);
+			this.axis.set(quaterionXYZ[0], quaterionXYZ[1], quaterionXYZ[2]);
 		} else {
-			this.axis.set(quaterionXYZ[0] / s, -quaterionXYZ[1] / s, quaterionXYZ[2] / s);
+			this.axis.set(quaterionXYZ[0] / s, quaterionXYZ[1] / s, quaterionXYZ[2] / s);
 		}
 	}
 

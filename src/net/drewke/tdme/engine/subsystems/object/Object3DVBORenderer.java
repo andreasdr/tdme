@@ -378,6 +378,7 @@ public final class Object3DVBORenderer {
 		modelViewMatrixBackup.set(renderer.getModelViewMatrix());
 
 		// render faces entities
+		int currentFrontFace = -1;
 		Object3D firstObject = objects.get(0);
 
 		// all objects share the same object 3d group structure, so we just take the first one
@@ -490,6 +491,13 @@ public final class Object3DVBORenderer {
 
 						// skip to next object
 						continue;
+					}
+
+					// set up front face
+					int objectFrontFace = object.isNegative() == false?renderer.FRONTFACE_CCW:renderer.FRONTFACE_CW;
+					if (objectFrontFace != currentFrontFace) {
+						renderer.setFrontFace(objectFrontFace);
+						currentFrontFace = objectFrontFace; 
 					}
 
 					// bind buffer base objects if not bound yet

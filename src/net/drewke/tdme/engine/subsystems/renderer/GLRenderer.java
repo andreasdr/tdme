@@ -8,6 +8,7 @@ import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.math.Matrix4x4;
 
 import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL3;
 
 /**
  * OpenGL renderer interface
@@ -66,6 +67,9 @@ abstract public class GLRenderer {
 	public int DEPTHFUNCTION_EQUAL = -1;
 
 	public int FRAMEBUFFER_DEFAULT = -1;
+
+	public int FRONTFACE_CW = -1;
+	public int FRONTFACE_CCW = -1;
 
 	public float[] effectColorMul;
 	public float[] effectColorAdd;
@@ -432,6 +436,12 @@ abstract public class GLRenderer {
 	 * @param cull face
 	 */
 	abstract public void setCullFace(int cullFace);
+
+	/**
+	 * Set up clock wise or counter clock wise faces as front face 
+	 * @param frontFace
+	 */
+	abstract public void setFrontFace(int frontFace);
 
 	/**
 	 * Creates a texture

@@ -15,6 +15,7 @@ public final class Quaternion {
 	private Vector3 t;
 	private Vector3 q;
 	private Vector3 qxt;
+
 	/**
 	 * Public constructor
 	 */
@@ -25,6 +26,20 @@ public final class Quaternion {
 		t = new Vector3();
 		q = new Vector3();
 		qxt = new Vector3();
+	}
+
+	/**
+	 * P
+	 * @param q
+	 * @return
+	 */
+	public Quaternion(Quaternion q) {
+		data = new float[4];
+		_data = new float[4];
+		t = new Vector3();
+		this.q = new Vector3();
+		qxt = new Vector3();
+		System.arraycopy(q.data, 0, data, 0, data.length);
 	}
 
 	/**
@@ -136,11 +151,11 @@ public final class Quaternion {
 		// finds the Sin and Cosin for the half angle.
 		float sin = (float)Math.sin(radians * 0.5);
 		float cos = (float)Math.cos(radians * 0.5);
-
+		
 		// formula to construct a new quaternion based on direction and angle.
 		float[] axisXYZ = v.getArray();
 		data[0] = axisXYZ[0] * sin;
-		data[1] = -axisXYZ[1] * sin;
+		data[1] = axisXYZ[1] * sin;
 		data[2] = axisXYZ[2] * sin;
 		data[3] = cos;
 
