@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.drewke.tdme.engine.model.Animation;
-import net.drewke.tdme.engine.model.AnimationSetup;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
@@ -14,8 +13,10 @@ import net.drewke.tdme.engine.model.JointWeight;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
@@ -53,11 +54,16 @@ public class TMReader {
 				throw new ModelFileIOException("Version mismatch, should be 1.0.0, but is " + version[0] + "."  + version[1] + "."  + version[2]);
 			}
 			
-			// 	create object
-			Model model = new Model(pathName + File.separator + fileName, fileName);
-
 			// meta data
 			String name = readString(is);
+
+			// up vector, rotation order
+			UpVector upVector = UpVector.valueOf(readString(is));
+			RotationOrder rotationOrder = RotationOrder.valueOf(readString(is));
+
+			// 	create object
+			Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder);
+
 			model.setFPS(readFloat(is));
 			model.getImportTransformationsMatrix().set(readFloatArray(is));
 

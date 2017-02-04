@@ -24,8 +24,10 @@ import net.drewke.tdme.engine.model.JointWeight;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.engine.subsystems.object.ModelUtilitiesInternal.ModelStatistics;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
@@ -66,8 +68,18 @@ public final class DAEReader {
 		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
 		Element xmlRoot = document.getDocumentElement();
 
+		// up vector and rotation order
+		UpVector upVector = getUpVector(xmlRoot);
+		RotationOrder rotationOrder = null;
+		switch(upVector) {
+			case Y_UP:
+				rotationOrder = RotationOrder.ZYX;
+			case Z_UP:
+				rotationOrder = RotationOrder.YZX;
+		}
+
 		// 	create model
-		Model model = new Model(pathName + File.separator + fileName, fileName);
+		Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder);
 
 		//
 		setupModelImportTransformationsMatrix(xmlRoot, model);
@@ -155,6 +167,17 @@ public final class DAEReader {
 		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
 		Element xmlRoot = document.getDocumentElement();
 
+		// up vector and rotation order
+		UpVector upVector = getUpVector(xmlRoot);
+		RotationOrder rotationOrder = null;
+		switch(upVector) {
+			case Y_UP:
+				rotationOrder = RotationOrder.ZYX;
+			case Z_UP:
+				rotationOrder = RotationOrder.YZX;
+		}
+		levelEditorLevel.setRotationOrder(rotationOrder);
+
 		// parse scene from xml
 		String xmlSceneId = null;
 		Element xmlScene = getChildrenByTagName(xmlRoot, "scene").get(0);
@@ -194,7 +217,9 @@ public final class DAEReader {
 					// 	create model
 					Model model = new Model(
 						pathName + File.separator + fileName + '-' + xmlNode.getAttribute("id"), 
-						fileName + '-' + xmlNode.getAttribute("id")
+						fileName + '-' + xmlNode.getAttribute("id"),
+						upVector,
+						rotationOrder
 					);
 
 					//
@@ -285,26 +310,26 @@ public final class DAEReader {
 					// this is for Z-UP currently, handle Y-Up too, need a test model though
 					if (Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, zAxis), yAxis) < 0.0f) {
 						// x axis
-						nodeTransformationsMatrix.getArray()[0] = -xAxis.getX();
-						nodeTransformationsMatrix.getArray()[1] = -xAxis.getY();
-						nodeTransformationsMatrix.getArray()[2] = -xAxis.getZ();
+						nodeTransformationsMatrix.getArray()[0]*= -1f;
+						nodeTransformationsMatrix.getArray()[1]*= -1f;
+						nodeTransformationsMatrix.getArray()[2]*= -1f;
 
 						// y axis
-						nodeTransformationsMatrix.getArray()[4] = -yAxis.getX();
-						nodeTransformationsMatrix.getArray()[5] = -yAxis.getY();
-						nodeTransformationsMatrix.getArray()[6] = -yAxis.getZ();
+						nodeTransformationsMatrix.getArray()[4]*= -1f;
+						nodeTransformationsMatrix.getArray()[5]*= -1f;
+						nodeTransformationsMatrix.getArray()[6]*= -1f;
 
 						// z axis
-						nodeTransformationsMatrix.getArray()[8] = -zAxis.getX();
-						nodeTransformationsMatrix.getArray()[9] = -zAxis.getY();
-						nodeTransformationsMatrix.getArray()[10] = -zAxis.getZ();
+						nodeTransformationsMatrix.getArray()[8]*= -1f;
+						nodeTransformationsMatrix.getArray()[9]*= -1f;
+						nodeTransformationsMatrix.getArray()[10]*= -1f;
 
 						// scale
 						scale.scale(-1f);
 					}
 
 					// determine rotation
-					computeEulerAngles(nodeTransformationsMatrix, rotation);
+					computeEulerAngles(nodeTransformationsMatrix, rotation, 0, 1, 2, false);
 
 					// apply model import matrix
 					model.getImportTransformationsMatrix().multiply(translation, translation);
@@ -369,9 +394,9 @@ public final class DAEReader {
 					// level editor object transformations
 					Transformations levelEditorObjectTransformations = new Transformations();
 					levelEditorObjectTransformations.getTranslation().set(translation);
-					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getY(), new Vector3(0f, 1f, 0f)));
-					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getZ(), new Vector3(0f, 0f, 1f)));
-					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getX(), new Vector3(1f, 0f, 0f)));
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getArray()[rotationOrder.getAxis0VectorIndex()], rotationOrder.getAxis0()));
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getArray()[rotationOrder.getAxis1VectorIndex()], rotationOrder.getAxis1()));
+					levelEditorObjectTransformations.getRotations().add(new Rotation(rotation.getArray()[rotationOrder.getAxis2VectorIndex()], rotationOrder.getAxis2()));
 					levelEditorObjectTransformations.getScale().set(scale);
 					levelEditorObjectTransformations.update();
 
@@ -394,6 +419,33 @@ public final class DAEReader {
 
 		//
 		return levelEditorLevel;
+	}
+
+	/**
+	 * Get Up vector
+	 * @param xml root
+	 * @return up vector
+	 * @throws ModelFileIOException
+	 */
+	private static UpVector getUpVector(Element xmlRoot) throws ModelFileIOException {
+		// determine up axis
+		for(Element xmlAsset: getChildrenByTagName(xmlRoot, "asset")) {
+			for(Element xmlAssetUpAxis: getChildrenByTagName(xmlAsset, "up_axis")) {
+				String upAxis = xmlAssetUpAxis.getTextContent();
+				if (upAxis.equalsIgnoreCase("Y_UP")) {
+					return UpVector.Y_UP;
+				} else 
+				if (upAxis.equalsIgnoreCase("Z_UP")) {
+					return UpVector.Z_UP;
+				} else
+				if (upAxis.equalsIgnoreCase("X_UP")) {
+					throw new ModelFileIOException("X-Up is not supported");
+				} else {
+					throw new ModelFileIOException("Unknown Up vector");
+				}
+			}
+		}
+		throw new ModelFileIOException("Unknown Up vector");
 	}
 
 	/**
@@ -446,34 +498,29 @@ public final class DAEReader {
 	 * 
 	 * @param matrix
 	 * @param euler
-	 * @param order
+	 * @param axis 0
+	 * @param axis 1
+	 * @param axis 2
+	 * @param axis invert
 	 */
-	public static void computeEulerAngles(Matrix4x4 matrix, Vector3 euler) {
+	public static void computeEulerAngles(Matrix4x4 matrix, Vector3 euler, int axis0, int axis1, int axis2, boolean invert) {
 		float[] data = matrix.getArray();
 		float[] eulerXYZ = euler.getArray();
 
-		// axes indices in order i,j,k
-		int i = 0;
-		int j = 1;
-		int k = 2;
-
-		// invert
-		int l = 0;
-
 		// compute euler angles in radians
-		float cy = (float)Math.sqrt(data[i + 4 * i] * data[i + 4 * i] + data[j + 4 * i] * data[j + 4 * i]);
+		float cy = (float)Math.sqrt(data[axis0 + 4 * axis0] * data[axis0 + 4 * axis0] + data[axis1 + 4 * axis0] * data[axis1 + 4 * axis0]);
 		if (cy > 16f * MathTools.EPSILON) {
-			eulerXYZ[0] = (float)(Math.atan2(data[k + 4 * j], data[k + 4 * k]));
-			eulerXYZ[1] = (float)(Math.atan2(-data[k + 4 * i], cy));
-			eulerXYZ[2] = (float)(Math.atan2(data[j + 4 * i], data[i + 4 * i]));
+			eulerXYZ[0] = (float)(Math.atan2(data[axis2 + 4 * axis1], data[axis2 + 4 * axis2]));
+			eulerXYZ[1] = (float)(Math.atan2(-data[axis2 + 4 * axis0], cy));
+			eulerXYZ[2] = (float)(Math.atan2(data[axis1 + 4 * axis0], data[axis0 + 4 * axis0]));
 		} else {
-			eulerXYZ[0] = (float)(Math.atan2(-data[j + 4 * k], data[j + 4 * j]));
-			eulerXYZ[1] = (float)(Math.atan2(-data[k + 4 * i], cy));
+			eulerXYZ[0] = (float)(Math.atan2(-data[axis1 + 4 * axis2], data[axis1 + 4 * axis1]));
+			eulerXYZ[1] = (float)(Math.atan2(-data[axis2 + 4 * axis0], cy));
 			eulerXYZ[2] = 0f;
 		}
 
 		// invert
-		if (l == 1) {
+		if (invert == true) {
 			euler.scale(-1f);
 		}
 

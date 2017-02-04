@@ -6,15 +6,16 @@ import java.io.InputStream;
 
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
 import net.drewke.tdme.tools.leveleditor.model.LevelEditorLight;
 import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
+import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel.ModelType;
 import net.drewke.tdme.tools.leveleditor.model.LevelEditorObject;
 import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,6 +52,9 @@ public final class LevelFileImport {
 
 		// check for version
 		float version = Float.parseFloat(jRoot.getString("version"));
+
+		// new: rotation order
+		level.setRotationOrder(jRoot.has("ro") == true?RotationOrder.valueOf(jRoot.getString("ro")):RotationOrder.XYZ);
 
 		// map properties
 		level.clearProperties();
@@ -213,14 +217,19 @@ public final class LevelFileImport {
 				(float)jObject.getDouble("sy"),
 				(float)jObject.getDouble("sz")
 			);
-			transformations.getRotations().add(
-				new Rotation((float)jObject.getDouble("ry"), new Vector3(0.0f, 1.0f, 0.0f))
+			Vector3 rotation = new Vector3(
+				(float)jObject.getDouble("rx"),
+				(float)jObject.getDouble("ry"),
+				(float)jObject.getDouble("rz")
 			);
 			transformations.getRotations().add(
-				new Rotation((float)jObject.getDouble("rz"), new Vector3(0.0f, 0.0f, 1.0f))
+				new Rotation(rotation.getArray()[level.getRotationOrder().getAxis0VectorIndex()], level.getRotationOrder().getAxis0())
 			);
 			transformations.getRotations().add(
-				new Rotation((float)jObject.getDouble("rx"), new Vector3(1.0f, 0.0f, 0.0f))
+				new Rotation(rotation.getArray()[level.getRotationOrder().getAxis1VectorIndex()], level.getRotationOrder().getAxis1())
+			);
+			transformations.getRotations().add(
+				new Rotation(rotation.getArray()[level.getRotationOrder().getAxis2VectorIndex()], level.getRotationOrder().getAxis2())
 			);
 			transformations.update();
 			LevelEditorObject levelEditorObject = new LevelEditorObject(

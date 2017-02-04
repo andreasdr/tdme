@@ -45,6 +45,7 @@ public final class LevelFileExport {
 			LevelEditorModelLibrary modelLibrary = level.getModelLibrary();
 			JSONObject jRoot = new JSONObject();
 			jRoot.put("version", "0.6");
+			jRoot.put("ro", level.getRotationOrder().toString());
 			JSONArray jLights = new JSONArray();
 			for (int i = 0; i < level.getLightCount(); i++) {
 				LevelEditorLight light = level.getLightAt(i); 
@@ -131,9 +132,9 @@ public final class LevelFileExport {
 				Transformations transformations = levelEditorObject.getTransformations();
 				Vector3 translation = transformations.getTranslation();
 				Vector3 scale = transformations.getScale();
-				Rotation rotationAroundXAxis = transformations.getRotations().get(2);
-				Rotation rotationAroundYAxis = transformations.getRotations().get(0);
-				Rotation rotationAroundZAxis = transformations.getRotations().get(1);
+				Rotation rotationAroundXAxis = transformations.getRotations().get(level.getRotationOrder().getAxisXIndex());
+				Rotation rotationAroundYAxis = transformations.getRotations().get(level.getRotationOrder().getAxisYIndex());
+				Rotation rotationAroundZAxis = transformations.getRotations().get(level.getRotationOrder().getAxisZIndex());
 				jObject.put("id", levelEditorObject.getId());
 				jObject.put("descr", levelEditorObject.getDescription());
 				jObject.put("mid", levelEditorObject.getModel().getId());

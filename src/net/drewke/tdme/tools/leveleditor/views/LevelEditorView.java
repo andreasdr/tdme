@@ -21,7 +21,9 @@ import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
@@ -592,9 +594,9 @@ public final class LevelEditorView extends View  {
 				controller.setObject(
 					selectedObject.getTranslation(),
 					selectedObject.getScale(),
-					selectedObject.getRotations().get(0).getAngle(),
-					selectedObject.getRotations().get(1).getAngle(),
-					selectedObject.getRotations().get(2).getAngle()
+					selectedObject.getRotations().get(level.getRotationOrder().getAxisXIndex()).getAngle(),
+					selectedObject.getRotations().get(level.getRotationOrder().getAxisYIndex()).getAngle(),
+					selectedObject.getRotations().get(level.getRotationOrder().getAxisZIndex()).getAngle()
 				);
 				BoundingVolume bv = levelEditorObject.getModel().getBoundingBox().clone();
 				bv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
@@ -900,7 +902,7 @@ public final class LevelEditorView extends View  {
 	 */
 	private Model createLevelEditorGroundPlateModel() {
 		// ground selectedModel
-		Model groundPlate = new Model("leveleditor.ground", "leveleditor.ground");
+		Model groundPlate = new Model("leveleditor.ground", "leveleditor.ground", UpVector.Y_UP, RotationOrder.XYZ);
 
 		//	material
 		Material groundPlateMaterial = new Material("ground");
@@ -1337,9 +1339,9 @@ public final class LevelEditorView extends View  {
 			LevelEditorObject currentEntity = level.getObjectById(selectedObject.getId());
 			if (currentEntity == null) return;
 	
-			currentEntity.getTransformations().getRotations().get(0).setAngle(x);
-			currentEntity.getTransformations().getRotations().get(1).setAngle(y);
-			currentEntity.getTransformations().getRotations().get(2).setAngle(z);
+			currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisXIndex()).setAngle(x);
+			currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisYIndex()).setAngle(y);
+			currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisZIndex()).setAngle(z);
 			currentEntity.getTransformations().update();
 			selectedObject.fromTransformations(currentEntity.getTransformations());
 		} else
@@ -1349,14 +1351,14 @@ public final class LevelEditorView extends View  {
 				LevelEditorObject currentEntity = level.getObjectById(selectedObject.getId());
 				if (currentEntity == null) continue;
 
-				currentEntity.getTransformations().getRotations().get(0).setAngle(
-					currentEntity.getTransformations().getRotations().get(0).getAngle() + x
+				currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisXIndex()).setAngle(
+					currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisXIndex()).getAngle() + x
 				);
-				currentEntity.getTransformations().getRotations().get(1).setAngle(
-					currentEntity.getTransformations().getRotations().get(1).getAngle() + y
+				currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisYIndex()).setAngle(
+					currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisYIndex()).getAngle() + y
 				);
-				currentEntity.getTransformations().getRotations().get(2).setAngle(
-					currentEntity.getTransformations().getRotations().get(2).getAngle() + z
+				currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisZIndex()).setAngle(
+					currentEntity.getTransformations().getRotations().get(level.getRotationOrder().getAxisZIndex()).getAngle() + z
 				);
 				currentEntity.getTransformations().update();
 				selectedObject.fromTransformations(currentEntity.getTransformations());

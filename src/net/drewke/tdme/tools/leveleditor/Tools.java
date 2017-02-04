@@ -18,7 +18,9 @@ import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.MathTools;
@@ -212,7 +214,7 @@ public final class Tools {
 	 */
 	public static Model createGroundModel(float width, float depth, float y) {
 		// ground model
-		Model ground = new Model("ground", "ground");
+		Model ground = new Model("ground", "ground", UpVector.Y_UP, RotationOrder.XYZ);
 
 		//	material
 		Material groundMaterial = new Material("ground");

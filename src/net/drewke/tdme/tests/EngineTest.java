@@ -30,7 +30,9 @@ import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -153,7 +155,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 	private Model createWallModel() {
 		// wall model
-		Model wall = new Model("wall", "wall");
+		Model wall = new Model("wall", "wall", UpVector.Y_UP, RotationOrder.XYZ);
 
 		// wall material
 		Material wallMaterial = new Material("wall");

@@ -1,6 +1,7 @@
 package net.drewke.tdme.engine.model;
 
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -15,6 +16,8 @@ public final class Model {
 
 	private String id;
 	private String name;
+	private UpVector upVector;
+	private RotationOrder rotationOrder;
 	private HashMap<String, Material> materials;
 	private HashMap<String, Group> groups;
 	private HashMap<String, Group> subGroups;
@@ -28,10 +31,14 @@ public final class Model {
 	 * Public constructor
 	 * @param id
 	 * @param name
+	 * @param up vector
+	 * @param rotation order
 	 */
-	public Model(String id, String name) {
+	public Model(String id, String name, UpVector upVector, RotationOrder rotationOrder) {
 		this.id = id;
 		this.name = name;
+		this.upVector = upVector;
+		this.rotationOrder = rotationOrder;
 		materials = new HashMap<String, Material>();
 		groups = new HashMap<String, Group>();
 		subGroups = new HashMap<String, Group>();
@@ -60,6 +67,20 @@ public final class Model {
 	 */
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return up vector
+	 */
+	public UpVector getUpVector() {
+		return upVector;
+	}
+
+	/**
+	 * @return rotation order
+	 */
+	public RotationOrder getRotationOrder() {
+		return rotationOrder;
 	}
 
 	/**

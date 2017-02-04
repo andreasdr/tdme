@@ -8,6 +8,8 @@ import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
@@ -34,7 +36,7 @@ public final class PrimitiveModel {
 	 */
 	public static Model createBoundingBoxModel(BoundingBox boundingBox, String id) {
 		// ground model
-		Model model = new Model(id, id);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
 
 		// material
 		Material material = new Material("tdme.primitive.material");
@@ -123,7 +125,7 @@ public final class PrimitiveModel {
 	 */
 	public static Model createOrientedBoundingBoxModel(OrientedBoundingBox orientedBoundingBox, String id) {
 		// ground model
-		Model model = new Model(id, id);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
 
 		// material
 		Material material = new Material("tdme.primitive.material");
@@ -220,7 +222,7 @@ public final class PrimitiveModel {
 		Vector3 center = sphere.center;
 
 		// ground model
-		Model model = new Model(id, id);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
 
 		// material
 		Material material = new Material("tdme.primitive.material");
@@ -338,7 +340,7 @@ public final class PrimitiveModel {
 		rotationQuaternion.rotate(angle, rotationAxis);
 
 		// ground model
-		Model model = new Model(id, id);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
 
 		// material
 		Material material = new Material("tdme.primitive.material");

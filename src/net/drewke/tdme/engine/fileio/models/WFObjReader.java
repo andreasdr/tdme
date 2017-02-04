@@ -14,7 +14,9 @@ import net.drewke.tdme.engine.model.Group;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.model.ModelHelper;
+import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
@@ -36,7 +38,7 @@ public final class WFObjReader {
 	 */
 	public static Model read(String pathName, String fileName) throws IOException, ModelFileIOException {
 		// create object
-		Model model = new Model(pathName + File.separator + fileName, fileName);	
+		Model model = new Model(pathName + File.separator + fileName, fileName, UpVector.Y_UP, RotationOrder.XYZ);	
 
 		ArrayList<Vector3> vertices = new ArrayList<Vector3>();
 		ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();

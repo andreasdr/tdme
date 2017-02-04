@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.engine.model.RotationOrder;
+import net.drewke.tdme.engine.model.UpVector;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
@@ -18,6 +19,7 @@ public final class LevelEditorLevel extends Properties {
 
 	private String pathName;
 	private String fileName;
+	private RotationOrder rotationOrder;
 	private ArrayList<LevelEditorLight> lights;
 	private LevelEditorModelLibrary modelLibrary;
 	private HashMap<String, LevelEditorObject> objectsById;
@@ -33,6 +35,7 @@ public final class LevelEditorLevel extends Properties {
 	public LevelEditorLevel(ArrayList<PropertyModelClass> defaultMapProperties) {
 		pathName = ".";
 		fileName = "untitled.tl";
+		rotationOrder = RotationOrder.XYZ;
 		lights = new ArrayList<LevelEditorLight>();
 		lights.add(new LevelEditorLight(0));
 		lights.add(new LevelEditorLight(1));
@@ -101,6 +104,21 @@ public final class LevelEditorLevel extends Properties {
 	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	/**
+	 * @return rotation order
+	 */
+	public RotationOrder getRotationOrder() {
+		return rotationOrder;
+	}
+
+	/**
+	 * Set rotation order
+	 * @param rotation order
+	 */
+	public void setRotationOrder(RotationOrder rotationOrder) {
+		this.rotationOrder = rotationOrder;
 	}
 
 	/**
