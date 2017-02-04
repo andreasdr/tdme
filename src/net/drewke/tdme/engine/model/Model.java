@@ -11,6 +11,15 @@ import net.drewke.tdme.utils.HashMap;
  */
 public final class Model {
 
+	/**
+	 * Up Vector
+	 * @author Andreas Drewke
+	 *
+	 */
+	public enum UpVector {
+		Y_UP, Z_UP
+	}
+
 	public final static String ANIMATIONSETUP_DEFAULT = "tdme.default";
 	public final static float FPS_DEFAULT = 30f;
 
