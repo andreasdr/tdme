@@ -307,8 +307,8 @@ public final class DAEReader {
 					nodeTransformationsMatrix.getArray()[10] = zAxis.getZ();
 
 					// check if negative scale and rotation
-					// this is for Z-UP currently, handle Y-Up too, need a test model though
-					if (Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, zAxis), yAxis) < 0.0f) {
+					if ((upVector == UpVector.Y_UP && Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, yAxis), zAxis) < 0.0f) ||
+						(upVector == UpVector.Z_UP && Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, zAxis), yAxis) < 0.0f)) {
 						// x axis
 						nodeTransformationsMatrix.getArray()[0]*= -1f;
 						nodeTransformationsMatrix.getArray()[1]*= -1f;
