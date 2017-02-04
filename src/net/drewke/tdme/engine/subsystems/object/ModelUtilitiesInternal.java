@@ -292,7 +292,13 @@ public class ModelUtilitiesInternal {
 				FacesEntity facesEntityModel2 = facesEntitiesModel2[j];
 
 				// check material
-				if (facesEntityModel1.getMaterial().getId().equals(facesEntityModel2.getMaterial().getId()) == false) return false;
+				//	TODO: check if it should be allowed to have NULL material
+				if (facesEntityModel1.getMaterial() == null && facesEntityModel2.getMaterial() != null) return false;
+				if (facesEntityModel1.getMaterial() != null && facesEntityModel2.getMaterial() == null) return false;
+				if (facesEntityModel1.getMaterial() != null && facesEntityModel2.getMaterial() != null &&
+					facesEntityModel1.getMaterial().getId().equals(facesEntityModel2.getMaterial().getId()) == false) {
+					return false;
+				}
 
 				// check faces
 				Face[] facesModel1 = facesEntityModel1.getFaces();
