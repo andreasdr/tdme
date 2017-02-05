@@ -16,6 +16,7 @@ import net.drewke.tdme.engine.subsystems.shader.SkinningShader;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMapping;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.math.Matrix4x4Negative;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.HashMap;
@@ -60,6 +61,8 @@ public final class Object3DVBORenderer {
 	private Matrix4x4 modelViewMatrix = new Matrix4x4();
 	private Vector3 transformedVertex = new Vector3();
 	private Vector3 transformedNormal = new Vector3();
+
+	private Matrix4x4Negative matrix4x4Negative = new Matrix4x4Negative();
 
 	/**
 	 * Public constructor 
@@ -177,11 +180,15 @@ public final class Object3DVBORenderer {
 			// sort transparent render faces from far to near
 			QuickSort.sort(transparentRenderFaces);
 
-			// second render pass, draw color buffer for transparent objectsById
+			// second render pass, draw color buffer for transparent objects
 			// 	set up blending, but no culling and no depth buffer
 			renderer.disableDepthBuffer();
 			renderer.disableCulling();
 			renderer.enableBlending();
+			// actually this should not make any difference as culling is disabled
+			// but having a fixed value is not a bad idea except that it is a GL call
+			// TODO: confirm this
+			renderer.setFrontFace(renderer.FRONTFACE_CCW);
 
 			//
 			for (TransparentRenderFace transparentRenderFace: transparentRenderFacesPool.getTransparentRenderFacesIterator()) {
@@ -493,13 +500,6 @@ public final class Object3DVBORenderer {
 						continue;
 					}
 
-					// set up front face
-					int objectFrontFace = object.isNegative() == false?renderer.FRONTFACE_CCW:renderer.FRONTFACE_CW;
-					if (objectFrontFace != currentFrontFace) {
-						renderer.setFrontFace(objectFrontFace);
-						currentFrontFace = objectFrontFace; 
-					}
-
 					// bind buffer base objects if not bound yet
 					int[] currentVBOGlIds = ((Object3DGroupVBORenderer)_object3DGroup.renderer).vboBaseIds;
 					if (boundVBOBaseIds != currentVBOGlIds) {
@@ -556,6 +556,13 @@ public final class Object3DVBORenderer {
 						multiply(modelViewMatrixBackup)
 					);
 					renderer.onUpdateModelViewMatrix();
+
+					// set up front face
+					int objectFrontFace = matrix4x4Negative.isNegative(renderer.getModelViewMatrix()) == false?renderer.FRONTFACE_CCW:renderer.FRONTFACE_CW;
+					if (objectFrontFace != currentFrontFace) {
+						renderer.setFrontFace(objectFrontFace);
+						currentFrontFace = objectFrontFace; 
+					}
 
 					// set up effect color
 					renderer.setEffectColorMul(object.effectColorMul.getArray());

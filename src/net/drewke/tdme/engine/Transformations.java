@@ -25,13 +25,6 @@ public class Transformations {
 
 	protected Matrix4x4 transformationsMatrix;
 
-	protected Vector3 xAxis;
-	protected Vector3 yAxis;
-	protected Vector3 zAxis;
-	protected Vector3 tmpAxis;
-
-	protected boolean negative;
-
 	/**
 	 * Public constructor
 	 */
@@ -47,11 +40,6 @@ public class Transformations {
 		rotationsPivot = new Vector3();
 		rotationsTranslationsMatrix = new Matrix4x4().identity();
 		pivot = new Vector3();
-		xAxis = new Vector3();
-		yAxis = new Vector3();
-		zAxis = new Vector3();
-		tmpAxis = new Vector3();
-		negative = false;
 	}
 
 	/**
@@ -87,13 +75,6 @@ public class Transformations {
 	 */
 	public Matrix4x4 getTransformationsMatrix() {
 		return transformationsMatrix; 
-	}
-
-	/** 
-	 * @return Negative/Inverted transformation
-	 */
-	public boolean isNegative() {
-		return negative;
 	}
 
 	/**
@@ -134,7 +115,6 @@ public class Transformations {
 		translationMatrix.set(transformations.translationMatrix);
 		scaleMatrix.set(transformations.scaleMatrix);
 		transformationsMatrix.set(transformations.transformationsMatrix);
-		negative = transformations.negative;
 	}
 
 	/**
@@ -175,18 +155,6 @@ public class Transformations {
 
 		// apply translation
 		transformationsMatrix.multiply(translationMatrix);
-		
-		//
-		// check if negative scale and rotation
-		float[] transformationsMatrixData = transformationsMatrix.getArray();
-
-		// copy into x,y,z axes
-		System.arraycopy(transformationsMatrixData, 0, xAxis.getArray(), 0, 3);
-		System.arraycopy(transformationsMatrixData, 4, yAxis.getArray(), 0, 3);
-		System.arraycopy(transformationsMatrixData, 8, zAxis.getArray(), 0, 3);
-
-		// check if inverted/negative transformation
-		negative = Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, yAxis, tmpAxis), zAxis) < 0.0f;
 	}
 
 	/*

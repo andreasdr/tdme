@@ -16,6 +16,7 @@ import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.model.Animation;
+import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
@@ -53,6 +54,20 @@ import org.w3c.dom.NodeList;
  */
 public final class DAEReader {
 
+	private static Color4 BLENDER_AMBIENT_NONE = new Color4(0f,0f,0f,1f);
+	private static float BLENDER_AMBIENT_FROM_DIFFUSE_SCALE = 0.7f;
+	private static float BLENDER_DIFFUSE_SCALE = 0.8f;
+
+	/**
+	 * Authoring Tool
+	 * @author Andreas Drewke
+	 * @version $Id$
+	 */
+	private enum AuthoringTool {
+		UNKNOWN,
+		BLENDER
+	}
+
 	/**
 	 * Reads Collada DAE file
 	 * @param path name
@@ -65,6 +80,9 @@ public final class DAEReader {
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
 		Element xmlRoot = document.getDocumentElement();
+
+		// authoring tool
+		AuthoringTool authoringTool = getAuthoringTool(xmlRoot);
 
 		// up vector and rotation order
 		UpVector upVector = getUpVector(xmlRoot);
@@ -121,7 +139,7 @@ public final class DAEReader {
 
 				// visual scene root nodes
 				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
-					Group group = readVisualSceneNode(pathName, model, xmlRoot, xmlNode, fps);
+					Group group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, xmlNode, fps);
 					if (group != null) {
 						model.getSubGroups().put(group.getId(), group);
 						model.getGroups().put(group.getId(), group);
@@ -165,6 +183,9 @@ public final class DAEReader {
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = builder.parse(FileSystem.getInstance().getInputStream(pathName, fileName));
 		Element xmlRoot = document.getDocumentElement();
+
+		// authoring tool
+		AuthoringTool authoringTool = getAuthoringTool(xmlRoot);
 
 		// up vector and rotation order
 		UpVector upVector = getUpVector(xmlRoot);
@@ -341,7 +362,7 @@ public final class DAEReader {
 					model.setFPS(fps);
 
 					// read sub groups
-					Group group = readVisualSceneNode(pathName, model, xmlRoot, xmlNode, fps);
+					Group group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, xmlNode, fps);
 					if (group != null) {
 						group.getTransformationsMatrix().identity();
 						model.getSubGroups().put(group.getId(), group);
@@ -420,6 +441,25 @@ public final class DAEReader {
 
 		//
 		return levelEditorLevel;
+	}
+
+	/**
+	 * Get authoring tool
+	 * @param xml root
+	 * @return authoring tool
+	 */
+	private static AuthoringTool getAuthoringTool(Element xmlRoot) {
+		// determine up axis
+		for(Element xmlAsset: getChildrenByTagName(xmlRoot, "asset")) {
+			for(Element xmlContributer: getChildrenByTagName(xmlAsset, "contributor")) {
+				for(Element xmlAuthoringTool: getChildrenByTagName(xmlContributer, "authoring_tool")) {
+					if (xmlAuthoringTool.getTextContent().indexOf("Blender") != -1) {
+						return AuthoringTool.BLENDER;
+					}
+				}
+			}
+		}
+		return AuthoringTool.UNKNOWN;
 	}
 
 	/**
@@ -542,6 +582,7 @@ public final class DAEReader {
 
 	/**
 	 * Read a DAE visual scene node
+	 * @param authoring tool
 	 * @param path name
 	 * @param model
 	 * @param xml node
@@ -550,17 +591,18 @@ public final class DAEReader {
 	 * @throws Exception
 	 * @return group
 	 */
-	private static Group readVisualSceneNode(String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
+	private static Group readVisualSceneNode(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
 		List<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
 		if (xmlInstanceControllers.isEmpty() == false) {
-			return readVisualSceneInstanceController(pathName, model, xmlRoot, xmlNode);
+			return readVisualSceneInstanceController(authoringTool, pathName, model, xmlRoot, xmlNode);
 		} else {
-			return readNode(pathName, model, xmlRoot, xmlNode, fps);
+			return readNode(authoringTool, pathName, model, xmlRoot, xmlNode, fps);
 		}
 	}
 
 	/**
 	 * Reads a DAE visual scene group node
+	 * @param authoring tool
 	 * @param path name
 	 * @param model
 	 * @param xml node
@@ -569,7 +611,7 @@ public final class DAEReader {
 	 * @throws Exception
 	 * @return group
 	 */
-	private static Group readNode(String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
+	private static Group readNode(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
 		String xmlNodeId = xmlNode.getAttribute("id");
 		String xmlNodeName = xmlNode.getAttribute("name");
 		if (xmlNodeId.length() == 0) xmlNodeId = xmlNodeName;
@@ -755,7 +797,7 @@ public final class DAEReader {
 
 		// parse sub groups
 		for(Element _xmlNode: getChildrenByTagName(xmlNode, "node")) {
-			Group _group = readVisualSceneNode(pathName, model, xmlRoot, _xmlNode, fps);
+			Group _group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, _xmlNode, fps);
 			if (_group != null) {
 				group.getSubGroups().put(_group.getId(), _group);
 				model.getGroups().put(_group.getId(), _group);
@@ -783,7 +825,7 @@ public final class DAEReader {
 			}
 
 			// parse geometry
-			readGeometry(pathName, model, group, xmlRoot, xmlInstanceGeometryId, materialSymbols);
+			readGeometry(authoringTool, pathName, model, group, xmlRoot, xmlInstanceGeometryId, materialSymbols);
 
 			//
 			return group;
@@ -802,7 +844,7 @@ public final class DAEReader {
 			if (xmlLibraryNode.getAttribute("id").equals(xmlInstanceNodeId)) {
 				// parse sub groups
 				for(Element _xmlNode: getChildrenByTagName(xmlLibraryNode, "node")) {
-					Group _group = readVisualSceneNode(pathName, model, xmlRoot, _xmlNode, fps);
+					Group _group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, _xmlNode, fps);
 					if (_group != null) {
 						group.getSubGroups().put(_group.getId(), _group);
 						model.getGroups().put(_group.getId(), _group);
@@ -824,7 +866,7 @@ public final class DAEReader {
 					}
 
 					// parse geometry
-					readGeometry(pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
+					readGeometry(authoringTool, pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
 				}
 			}
 		}
@@ -835,6 +877,7 @@ public final class DAEReader {
 
 	/**
 	 * Reads a instance controller
+	 * @param authoring tool
 	 * @param path name
 	 * @param model
 	 * @param xml root
@@ -842,7 +885,7 @@ public final class DAEReader {
 	 * @return Group
 	 * @throws Exception
 	 */
-	private static Group readVisualSceneInstanceController(String pathName, Model model, Element xmlRoot, Element xmlNode) throws Exception {
+	private static Group readVisualSceneInstanceController(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, Element xmlNode) throws Exception {
 		StringTokenizer t;
 
 		String xmlNodeId = xmlNode.getAttribute("id");
@@ -916,7 +959,7 @@ public final class DAEReader {
 		Skinning skinning = group.createSkinning();
 
 		// parse geometry
-		readGeometry(pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
+		readGeometry(authoringTool, pathName, model, group, xmlRoot, xmlGeometryId, materialSymbols);
 
 		// parse joints
 		String xmlJointsSource = null;
@@ -1056,6 +1099,7 @@ public final class DAEReader {
 
 	/**
 	 * Reads a geometry
+	 * @param authoring tools
 	 * @param path name
 	 * @param model
 	 * @param group
@@ -1064,7 +1108,7 @@ public final class DAEReader {
 	 * @param material symbols
 	 * @throws Exception
 	 */
-	public static void readGeometry(String pathName, Model model, Group group, Element xmlRoot, String xmlNodeId, HashMap<String, String> materialSymbols) throws Exception {
+	public static void readGeometry(AuthoringTool authoringTool, String pathName, Model model, Group group, Element xmlRoot, String xmlNodeId, HashMap<String, String> materialSymbols) throws Exception {
 		StringTokenizer t;
 
 		//
@@ -1143,7 +1187,7 @@ public final class DAEReader {
 						Material material = model.getMaterials().get(xmlMaterialId);
 						if (material == null) {
 							// parse material as we do not have it yet
-							material = readMaterial(pathName, model, xmlRoot, xmlMaterialId);
+							material = readMaterial(authoringTool, pathName, model, xmlRoot, xmlMaterialId);
 						}
 						// set it up
 						facesEntity.setMaterial(material);
@@ -1347,6 +1391,7 @@ public final class DAEReader {
 
 	/**
 	 * Reads a material
+	 * @param authoring tool
 	 * @param path name
 	 * @param model
 	 * @param xml root
@@ -1354,7 +1399,7 @@ public final class DAEReader {
 	 * @return material
 	 * @throws Exception
 	 */
-	public static Material readMaterial(String pathName, Model model, Element xmlRoot, String xmlNodeId) throws Exception {
+	public static Material readMaterial(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, String xmlNodeId) throws Exception {
 		// determine effect id
 		String xmlEffectId = null;
 		Element xmlLibraryMaterials = getChildrenByTagName(xmlRoot, "library_materials").get(0);
@@ -1554,6 +1599,22 @@ public final class DAEReader {
 		// add texture
 		if (xmlDisplacementFilename != null) {
 			material.setDisplacementTexture(pathName, xmlDisplacementFilename);
+		}
+
+		// adjust ambient light with blender
+		if (authoringTool == AuthoringTool.BLENDER && material.getAmbientColor().equals(BLENDER_AMBIENT_NONE)) {
+			material.getAmbientColor().set(
+				material.getDiffuseColor().getRed() * BLENDER_AMBIENT_FROM_DIFFUSE_SCALE, 
+				material.getDiffuseColor().getGreen() * BLENDER_AMBIENT_FROM_DIFFUSE_SCALE, 
+				material.getDiffuseColor().getBlue() * BLENDER_AMBIENT_FROM_DIFFUSE_SCALE, 
+				1.0f
+			);
+			material.getDiffuseColor().set(
+				material.getDiffuseColor().getRed() * BLENDER_DIFFUSE_SCALE,
+				material.getDiffuseColor().getGreen() * BLENDER_DIFFUSE_SCALE,
+				material.getDiffuseColor().getBlue() * BLENDER_DIFFUSE_SCALE,
+				material.getDiffuseColor().getAlpha()
+			);
 		}
 
 		// add material to library
