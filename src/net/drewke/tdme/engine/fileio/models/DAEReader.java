@@ -79,8 +79,9 @@ public final class DAEReader {
 		// 	create model
 		Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder);
 
-		//
-		setupModelImportTransformationsMatrix(xmlRoot, model);
+		// import matrix
+		setupModelImportRotationMatrix(xmlRoot, model);
+		setupModelImportScaleMatrix(xmlRoot, model);
 
 		// parse scene from xml
 		String xmlSceneId = null;
@@ -220,8 +221,10 @@ public final class DAEReader {
 						rotationOrder
 					);
 
-					//
-					setupModelImportTransformationsMatrix(xmlRoot, model);
+					// import matrix
+					setupModelImportRotationMatrix(xmlRoot, model);
+					Matrix4x4 modelImportRotationMatrix = new Matrix4x4(model.getImportTransformationsMatrix());
+					setupModelImportScaleMatrix(xmlRoot, model);
 
 					// translation, scaling, rotation
 					Vector3 translation = new Vector3();
@@ -330,9 +333,9 @@ public final class DAEReader {
 					computeEulerAngles(nodeTransformationsMatrix, rotation, 0, 1, 2, false);
 
 					// apply model import matrix
+					modelImportRotationMatrix.multiply(scale, scale);
+					modelImportRotationMatrix.multiply(rotation, rotation);
 					model.getImportTransformationsMatrix().multiply(translation, translation);
-					model.getImportTransformationsMatrix().multiply(scale, scale);
-					model.getImportTransformationsMatrix().multiply(rotation, rotation);
 
 					// set up frames per seconds
 					model.setFPS(fps);
@@ -447,12 +450,12 @@ public final class DAEReader {
 	}
 
 	/**
-	 * Set up model import transformations matrix
+	 * Set up model import rotation matrix
 	 * @param xml root
 	 * @param model
 	 */
-	private static void setupModelImportTransformationsMatrix(Element xmlRoot, Model model) {
-		// determine up axis
+	private static void setupModelImportRotationMatrix(Element xmlRoot, Model model) {
+		// determine rotation matrix
 		for(Element xmlAsset: getChildrenByTagName(xmlRoot, "asset")) {
 			for(Element xmlAssetUpAxis: getChildrenByTagName(xmlAsset, "up_axis")) {
 				String upAxis = xmlAssetUpAxis.getTextContent();
@@ -470,6 +473,17 @@ public final class DAEReader {
 					System.out.println("Warning: Unknown up axis: " + upAxis);
 				}
 			}
+		}
+	}
+
+	/**
+	 * Set up model import scale matrix
+	 * @param xml root
+	 * @param model
+	 */
+	private static void setupModelImportScaleMatrix(Element xmlRoot, Model model) {
+		// determine sclae
+		for(Element xmlAsset: getChildrenByTagName(xmlRoot, "asset")) {
 			for(Element xmlAssetUnit: getChildrenByTagName(xmlAsset, "unit")) {
 				String tmp = null;
 				if ((tmp = xmlAssetUnit.getAttribute("meter")) != null) {
