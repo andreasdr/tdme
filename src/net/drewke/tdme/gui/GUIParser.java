@@ -399,6 +399,7 @@ public final class GUIParser {
 					node.getAttribute("name"),
 					node.getAttribute("value"),
 					node.getAttribute("selected").trim().equalsIgnoreCase("true"),
+					node.getAttribute("disabled").trim().equalsIgnoreCase("true"),
 					node.getAttribute("focusable").trim().equalsIgnoreCase("true")
 				);
 				guiParentNode.addSubNode(guiElementNode);
@@ -551,6 +552,7 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
+					node.getAttribute("color-disabled"),
 					new MutableString(node.getAttribute("text")),
 					GUIInputInternalNode.createMaxLength(node.getAttribute("maxlength"))
 				);
@@ -669,11 +671,11 @@ public final class GUIParser {
 
 				// create final template, replace attributes
 				String newGuiElementTemplate = newGuiElement.getTemplate();
-				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes(guiParentNode.getScreenNode());
 				for (int i = 0; i < node.getAttributes().getLength(); i++) {
 					Node attribute = node.getAttributes().item(i);
-					newGuiElementAttributes.put(attribute.getNodeName(), attribute.getNodeValue());
+					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + attribute.getNodeName() + "}", attribute.getNodeValue());
 				}
+				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes(guiParentNode.getScreenNode());
 				for (String newGuiElementAttributeKey: newGuiElementAttributes.getKeysIterator()) {
 					String guiElementAttributeValue = newGuiElementAttributes.get(newGuiElementAttributeKey);
 					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + newGuiElementAttributeKey + "}", guiElementAttributeValue);

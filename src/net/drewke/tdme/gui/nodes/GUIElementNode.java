@@ -18,6 +18,7 @@ public final class GUIElementNode extends GUIParentNode {
 	protected String name;
 	protected String value;
 	protected boolean selected;
+	protected boolean disabled;
 
 	protected GUINodeConditions activeConditions = new GUINodeConditions();
 
@@ -41,6 +42,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param name
 	 * @param value
 	 * @param selected
+	 * @param disabled
 	 * @param focusable
 	 * @throws GUIParserException
 	 */
@@ -61,14 +63,17 @@ public final class GUIElementNode extends GUIParentNode {
 		String name,
 		String value,
 		boolean selected,
+		boolean disabled,
 		boolean focusable
 		) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
-		// name
+
+		//
 		this.name = name;
 		this.value = value;
 		this.selected = selected;
+		this.disabled = disabled;
 		this.focusable = focusable;
 
 		// controller
@@ -204,6 +209,13 @@ public final class GUIElementNode extends GUIParentNode {
 	 */
 	public boolean isSelected() {
 		return selected;
+	}
+
+	/**
+	 * @return is disabled
+	 */
+	public boolean isDisabled() {
+		return disabled;
 	}
 
 	/**

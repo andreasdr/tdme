@@ -35,6 +35,21 @@ public final class GUITabsHeaderController extends GUINodeController {
 		this.hasFocus = false;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		// no op
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -92,7 +107,9 @@ public final class GUITabsHeaderController extends GUINodeController {
 			GUINode childControllerNode = childControllerNodes.get(i);
 			GUINodeController childController = childControllerNode.getController();
 			if (childController instanceof GUITabController) {
-				tabControllers.add((GUITabController)childController);
+				GUITabController guiTabController = (GUITabController)childController;
+				if (guiTabController.isDisabled() == true) continue;
+				tabControllers.add(guiTabController);
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.Arrays;
-
+import net.drewke.tdme.gui.elements.GUIInputController;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -21,6 +20,8 @@ public final class GUIInputInternalController extends GUINodeController {
 	private final static long DRAGGING_CALMDOWN = 50L;
 
 	public enum CursorMode {SHOW, HIDE};
+
+	private GUIElementNode inputNode;
 
 	private long cursorModeStarted = -1L;
 	private CursorMode cursorMode = CursorMode.SHOW;
@@ -44,10 +45,26 @@ public final class GUIInputInternalController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		// no op
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		// no op
+		inputNode = (GUIElementNode)node.getParentControllerNode();
 	}
 
 	/*
@@ -116,6 +133,12 @@ public final class GUIInputInternalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// receive no events if disabled
+		boolean disabled = ((GUIInputController)inputNode.getController()).isDisabled();
+		if (disabled == true) {
+			return;
+		}
+
 		// mouse released
 		if (node == this.node &&
 			event.getType() == Type.MOUSE_RELEASED == true) {
@@ -187,10 +210,18 @@ public final class GUIInputInternalController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
+		// receive no events if disabled
+		boolean disabled = ((GUIInputController)inputNode.getController()).isDisabled();
+		if (disabled == true) {
+			return;
+		}
+
+		//
 		if (node == this.node) {
 			GUIInputInternalNode textInputNode = ((GUIInputInternalNode)node);
 			char keyChar = event.getKeyChar();
-			if (keyChar >= 32 && keyChar < 127) {
+			if (disabled == false &&
+				keyChar >= 32 && keyChar < 127) {
 				// set event processed
 				event.setProcessed(true);
 
@@ -252,40 +283,44 @@ public final class GUIInputInternalController extends GUINodeController {
 						break;
 					case GUIKeyboardEvent.KEYCODE_BACKSPACE:
 						{
-							// set event processed
-							event.setProcessed(true);
-
-							// check if key pressed
-							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
-								if (index > 0) {
-									textInputNode.getText().delete(index - 1, 1);
-									index--;
-
-									//
-									checkOffset();
-
-									//
-									resetCursorMode();
-
-									// delegate change event
-									node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
+							if (disabled == false) {
+								// set event processed
+								event.setProcessed(true);
+	
+								// check if key pressed
+								if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+									if (index > 0) {
+										textInputNode.getText().delete(index - 1, 1);
+										index--;
+	
+										//
+										checkOffset();
+	
+										//
+										resetCursorMode();
+	
+										// delegate change event
+										node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
+									}
 								}
 							}
 						}
 						break;
 					case GUIKeyboardEvent.KEYCODE_DELETE:
 						{
-							// set event processed
-							event.setProcessed(true);
-
-							// check if key pressed
-							if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
-								if (index < textInputNode.getText().length()) {
-									textInputNode.getText().delete(index, 1);
-									resetCursorMode();
-
-									// delegate change event
-									node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
+							if (disabled == false) {
+								// set event processed
+								event.setProcessed(true);
+	
+								// check if key pressed
+								if (event.getType() == GUIKeyboardEvent.Type.KEY_PRESSED) {
+									if (index < textInputNode.getText().length()) {
+										textInputNode.getText().delete(index, 1);
+										resetCursorMode();
+	
+										// delegate change event
+										node.getScreenNode().delegateValueChanged((GUIElementNode)node.getParentControllerNode());
+									}
 								}
 							}
 						}

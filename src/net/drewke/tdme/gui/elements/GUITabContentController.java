@@ -31,6 +31,22 @@ public final class GUITabContentController extends GUINodeController {
 		CONDITION_UNSELECTED = node.getId() + "-unselected";
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		// no op
+	}
+
 	/**
 	 * @return is checked
 	 */

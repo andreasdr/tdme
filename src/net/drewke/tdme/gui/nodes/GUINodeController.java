@@ -88,4 +88,15 @@ public abstract class GUINodeController {
 	 */
 	public abstract void setValue(MutableString value);
 
+	/**
+	 * @return is disabled
+	 */
+	public abstract boolean isDisabled();
+
+	/**
+	 * Set disabled 
+	 * @param disabled
+	 */
+	public abstract void setDisabled(boolean disabled);
+
 }

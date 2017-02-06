@@ -28,6 +28,22 @@ public final class GUITabsController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		// no op
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {

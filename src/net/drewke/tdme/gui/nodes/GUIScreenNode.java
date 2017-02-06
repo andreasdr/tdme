@@ -266,9 +266,13 @@ public final class GUIScreenNode extends GUIParentNode {
 		}
 
 		// check if parent node is GUIElementNode and focusable
-		if (parentNode instanceof GUIElementNode && ((GUIElementNode)parentNode).focusable == true) {
-			// yep, we have a focusable node
-			focusableNodes.add((GUIElementNode)parentNode);
+		if (parentNode instanceof GUIElementNode) { 
+			GUIElementNode parentElementNode = (GUIElementNode)parentNode;
+			if (parentElementNode.focusable == true &&
+				(parentElementNode.getController() == null || parentElementNode.getController().isDisabled() == false)) {
+				// yep, we have a focusable node
+				focusableNodes.add((GUIElementNode)parentNode);
+			}
 		}
 
 		// check child nodes

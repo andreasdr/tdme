@@ -6,6 +6,7 @@ import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.utils.MutableString;
@@ -17,11 +18,15 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUISelectBoxMultipleController extends GUINodeController {
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private final static char VALUE_DELIMITER = '|';
 
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 	private ArrayList<GUISelectBoxMultipleOptionController> selectBoxMultipleOptionControllers = new ArrayList<GUISelectBoxMultipleOptionController>();
 
+	private boolean disabled;
 	private MutableString value = new MutableString();
 	private MutableString searchValue = new MutableString();
 
@@ -31,6 +36,31 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 */
 	protected GUISelectBoxMultipleController(GUINode node) {
 		super(node);
+
+		//
+		this.disabled = ((GUIElementNode)node).isDisabled();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/**
+	 * Set disabled
+	 * @param disabled
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+
+		//
+		selectCurrent();
 	}
 
 	/*
@@ -119,6 +149,13 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	}
 
 	/**
+	 * Select current options
+	 */
+	protected void selectCurrent() {
+		setValue(getValue());
+	}
+
+	/**
 	 * Focus next node
 	 */
 	protected void focusNext() {
@@ -192,7 +229,8 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		if (node == this.node) {
+		if (disabled == false &&
+			node == this.node) {
 			switch (event.getKeyCode()) {
 				case GUIKeyboardEvent.KEYCODE_UP:
 					{

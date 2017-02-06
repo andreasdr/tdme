@@ -1,10 +1,14 @@
-<element id="{$id}" width="*" height="auto" border="1" border-color="black">
+<element id="{$id}" width="*" height="auto" border="1" border-color="black" disabled="{$disabled}">
 	<!-- unselected, no mouse over -->
-	<text background-color="#8080A0" hide-on="selected,mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<text background-color="#8080A0" hide-on="disabled,selected,mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 	<!-- unselected, mouse over -->
-	<text background-color="#8080FF" hide-on="selected" show-on="mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<text background-color="#8080FF" hide-on="disabled,selected" show-on="mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 	<!-- selected, no mouse over -->
-	<text background-color="#F0F0F0" hide-on="unselected,mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<text background-color="#F0F0F0" hide-on="disabled,unselected,mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 	<!-- selected, mouse over -->
-	<text background-color="#F0F0FF" hide-on="unselected" show-on="mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<text background-color="#F0F0FF" hide-on="disabled,unselected" show-on="mouseover" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
+	<!-- unselected, disabled -->
+	<text background-color="#8080A0" hide-on="selected" show-on="disabled" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#9090B0" />
+	<!-- selected, disabled -->
+	<text background-color="#F0F0F0" hide-on="unselected" show-on="disabled" width="100%" padding="10" horizontal-align="center" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#D0D0D0" />
 </element>

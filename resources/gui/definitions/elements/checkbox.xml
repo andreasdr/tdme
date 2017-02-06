@@ -1,14 +1,18 @@
-<element id="{$id}" name="{$name}" value="{$value}" selected="{$selected}" focusable="true">
+<element id="{$id}" name="{$name}" value="{$value}" selected="{$selected}" disabled="{$disabled}" focusable="true">
 	<!-- unselected, no mouse over -->
-	<image effect-color-mul="#8080A0" hide-on="focus,checked,mouseover" src="resources/gui/images/elements/checkbox/unchecked.png" />
+	<image effect-color-mul="#8080A0" hide-on="disabled,focus,checked,mouseover" src="resources/gui/images/elements/checkbox/unchecked.png" />
 	<!-- unselected, mouse over -->
-	<image effect-color-mul="#8080FF" hide-on="focus,checked" show-on="mouseover" src="resources/gui/images/elements/checkbox/unchecked.png" />
+	<image effect-color-mul="#8080FF" hide-on="disabled,focus,checked" show-on="mouseover" src="resources/gui/images/elements/checkbox/unchecked.png" />
 	<!-- selected, no mouse over -->
-	<image effect-color-mul="#8080A0" hide-on="focus,unchecked,mouseover" src="resources/gui/images/elements/checkbox/checked.png" />
+	<image effect-color-mul="#8080A0" hide-on="disabled,focus,unchecked,mouseover" src="resources/gui/images/elements/checkbox/checked.png" />
 	<!-- selected, mouse over -->
-	<image effect-color-mul="#8080FF" hide-on="focus,unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/checked.png" />
+	<image effect-color-mul="#8080FF" hide-on="disabled,focus,unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/checked.png" />
 	<!-- unchecked, focus -->
-	<image effect-color-mul="#FF4040" show-on="focus" hide-on="checked" src="resources/gui/images/elements/checkbox/unchecked.png" />
+	<image effect-color-mul="#FF4040" hide-on="disabled,checked" show-on="focus" src="resources/gui/images/elements/checkbox/unchecked.png" />
 	<!-- checked, focus -->
-	<image effect-color-mul="#FF4040" show-on="focus" hide-on="unchecked" src="resources/gui/images/elements/checkbox/checked.png" />
+	<image effect-color-mul="#FF4040" hide-on="disabled,unchecked" show-on="focus" src="resources/gui/images/elements/checkbox/checked.png" />
+	<!-- unchecked, disabled -->
+	<image effect-color-mul="#E0E0E0" hide-on="checked" show-on="disabled" src="resources/gui/images/elements/checkbox/unchecked.png" />
+	<!-- checked, disabled -->
+	<image effect-color-mul="#E0E0E0" hide-on="unchecked" show-on="disabled" src="resources/gui/images/elements/checkbox/checked.png" />
 </element>

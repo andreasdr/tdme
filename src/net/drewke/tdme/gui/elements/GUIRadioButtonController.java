@@ -22,7 +22,11 @@ public final class GUIRadioButtonController extends GUINodeController {
 	private static final String CONDITION_SELECTED = "selected";
 	private static final String CONDITION_UNSELECTED = "unselected";
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private boolean selected;
+	private boolean disabled;
 
 	private static HashMap<String, ArrayList<GUIElementNode>> radioButtonGroupNodesByName = new HashMap<String, ArrayList<GUIElementNode>>();
 
@@ -37,6 +41,7 @@ public final class GUIRadioButtonController extends GUINodeController {
 
 		// derive if selected from node default
 		this.selected = ((GUIElementNode)node).isSelected();
+		this.disabled = ((GUIElementNode)node).isDisabled();
 
 		// add to nodes
 		//	check if group exists
@@ -85,11 +90,31 @@ public final class GUIRadioButtonController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
 		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+		setDisabled(disabled);
 	}
 
 	/*
@@ -114,7 +139,8 @@ public final class GUIRadioButtonController extends GUINodeController {
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		// check if our node was clicked
-		if (node == this.node &&
+		if (disabled == false &&
+			node == this.node &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			// set event processed
@@ -139,7 +165,9 @@ public final class GUIRadioButtonController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		if (node == this.node) {
+		if (disabled == false &&
+			node == this.node) {
+			//
 			switch (event.getKeyCode()) {
 				case GUIKeyboardEvent.KEYCODE_SPACE:
 					{

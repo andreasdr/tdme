@@ -19,7 +19,11 @@ public final class GUICheckboxController extends GUINodeController {
 	private static final String CONDITION_CHECKED = "checked";
 	private static final String CONDITION_UNCHECKED = "unchecked";
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private boolean checked;
+	private boolean disabled;
 	private MutableString value;
 
 	/**
@@ -31,6 +35,7 @@ public final class GUICheckboxController extends GUINodeController {
 
 		// derive if selected from node default
 		this.checked = ((GUIElementNode)node).isSelected();
+		this.disabled = ((GUIElementNode)node).isDisabled();
 		this.value = new MutableString();
 	}
 
@@ -54,10 +59,30 @@ public final class GUICheckboxController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
 		setChecked(checked);
+		setDisabled(disabled);
 	}
 
 	/*
@@ -82,7 +107,8 @@ public final class GUICheckboxController extends GUINodeController {
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		// check if our node was clicked
-		if (node == this.node &&
+		if (disabled == false &&
+			node == this.node &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			
@@ -108,7 +134,9 @@ public final class GUICheckboxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		if (node == this.node) {
+		if (disabled == false &&
+			node == this.node) {
+			//
 			switch (event.getKeyCode()) {
 				case GUIKeyboardEvent.KEYCODE_SPACE:
 					{

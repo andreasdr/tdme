@@ -20,6 +20,9 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	private static final String CONDITION_SELECTED = "selected";
 	private static final String CONDITION_UNSELECTED = "unselected";
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private GUIParentNode selectBoxNode;
 	private boolean selected;
 
@@ -32,6 +35,22 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 
 		// derive if selected from node default
 		this.selected = ((GUIElementNode)node).isSelected();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		// no op
 	}
 
 	/**
@@ -50,6 +69,12 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 		this.selected = true;
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+
+		// disabled
+		boolean disabled = ((GUISelectBoxController)selectBoxNode.getController()).isDisabled();
+		nodeConditions.remove(CONDITION_DISABLED);
+		nodeConditions.remove(CONDITION_ENABLED);
+		nodeConditions.add(disabled==true?CONDITION_DISABLED:CONDITION_ENABLED);
 	}
 
 	/**
@@ -62,6 +87,12 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 		nodeConditions.remove(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 		this.selected = false;
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
+
+		// disabled
+		boolean disabled = ((GUISelectBoxController)selectBoxNode.getController()).isDisabled();
+		nodeConditions.remove(CONDITION_DISABLED);
+		nodeConditions.remove(CONDITION_ENABLED);
+		nodeConditions.add(disabled==true?CONDITION_DISABLED:CONDITION_ENABLED);
 	}
 
 	/*
@@ -110,8 +141,12 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// disabled
+		boolean disabled = ((GUISelectBoxController)selectBoxNode.getController()).isDisabled();
+
 		// check if our node was clicked
-		if (node == this.node &&
+		if (disabled == false &&
+			node == this.node &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			// set event processed

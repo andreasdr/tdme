@@ -18,6 +18,9 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUITabController extends GUINodeController {
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private static final String CONDITION_SELECTED = "selected";
 	private static final String CONDITION_UNSELECTED = "unselected";
 
@@ -29,6 +32,8 @@ public final class GUITabController extends GUINodeController {
 	private GUIColor unfocussedNodeBorderRightColor;
 	private GUIColor unfocussedNodeBorderTopColor;
 	private GUIColor unfocussedNodeBorderBottomColor;
+
+	private boolean disabled;
 
 	/**
 	 * GUI Checkbox controller
@@ -43,6 +48,26 @@ public final class GUITabController extends GUINodeController {
 		this.unfocussedNodeBorderRightColor = null;
 		this.unfocussedNodeBorderTopColor = null;
 		this.unfocussedNodeBorderBottomColor = null;
+		this.disabled = ((GUIElementNode)node).isDisabled();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
 	}
 
 	/**
@@ -108,6 +133,7 @@ public final class GUITabController extends GUINodeController {
 
 		// set initial state
 		setSelected(selected);
+		setDisabled(disabled);
 	}
 
 	/*
@@ -132,7 +158,8 @@ public final class GUITabController extends GUINodeController {
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		// check if our node was clicked
-		if (node == this.node &&
+		if (disabled == false &&
+			node == this.node &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			// set event processed

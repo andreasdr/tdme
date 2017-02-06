@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.utils.MutableString;
@@ -18,15 +19,20 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUIDropDownController extends GUINodeController {
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private static final String CONDITION_OPENED = "opened";
 	private static final String CONDITION_CLOSED = "closed";
 
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
 	private ArrayList<GUIDropDownOptionController> dropDownOptionControllers = new ArrayList<GUIDropDownOptionController>();
 	private boolean isOpen = false;
+	private boolean disabled;
 
 	private GUIParentNode dropDownNode = null;
 	private GUIElementNode arrowNode = null;
+	private GUIElementNode textElementNode = null;
 
 	private MutableString value = new MutableString();
 
@@ -36,6 +42,36 @@ public final class GUIDropDownController extends GUINodeController {
 	 */
 	protected GUIDropDownController(GUINode node) {
 		super(node);
+
+		//
+		this.disabled = ((GUIElementNode)node).isDisabled();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		GUINodeConditions nodeConditionsTextElement = textElementNode.getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		nodeConditionsTextElement.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		nodeConditionsTextElement.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+
+		// close if open
+		if (disabled == true && isOpen() == true) {
+			toggleOpenState();
+		}
 	}
 
 	/*
@@ -45,8 +81,12 @@ public final class GUIDropDownController extends GUINodeController {
 	public void init() {
 		dropDownNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_layout_horizontal");
 		arrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_arrow");
+		textElementNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_layout_horizontal_element");
 		((GUIElementNode)node).getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
 		arrowNode.getActiveConditions().add(isOpen == true?CONDITION_OPENED:CONDITION_CLOSED);
+
+		//
+		setDisabled(disabled);
 	}
 
 	/*
@@ -181,7 +221,8 @@ public final class GUIDropDownController extends GUINodeController {
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		// check if our node was clicked
-		if (node == this.dropDownNode &&
+		if (disabled == false &&
+			node == this.dropDownNode &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			// set event processed
@@ -203,7 +244,9 @@ public final class GUIDropDownController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		if (node == this.node) {
+		if (disabled == false &&
+			node == this.node) {
+			//
 			switch (event.getKeyCode()) {
 				case GUIKeyboardEvent.KEYCODE_UP:
 					{

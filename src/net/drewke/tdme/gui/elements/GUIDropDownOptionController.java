@@ -42,6 +42,22 @@ public final class GUIDropDownOptionController extends GUINodeController {
 		return selected;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		// no op
+	}
+
 	/**
 	 * Select
 	 */
@@ -54,9 +70,12 @@ public final class GUIDropDownOptionController extends GUINodeController {
 
 		// set text from option to heading text
 		GUITextNode dropDownOptionTextNode = (GUITextNode)node.getScreenNode().getNodeById(node.getId() + "_unselected");
-		GUITextNode dropDownTextNode = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_text");
-		dropDownTextNode.getText().reset();
-		dropDownTextNode.getText().append(dropDownOptionTextNode.getText());
+		GUITextNode dropDownTextNodeEnabled = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_text_enabled");
+		dropDownTextNodeEnabled.getText().reset();
+		dropDownTextNodeEnabled.getText().append(dropDownOptionTextNode.getText());
+		GUITextNode dropDownTextNodeDisabled = (GUITextNode)node.getScreenNode().getNodeById(dropDownNode.getId() + "_text_disabled");
+		dropDownTextNodeDisabled.getText().reset();
+		dropDownTextNodeDisabled.getText().append(dropDownOptionTextNode.getText());
 	}
 
 	/**

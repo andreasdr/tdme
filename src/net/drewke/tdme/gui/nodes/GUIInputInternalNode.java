@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.nodes;
 import java.util.ArrayList;
 
 import net.drewke.tdme.gui.GUI;
+import net.drewke.tdme.gui.elements.GUIInputController;
 import net.drewke.tdme.gui.nodes.GUIInputInternalController.CursorMode;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
@@ -32,6 +33,7 @@ public final class GUIInputInternalNode extends GUINode {
 
 	private GUIFont font;
 	private GUIColor color;
+	private GUIColor colorDisabled;
 	private MutableString text;
 	private int maxLength;
 
@@ -49,6 +51,7 @@ public final class GUIInputInternalNode extends GUINode {
 	 * @param hide on
 	 * @param font
 	 * @param color
+	 * @param color if disabled
 	 * @param text
 	 * @throws Exception
 	 */
@@ -66,6 +69,7 @@ public final class GUIInputInternalNode extends GUINode {
 		GUINodeConditions hideOn, 
 		String font, 
 		String color, 
+		String colorDisabled,
 		MutableString text,
 		int maxLength
 		) throws Exception {
@@ -73,6 +77,7 @@ public final class GUIInputInternalNode extends GUINode {
 		super(screenNode, parentNode, id, flow, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.font = GUI.getFont(font);
 		this.color = color == null || color.length() == 0?new GUIColor():new GUIColor(color);
+		this.colorDisabled = colorDisabled == null || colorDisabled.length() == 0?new GUIColor():new GUIColor(colorDisabled);
 		this.text = text;
 		this.maxLength = maxLength;
 
@@ -162,6 +167,10 @@ public final class GUIInputInternalNode extends GUINode {
 
 		// get controller
 		GUIInputInternalController controller = (GUIInputInternalController)this.controller;
+		GUIInputController inputController = (GUIInputController)this.getParentControllerNode().getController();
+
+		// disabled
+		boolean disable = inputController.isDisabled();
 
 		// draw string
 		font.drawString(
@@ -171,7 +180,7 @@ public final class GUIInputInternalNode extends GUINode {
 			text, 
 			controller.getOffset(),
 			0,
-			color
+			disable == false?color:colorDisabled
 		);
 
 		// check if to show cursor
@@ -187,7 +196,7 @@ public final class GUIInputInternalNode extends GUINode {
 			float height = computedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;
 
 			// background color
-			float[] colorData = color.getData();
+			float[] colorData = (disable == false?color:colorDisabled).getData();
 
 			// render cursor
 			guiRenderer.bindTexture(0);

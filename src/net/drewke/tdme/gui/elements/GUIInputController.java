@@ -5,6 +5,7 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.utils.MutableString;
 
@@ -15,7 +16,11 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUIInputController extends GUINodeController {
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
 	private GUIInputInternalNode textInputNode;
+	private boolean disabled;
 
 	/**
 	 * GUI Checkbox controller
@@ -23,6 +28,28 @@ public final class GUIInputController extends GUINodeController {
 	 */
 	protected GUIInputController(GUINode node) {
 		super(node);
+
+		//
+		this.disabled = ((GUIElementNode)node).isDisabled();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
 	}
 
 	/*
@@ -31,6 +58,7 @@ public final class GUIInputController extends GUINodeController {
 	 */
 	public void init() {
 		textInputNode = (GUIInputInternalNode)node.getScreenNode().getNodeById(node.getId() + "_text-input");
+		setDisabled(disabled);
 	}
 
 	/*
@@ -53,7 +81,8 @@ public final class GUIInputController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
-		if (node == this.node &&
+		if (disabled == false &&
+			node == this.node &&
 			node.isEventBelongingToNode(event) && 
 			event.getButton() == 1) {
 

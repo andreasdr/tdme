@@ -13,6 +13,10 @@ import net.drewke.tdme.utils.MutableString;
  */
 public class GUIElementController extends GUINodeController {
 
+	private static final String CONDITION_DISABLED = "disabled";
+	private static final String CONDITION_ENABLED = "enabled";
+
+	private boolean disabled;
 	private boolean isActionPerforming;
 
 	/**
@@ -22,6 +26,28 @@ public class GUIElementController extends GUINodeController {
 	protected GUIElementController(GUINode node) {
 		super(node);
 		this.isActionPerforming = false;
+
+		//
+		this.disabled = ((GUIElementNode)node).isDisabled();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#isDisabled()
+	 */
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#setDisabled(boolean)
+	 */
+	public void setDisabled(boolean disabled) {
+		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
+		nodeConditions.remove(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
+		this.disabled = disabled;
+		nodeConditions.add(this.disabled == true?CONDITION_DISABLED:CONDITION_ENABLED);
 	}
 
 	/*
@@ -29,7 +55,7 @@ public class GUIElementController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		// no op
+		setDisabled(disabled);
 	}
 
 	/*
@@ -54,7 +80,8 @@ public class GUIElementController extends GUINodeController {
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
 		// check if our node was clicked
-		if (node == this.node &&
+		if (disabled == false &&
+			node == this.node &&
 			node.isEventBelongingToNode(event) &&  
 			event.getButton() == 1) {
 			// set event processed
@@ -89,7 +116,8 @@ public class GUIElementController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		if (node == this.node) {
+		if (disabled == false &&
+			node == this.node) {
 			switch (event.getKeyCode()) {
 				case GUIKeyboardEvent.KEYCODE_SPACE:
 					{
@@ -118,6 +146,10 @@ public class GUIElementController extends GUINodeController {
 	public void tick() {
 		// check if performing
 		if (isActionPerforming == true) {
+			if (disabled == true) {
+				isActionPerforming = false;
+				return;
+			}
 			// yep, delegate action performing
 			node.getScreenNode().delegateActionPerformed(GUIActionListener.Type.PERFORMING, (GUIElementNode)node);
 		}
