@@ -51,8 +51,8 @@ public final class GUIPanel extends GUIElement {
 	public HashMap<String, String> getAttributes(GUIScreenNode screenNode) {
 		attributes.clear();
 		attributes.put("id", screenNode.allocateNodeId());
-		attributes.put("left", "-1");
-		attributes.put("top", "-1");
+		attributes.put("left", "");
+		attributes.put("top", "");
 		attributes.put("width", "auto");
 		attributes.put("height", "auto");
 		attributes.put("alignment", "none");
