@@ -1,10 +1,9 @@
 <screen id="test" background-color="#202020">
-	<panel border="1" border-color="#404040" left="5%" top="5%" width="90%" height="90%" alignment="vertical"
-		background-color="#808080" horizontal-align="center"> 
+	<panel left="5%" top="5%" width="90%" height="90%" alignment="vertical" horizontal-align="center"> 
 		<space height="5%" />
-		<panel width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">
+		<layout width="80%" padding="10" border="1" border-color="red" alignment="none" horizontal-align="center" vertical-align="center" background-color="#909090">
 			<text font="resources/gui/fonts/Foo_75.fnt" text="test headline" color="#ffffff" />
-		</panel>
+		</layout>
 		<space height="5%" />
 		<tabs width="100%" height="*">
 			<tabs-header>
@@ -17,56 +16,56 @@
 			</tabs-header>
 			<tabs-content>
 				<tab-content tab-id="tab1" vertical-align="top">
-					<panel width="100%" height="100%" padding="10" horizontal-align="center" alignment="horizontal">
-						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
-							<panel padding="2" width="100%" alignment="horizontal">
+					<layout width="100%" height="100%" padding="10" horizontal-align="center" alignment="horizontal">
+						<layout border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox1" value="1" disabled="true" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" height="100%" vertical-align="center" />
-							</panel>
-							<panel padding="2" width="100%" alignment="horizontal">
+							</layout>
+							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox2" value="1" selected="true" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" height="100%" vertical-align="center"  />
-							</panel>
-							<panel padding="2" width="100%" alignment="horizontal">
+							</layout>
+							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox3" value="1" selected="true" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" height="100%" vertical-align="center" />
-							</panel>
-						</panel>
-						<panel border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
-							<panel padding="2" width="100%" alignment="horizontal">
+							</layout>
+						</layout>
+						<layout border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+							<layout padding="2" width="100%" alignment="horizontal">
 								<radiobutton name="radio" value="1" disabled="true"/>
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
-							</panel>
-							<panel padding="2" width="100%" alignment="horizontal">
+							</layout>
+							<layout padding="2" width="100%" alignment="horizontal">
 								<radiobutton name="radio" value="2" selected="true" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
-							</panel>
-							<panel padding="2" width="100%" alignment="horizontal">
+							</layout>
+							<layout padding="2" width="100%" alignment="horizontal">
 								<radiobutton name="radio" value="3" />
 								<space width="10" />
 								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
-							</panel>
-						</panel>
-					</panel>
+							</layout>
+						</layout>
+					</layout>
 				</tab-content>
 				<tab-content tab-id="tab2" vertical-align="top">
-					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%">
-						<panel horizontal-align="center" alignment="none" width="80%">
-							<panel border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
+					<layout padding="10" horizontal-align="center" alignment="vertical" width="100%">
+						<layout horizontal-align="center" alignment="none" width="80%">
+							<layout border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
 								<space width="10" />
 								<text font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
 								<space width="10" />
 								<text font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
-							</panel>
-						</panel>
+							</layout>
+						</layout>
 						<space height="10" />
-						<panel horizontal-align="center" alignment="none" width="80%">
+						<layout horizontal-align="center" alignment="none" width="80%">
 							<selectbox name="select">
 								<scrollarea-vertical id="sasb" width="100%" height="80">
 									<selectbox-option text="Option A" value="1" />
@@ -97,9 +96,9 @@
 									<selectbox-option text="Option Z" value="26" />
 								</scrollarea-vertical>
 							</selectbox>
-						</panel>
+						</layout>
 						<space height="10" />
-						<panel horizontal-align="center" alignment="none" width="80%">
+						<layout horizontal-align="center" alignment="none" width="80%">
 							<selectbox-multiple name="selectmultiple">
 								<scrollarea-vertical id="sasbm" width="100%" height="140">
 									<selectbox-multiple-option text="Option A" value="1" />
@@ -130,11 +129,11 @@
 									<selectbox-multiple-option text="Option Z" value="26" />
 								</scrollarea-vertical>
 							</selectbox-multiple>
-						</panel>
-					</panel>
+						</layout>
+					</layout>
 				</tab-content>
 				<tab-content tab-id="tab3" vertical-align="top">
-					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
+					<layout padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
 						<space height="*" />
 						<element horizontal-align="center" vertical-align="center">
 							<image hide-on="mouseover,click" src="resources/tests/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
@@ -149,11 +148,11 @@
 						<space height="*" />
 						<button id="test_text_button3" name="button3" text="Disabled Button" disabled="true "/>
 						<space height="*" />
-					</panel>
+					</layout>
 				</tab-content>
 				<tab-content tab-id="tab4" vertical-align="top">
-					<panel padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
-						<panel id="dropdown_panel" horizontal-align="center" alignment="vertical" width="80%">
+					<layout padding="10" horizontal-align="center" alignment="vertical" width="100%" height="100%">
+						<layout id="dropdown_panel" horizontal-align="center" alignment="vertical" width="80%">
 							<dropdown name="dropdown" text="Click me and select a drop down option">
 								<scrollarea-vertical id="sadd" width="100%" height="80">
 									<dropdown-option text="Option A" value="1" />
@@ -190,13 +189,13 @@
 							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
 							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
-						</panel>
-					</panel>
+						</layout>
+					</layout>
 				</tab-content>
 				<tab-content tab-id="tab5" vertical-align="top">
-					<panel padding="10" horizontal-align="center" vertical-align="center" alignment="none" width="100%" height="auto">
+					<layout padding="10" horizontal-align="center" vertical-align="center" alignment="none" width="100%" height="auto">
 						<input name="input" width="80%" maxlength="120" text="Enter some text here" />
-					</panel>
+					</layout>
 				</tab-content>
 				<tab-content tab-id="tab6" horizontal-align="center" vertical-align="center">
 					<scrollarea id="bbb" width="100%" height="100%">
