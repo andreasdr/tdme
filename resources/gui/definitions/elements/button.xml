@@ -1,24 +1,24 @@
 <element id="{$id}" width="auto" height="auto" horizontal-align="center" vertical-align="center" border="2" border-color-top="#C0C0C0" border-color-left="#C0C0C0" border-color-bottom="#404040" border-color-right="#404040" name="{$name}" value="{$value}" disabled="{$disabled}" focusable="true">
 	<!-- unselected, no mouse over -->
-	<layout width="{$width}" height="{$height}" padding="10" hide-on="disabled,mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
+	<layout width="{$width}" height="{$height}" padding="5" hide-on="disabled,mouseover,click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080A0">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
 		<space width="*" />
 	</layout>
 	<!-- mouse over -->
-	<layout width="{$width}" height="{$height}" padding="10" hide-on="disabled" show-on="mouseover" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080FF">
+	<layout width="{$width}" height="{$height}" padding="5" hide-on="disabled" show-on="mouseover" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#8080FF">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
 		<space width="*" />
 	</layout>
 	<!-- clicked -->
-	<layout width="{$width}" height="{$height}" padding="10" hide-on="disabled" show-on="click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#A0A0FF">
+	<layout width="{$width}" height="{$height}" padding="5" hide-on="disabled" show-on="click" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#A0A0FF">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" horizontal-align="center" vertical-align="center" />
 		<space width="*" />
 	</layout>
 	<!-- disabled -->
-	<layout width="{$width}" height="{$height}" padding="10" show-on="disabled" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#C0C0C0">
+	<layout width="{$width}" height="{$height}" padding="5" show-on="disabled" alignment="horizontal" horizontal-align="center" vertical-align="center" background-color="#C0C0C0">
 		<space width="*" />
 		<text font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#D0D0D0" horizontal-align="center" vertical-align="center" />
 		<space width="*" />

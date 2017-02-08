@@ -1,7 +1,7 @@
 <element id="{$id}" width="{$width}" height="{$height}" background-color="#f0f0f0" border="1" border-color="#000000" name="{$name}" disabled="{$disabled}" focusable="true">
 	<layout alignment="vertical" width="100%">
 		<layout id="{$id}_layout_vertical" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="100%">
-			<layout id="{$id}_layout_horizontal" width="100%" padding="10" alignment="horizontal">
+			<layout id="{$id}_layout_horizontal" width="100%" padding="5" alignment="horizontal">
 				<element id="{$id}_layout_horizontal_element" width="*" height="auto"> 
 					<text show-on="enabled" id="{$id}_text_enabled" width="100%" height="auto" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#000000" />
 					<text show-on="disabled" id="{$id}_text_disabled" width="100%" height="auto" font="resources/gui/fonts/Foo_25.fnt" text="{$text}" color="#D0D0D0" />
@@ -14,7 +14,7 @@
 					<image effect-color-mul="#8080FF" hide-on="closed" src="resources/gui/images/elements/dropdown/collapse-arrow.png" vertical-align="center" />
 				</element>
 			</layout>
-			<layout id="{$id}_inner" border="1" border-color="#ff4040" padding="10" width="100%" height="auto" alignment="vertical" show-on="opened" flow="floating" background-color="#f0f0f0">
+			<layout id="{$id}_inner" border="1" border-color="#ff4040" padding="5" width="100%" height="auto" alignment="vertical" show-on="opened" flow="floating" background-color="#f0f0f0">
 				{$innerXml}
 			</layout>
 		</layout>
