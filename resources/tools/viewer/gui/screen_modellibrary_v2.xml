@@ -126,7 +126,17 @@
 						</layout>
 					</tab-content>
 					<tab-content tab-id="tabs_properties_boundingvolume" vertical-align="top">
-						<text font="resources/gui/fonts/Foo_25.fnt" text="tabs_properties_boundingvolume" width="auto" height="auto"/>
+						<layout width="auto" height="auto" alignment="vertical">
+							<space height="10" />
+							<layout width="auto" height="auto" alignment="horizontal">
+								<dropdown id="boundingvolume_type" name="boundingvolume_type" width="530" height="auto" text="Test">
+									<dropdown-option text="Option A" value="1" />
+									<dropdown-option text="Option B" value="2" />
+								</dropdown>
+								<space width="10" />
+								<button id="button_boundingvolume_apply" name="button_boundingvolume_apply" text="Apply" width="60" />
+							</layout>
+						</layout>
 					</tab-content>
 					<tab-content tab-id="tabs_properties_stats" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
