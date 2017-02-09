@@ -313,8 +313,8 @@ public final class GUIParser {
 					GUIParentNode.createOverflow(node.getAttribute("overflow-x")),
 					GUIParentNode.createOverflow(node.getAttribute("overflow-y")),
 					GUINode.createAlignments(
-						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("horizontal-align"),
+						node.getAttribute("vertical-align")
 					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
