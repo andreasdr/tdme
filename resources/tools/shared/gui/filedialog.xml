@@ -1,0 +1,31 @@
+<screen id="filedialog" background-color="#202020">
+	<panel alignment="vertical" left="10%" top="10%" width="80%" height="80%" horizontal-align="center">
+		<space height="10" />
+		<text id="filedialog_caption" font="resources/gui/fonts/Foo_25.fnt" text="Load" width="auto" height="auto"/>
+		<space height="10" />
+		<selectbox id="filedialog_files" name="filedialog_files" width="80%" height="*">
+			<selectbox-option text="Option 0" value="0" />
+			<selectbox-option text="Option 1" value="1" />
+			<selectbox-option text="Option 2" value="2" />
+			<selectbox-option text="Option 3" value="3" />
+			<selectbox-option text="Option 4" value="4" />
+			<selectbox-option text="Option 5" value="5" />
+			<selectbox-option text="Option 6" value="6" />
+			<selectbox-option text="Option 7" value="7" />
+			<selectbox-option text="Option 8" value="8" />
+			<selectbox-option text="Option 9" value="9" />
+			<selectbox-option text="Option 10" value="10" />
+		</selectbox>
+		<space height="10" />
+		<input id="filedialog_filename" name="filedialog_filename" width="80%" height="auto" text="./file.end" />
+		<space height="10" />
+		<layout width="100%" height="auto" alignment="horizontal">
+			<space width="*" />
+			<button id="filedialog_apply" name="filedialog_apply" text="Load" />
+			<space width="*" />
+			<button id="filedialog_abort" name="filedialog_abort" text="Abort" />
+			<space width="*" />
+		</layout>
+		<space height="10" />
+	</panel>
+</screen>
