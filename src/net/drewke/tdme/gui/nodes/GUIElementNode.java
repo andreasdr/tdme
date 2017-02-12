@@ -183,15 +183,17 @@ public final class GUIElementNode extends GUIParentNode {
 		super.layoutSubNodes();
 
 		// stars
+		int height = computedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;
+		int width = computedConstraints.width - border.left - border.right - padding.left - padding.right;
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode guiSubNode = subNodes.get(i);
 			boolean doLayoutSubNodes = false;
 			if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
-				guiSubNode.computedConstraints.height = computedConstraints.height;
+				guiSubNode.computedConstraints.height = height;
 				doLayoutSubNodes = true;
 			} else
 			if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
-				guiSubNode.computedConstraints.width = computedConstraints.width;
+				guiSubNode.computedConstraints.width = width;
 				doLayoutSubNodes = true;
 			}
 
