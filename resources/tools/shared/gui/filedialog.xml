@@ -4,17 +4,20 @@
 		<text id="filedialog_caption" font="resources/gui/fonts/Foo_25.fnt" text="Load" width="auto" height="auto"/>
 		<space height="10" />
 		<selectbox id="filedialog_files" name="filedialog_files" width="80%" height="*">
-			<selectbox-option text="Option 0" value="0" />
-			<selectbox-option text="Option 1" value="1" />
-			<selectbox-option text="Option 2" value="2" />
-			<selectbox-option text="Option 3" value="3" />
-			<selectbox-option text="Option 4" value="4" />
-			<selectbox-option text="Option 5" value="5" />
-			<selectbox-option text="Option 6" value="6" />
-			<selectbox-option text="Option 7" value="7" />
-			<selectbox-option text="Option 8" value="8" />
-			<selectbox-option text="Option 9" value="9" />
-			<selectbox-option text="Option 10" value="10" />
+			<scrollarea width="100%" height="100%">
+				<selectbox-option text="Option 00" value="00" />
+				<selectbox-option text="Option 01" value="01" />
+				<selectbox-option text="Option 02" value="02" />
+				<selectbox-option text="Option 03" value="03" />
+				<selectbox-option text="Option 04" value="04" />
+				<selectbox-option text="Option 05" value="05" />
+				<selectbox-option text="Option 06" value="06" />
+				<selectbox-option text="Option 07" value="07" />
+				<selectbox-option text="Option 08" value="08" />
+				<selectbox-option text="Option 09" value="09" />
+				<selectbox-option text="Option 10" value="10" />
+				<selectbox-option text="Option 10" value="10" />
+			</scrollarea>
 		</selectbox>
 		<space height="10" />
 		<input id="filedialog_filename" name="filedialog_filename" width="80%" height="auto" text="./file.end" />
