@@ -2,6 +2,7 @@ package net.drewke.tdme.gui.nodes;
 
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 
 /**
  * GUI element node
@@ -170,6 +171,35 @@ public final class GUIElementNode extends GUIParentNode {
 		left+= computedConstraints.alignmentLeft;
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).setLeft(left);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#layoutSubNodes()
+	 */
+	protected void layoutSubNodes() {
+		//
+		super.layoutSubNodes();
+
+		// stars
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode guiSubNode = subNodes.get(i);
+			boolean doLayoutSubNodes = false;
+			if (guiSubNode.requestedConstraints.heightType == RequestedConstraintsType.STAR) {
+				guiSubNode.computedConstraints.height = computedConstraints.height;
+				doLayoutSubNodes = true;
+			} else
+			if (guiSubNode.requestedConstraints.widthType == RequestedConstraintsType.STAR) {
+				guiSubNode.computedConstraints.width = computedConstraints.width;
+				doLayoutSubNodes = true;
+			}
+
+			// layout sub node, sub nodes, second pass
+			if (guiSubNode instanceof GUIParentNode &&
+				doLayoutSubNodes == true) {
+				((GUIParentNode)guiSubNode).layoutSubNodes();
+			}
 		}
 	}
 
