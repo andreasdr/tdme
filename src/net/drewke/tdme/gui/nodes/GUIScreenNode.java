@@ -73,7 +73,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		boolean scrollable
 		) throws GUIParserException {
 		super(null, null, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
-		this.foccussedBorderColor = new GUIColor("#FF4040");
+		this.foccussedBorderColor = new GUIColor("#8080FF");
 		this.nodeCounter = 0;
 		this.screenWidth = 0;
 		this.screenHeight = 0;

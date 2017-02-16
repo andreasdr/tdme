@@ -7,17 +7,17 @@
 		<space height="5%" />
 		<tabs width="100%" height="*">
 			<tabs-header>
-				<tab id="tab1" text="Radio+Checkbox" />
+				<tab id="tab1" text="Radio+Checkbox"/>
 				<tab id="tab2" text="Selectbox" />
 				<tab id="tab3" text="Buttons" />
 				<tab id="tab4" text="Dropdown" />
 				<tab id="tab5" text="Input" />
-				<tab id="tab6" text="Scrollarea" />
+				<tab id="tab6" text="Scrollarea" disabled="true"/>
 			</tabs-header>
 			<tabs-content>
 				<tab-content tab-id="tab1" vertical-align="top">
 					<layout width="100%" height="100%" padding="10" horizontal-align="center" alignment="horizontal">
-						<layout border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
+						<layout border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" width="50%">
 							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox1" value="1" disabled="true" />
 								<space width="10" />
@@ -66,8 +66,8 @@
 						</layout>
 						<space height="10" />
 						<layout horizontal-align="center" alignment="none" width="80%">
-							<selectbox name="select" width="100%" height="80">
-								<scrollarea-vertical id="sasb" width="100%" height="100%">
+							<selectbox name="select">
+								<scrollarea-vertical id="sasb" width="100%" height="80">
 									<selectbox-option text="Option A" value="1" />
 									<selectbox-option text="Option B" value="2" />
 									<selectbox-option text="Option C" value="3" />
@@ -99,8 +99,8 @@
 						</layout>
 						<space height="10" />
 						<layout horizontal-align="center" alignment="none" width="80%">
-							<selectbox-multiple name="selectmultiple" width="100%" height="140">
-								<scrollarea-vertical id="sasbm" width="100%" height="100%">
+							<selectbox-multiple name="selectmultiple">
+								<scrollarea-vertical id="sasbm" width="100%" height="140">
 									<selectbox-multiple-option text="Option A" value="1" />
 									<selectbox-multiple-option text="Option B" value="2" selected="true" />
 									<selectbox-multiple-option text="Option C" value="3" />
