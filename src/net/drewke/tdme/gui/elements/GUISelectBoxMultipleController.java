@@ -68,7 +68,12 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
 	public void init() {
-		// no op
+		// Focus last selected
+		if (getFocussedOptionIdx() == -1) {
+			// could do better here for sure
+			MutableString value = getValue();
+			setValue(value);
+		}
 	}
 
 	/*
@@ -336,8 +341,10 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 
 		// unselect all selections
 		unselect();
+		unfocus();
 
 		// determine new selection
+		GUIElementNode selectBoxOptionNodeLast = null;
 		for (int i = 0; i < selectBoxMultipleOptionControllers.size(); i++) {
 			GUISelectBoxMultipleOptionController selectBoxOptionController = selectBoxMultipleOptionControllers.get(i);
 			GUIElementNode selectBoxOptionNode = (GUIElementNode)selectBoxOptionController.getNode();
@@ -353,7 +360,13 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 				selectBoxOptionController.select();
 				selectBoxOptionNode.scrollToNodeX((GUIParentNode)node);
 				selectBoxOptionNode.scrollToNodeY((GUIParentNode)node);
+				selectBoxOptionNodeLast = selectBoxOptionNode;
 			}
+		}
+
+		// select last node in viewport
+		if (selectBoxOptionNodeLast != null) {
+			((GUISelectBoxMultipleOptionController)selectBoxOptionNodeLast.getController()).focus();
 		}
 	}
 
