@@ -568,7 +568,7 @@ public final class GUIRenderer {
 		effectColorMulFinal[0] = effectColorMul[0] * fontColor[0];
 		effectColorMulFinal[1] = effectColorMul[1] * fontColor[1];
 		effectColorMulFinal[2] = effectColorMul[2] * fontColor[2];
-		effectColorMulFinal[3] = effectColorMul[3] * fontColor[3];
+		// effectColorMulFinal[3] = effectColorMul[3] * fontColor[3];
 		renderer.setEffectColorMul(effectColorMulFinal);
 		renderer.setEffectColorAdd(effectColorAdd);
 		renderer.onUpdateEffect();
