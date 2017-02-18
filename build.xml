@@ -33,6 +33,9 @@
 			<fileset dir="${build}" />
 			<fileset includes="shader/**/*" dir="./" />
 			<fileset includes="resources/textures/*" dir="./" />
+			<manifest>
+				<attribute name="Main-Class" value="net.drewke.tdme.tests.GUITest" />
+			</manifest>
 		</jar>
 	</target>
 
