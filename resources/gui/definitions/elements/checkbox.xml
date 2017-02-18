@@ -8,11 +8,11 @@
 	<!-- checked, no mouse over -->
 	<image effect-color-mul="#8080FF" hide-on="disabled,focus,unchecked,mouseover" src="resources/gui/images/elements/checkbox/background.png" />
 	<image effect-color-mul="#000000" hide-on="disabled,focus,unchecked,mouseover" src="resources/gui/images/elements/checkbox/border.png" />
-	<image effect-color-mul="#000000" hide-on="disabled,focus,unchecked,mouseover" src="resources/gui/images/elements/checkbox/squaremark.png" />
+	<image effect-color-mul="#FFFFFF" hide-on="disabled,focus,unchecked,mouseover" src="resources/gui/images/elements/checkbox/squaremark.png" />
 	<!-- checked, mouse over -->
 	<image effect-color-mul="#B0B0FF" hide-on="disabled,focus,unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/background.png" />
 	<image effect-color-mul="#000000" hide-on="disabled,focus,unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/border.png" />
-	<image effect-color-mul="#000000" hide-on="disabled,focus,unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/squaremark.png" />
+	<image effect-color-mul="#FFFFFF" hide-on="disabled,focus,unchecked" show-on="mouseover" src="resources/gui/images/elements/checkbox/squaremark.png" />
 	<!-- unchecked, focus -->
 	<image effect-color-mul="#F0F0F0" hide-on="disabled,checked" show-on="focus" src="resources/gui/images/elements/checkbox/background.png" />
 	<image effect-color-mul="#8080FF" hide-on="disabled,checked" show-on="focus" src="resources/gui/images/elements/checkbox/border.png" />
