@@ -12,7 +12,7 @@
 				<tab id="tab3" text="Buttons" />
 				<tab id="tab4" text="Dropdown" />
 				<tab id="tab5" text="Input" />
-				<tab id="tab6" text="Scrollarea" disabled="true"/>
+				<tab id="tab6" text="Scrollarea" />
 			</tabs-header>
 			<tabs-content>
 				<tab-content tab-id="tab1" vertical-align="top">
