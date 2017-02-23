@@ -1,6 +1,6 @@
 package net.drewke.tdme.tools.viewer.controller;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
@@ -9,168 +9,180 @@ import net.drewke.tdme.engine.primitives.Capsule;
 import net.drewke.tdme.engine.primitives.ConvexMesh;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.Sphere;
+import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.GUIActionListener;
+import net.drewke.tdme.gui.events.GUIChangeListener;
+import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.gui.nodes.GUIScreenNode;
+import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.tools.viewer.Tools;
+import net.drewke.tdme.tools.viewer.controller.FileDialogPopUpController.FileDialogPopUpMode;
 import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
 import net.drewke.tdme.tools.viewer.model.PropertyModelClass;
 import net.drewke.tdme.tools.viewer.views.ModelLibraryView;
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.controls.Button;
-import de.lessvoid.nifty.controls.CheckBox;
-import de.lessvoid.nifty.controls.DropDown;
-import de.lessvoid.nifty.controls.ListBox;
-import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
-import de.lessvoid.nifty.controls.TabSelectedEvent;
-import de.lessvoid.nifty.controls.TextField;
-import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.elements.render.TextRenderer;
-import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.tools.SizeValue;
+import net.drewke.tdme.utils.MutableString;
 
 /**
- * Main Screen Controller
+ * Model library controller
  * @author Andreas Drewke
  * @version $Id: ModelLibraryController.java 82 2013-12-26 13:56:48Z drewke.net $
  */
-public final class ModelLibraryController extends PopUpsController {
+public final class ModelLibraryController extends ScreenController implements GUIActionListener, GUIChangeListener {
 
 	public enum BoundingVolumeType {NONE, SPHERE, CAPSULE, BOUNDINGBOX, ORIENTEDBOUNDINGBOX, CONVEXMESH};
 
-	private Nifty nifty;
-	private Screen screen;
-	private Element screenCaption;
-	private Element display;
-	private CheckBox displayBoundingVolume;
-	private CheckBox displayShadowing;
-	private CheckBox displayGround;
-	private TextField modelName;
-	private TextField modelDescription;
-	private Button modelDataApply;
-	private Button modelReload;
-	private Button modelSave;
-	private TextField objectPropertyName;
-	private TextField objectPropertyValue;
-	private Button objectPropertySave;
-	private Button objectPropertyAdd;
-	private Button objectPropertyRemove;
-	private Button objectPropertyPresetApply;
-	private ListBox<PropertyModelClass> objectPropertiesListBox;
-	private DropDown<String> objectPropertiesPresets;
-	private TextField pivotX;
-	private TextField pivotY;
-	private TextField pivotZ;
-	private Button btnPivotApply;
-	private DropDown<String> boundingVolumeTypeDropDown;
-	private TextField statsOpaqueFaces;
-	private TextField statsTransparentFaces;
-	private TextField statsMaterialCount;
-	private Element boundingVolumePanel;
-	private Element boundingVolumeNoneElement;
-	private Element boundingVolumeOrientedBoundingBoxElement;
-	private Element boundingVolumeSphereElement;
-	private Element boundingVolumeCapsuleElement;
-	private Element boundingVolumeBoundingBoxElement;
-	private Element boundingVolumeConvexMeshElement;
-	private Button boundingVolumeNoneApply;
-	private TextField boundingvolumeSphereCenter;
-	private TextField boundingvolumeSphereRadius;
-	private TextField boundingvolumeCapsuleA;
-	private TextField boundingvolumeCapsuleB;
-	private TextField boundingvolumeCapsuleRadius;
-	private TextField boundingvolumeBoundingBoxMin;
-	private TextField boundingvolumeBoundingBoxMax;
-	private TextField boundingvolumeObbCenter;
-	private TextField boundingvolumeObbHalfextension;
-	private TextField boundingvolumeObbAxis0;
-	private TextField boundingvolumeObbAxis1;
-	private TextField boundingvolumeObbAxis2;
-	private TextField boundingvolumeConvexMeshFile;
+	private final static MutableString CHECKBOX_CHECKED = new MutableString("1");
+	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
+	private final static MutableString TEXT_EMPTY = new MutableString("");
 
-	public void bind(Nifty nifty, Screen screen) {
-		super.bind(nifty, screen, new File("."), "tmm,dae,tm");
-		this.nifty = nifty;
-		this.screen = screen;
-		screenCaption = screen.findElementByName("screen_caption");
-		display = screen.findElementByName("panel_properties_display");
-		displayBoundingVolume = screen.findNiftyControl("display_boundingvolume", CheckBox.class);
-		displayShadowing = screen.findNiftyControl("display_shadowing", CheckBox.class);
-		displayGround = screen.findNiftyControl("display_ground", CheckBox.class);
-		modelName = screen.findNiftyControl("model_name", TextField.class);
-		modelDescription = screen.findNiftyControl("model_description", TextField.class);
-		modelDataApply = screen.findNiftyControl("button_modeldata_apply", Button.class);
-		modelReload = screen.findNiftyControl("button_model_reload", Button.class);
-		modelSave = screen.findNiftyControl("button_model_save", Button.class);
-		objectPropertyName = screen.findNiftyControl("object_property_name", TextField.class);
-		objectPropertyValue = screen.findNiftyControl("object_property_value", TextField.class);
-		objectPropertySave = screen.findNiftyControl("button_object_properties_save", Button.class);
-		objectPropertyAdd = screen.findNiftyControl("button_object_properties_add", Button.class);
-		objectPropertyRemove = screen.findNiftyControl("button_object_properties_remove", Button.class);
-		objectPropertyPresetApply = screen.findNiftyControl("button_object_properties_presetapply", Button.class);
-		objectPropertiesListBox = (ListBox<PropertyModelClass>) screen.findNiftyControl("objectproperties_listbox", ListBox.class);
-		objectPropertiesPresets = (DropDown<String>) screen.findNiftyControl("objectproperties_presets", DropDown.class);
-		pivotX = screen.findNiftyControl("pivot_x", TextField.class);
-		pivotY = screen.findNiftyControl("pivot_y", TextField.class);
-		pivotZ = screen.findNiftyControl("pivot_z", TextField.class);
-		objectPropertiesListBox = (ListBox<PropertyModelClass>) screen.findNiftyControl("objectproperties_listbox", ListBox.class);
-		btnPivotApply = screen.findNiftyControl("button_pivot_apply", Button.class);
-		boundingVolumeTypeDropDown = (DropDown<String>)screen.findNiftyControl("boundingvolume_type", DropDown.class);
-		boundingVolumeNoneElement = screen.findElementByName("boundingvolume_none");
-		boundingVolumeSphereElement = screen.findElementByName("boundingvolume_sphere");
-		boundingVolumeCapsuleElement = screen.findElementByName("boundingvolume_capsule");
-		boundingVolumeOrientedBoundingBoxElement = screen.findElementByName("boundingvolume_obb");
-		boundingVolumeBoundingBoxElement = screen.findElementByName("boundingvolume_aabb");
-		boundingVolumeConvexMeshElement = screen.findElementByName("boundingvolume_convexmesh");
-		boundingVolumeNoneApply = screen.findNiftyControl("button_boundingvolume_apply", Button.class);
-		boundingVolumePanel = screen.findElementByName("panel_boundingvolume_tab");
-		boundingvolumeSphereCenter = screen.findNiftyControl("boundingvolume_sphere_center", TextField.class);
-		boundingvolumeSphereRadius = screen.findNiftyControl("boundingvolume_sphere_radius", TextField.class);
-		boundingvolumeCapsuleA = screen.findNiftyControl("boundingvolume_capsule_a", TextField.class);
-		boundingvolumeCapsuleB = screen.findNiftyControl("boundingvolume_capsule_b", TextField.class);
-		boundingvolumeCapsuleRadius = screen.findNiftyControl("boundingvolume_capsule_radius", TextField.class);
-		boundingvolumeBoundingBoxMin = screen.findNiftyControl("boundingvolume_aabb_min", TextField.class);
-		boundingvolumeBoundingBoxMax = screen.findNiftyControl("boundingvolume_aabb_max", TextField.class);
-		boundingvolumeObbCenter = screen.findNiftyControl("boundingvolume_obb_center", TextField.class);
-		boundingvolumeObbCenter = screen.findNiftyControl("boundingvolume_obb_center", TextField.class);
-		boundingvolumeObbHalfextension = screen.findNiftyControl("boundingvolume_obb_halfextension", TextField.class);
-		boundingvolumeObbAxis0 = screen.findNiftyControl("boundingvolume_obb_axis0", TextField.class);
-		boundingvolumeObbAxis1 = screen.findNiftyControl("boundingvolume_obb_axis1", TextField.class);
-		boundingvolumeObbAxis2 = screen.findNiftyControl("boundingvolume_obb_axis2", TextField.class);
-		boundingvolumeConvexMeshFile = screen.findNiftyControl("boundingvolume_convexmesh_file", TextField.class);
-		statsOpaqueFaces = screen.findNiftyControl("stats_opaque_faces", TextField.class);
-		statsTransparentFaces = screen.findNiftyControl("stats_transparent_faces", TextField.class);
-		statsMaterialCount = screen.findNiftyControl("stats_material_count", TextField.class);
-		statsOpaqueFaces.disable();
-		statsTransparentFaces.disable();
-		statsMaterialCount.disable();
+	private GUIScreenNode screenNode;
+	private GUITextNode screenCaption;
+	private GUIElementNode displayBoundingVolume;
+	private GUIElementNode displayShadowing;
+	private GUIElementNode displayGround;
+	private GUIElementNode modelName;
+	private GUIElementNode modelDescription;
+	private GUIElementNode modelApply;
+	private GUIElementNode modelReload;
+	private GUIElementNode modelSave;
+	private GUIElementNode objectPropertyName;
+	private GUIElementNode objectPropertyValue;
+	private GUIElementNode objectPropertySave;
+	private GUIElementNode objectPropertyAdd;
+	private GUIElementNode objectPropertyRemove;
+	private GUIElementNode objectPropertiesList;
+	private GUIElementNode objectPropertyPresetApply;
+	private GUIElementNode objectPropertiesPresets;
+	private GUIElementNode pivotX;
+	private GUIElementNode pivotY;
+	private GUIElementNode pivotZ;
+	private GUIElementNode pivotApply;
+	private GUIElementNode boundingVolumeTypeDropDown;
+	private GUIElementNode statsOpaqueFaces;
+	private GUIElementNode statsTransparentFaces;
+	private GUIElementNode statsMaterialCount;
+	private GUIElementNode boundingVolumeNoneApply;
+	private GUIElementNode boundingVolume;
+	private GUIElementNode boundingvolumeSphereCenter;
+	private GUIElementNode boundingvolumeSphereRadius;
+	private GUIElementNode boundingvolumeCapsuleA;
+	private GUIElementNode boundingvolumeCapsuleB;
+	private GUIElementNode boundingvolumeCapsuleRadius;
+	private GUIElementNode boundingvolumeBoundingBoxMin;
+	private GUIElementNode boundingvolumeBoundingBoxMax;
+	private GUIElementNode boundingvolumeObbCenter;
+	private GUIElementNode boundingvolumeObbHalfextension;
+	private GUIElementNode boundingvolumeObbAxis0;
+	private GUIElementNode boundingvolumeObbAxis1;
+	private GUIElementNode boundingvolumeObbAxis2;
+	private GUIElementNode boundingvolumeConvexMeshFile;
+
+	private MutableString value;
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#getScreenNode()
+	 */
+	public GUIScreenNode getScreenNode() {
+		return screenNode;
 	}
 
-	public void onEndScreen() {
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#init()
+	 */
+	public void init() {
+		// load screen node
+		try {
+			screenNode = GUIParser.parse("resources/tools/viewer/gui", "screen_modellibrary_v2.xml");
+			screenNode.addActionListener(this);
+			screenNode.addChangeListener(this);
+			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
+			displayBoundingVolume = (GUIElementNode)screenNode.getNodeById("display_boundingvolume");
+			displayShadowing = (GUIElementNode)screenNode.getNodeById("display_shadowing");
+			displayGround = (GUIElementNode)screenNode.getNodeById("display_ground");
+			modelName = (GUIElementNode)screenNode.getNodeById("model_name");
+			modelDescription = (GUIElementNode)screenNode.getNodeById("model_description");
+			modelApply = (GUIElementNode)screenNode.getNodeById("button_model_apply");
+			modelReload = (GUIElementNode)screenNode.getNodeById("button_model_reload");
+			modelSave = (GUIElementNode)screenNode.getNodeById("button_model_save");
+			objectPropertyName = (GUIElementNode)screenNode.getNodeById("object_property_name");
+			objectPropertyValue = (GUIElementNode)screenNode.getNodeById("object_property_value");
+			objectPropertySave = (GUIElementNode)screenNode.getNodeById("button_object_properties_save");
+			objectPropertyAdd = (GUIElementNode)screenNode.getNodeById("button_object_properties_add");
+			objectPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_object_properties_remove");
+			objectPropertiesList = (GUIElementNode)screenNode.getNodeById("objectproperties_listbox");
+			objectPropertyPresetApply = (GUIElementNode)screenNode.getNodeById("button_object_properties_presetapply");
+			objectPropertiesPresets = (GUIElementNode)screenNode.getNodeById("objectproperties_presets");
+			pivotX = (GUIElementNode)screenNode.getNodeById("pivot_x");
+			pivotY = (GUIElementNode)screenNode.getNodeById("pivot_y");
+			pivotZ = (GUIElementNode)screenNode.getNodeById("pivot_z");
+			pivotApply = (GUIElementNode)screenNode.getNodeById("button_pivot_apply");
+			boundingVolumeTypeDropDown = (GUIElementNode)screenNode.getNodeById("boundingvolume_type");
+			boundingVolumeNoneApply = (GUIElementNode)screenNode.getNodeById("button_boundingvolume_apply");
+			boundingVolume = (GUIElementNode)screenNode.getNodeById("boundingvolume");
+			boundingvolumeSphereCenter = (GUIElementNode)screenNode.getNodeById("boundingvolume_sphere_center");
+			boundingvolumeSphereRadius = (GUIElementNode)screenNode.getNodeById("boundingvolume_sphere_radius");
+			boundingvolumeCapsuleA = (GUIElementNode)screenNode.getNodeById("boundingvolume_capsule_a");
+			boundingvolumeCapsuleB = (GUIElementNode)screenNode.getNodeById("boundingvolume_capsule_b");
+			boundingvolumeCapsuleRadius = (GUIElementNode)screenNode.getNodeById("boundingvolume_capsule_radius");
+			boundingvolumeBoundingBoxMin = (GUIElementNode)screenNode.getNodeById("boundingvolume_aabb_min");
+			boundingvolumeBoundingBoxMax = (GUIElementNode)screenNode.getNodeById("boundingvolume_aabb_max");
+			boundingvolumeObbCenter = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_center");
+			boundingvolumeObbCenter = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_center");
+			boundingvolumeObbHalfextension = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_halfextension");
+			boundingvolumeObbAxis0 = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_axis0");
+			boundingvolumeObbAxis1 = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_axis1");
+			boundingvolumeObbAxis2 = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_axis2");
+			boundingvolumeConvexMeshFile = (GUIElementNode)screenNode.getNodeById("boundingvolume_convexmesh_file");
+			statsOpaqueFaces = (GUIElementNode)screenNode.getNodeById("stats_opaque_faces");
+			statsTransparentFaces = (GUIElementNode)screenNode.getNodeById("stats_transparent_faces");
+			statsMaterialCount = (GUIElementNode)screenNode.getNodeById("stats_material_count");
+			statsOpaqueFaces.getController().setDisabled(true);
+			statsTransparentFaces.getController().setDisabled(true);
+			statsMaterialCount.getController().setDisabled(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//
+		value = new MutableString();
 	}
 
-	public void onStartScreen() {
-		setupDisplay();
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#dispose()
+	 */
+	public void dispose() {
 	}
 
+	/**
+	 * Set up display section
+	 */
 	public void setupDisplay() {
-		displayShadowing.setChecked(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayShadowing());
-		displayGround.setChecked(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayGroundPlate());
-		displayBoundingVolume.setChecked(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayBoundingVolume());
+		displayShadowing.getController().setValue(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayShadowing() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayGround.getController().setValue(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayGroundPlate() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayBoundingVolume.getController().setValue(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayBoundingVolume() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
 	}
 
 	/**
 	 * On display apply button event
 	 */
 	public void onDisplayApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayShadowing(displayShadowing.isChecked());
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayGroundPlate(displayGround.isChecked());
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayBoundingVolume(displayBoundingVolume.isChecked());
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayShadowing(displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayGroundPlate(displayGround.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayBoundingVolume(displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED));
 	}
 
+	/**
+	 * Set screen caption
+	 * @param text
+	 */
 	public void setScreenCaption(String text) {
-		screenCaption.getRenderer(TextRenderer.class).setText(text);
-		screen.layoutLayers();
+		screenCaption.getText().set(text);
 	}
 
 	/**
@@ -178,26 +190,26 @@ public final class ModelLibraryController extends PopUpsController {
 	 * @param pivot
 	 */
 	public void setPivot(Vector3 pivot) {
-		pivotX.enable();
-		pivotX.setText(Tools.formatFloat(pivot.getX()));
-		pivotY.enable();
-		pivotY.setText(Tools.formatFloat(pivot.getY()));
-		pivotZ.enable();
-		pivotZ.setText(Tools.formatFloat(pivot.getZ()));
-		btnPivotApply.enable();
+		pivotX.getController().setDisabled(false);
+		pivotX.getController().getValue().set(Tools.formatFloat(pivot.getX()));
+		pivotY.getController().setDisabled(false);
+		pivotY.getController().getValue().set(Tools.formatFloat(pivot.getY()));
+		pivotZ.getController().setDisabled(false);
+		pivotZ.getController().getValue().set(Tools.formatFloat(pivot.getZ()));
+		pivotApply.getController().setDisabled(false);
 	}
 
 	/**
 	 * Unset pivot tab
 	 */
 	public void unsetPivot() {
-		pivotX.setText("");
-		pivotX.disable();
-		pivotY.setText("");
-		pivotY.disable();
-		pivotZ.setText("");
-		pivotZ.disable();
-		btnPivotApply.disable();
+		pivotX.getController().setDisabled(true);
+		pivotX.getController().getValue().set(TEXT_EMPTY);
+		pivotY.getController().setDisabled(true);
+		pivotY.getController().getValue().set(TEXT_EMPTY);
+		pivotZ.getController().setDisabled(true);
+		pivotZ.getController().getValue().set(TEXT_EMPTY);
+		pivotApply.getController().setDisabled(true);
 	}
 
 	/**
@@ -206,47 +218,47 @@ public final class ModelLibraryController extends PopUpsController {
 	 * @param description
 	 */
 	public void setModelData(String name, String description) {
-		modelName.enable();
-		modelName.setText(name);
-		modelDescription.enable();
-		modelDescription.setText(description);
-		modelDataApply.enable();
-		modelReload.enable();
-		modelSave.enable();
+		modelName.getController().setDisabled(false);
+		modelName.getController().getValue().set(name);
+		modelDescription.getController().setDisabled(false);
+		modelDescription.getController().getValue().set(description);
+		modelApply.getController().setDisabled(false);
+		modelReload.getController().setDisabled(false);
+		modelSave.getController().setDisabled(false);
 	}
 
 	/**
 	 * Unset model data
 	 */
 	public void unsetModelData() {
-		modelName.setText("");
-		modelName.disable();
-		modelDescription.setText("");
-		modelDescription.disable();
-		modelDataApply.disable();
-		modelReload.disable();
-		modelSave.disable();
+		modelName.getController().setValue(TEXT_EMPTY);
+		modelName.getController().setDisabled(true);
+		modelDescription.getController().setValue(TEXT_EMPTY);
+		modelDescription.getController().setDisabled(true);
+		modelApply.getController().setDisabled(true);
+		modelReload.getController().setDisabled(true);
+		modelSave.getController().setDisabled(true);
 	}
 
 	/**
 	 * @return display shadowing checked
 	 */
 	public boolean getDisplayShadowing() {
-		return displayShadowing.isChecked(); 
+		return displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED);
 	}
 
 	/**
 	 * @return display ground checked
 	 */
 	public boolean getDisplayGround() {
-		return displayGround.isChecked();
+		return displayGround.getController().getValue().equals(CHECKBOX_CHECKED);
 	}
 
 	/**
 	 * @return display bounding volume checked
 	 */
 	public boolean getDisplayBoundingVolume() {
-		return displayBoundingVolume.isChecked();
+		return displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED);
 	}
 
 	/**
@@ -254,17 +266,38 @@ public final class ModelLibraryController extends PopUpsController {
 	 * @param object property preset ids
 	 */
 	public void setObjectPresetIds(Collection<String> objectPresetIds) {
-		objectPropertiesPresets.addItem("");
+		// object properties presets inner
+		GUIParentNode objectPropertiesPresetsInnerNode = (GUIParentNode)(objectPropertiesPresets.getScreenNode().getNodeById(objectPropertiesPresets.getId() + "_inner"));
+
+		// clear sub nodes
+		objectPropertiesPresetsInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
 		for (String objectPresetId: objectPresetIds) {
-			objectPropertiesPresets.addItem(objectPresetId);
+			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + objectPresetId + "\" value=\"" + objectPresetId + "\" />\n";
 		}
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				objectPropertiesPresetsInnerNode,
+				objectPropertiesPresetsInnerNodeSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		objectPropertiesPresetsInnerNode.getScreenNode().layout();
 	}
 
 	/**
 	 * @return object property preset selection
 	 */
 	public String getObjectPropertyPresetSelection() {
-		return objectPropertiesPresets.getSelection();
+		// TODO: is this in use???
+		return objectPropertiesPresets.getController().getValue().toString();
 	}
 
 	/**
@@ -274,39 +307,65 @@ public final class ModelLibraryController extends PopUpsController {
 	 * @param object properties
 	 */
 	public void setObjectProperties(String presetId, Iterable<PropertyModelClass> objectProperties) {
-		objectPropertiesPresets.enable();
-		objectPropertyPresetApply.enable();
-		objectPropertiesListBox.enable();
-		objectPropertyAdd.enable();
-		objectPropertyRemove.enable();
-		objectPropertySave.disable();
-		objectPropertyName.disable();
-		objectPropertyValue.disable();
-		objectPropertiesListBox.clear();
-		objectPropertiesPresets.selectItem(presetId);
-		if (objectProperties != null) {
-			for (PropertyModelClass objectProperty: objectProperties) {
-				objectPropertiesListBox.addItem(objectProperty);
-			}
+		//
+		objectPropertiesPresets.getController().setDisabled(false);
+		objectPropertyPresetApply.getController().setDisabled(false);
+		objectPropertiesList.getController().setDisabled(false);
+		objectPropertyAdd.getController().setDisabled(false);
+		objectPropertyRemove.getController().setDisabled(false);
+		objectPropertySave.getController().setDisabled(true);
+		objectPropertyName.getController().setDisabled(true);
+		objectPropertyValue.getController().setDisabled(true);
+
+		// set up preset
+		if (presetId != null) {
+			objectPropertiesPresets.getController().setValue(value.set(presetId));
 		}
+
+		// object properties list box inner
+		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesList.getScreenNode().getNodeById(objectPropertiesList.getId() + "_inner"));
+
+		// clear sub nodes
+		objectPropertiesListBoxInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 1;
+		String objectPropertiesListBoxSubNodesXML = "";
+		objectPropertiesListBoxSubNodesXML+= "<scrollarea-vertical width=\"100%\" height=\"100%\">\n";
+		for (PropertyModelClass objectProperty: objectProperties) {
+			objectPropertiesListBoxSubNodesXML+= "<selectbox-option text=\"" + objectProperty.getName() + ": " + objectProperty.getValue() + "\" value=\"" + objectProperty.getName() + "\" />\n";
+		}
+		objectPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				objectPropertiesListBoxInnerNode,
+				objectPropertiesListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		objectPropertiesListBoxInnerNode.getScreenNode().layout();
 	}
 
 	/**
 	 * Unset object properties
 	 */
 	public void unsetObjectProperties() {
-		objectPropertiesPresets.selectItemByIndex(0);
-		objectPropertiesPresets.disable();
-		objectPropertyPresetApply.disable();
-		objectPropertiesListBox.disable();
-		objectPropertyAdd.disable();
-		objectPropertyRemove.disable();
-		objectPropertySave.disable();
-		objectPropertyName.setText(new String());
-		objectPropertyName.disable();
-		objectPropertyValue.setText(new String());
-		objectPropertyValue.disable();
-		objectPropertiesListBox.clear();
+		// TODO: objectPropertiesPresets.selectItemByIndex(0);
+		objectPropertiesPresets.getController().setDisabled(true);
+		objectPropertyPresetApply.getController().setDisabled(true);
+		objectPropertiesList.getController().setDisabled(true);
+		objectPropertyAdd.getController().setDisabled(true);
+		objectPropertyRemove.getController().setDisabled(true);
+		objectPropertySave.getController().setDisabled(true);
+		objectPropertyName.getController().setValue(TEXT_EMPTY);
+		objectPropertyName.getController().setDisabled(true);
+		objectPropertyValue.getController().setValue(TEXT_EMPTY);
+		objectPropertyValue.getController().setDisabled(true);
 	}
 
 	/**
@@ -314,41 +373,35 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void onObjectPropertySave() {
 		ModelLibraryView modelLibraryView = ((ModelLibraryView)TDMEViewer.getInstance().getView());
-		for (PropertyModelClass objectProperty: objectPropertiesListBox.getSelection()) {
-			if (modelLibraryView.objectPropertySave(
-				objectProperty,
-				objectPropertyName.getText(),
-				objectPropertyValue.getText()) == false) {
-				//
-				showErrorPopUp("Warning", "Saving object property failed");
-				return;
-			}
+		// TODO: keep selection, viewport offsets
+		if (modelLibraryView.objectPropertySave(
+			objectPropertiesList.getController().getValue().toString(),
+			objectPropertyName.getController().getValue().toString(),
+			objectPropertyValue.getController().getValue().toString()) == false) {
+			//
+			showErrorPopUp("Warning", "Saving object property failed");
 		}
-		objectPropertiesListBox.refresh();
 	}
 
 	/**
 	 * On object property add
 	 */
 	public void onObjectPropertyAdd() {
-		PropertyModelClass objectProperty = ((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyAdd();
-		if (objectProperty == null) {
+		// TODO: keep selection, viewport offsets
+		if (((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new object property failed");
-			return;
 		}
-		objectPropertiesListBox.addItem(objectProperty);
-		objectPropertiesListBox.selectItem(objectProperty);
-		objectPropertiesListBox.refresh();
 	}
 
 	/**
 	 * On object property remove
 	 */
 	public void onObjectPropertyRemove() {
-		for (PropertyModelClass objectProperty: objectPropertiesListBox.getSelection()) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyRemove(objectProperty);			
-			objectPropertiesListBox.removeItem(objectProperty);
-			objectPropertiesListBox.refresh();
+		// TODO: keep selection, viewport offsets
+		if (((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyRemove(objectPropertiesList.getController().getValue().toString()) == false) {
+			showErrorPopUp("Warning", "Removing object property failed");
+		} else {
+			onObjectPropertiesSelectionChanged();
 		}
 	}
 
@@ -356,27 +409,25 @@ public final class ModelLibraryController extends PopUpsController {
 	 * On object property preset apply 
 	 */
 	public void onObjectPropertyPresetApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getSelection());
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
 	 * Event callback for object properties selection
-	 * @param id
-	 * @param event
 	 */
-	@NiftyEventSubscriber(id = "objectproperties_listbox")
-	public void onObjectPropertiesSelectionChanged(final String id, final ListBoxSelectionChangedEvent<PropertyModelClass> event) {
-		objectPropertyName.disable();
-		objectPropertyName.setText(new String());
-		objectPropertyValue.disable();
-		objectPropertyValue.setText(new String());
-		objectPropertySave.disable();
-		for (PropertyModelClass objectProperty: event.getSelection()) {
-			objectPropertyName.setText(objectProperty.getName());
-			objectPropertyValue.setText(objectProperty.getValue());
-			objectPropertyName.enable();
-			objectPropertyValue.enable();
-			objectPropertySave.enable();
+	public void onObjectPropertiesSelectionChanged() {
+		objectPropertyName.getController().setDisabled(true);
+		objectPropertyName.getController().setValue(TEXT_EMPTY);
+		objectPropertyValue.getController().setDisabled(true);
+		objectPropertyValue.getController().setValue(TEXT_EMPTY);
+		objectPropertySave.getController().setDisabled(true);
+		PropertyModelClass objectProperty = ((ModelLibraryView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(objectPropertiesList.getController().getValue().toString());
+		if (objectProperty != null) {
+			objectPropertyName.getController().setValue(value.set(objectProperty.getName()));
+			objectPropertyValue.getController().setValue(value.set(objectProperty.getValue()));
+			objectPropertyName.getController().setDisabled(false);
+			objectPropertyValue.getController().setDisabled(false);
+			objectPropertySave.getController().setDisabled(false);
 		}
 	}
 
@@ -387,9 +438,9 @@ public final class ModelLibraryController extends PopUpsController {
 	 * @param stats material count
 	 */
 	public void setStatistics(int statsOpaqueFaces, int statsTransparentFaces, int statsMaterialCount) {
-		this.statsOpaqueFaces.setText(String.valueOf(statsOpaqueFaces));
-		this.statsTransparentFaces.setText(String.valueOf(statsTransparentFaces));
-		this.statsMaterialCount.setText(String.valueOf(statsMaterialCount));
+		this.statsOpaqueFaces.getController().setValue(value.set(statsOpaqueFaces));
+		this.statsTransparentFaces.getController().setValue(value.set(statsTransparentFaces));
+		this.statsMaterialCount.getController().setValue(value.set(statsMaterialCount));
 	}
 
 	/**
@@ -424,14 +475,19 @@ public final class ModelLibraryController extends PopUpsController {
 	 * On model data apply
 	 */
 	public void onModelDataApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setModelData(modelName.getText(), modelDescription.getText());
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).setModelData(
+			modelName.getController().getValue().toString(), 
+			modelDescription.getController().getValue().toString()
+		);
 
 		// rename in library
+		/*
 		LevelEditorModel model = ((ModelLibraryView)TDMEViewer.getInstance().getView()).getSelectedModel();
 		if (model == null) return;
 		Element modelNameElement = screen.findElementByName("modelchoser_name_" + model.getId());
 		TextRenderer modelNameElementRenderer = modelNameElement.getRenderer(TextRenderer.class);
 		modelNameElementRenderer.setText(model.getName());
+		*/
 	}
 
 	/**
@@ -439,9 +495,9 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void onPivotApply() {
 		try {
-			float x = Float.parseFloat(pivotX.getText());
-			float y = Float.parseFloat(pivotY.getText());
-			float z = Float.parseFloat(pivotZ.getText());
+			float x = Float.parseFloat(pivotX.getController().getValue().toString());
+			float y = Float.parseFloat(pivotY.getController().getValue().toString());
+			float z = Float.parseFloat(pivotZ.getController().getValue().toString());
 			((ModelLibraryView)TDMEViewer.getInstance().getView()).pivotApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
@@ -453,20 +509,22 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void unsetBoundingVolume() {
 		((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
-		boundingVolumeTypeDropDown.disable();
-		boundingVolumeNoneApply.disable();
+		boundingVolumeTypeDropDown.getController().setDisabled(true);
+		boundingVolumeNoneApply.getController().setDisabled(true);
 	}
 
 	/**
 	 * Set up bounding volume
 	 */
 	public void setBoundingVolume() {
-		boundingVolumeTypeDropDown.enable();
-		boundingVolumeNoneApply.enable();
+		boundingVolumeTypeDropDown.getController().setDisabled(false);
+		boundingVolumeNoneApply.getController().setDisabled(false);
 	}
 
-	@NiftyEventSubscriber(id="tabs_properties")
-	public void onTabPropertiesSelected(final String id, final TabSelectedEvent event) {
+	/**
+	 * Set up model bounding volume
+	 */
+	public void setupModelBoundingVolume() {
 		LevelEditorModel model = ((ModelLibraryView)TDMEViewer.getInstance().getView()).getSelectedModel();
 		if (model == null) {
 			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
@@ -499,11 +557,32 @@ public final class ModelLibraryController extends PopUpsController {
 	 * Set up bounding volume types
 	 * @param bounding volume types
 	 */
-	public void setupBoundingVolumeTypes(String[] boundingVolumeTypes, String selectedBoundingVolumeType) {
+	public void setupBoundingVolumeTypes(String[] boundingVolumeTypes) {
+		// object properties list box inner
+		GUIParentNode boundingVolumeTypeDropDownInnerNode = (GUIParentNode)(objectPropertiesList.getScreenNode().getNodeById(boundingVolumeTypeDropDown.getId() + "_inner"));
+
+		// clear sub nodes
+		boundingVolumeTypeDropDownInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 0;
+		String boundingVolumeTypeDropDownSubNodesXML = "";
 		for (String bvType: boundingVolumeTypes) {
-			boundingVolumeTypeDropDown.addItem(bvType);
+			boundingVolumeTypeDropDownSubNodesXML+= "<dropdown-option text=\"" + bvType + "\" value=\"" +  + (idx++) + "\" />\n";
 		}
-		boundingVolumeTypeDropDown.selectItem(selectedBoundingVolumeType);
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				boundingVolumeTypeDropDownInnerNode,
+				boundingVolumeTypeDropDownSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		boundingVolumeTypeDropDownInnerNode.getScreenNode().layout();
 	}
 
 	/**
@@ -511,106 +590,36 @@ public final class ModelLibraryController extends PopUpsController {
 	 * @param bvType
 	 */
 	public void selectBoundingVolume(BoundingVolumeType bvType) {
+		boundingVolume.getActiveConditions().remove("sphere");
+		boundingVolume.getActiveConditions().remove("capsule");
+		boundingVolume.getActiveConditions().remove("aabb");
+		boundingVolume.getActiveConditions().remove("obb");
+		boundingVolume.getActiveConditions().remove("convexmesh");
 		switch (bvType) {
 			case NONE:
-				boundingVolumeNoneElement.setVisible(true);
-				boundingVolumeNoneElement.setConstraintHeight(new SizeValue("100%"));
-				boundingVolumeSphereElement.setVisible(false);
-				boundingVolumeSphereElement.setConstraintHeight(new SizeValue("0%"));
-				boundingVolumeCapsuleElement.setVisible(false);
-				boundingVolumeCapsuleElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeBoundingBoxElement.setVisible(false);
-				boundingVolumeBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeOrientedBoundingBoxElement.setVisible(false);
-				boundingVolumeOrientedBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeConvexMeshElement.setVisible(false);
-				boundingVolumeConvexMeshElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeTypeDropDown.selectItemByIndex(0);
+				boundingVolumeTypeDropDown.getController().setValue(value.set("0"));
 				break;
 			case SPHERE:
-				boundingVolumeNoneElement.setVisible(false);
-				boundingVolumeNoneElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeSphereElement.setVisible(true);
-				boundingVolumeSphereElement.setConstraintHeight(new SizeValue("100%"));
-				boundingVolumeCapsuleElement.setVisible(false);
-				boundingVolumeCapsuleElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeBoundingBoxElement.setVisible(false);
-				boundingVolumeBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeOrientedBoundingBoxElement.setVisible(false);
-				boundingVolumeOrientedBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeConvexMeshElement.setVisible(false);
-				boundingVolumeConvexMeshElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeTypeDropDown.selectItemByIndex(1);
+				boundingVolumeTypeDropDown.getController().setValue(value.set("1"));
+				boundingVolume.getActiveConditions().add("sphere");
 				break;
 			case CAPSULE:
-				boundingVolumeNoneElement.setVisible(false);
-				boundingVolumeNoneElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeSphereElement.setVisible(false);
-				boundingVolumeSphereElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeCapsuleElement.setVisible(true);
-				boundingVolumeCapsuleElement.setConstraintHeight(new SizeValue("100%"));
-				boundingVolumeBoundingBoxElement.setVisible(false);
-				boundingVolumeBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeOrientedBoundingBoxElement.setVisible(false);
-				boundingVolumeOrientedBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeConvexMeshElement.setVisible(false);
-				boundingVolumeConvexMeshElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeTypeDropDown.selectItemByIndex(2);
+				boundingVolumeTypeDropDown.getController().setValue(value.set("2"));
+				boundingVolume.getActiveConditions().add("capsule");
 				break;
 			case BOUNDINGBOX: 
-				boundingVolumeNoneElement.setVisible(false);
-				boundingVolumeNoneElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeSphereElement.setVisible(false);
-				boundingVolumeSphereElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeCapsuleElement.setVisible(false);
-				boundingVolumeCapsuleElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeBoundingBoxElement.setVisible(true);
-				boundingVolumeBoundingBoxElement.setConstraintHeight(new SizeValue("100%"));
-				boundingVolumeOrientedBoundingBoxElement.setVisible(false);
-				boundingVolumeOrientedBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeConvexMeshElement.setVisible(false);
-				boundingVolumeConvexMeshElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeTypeDropDown.selectItemByIndex(3);
+				boundingVolumeTypeDropDown.getController().setValue(value.set("3"));
+				boundingVolume.getActiveConditions().add("aabb");
 				break;
 			case ORIENTEDBOUNDINGBOX: 
-				boundingVolumeNoneElement.setVisible(false);
-				boundingVolumeNoneElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeSphereElement.setVisible(false);
-				boundingVolumeSphereElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeCapsuleElement.setVisible(false);
-				boundingVolumeCapsuleElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeBoundingBoxElement.setVisible(false);
-				boundingVolumeBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeOrientedBoundingBoxElement.setVisible(true);
-				boundingVolumeOrientedBoundingBoxElement.setConstraintHeight(new SizeValue("100%"));
-				boundingVolumeConvexMeshElement.setVisible(false);
-				boundingVolumeConvexMeshElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeTypeDropDown.selectItemByIndex(4);
+				boundingVolumeTypeDropDown.getController().setValue(value.set("4"));
+				boundingVolume.getActiveConditions().add("obb");
 				break;
 			case CONVEXMESH:
-				boundingVolumeNoneElement.setVisible(false);
-				boundingVolumeNoneElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeSphereElement.setVisible(false);
-				boundingVolumeSphereElement.setConstraintHeight(new SizeValue("0%"));
-				boundingVolumeCapsuleElement.setVisible(false);
-				boundingVolumeCapsuleElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeBoundingBoxElement.setVisible(false);
-				boundingVolumeBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeOrientedBoundingBoxElement.setVisible(false);
-				boundingVolumeOrientedBoundingBoxElement.setConstraintHeight(new SizeValue("0px"));
-				boundingVolumeConvexMeshElement.setVisible(true);
-				boundingVolumeConvexMeshElement.setConstraintHeight(new SizeValue("100%"));
-				boundingVolumeTypeDropDown.selectItemByIndex(5);
+				boundingVolumeTypeDropDown.getController().setValue(value.set("5"));
+				boundingVolume.getActiveConditions().add("convexmesh");
 				break;
 		}
-		boundingVolumeNoneElement.resetLayout();
-		boundingVolumeSphereElement.resetLayout();
-		boundingVolumeCapsuleElement.resetLayout();
-		boundingVolumeBoundingBoxElement.resetLayout();
-		boundingVolumeOrientedBoundingBoxElement.resetLayout();
-		boundingVolumeConvexMeshElement.resetLayout();
-		boundingVolumePanel.resetLayout();
-		boundingVolumePanel.layoutElements();
 	}
 
 	/**
@@ -620,13 +629,16 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void setupSphere(Vector3 center, float radius) {
 		selectBoundingVolume(BoundingVolumeType.SPHERE);
-		boundingvolumeSphereCenter.setText(
-			Tools.formatFloat(center.getX()) + ", " +
-			Tools.formatFloat(center.getY()) + ", " + 
-			Tools.formatFloat(center.getZ())
+		boundingvolumeSphereCenter.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(center.getX())).
+			append(", ").
+			append(Tools.formatFloat(center.getY())).
+			append(", ").
+			append(Tools.formatFloat(center.getZ()))
 		);
-		boundingvolumeSphereRadius.setText(
-			Tools.formatFloat(radius)
+		boundingvolumeSphereRadius.getController().setValue(
+			value.set(Tools.formatFloat(radius))
 		);
 	}
 
@@ -637,18 +649,24 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void setupCapsule(Vector3 a, Vector3 b, float radius) {
 		selectBoundingVolume(BoundingVolumeType.CAPSULE);
-		boundingvolumeCapsuleA.setText(
-			Tools.formatFloat(a.getX()) + ", " +
-			Tools.formatFloat(a.getY()) + ", " + 
-			Tools.formatFloat(a.getZ())
+		boundingvolumeCapsuleA.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(a.getX())).
+			append(", ").
+			append(Tools.formatFloat(a.getY())).
+			append(", ").
+			append(Tools.formatFloat(a.getZ()))
 		);
-		boundingvolumeCapsuleB.setText(
-			Tools.formatFloat(b.getX()) + ", " +
-			Tools.formatFloat(b.getY()) + ", " + 
-			Tools.formatFloat(b.getZ())
+		boundingvolumeCapsuleB.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(b.getX())).
+			append(", ").
+			append(Tools.formatFloat(b.getY())).
+			append(", ").
+			append(Tools.formatFloat(b.getZ()))
 		);
-		boundingvolumeCapsuleRadius.setText(
-			Tools.formatFloat(radius)
+		boundingvolumeCapsuleRadius.getController().setValue(
+			value.set(Tools.formatFloat(radius))
 		);
 	}
 
@@ -659,15 +677,21 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void setupBoundingBox(Vector3 min, Vector3 max) {
 		selectBoundingVolume(BoundingVolumeType.BOUNDINGBOX);
-		boundingvolumeBoundingBoxMin.setText(
-			Tools.formatFloat(min.getX()) + ", " +
-			Tools.formatFloat(min.getY()) + ", " + 
-			Tools.formatFloat(min.getZ())
+		boundingvolumeBoundingBoxMin.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(min.getX())).
+			append(", ").
+			append(Tools.formatFloat(min.getY())).
+			append(", ").
+			append(Tools.formatFloat(min.getZ()))
 		);
-		boundingvolumeBoundingBoxMax.setText(
-			Tools.formatFloat(max.getX()) + ", " +
-			Tools.formatFloat(max.getY()) + ", " + 
-			Tools.formatFloat(max.getZ())
+		boundingvolumeBoundingBoxMax.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(max.getX())).
+			append(", ").
+			append(Tools.formatFloat(max.getY())).
+			append(", ").
+			append(Tools.formatFloat(max.getZ()))
 		);
 	}
 
@@ -681,30 +705,45 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void setupOrientedBoundingBox(Vector3 center, Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 halfExtension) {
 		selectBoundingVolume(BoundingVolumeType.ORIENTEDBOUNDINGBOX);
-		boundingvolumeObbCenter.setText(
-			Tools.formatFloat(center.getX()) + ", " +
-			Tools.formatFloat(center.getY()) + ", " + 
-			Tools.formatFloat(center.getZ())
+		boundingvolumeObbCenter.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(center.getX())).
+			append(", ").
+			append(Tools.formatFloat(center.getY())).
+			append(", ").
+			append(Tools.formatFloat(center.getZ()))
 		);
-		boundingvolumeObbHalfextension.setText(
-			Tools.formatFloat(halfExtension.getX()) + ", " +
-			Tools.formatFloat(halfExtension.getY()) + ", " + 
-			Tools.formatFloat(halfExtension.getZ())
+		boundingvolumeObbHalfextension.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(halfExtension.getX())).
+			append(", ").
+			append(Tools.formatFloat(halfExtension.getY())).
+			append(", "). 
+			append(Tools.formatFloat(halfExtension.getZ()))
 		);
-		boundingvolumeObbAxis0.setText(
-			Tools.formatFloat(axis0.getX()) + ", " +
-			Tools.formatFloat(axis0.getY()) + ", " + 
-			Tools.formatFloat(axis0.getZ())
+		boundingvolumeObbAxis0.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(axis0.getX())).
+			append(", ").
+			append(Tools.formatFloat(axis0.getY())).
+			append(", " ).
+			append(Tools.formatFloat(axis0.getZ()))
 		);
-		boundingvolumeObbAxis1.setText(
-			Tools.formatFloat(axis1.getX()) + ", " +
-			Tools.formatFloat(axis1.getY()) + ", " + 
-			Tools.formatFloat(axis1.getZ())
+		boundingvolumeObbAxis1.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(axis1.getX())).
+			append(", ").
+			append(Tools.formatFloat(axis1.getY())).
+			append(", ").
+			append(Tools.formatFloat(axis1.getZ()))
 		);
-		boundingvolumeObbAxis2.setText(
-			Tools.formatFloat(axis2.getX()) + ", " +
-			Tools.formatFloat(axis2.getY()) + ", " + 
-			Tools.formatFloat(axis2.getZ())
+		boundingvolumeObbAxis2.getController().setValue(
+			value.reset().
+			append(Tools.formatFloat(axis2.getX())).
+			append(", ").
+			append(Tools.formatFloat(axis2.getY())).
+			append(", ").
+			append(Tools.formatFloat(axis2.getZ()))
 		);
 	}
 
@@ -714,8 +753,8 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void setupConvexMesh(String file) {
 		selectBoundingVolume(BoundingVolumeType.CONVEXMESH);
-		boundingvolumeConvexMeshFile.setText(
-			file
+		boundingvolumeConvexMeshFile.getController().setValue(
+			value.set(file)
 		);
 	}
 
@@ -723,8 +762,9 @@ public final class ModelLibraryController extends PopUpsController {
 	 * On pivot apply
 	 */
 	public void onBoundingVolumeTypeApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(boundingVolumeTypeDropDown.getSelectedIndex());
-		switch(boundingVolumeTypeDropDown.getSelectedIndex()) {
+		int boundingVolumeTypeId = Tools.convertToIntSilent(boundingVolumeTypeDropDown.getController().getValue().toString());
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(boundingVolumeTypeId);
+		switch(boundingVolumeTypeId) {
 			case(0): onBoundingVolumeNoneApply(); break;
 			case(1): onBoundingVolumeSphereApply(); break;
 			case(2): onBoundingVolumeCapsuleApply(); break;
@@ -747,8 +787,8 @@ public final class ModelLibraryController extends PopUpsController {
 	public void onBoundingVolumeSphereApply() {
 		try {
 			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeSphere(
-				Tools.convertToVector3(boundingvolumeSphereCenter.getText()),
-				Tools.convertToFloat(boundingvolumeSphereRadius.getText())
+				Tools.convertToVector3(boundingvolumeSphereCenter.getController().getValue().toString()),
+				Tools.convertToFloat(boundingvolumeSphereRadius.getController().getValue().toString())
 			);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
@@ -761,9 +801,9 @@ public final class ModelLibraryController extends PopUpsController {
 	public void onBoundingVolumeCapsuleApply() {
 		try {
 			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeCapsule(
-				Tools.convertToVector3(boundingvolumeCapsuleA.getText()),
-				Tools.convertToVector3(boundingvolumeCapsuleB.getText()),
-				Tools.convertToFloat(boundingvolumeCapsuleRadius.getText())
+				Tools.convertToVector3(boundingvolumeCapsuleA.getController().getValue().toString()),
+				Tools.convertToVector3(boundingvolumeCapsuleB.getController().getValue().toString()),
+				Tools.convertToFloat(boundingvolumeCapsuleRadius.getController().getValue().toString())
 			);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
@@ -776,8 +816,8 @@ public final class ModelLibraryController extends PopUpsController {
 	public void onBoundingVolumeAabbApply() {
 		try {
 			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeAabb(
-				Tools.convertToVector3(boundingvolumeBoundingBoxMin.getText()),
-				Tools.convertToVector3(boundingvolumeBoundingBoxMax.getText())
+				Tools.convertToVector3(boundingvolumeBoundingBoxMin.getController().getValue().toString()),
+				Tools.convertToVector3(boundingvolumeBoundingBoxMax.getController().getValue().toString())
 			);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
@@ -790,11 +830,11 @@ public final class ModelLibraryController extends PopUpsController {
 	public void onBoundingVolumeObbApply() {
 		try {
 			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeObb(
-				Tools.convertToVector3(boundingvolumeObbCenter.getText()),
-				Tools.convertToVector3(boundingvolumeObbAxis0.getText()),
-				Tools.convertToVector3(boundingvolumeObbAxis1.getText()),
-				Tools.convertToVector3(boundingvolumeObbAxis2.getText()),
-				Tools.convertToVector3(boundingvolumeObbHalfextension.getText())
+				Tools.convertToVector3(boundingvolumeObbCenter.getController().getValue().toString()),
+				Tools.convertToVector3(boundingvolumeObbAxis0.getController().getValue().toString()),
+				Tools.convertToVector3(boundingvolumeObbAxis1.getController().getValue().toString()),
+				Tools.convertToVector3(boundingvolumeObbAxis2.getController().getValue().toString()),
+				Tools.convertToVector3(boundingvolumeObbHalfextension.getController().getValue().toString())
 			);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
@@ -806,7 +846,7 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void onBoundingVolumeConvexMeshApply() {
 		((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeConvexMesh(
-			boundingvolumeConvexMeshFile.getText()
+			boundingvolumeConvexMeshFile.getController().getValue().toString()
 		);
 	}
 
@@ -824,6 +864,113 @@ public final class ModelLibraryController extends PopUpsController {
 	 */
 	public void loadFile(String pathName, String fileName) throws Exception {
 		((ModelLibraryView)TDMEViewer.getInstance().getView()).loadFile(pathName, fileName);
+	}
+
+	/**
+	 * Shows the error pop up
+	 * 	TODO: move me into separate controllers
+	 */
+	public void showErrorPopUp(String caption, String message) {
+		System.out.println("ModelLibraryController::showErrorPopUp(): '" + caption + "', '" + message + "'");
+	}
+
+	/**
+	 * Shows the file dialog pop up
+	 * 	TODO: move me into separate controllers
+	 * @throws IOException 
+	 */
+	public void showFileDialogPopUp(FileDialogPopUpMode mode) {
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(mode, new String[]{"tmm", "dae", "tm"});
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.events.GUIChangeListener#onValueChanged(net.drewke.tdme.gui.nodes.GUIElementNode)
+	 */
+	public void onValueChanged(GUIElementNode node) {
+		if (node == objectPropertiesList) {
+			onObjectPropertiesSelectionChanged();
+		} else {
+			System.out.println("ModelLibraryController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.events.GUIActionListener#onActionPerformed(net.drewke.tdme.gui.events.GUIActionListener.Type, net.drewke.tdme.gui.nodes.GUIElementNode)
+	 */
+	public void onActionPerformed(Type type, GUIElementNode node) {
+		switch (type) {
+			case PERFORMED:
+				{
+					if (node.getId().equals("button_display_apply")) {
+						onDisplayApply();
+					} else
+					if (node.getId().equals("button_model_load")) {
+						onModelLoad();
+					} else
+					if (node.getId().equals("button_model_reload")) {
+						onModelReload();
+					} else
+					if (node.getId().equals("button_model_save")) {
+						onModelSave();
+					} else
+					if (node.getId().equals("button_model_apply")) {
+						onModelDataApply();
+					} else
+					if (node.getId().equals("button_object_properties_presetapply")) {
+						onObjectPropertyPresetApply();
+					} else
+					if (node.getId().equals("button_object_properties_add")) {
+						onObjectPropertyAdd();
+					} else
+					if (node.getId().equals("button_object_properties_remove")) {
+						onObjectPropertyRemove();
+					} else
+					if (node.getId().equals("button_object_properties_save")) {
+						onObjectPropertySave();
+					} else
+					if (node.getId().equals("button_pivot_apply")) {
+						onPivotApply();
+					} else
+					if (node.getId().equals("button_boundingvolume_apply")) {
+						onBoundingVolumeTypeApply();
+					} else
+					if (node.getId().equals("button_boundingvolume_sphere_apply")) {
+						onBoundingVolumeSphereApply();
+					} else
+					if (node.getId().equals("button_boundingvolume_capsule_apply")) {
+						onBoundingVolumeCapsuleApply();
+					} else
+					if (node.getId().equals("button_boundingvolume_obb_apply")) {
+						onBoundingVolumeObbApply();
+					} else
+					if (node.getId().equals("button_boundingvolume_aabb_apply")) {
+						onBoundingVolumeAabbApply();
+					} else
+					if (node.getId().equals("button_boundingvolume_convexmesh_apply")) {
+						onBoundingVolumeConvexMeshApply();
+					} else
+					if (node.getId().equals("filedialog_apply")) {
+						((ModelLibraryView)TDMEViewer.getInstance().getView()).loadFile(
+							((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
+							((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getFileName()
+						);
+						((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+					} else
+					if (node.getId().equals("filedialog_abort")) {
+						((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+					} else {
+						System.out.println("ModelLibraryController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					}
+					break;
+				}
+			case PERFORMING:
+				{
+					System.out.println("ModelLibraryController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					break;
+				}
+		}
 	}
 
 }

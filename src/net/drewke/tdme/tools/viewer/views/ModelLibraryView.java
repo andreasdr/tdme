@@ -18,9 +18,10 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.tools.viewer.Tools;
+import net.drewke.tdme.tools.viewer.controller.FileDialogPopUpController;
 import net.drewke.tdme.tools.viewer.controller.ModelLibraryController;
 import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileImport;
@@ -32,10 +33,6 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.opengl.GLAutoDrawable;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem;
-import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem.MouseInputEvent;
-
 /**
  * TDME Model Library
  * @author andreas.drewke
@@ -44,7 +41,9 @@ import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem.MouseInputEvent;
 public final class ModelLibraryView extends View  {
 
 	private Engine engine;
-	private Nifty nifty;
+
+	private FileDialogPopUpController fileDialogPopUpController;
+	private ModelLibraryController modelLibraryController;
 
 	private LevelEditorModel model;
 	private boolean loadModelRequested;
@@ -81,6 +80,7 @@ public final class ModelLibraryView extends View  {
 	 * Public constructor
 	 */
 	public ModelLibraryView() {
+		modelLibraryController = null;
 		loadModelRequested = false;
 		model = null;
 		modelFile = null;
@@ -111,6 +111,13 @@ public final class ModelLibraryView extends View  {
 
 		// offscreen engine transformations
 		engine = Engine.getInstance();
+	}
+
+	/**
+	 * @return file dialog popup controller
+	 */
+	public FileDialogPopUpController getFileDialogPopUpController() {
+		return fileDialogPopUpController;
 	}
 
 	/**
@@ -200,23 +207,11 @@ public final class ModelLibraryView extends View  {
 	}
 
 	/**
-	 * Remove a object property from object
-	 * @param object property
-	 */
-	public void objectPropertyRemove(PropertyModelClass property) {
-		if (model == null) return;
-		model.removeProperty(property.getName());
-	}
-
-	/**
 	 * Apply object property preset
 	 * @param preset id
 	 */
 	public void objectPropertiesPreset(String presetId) {
 		if (model == null) return;
-
-		//
-		ModelLibraryController controller = (ModelLibraryController)nifty.getCurrentScreen().getScreenController();
 
 		// clear object properties
 		model.clearProperties();
@@ -225,12 +220,12 @@ public final class ModelLibraryView extends View  {
 		ArrayList<PropertyModelClass> objectPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
 		if (objectPropertyPresetVector != null) {
 			for (PropertyModelClass objectPropertyPreset: objectPropertyPresetVector) {
-				model.addProperty(objectPropertyPreset.clone());
+				model.addProperty(objectPropertyPreset.getName(), objectPropertyPreset.getValue());
 			}
 		}
 
 		// update object properties to gui
-		controller.setObjectProperties(
+		modelLibraryController.setObjectProperties(
 			presetId,
 			model.getProperties()
 		);
@@ -238,30 +233,74 @@ public final class ModelLibraryView extends View  {
 
 	/**
 	 * Save a object property
-	 * @param object property
+	 * @param old name
 	 * @param name
 	 * @param value
 	 * @return success
 	 */
-	public boolean objectPropertySave(PropertyModelClass objectProperty, String name, String value) {
+	public boolean objectPropertySave(String oldName, String name, String value) {
 		if (model == null) return false;
 
+		// try to update property
+		if (model.updateProperty(oldName, name, value) == true) { 
+			//
+			modelLibraryController.setObjectProperties(
+				null,
+				model.getProperties()
+			);
+
+			// 
+			return true;
+		}
+
 		//
-		return model.updateProperty(objectProperty, name, value);
+		return false;
 	}
 
 	/**
 	 * Add a object property
-	 * @return map property
+	 * @return success
 	 */
-	public PropertyModelClass objectPropertyAdd() {
-		if (model == null) return null;
+	public boolean objectPropertyAdd() {
+		if (model == null) return false;
 
-		PropertyModelClass objectProperty = new PropertyModelClass("new.property", "new.value");
-		if (model.addProperty(objectProperty)) return objectProperty;
+		// try to add property
+		if (model.addProperty("new.property", "new.value")) {
+			// 
+			modelLibraryController.setObjectProperties(
+				null,
+				model.getProperties()
+			);
+
+			//
+			return true;
+		}
 
 		//
-		return null;
+		return false;
+	}
+
+	/**
+	 * Remove a object property from object
+	 * @param object property
+	 */
+	public boolean objectPropertyRemove(String name) {
+		if (model == null) return false;
+
+		// try to remove property
+		if (model.removeProperty(name) == true) {
+			// 
+			modelLibraryController.setObjectProperties(
+				null,
+				model.getProperties()
+			);
+
+			//
+			return true;
+		}
+
+		//
+		return false;
 	}
 
 	/**
@@ -278,22 +317,22 @@ public final class ModelLibraryView extends View  {
 	/**
 	 * Do input system
 	 */
-	public void doInputSystem(GLAutoDrawable drawable) {
-		// process mouse events
-		JoglInputSystem niftyInputSystem = TDMEViewer.getInstance().getNiftyInputSystem();
-		if (niftyInputSystem == null) return;
+	public void doInputSystem() {
+		engine.getGUI().lockMouseEvents();
+		// handle mouse events
+		for (int i = 0; i < engine.getGUI().getMouseEvents().size(); i++) {
+			GUIMouseEvent event = engine.getGUI().getMouseEvents().get(i);
 
-		//
-		while (TDMEViewer.getInstance().getNiftyInputSystem().hasNextMouseEvent()) {
-			MouseInputEvent event = niftyInputSystem.nextMouseEvent();
+			// skip on processed events
+			if (event.isProcessed() == true) continue;
 
 			// dragging
 			if (mouseDragging == true) {	
-				if (event.isButtonDown()) {
-					float xMoved = (event.getMouseX() - mouseLastX) / 5f;
-					float yMoved = (event.getMouseY() - mouseLastY) / 5f;
-					mouseLastX = event.getMouseX();
-					mouseLastY = event.getMouseY();
+				if (event.getButton() == 1) {
+					float xMoved = (event.getX() - mouseLastX) / 5f;
+					float yMoved = (event.getY() - mouseLastY) / 5f;
+					mouseLastX = event.getX();
+					mouseLastY = event.getY();
 					Rotation xRotation = lookFromRotations.getRotations().get(0);
 					Rotation yRotation = lookFromRotations.getRotations().get(1);
 					float xRotationAngle = xRotation.getAngle() + xMoved;
@@ -305,20 +344,22 @@ public final class ModelLibraryView extends View  {
 					mouseDragging = false;
 				}
 			} else {
-				if (event.isButtonDown()) {
+				if (event.getButton() == 1) {
 					mouseDragging = true;
-					mouseLastX = event.getMouseX();
-					mouseLastY = event.getMouseY();					
+					mouseLastX = event.getX();
+					mouseLastY = event.getY();					
 				}
 			}
 
 			// process mouse wheel events
-			int mouseWheel = event.getMouseWheel();
+			float mouseWheel = event.getWheelY();
 			if (mouseWheel != 0) {
 				scale+= mouseWheel * 0.05f;
 				if (scale < 0.05f) scale = 0.05f;
 			}
 		}
+		engine.getGUI().discardEvents();
+		engine.getGUI().unlockMouseEvents();
 	}
 
 	/**
@@ -337,19 +378,18 @@ public final class ModelLibraryView extends View  {
 				Tools.oseThumbnail(drawable, model);
 
 				// add model
-				ModelLibraryController controller = (ModelLibraryController)TDMEViewer.getInstance().getNifty(drawable).getCurrentScreen().getScreenController();
 				maxAxisDimension = Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel()));
 
 				// set up model statistics
 				ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(model.getModel());
-				controller.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
+				modelLibraryController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
 
 				// set up oriented bounding box
 				BoundingBox aabb = Engine.getModelBoundingBox(model.getModel());
 				OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
 
 				// set up sphere
-				controller.setupSphere(
+				modelLibraryController.setupSphere(
 					obb.getCenter(),
 					obb.getHalfExtension().computeLength()
 				);
@@ -392,14 +432,14 @@ public final class ModelLibraryView extends View  {
 					}
 
 					// setup capsule
-					controller.setupCapsule(a, b, radius);
+					modelLibraryController.setupCapsule(a, b, radius);
 				}
 
 				// set up AABB bounding box
-				controller.setupBoundingBox(aabb.getMin(), aabb.getMax());
+				modelLibraryController.setupBoundingBox(aabb.getMin(), aabb.getMax());
 
 				// set up oriented bounding box
-				controller.setupOrientedBoundingBox(
+				modelLibraryController.setupOrientedBoundingBox(
 					obb.getCenter(),
 					obb.getAxes()[0],
 					obb.getAxes()[1],
@@ -407,6 +447,8 @@ public final class ModelLibraryView extends View  {
 					obb.getHalfExtension()
 				);
 			}
+
+			//
 			updateGUIElements(drawable);
 		}
 
@@ -488,26 +530,35 @@ public final class ModelLibraryView extends View  {
 				modelBoundingVolume.setEnabled(displayBoundingVolume);
 			}
 		}
+
+		// Render screens and handle input
+		String activeId = modelLibraryController.getScreenNode().getId();
+		engine.getGUI().render(modelLibraryController.getScreenNode().getId());
+		if (fileDialogPopUpController.isActive() == true) {
+			engine.getGUI().render(fileDialogPopUpController.getScreenNode().getId());
+			activeId = fileDialogPopUpController.getScreenNode().getId();
+		}
+		engine.getGUI().handleEvents(activeId);
 	}
 
 	/**
 	 * Init GUI elements
 	 */
 	private void updateGUIElements(GLAutoDrawable drawable) {
-		ModelLibraryController controller = (ModelLibraryController)TDMEViewer.getInstance().getNifty(drawable).getCurrentScreen().getScreenController();
 		if (model != null) {
-			controller.setScreenCaption("Model Library - " + model.getModel().getName());
+			modelLibraryController.setScreenCaption("Model Library - " + model.getModel().getName());
 			PropertyModelClass preset = model.getProperty("preset");
-			controller.setObjectProperties(preset != null?preset.getValue():"",model.getProperties());
-			controller.setModelData(model.getName(), model.getDescription());
-			controller.setPivot(model.getPivot());
-			controller.setBoundingVolume();
+			modelLibraryController.setObjectProperties(preset != null?preset.getValue():null, model.getProperties());
+			modelLibraryController.setModelData(model.getName(), model.getDescription());
+			modelLibraryController.setPivot(model.getPivot());
+			modelLibraryController.setBoundingVolume();
+			modelLibraryController.setupModelBoundingVolume();
 		} else {
-			controller.setScreenCaption("Model Library - no model loaded");
-			controller.unsetObjectProperties();
-			controller.unsetModelData();
-			controller.unsetPivot();
-			controller.unsetBoundingVolume();
+			modelLibraryController.setScreenCaption("Model Library - no model loaded");
+			modelLibraryController.unsetObjectProperties();
+			modelLibraryController.unsetModelData();
+			modelLibraryController.unsetPivot();
+			modelLibraryController.unsetBoundingVolume();
 		}
 	}
 
@@ -522,28 +573,29 @@ public final class ModelLibraryView extends View  {
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
-		nifty = TDMEViewer.getInstance().getNifty(drawable);
-
-		//
-		nifty.fromXml("resources/tools/viewer/gui/screen_modellibrary.xml", "modellibrary");
-		nifty.update();
-
-		//
-		ModelLibraryController controller = (ModelLibraryController)TDMEViewer.getInstance().getNifty(drawable).getCurrentScreen().getScreenController();
+		try {
+			modelLibraryController = new ModelLibraryController();
+			modelLibraryController.init();
+			fileDialogPopUpController = new FileDialogPopUpController(modelLibraryController);
+			fileDialogPopUpController.init();
+			engine.getGUI().addScreen(modelLibraryController.getScreenNode().getId(), modelLibraryController.getScreenNode()); 
+			engine.getGUI().addScreen(fileDialogPopUpController.getScreenNode().getId(), fileDialogPopUpController.getScreenNode());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// set up object properties presets
-		controller.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
+		modelLibraryController.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 
 		// set up bounding volume types
-		controller.setupBoundingVolumeTypes(
+		modelLibraryController.setupBoundingVolumeTypes(
 			new String[] {
 				"None", "Sphere",
 				"Capsule", "Bounding Box",
 				"Oriented Bounding Box", "Convex Mesh"
-			},
-			"None"
+			}
 		);
-		controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.NONE);
+		modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.NONE);
 
 		// set up gui
 		updateGUIElements(drawable);
@@ -580,25 +632,24 @@ public final class ModelLibraryView extends View  {
 	 * @param bounding volume type
 	 */
 	public void selectBoundingVolumeType(int bvTypeId) {
-		ModelLibraryController controller = (ModelLibraryController)nifty.getCurrentScreen().getScreenController();
 		switch (bvTypeId) {
 			case 0:
-				controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.NONE);
+				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.NONE);
 				break;
 			case 1:
-				controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.SPHERE);
+				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.SPHERE);
 				break;
 			case 2:
-				controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.CAPSULE);
+				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.CAPSULE);
 				break;
 			case 3:
-				controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.BOUNDINGBOX);
+				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.BOUNDINGBOX);
 				break;
 			case 4:
-				controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
+				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
 				break;
 			case 5:
-				controller.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.CONVEXMESH);
+				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.CONVEXMESH);
 				break;
 		}
 	}

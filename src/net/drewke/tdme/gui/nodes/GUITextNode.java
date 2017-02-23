@@ -90,7 +90,7 @@ public final class GUITextNode extends GUINode {
 	 * @see net.drewke.tdme.gui.GUIElementChildNode#getContentHeight()
 	 */
 	public int getContentHeight() {
-		return font.getTextHeight(text) + border.top + border.bottom + padding.top + padding.bottom;
+		return font.getLineHeight() + border.top + border.bottom + padding.top + padding.bottom;
 	}
 	
 	/**

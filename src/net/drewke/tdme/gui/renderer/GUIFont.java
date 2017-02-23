@@ -41,7 +41,8 @@ import net.drewke.tdme.utils.MutableString;
  * @version $Id$
  */
 public final class GUIFont {
-
+	
+	private final static MutableString LINEHEIGHT_STRING = new MutableString("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUV0123456789");
 	private final static int CHARACTERS_MAX = 10000;
 
 	/**
@@ -204,6 +205,11 @@ public final class GUIFont {
 				}
 			}
 		}
+
+		// font line height, this could be done better I guess
+		font.lineHeight = font.getTextHeight(LINEHEIGHT_STRING);
+
+		//
 		return font;
 	}
 	
@@ -237,7 +243,7 @@ public final class GUIFont {
 
 		// line height
 		if (characterDefinition.id != ' ') {
-			lineHeight = Math.max(characterDefinition.height+characterDefinition.yOffset, lineHeight);
+			lineHeight = Math.max(characterDefinition.height + characterDefinition.yOffset, lineHeight);
 		}
 		
 		return characterDefinition;

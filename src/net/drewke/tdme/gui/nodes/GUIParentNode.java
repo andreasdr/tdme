@@ -70,6 +70,8 @@ public abstract class GUIParentNode extends GUINode {
 	 * Clear sub nodes
 	 */
 	public void clearSubNodes() {
+		childrenRenderOffsetX = 0f;
+		childrenRenderOffsetY = 0f;
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode node = subNodes.get(i);
 			screenNode.removeNode(node);

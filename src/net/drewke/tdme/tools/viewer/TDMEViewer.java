@@ -17,21 +17,14 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.render.batch.BatchRenderDevice;
-import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem;
-import de.lessvoid.nifty.renderer.jogl.render.JoglBatchRenderBackendCoreProfileFactory;
-import de.lessvoid.nifty.renderer.jogl.render.JoglBatchRenderBackendFactory;
-import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
-import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
-
 /**
  * TDME Level Editor
  * @author andreas.drewke
  * @version $Id$
  */
 public final class TDMEViewer implements GLEventListener, WindowListener {
+
+	private final static String VERSION = "0.9.9";
 
 	private static TDMEViewer instance;
 
@@ -40,8 +33,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 	private GLWindow glWindow;
 	private FPSAnimator animator;
 
-	private Nifty nifty;
-	private JoglInputSystem niftyInputSystem;
 	private View view;
 	private boolean viewInitialized;
 	private View viewNew;
@@ -55,8 +46,8 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		String modelFileName = null;
 
 		//
-		System.out.println("TDMEViewer 0.9.4j");
-		System.out.println("Programmed 2014 by Andreas Drewke, drewke.net.");
+		System.out.println("TDMEViewer " + VERSION);
+		System.out.println("Programmed 2014,...,2017 by Andreas Drewke, drewke.net.");
 		System.out.println();
 
 		// no nifty logging
@@ -70,7 +61,7 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 
 		// create GL window
 		GLWindow glWindow = GLWindow.create(caps);
-		glWindow.setTitle("TDMEViewer 0.9.4f");
+		glWindow.setTitle("TDMEViewer " + VERSION);
 
 		// animator
 		FPSAnimator animator = new FPSAnimator(glWindow, 60);
@@ -99,8 +90,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		this.animator = animator;
 		TDMEViewer.instance = this;
 		engine = Engine.getInstance();
-		nifty = null;
-		niftyInputSystem = null;
 		view = null;
 		viewInitialized = false;
 		viewNew = null;
@@ -126,39 +115,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 	 */
 	public View getView() {
 		return view;
-	}
-
-	/**
-	 * @return Nifty instance
-	 */
-	public Nifty getNifty(GLAutoDrawable drawable) {
-		// create nifty if not yet created
-		if (nifty == null) {
-			// create nifty instance
-			niftyInputSystem = new JoglInputSystem(glWindow);
-			glWindow.addMouseListener(niftyInputSystem);
-			glWindow.addKeyListener(niftyInputSystem);
-			System.out.println("Nifty::delegated renderer::GL2 = " + drawable.getGL().isGL2() + ", GLES2 = " + drawable.getGL().isGLES2() + ", GL3 = " + drawable.getGL().isGL3());
-			nifty = new Nifty(
-				drawable.getGL().isGL3() || drawable.getGL().isGLES2()?
-					new BatchRenderDevice(JoglBatchRenderBackendCoreProfileFactory.create(glWindow)):
-					new BatchRenderDevice(JoglBatchRenderBackendFactory.create(glWindow)),
-				new OpenALSoundDevice(),
-				niftyInputSystem,
-				new AccurateTimeProvider()
-			);
-			nifty.fromXml("resources/tools/viewer/gui/globals.xml", null);
-		}
-
-		//
-		return nifty;
-	}
-
-	/**
-	 * @return nifty input system or null if not yet initialized
-	 */
-	public JoglInputSystem getNiftyInputSystem() {
-		return niftyInputSystem;
 	}
 
 	/**
@@ -188,8 +144,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		if (view != null) {
 			if (viewInitialized == false) {
 				view.init(drawable);
-				Screen niftyScreen = nifty.getCurrentScreen();
-				niftyScreen.getFocusHandler().setKeyFocus(niftyScreen.findElementByName(niftyScreen.getDefaultFocusElementId()));;
 				glWindow.addMouseListener(view);
 				glWindow.addKeyListener(view);
 				viewInitialized = true;
@@ -202,18 +156,11 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 
 		// view inputsystem
 		if (view != null) {
-			view.doInputSystem(drawable);
+			view.doInputSystem();
 		}
 
-		//
-		Engine.getInstance().initGUIMode();
-
 		// render GUI
-		nifty.update();
-		nifty.render(false);
-
-		//
-		Engine.getInstance().doneGUIMode();
+		view.display(drawable);
 
 		// 
 		if (quitRequested == true) {
@@ -241,8 +188,17 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 	 * Initialize tdme level editor
 	 */
 	public void init(GLAutoDrawable drawable) {
+		// init engine
 		engine.init(drawable);
+		
+		// register gui to mouse, keyboard events
+		glWindow.addMouseListener(engine.getGUI());
+		glWindow.addKeyListener(engine.getGUI());
+
+		// off screen engine init
 		Tools.oseInit(drawable);
+
+		// view
 		setView(new ModelLibraryView());
 	}
 
@@ -251,7 +207,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 	 */
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		engine.reshape(drawable, x, y, width, height);
-		if (nifty != null) nifty.resolutionChanged();
 	}
 
 	/*

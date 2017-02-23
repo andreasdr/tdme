@@ -32,7 +32,7 @@ import de.lessvoid.nifty.tools.Color;
 import de.lessvoid.nifty.tools.SizeValue;
 
 /**
- * Main Screen Controller
+ * Main Screen ScreenController
  * @author Andreas Drewke
  * @version $Id: ModelLibraryController.java 82 2013-12-26 13:56:48Z drewke.net $
  */

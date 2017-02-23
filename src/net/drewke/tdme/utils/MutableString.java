@@ -60,38 +60,44 @@ public final class MutableString {
 	/**
 	 * Reset
 	 */
-	public void reset() {
+	public MutableString reset() {
 		Arrays.fill(data, '\0');
 		length = 0;
 		hash = 0;
+		return this;
 	}
 
 	/**
 	 * Set character
 	 * @param c
+	 * @return this mutable string
 	 */
-	public void set(char c) {
+	public MutableString set(char c) {
 		reset();
 		append(c);
+		return this;
 	}
 
 	/**
 	 * Append character
 	 * @param c
+	 * @return this mutable string
 	 */
-	public void append(char c) {
+	public MutableString append(char c) {
 		if (length + 1 >= data.length) {
 			grow();
 		}
 		data[length++] = c;
 		hash = 0;
+		return this;
 	}
 
 	/**
 	 * Insert character c at idx
 	 * @param c
+	 * @return this mutable string
 	 */
-	public void insert(int idx, char c) {
+	public MutableString insert(int idx, char c) {
 		if (length + 1 >= data.length) {
 			grow();
 		}
@@ -99,90 +105,108 @@ public final class MutableString {
 		data[idx] = c;
 		length++;
 		hash = 0;
+		return this;
 	}
 
 	/**
 	 * Set string
 	 * @param s
+	 * @return this mutable string
 	 */
-	public void set(String s) {
+	public MutableString set(String s) {
 		reset();
 		append(s);
+		return this;
 	}
 
 	/**
 	 * Append string
 	 * @param s
+	 * @return this mutable string
 	 */
-	public void append(String s) {
+	public MutableString append(String s) {
 		for (int i = 0; i < s.length(); i++) {
 			append(s.charAt(i));
 		}
+		return this;
 	}
 
 	/**
 	 * Insert string at idx
 	 * @param c
+	 * @return this mutable string
 	 */
-	public void insert(int idx, String s) {
+	public MutableString insert(int idx, String s) {
 		for (int i = 0; i < s.length(); i++) {
 			insert(idx + i, s.charAt(i));
 		}
+		return this;
 	}
  
 	/**
 	 * Set mutable string 
 	 * @param s
+	 * @return this mutable string
 	 */
-	public void set(MutableString s) {
+	public MutableString set(MutableString s) {
 		reset();
 		append(s);
+		return this;
 	}
 
 	/**
 	 * Append mutable string
 	 * @param s
+	 * @return this mutable string
 	 */
-	public void append(MutableString s) {
+	public MutableString append(MutableString s) {
 		for (int i = 0; i < s.length(); i++) {
 			append(s.charAt(i));
 		}
+		return this;
 	}
 
 	/**
 	 * Insert mutable string at idx
 	 * @param c
+	 * @return this mutable string
 	 */
-	public void insert(int idx, MutableString s) {
+	public MutableString insert(int idx, MutableString s) {
 		for (int i = 0; i < s.length(); i++) {
 			insert(idx + i, s.charAt(i));
 		}
+		return this;
 	}
 
 	/**
 	 * Set integer
 	 * @param i
+	 * @return this mutable string
 	 */
-	public void set(int i) {
+	public MutableString set(int i) {
 		reset();
 		append(i);
+		return this;
 	}
 
 	/**
 	 * Append integer
 	 * @see http://stackoverflow.com/questions/7123490/how-compiler-is-converting-integer-to-string-and-vice-versa
 	 * @param i
+	 * @return this mutable string
 	 */
-	public void append(int i) {
+	public MutableString append(int i) {
 		insert(length, i);
+		return this;
 	}
 
 	/**
 	 * Insert integer at idx
 	 * @see http://stackoverflow.com/questions/7123490/how-compiler-is-converting-integer-to-string-and-vice-versa
 	 * @param i
+	 * @return this mutable string
 	 */
-	public void insert(int idx, int i) {
+	public MutableString insert(int idx, int i) {
 		boolean negative = false;
 		if (i < 0) {
 			negative = true;
@@ -199,16 +223,19 @@ public final class MutableString {
 		if (negative == true) {
 			insert(idx, '-');
 		}
+		return this;
 	}
 
 	/**
 	 * Set float
 	 * @param f
 	 * @param decimals
+	 * @return this mutable string
 	 */
-	public void set(float f, int decimals) {
+	public MutableString set(float f, int decimals) {
 		reset();
 		append(f, decimals);
+		return this;
 	}
 
 	/**
@@ -216,17 +243,20 @@ public final class MutableString {
 	 * @see http://stackoverflow.com/questions/7123490/how-compiler-is-converting-integer-to-string-and-vice-versa
 	 * @param f
 	 * @param decimals
+	 * @return this mutable string
 	 */
-	public void append(float f, int decimals) {
+	public MutableString append(float f, int decimals) {
 		insert(length, f, decimals);
+		return this;
 	}
 
 	/**
 	 * Insert float at idx
 	 * @see http://stackoverflow.com/questions/7123490/how-compiler-is-converting-integer-to-string-and-vice-versa
 	 * @param i
+	 * @return this mutable string
 	 */
-	public void insert(int idx, float f, int decimals) {
+	public MutableString insert(int idx, float f, int decimals) {
 		int integer = (int)f;
 		int integerDecimals = (int)((f - integer) * Math.pow(10f, decimals));
 		if (integerDecimals < 0f) integerDecimals = -integerDecimals;
@@ -235,18 +265,21 @@ public final class MutableString {
 			insert(idx, '.');
 		}
 		insert(idx, integer);
+		return this;
 	}
 
 	/**
 	 * Delete characters at idx with given length
 	 * @param idx
 	 * @param length
+	 * @return this mutable string
 	 */
-	public void delete(int idx, int count) {
-		if (count + idx > length) return; 
+	public MutableString delete(int idx, int count) {
+		if (count + idx > length) return this; 
 		System.arraycopy(data, idx + count, data, idx, length - count - idx);
 		length-= count;
 		hash = 0;
+		return this;
 	}
 
 	/**

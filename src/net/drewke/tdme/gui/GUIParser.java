@@ -250,7 +250,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiLayoutNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiLayoutNode.setController(guiElementController = guiElement.createController(guiLayoutNode));
+					guiElementController = guiElement.createController(guiLayoutNode);
+					if (guiElementController != null) {
+						guiLayoutNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 				// parse child nodes
@@ -299,8 +302,12 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiSpaceNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiSpaceNode.setController(guiElementController = guiElement.createController(guiSpaceNode));
+					guiElementController = guiElement.createController(guiSpaceNode);
+					if (guiElementController != null) {
+						guiSpaceNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
+
 				}
 			} else
 			if (node.getNodeName().equals("element")) {
@@ -353,7 +360,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiElementNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiElementNode.setController(guiElementController = guiElement.createController(guiElementNode));
+					guiElementController = guiElement.createController(guiElementNode);
+					if (guiElementController != null) {
+						guiElementNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 				// parse child nodes
@@ -405,7 +415,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiImageNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiImageNode.setController(guiElementController = guiElement.createController(guiImageNode));
+					guiElementController = guiElement.createController(guiImageNode);
+					if (guiElementController != null) {
+						guiImageNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 			} else
@@ -455,7 +468,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiTextNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiTextNode.setController(guiElementController = guiElement.createController(guiTextNode));
+					guiElementController = guiElement.createController(guiTextNode);
+					if (guiElementController != null) {
+						guiTextNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 			} else 
@@ -507,7 +523,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiInputInternalNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiInputInternalNode.setController(guiElementController = guiElement.createController(guiInputInternalNode));
+					guiElementController = guiElement.createController(guiInputInternalNode);
+					if (guiElementController != null) {
+						guiInputInternalNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 			} else 
@@ -557,7 +576,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiVerticalScrollbarInternalNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiVerticalScrollbarInternalNode.setController(guiElementController = guiElement.createController(guiVerticalScrollbarInternalNode));
+					guiElementController = guiElement.createController(guiVerticalScrollbarInternalNode);
+					if (guiElementController != null) {
+						guiVerticalScrollbarInternalNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 			} else
@@ -607,7 +629,10 @@ public final class GUIParser {
 				guiParentNode.addSubNode(guiHorizontalScrollbarInternalNode);
 				// install gui element controller if not yet done
 				if (guiElement != null && guiElementControllerInstalled == false) {
-					guiHorizontalScrollbarInternalNode.setController(guiElementController = guiElement.createController(guiHorizontalScrollbarInternalNode));
+					guiElementController = guiElement.createController(guiHorizontalScrollbarInternalNode);
+					if (guiElementController != null) {
+						guiHorizontalScrollbarInternalNode.setController(guiElementController);
+					}
 					guiElementControllerInstalled = true;
 				}
 			} else {

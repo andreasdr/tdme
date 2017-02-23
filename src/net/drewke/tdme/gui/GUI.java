@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
@@ -43,13 +45,15 @@ public final class GUI implements MouseListener, KeyListener {
 		}
 	};
 	private ArrayList<GUIMouseEvent> mouseEvents = new ArrayList<GUIMouseEvent>(); 
+	private Semaphore mouseEventsMutex = new Semaphore(1);
 
 	private Pool<GUIKeyboardEvent> keyboardEventsPool = new Pool<GUIKeyboardEvent>() {
 		public GUIKeyboardEvent instantiate() {
 			return new GUIKeyboardEvent();
 		}
 	};
-	private ArrayList<GUIKeyboardEvent> keyboardEvents = new ArrayList<GUIKeyboardEvent>(); 
+	private ArrayList<GUIKeyboardEvent> keyboardEvents = new ArrayList<GUIKeyboardEvent>();
+	private Semaphore keyboardEventsMutex = new Semaphore(1);
 
 	private int width;
 	private int height;
@@ -105,10 +109,45 @@ public final class GUI implements MouseListener, KeyListener {
 	}
 
 	/**
+	 * Lock mouse events
+	 */
+	public void lockMouseEvents() {
+		mouseEventsMutex.acquireUninterruptibly();
+	}
+
+	/**
+	 * Unlock mouse events
+	 */
+	public void unlockMouseEvents() {
+		mouseEventsMutex.release();
+	}
+
+	/**
 	 * @return mouse events
 	 */
 	public ArrayList<GUIMouseEvent> getMouseEvents() {
 		return mouseEvents;
+	}
+
+	/**
+	 * Lock keyboard events
+	 */
+	public void lockKeyboardEvents() {
+		keyboardEventsMutex.acquireUninterruptibly();
+	}
+
+	/**
+	 * Unlock keyboard events
+	 */
+	public void unlockKeyboardEvents() {
+		keyboardEventsMutex.release();
+	}
+
+	/**
+	 * @return keyboard events
+	 */
+	public ArrayList<GUIKeyboardEvent> getKeyboardEvents() {
+		return keyboardEvents;
 	}
 
 	/**
@@ -229,6 +268,7 @@ public final class GUI implements MouseListener, KeyListener {
 	 * Render screen with given id
 	 */
 	public void render(String screenId) {
+		//
 		GUIScreenNode screen = screens.get(screenId);
 		if (screen != null) {
 			// update screen size and layout if reshaped
@@ -256,25 +296,32 @@ public final class GUI implements MouseListener, KeyListener {
 	public void handleEvents(String screenId) {
 		GUIScreenNode screen = screens.get(screenId);
 		if (screen != null) {
+			lockMouseEvents();
 			for (int i = 0; i < mouseEvents.size(); i++) {
 				GUIMouseEvent event = mouseEvents.get(i);
 				screen.handleMouseEvent(event);
 			}
-			for (int i = 0; i < keyboardEvents.size(); i++) {
-				GUIKeyboardEvent event = keyboardEvents.get(i);
-				screen.handleKeyboardEvent(event);
+			unlockMouseEvents();
+			lockKeyboardEvents();
+			synchronized (keyboardEventsPool) {
+				for (int i = 0; i < keyboardEvents.size(); i++) {
+					GUIKeyboardEvent event = keyboardEvents.get(i);
+					screen.handleKeyboardEvent(event);
+				}
 			}
+			unlockKeyboardEvents();
 		}
 	}
 
 	/**
 	 * Discard events
+	 * 	Note: this should be done 
 	 */
 	public void discardEvents() {
-		mouseEventsPool.reset();
 		mouseEvents.clear();
-		keyboardEventsPool.reset();
+		mouseEventsPool.reset();
 		keyboardEvents.clear();
+		keyboardEventsPool.reset();
 	}
 
 	/*
@@ -289,6 +336,7 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseDragged(MouseEvent event) {
+		lockMouseEvents();
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_DRAGGED);
@@ -298,7 +346,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
 		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
 		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
+		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);
+		unlockMouseEvents();
 	}
 
 	/*
@@ -320,6 +370,7 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseMoved(MouseEvent event) {
+		lockMouseEvents();
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_MOVED);
@@ -329,7 +380,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
 		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
 		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
+		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);
+		unlockMouseEvents();
 	}
 
 	/*
@@ -337,6 +390,7 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent event) {
+		lockMouseEvents();
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_PRESSED);
@@ -347,7 +401,8 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
 		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
 		guiMouseEvent.setProcessed(false);
-		mouseEvents.add(guiMouseEvent);	
+		mouseEvents.add(guiMouseEvent);
+		unlockMouseEvents();
 	}
 
 	/*
@@ -355,17 +410,19 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseReleased(MouseEvent event) {
+		lockMouseEvents();
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_RELEASED);
 		guiMouseEvent.setX(event.getX());
 		guiMouseEvent.setY(event.getY());
 		guiMouseEvent.setButton(event.getButton());
-		guiMouseEvent.setProcessed(false);
 		guiMouseEvent.setWheelX(event.getRotation()[0] * event.getRotationScale());
 		guiMouseEvent.setWheelY(event.getRotation()[1] * event.getRotationScale());
 		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
+		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);
+		unlockMouseEvents();
 
 		// add additional mouse moved event
 		mouseMoved(event);
@@ -376,6 +433,7 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseWheelMoved(MouseEvent event) {
+		lockMouseEvents();
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_WHEEL_MOVED);
@@ -387,12 +445,14 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setWheelZ(event.getRotation()[2] * event.getRotationScale());
 		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);
+		unlockMouseEvents();
 	}
 
 	/**
 	 * Fake mouse moved event
 	 */
 	private void fakeMouseMovedEvent() {
+		lockMouseEvents();
 		GUIMouseEvent guiMouseEvent = mouseEventsPool.allocate();
 		guiMouseEvent.setTime(System.currentTimeMillis());
 		guiMouseEvent.setType(Type.MOUSE_MOVED);
@@ -402,7 +462,9 @@ public final class GUI implements MouseListener, KeyListener {
 		guiMouseEvent.setWheelX(0f);
 		guiMouseEvent.setWheelY(0f);
 		guiMouseEvent.setWheelZ(0f);
+		guiMouseEvent.setProcessed(false);
 		mouseEvents.add(guiMouseEvent);
+		unlockMouseEvents();
 	}
 
 	/*
@@ -414,6 +476,7 @@ public final class GUI implements MouseListener, KeyListener {
 		fakeMouseMovedEvent();
 
 		//
+		lockKeyboardEvents();
 		GUIKeyboardEvent guiKeyboardEvent = keyboardEventsPool.allocate();
 		guiKeyboardEvent.setTime(System.currentTimeMillis());
 		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_PRESSED);
@@ -425,6 +488,7 @@ public final class GUI implements MouseListener, KeyListener {
 		guiKeyboardEvent.setShiftDown(event.isShiftDown());
 		guiKeyboardEvent.setProcessed(false);
 		keyboardEvents.add(guiKeyboardEvent);
+		unlockKeyboardEvents();
 	}
 
 	/*
@@ -436,6 +500,7 @@ public final class GUI implements MouseListener, KeyListener {
 		fakeMouseMovedEvent();
 
 		//
+		lockKeyboardEvents();
 		GUIKeyboardEvent guiKeyboardEvent = keyboardEventsPool.allocate();
 		guiKeyboardEvent.setTime(System.currentTimeMillis());
 		guiKeyboardEvent.setType(GUIKeyboardEvent.Type.KEY_RELEASED);
@@ -447,6 +512,7 @@ public final class GUI implements MouseListener, KeyListener {
 		guiKeyboardEvent.setShiftDown(event.isShiftDown());
 		guiKeyboardEvent.setProcessed(false);
 		keyboardEvents.add(guiKeyboardEvent);
+		unlockKeyboardEvents();
 	}
 
 }

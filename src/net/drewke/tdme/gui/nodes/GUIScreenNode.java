@@ -14,7 +14,7 @@ import net.drewke.tdme.utils.MutableString;
 
 /**
  * GUI Screen Node
- * @author andreas
+ * @author Andreas Drewke
  * @version $Id$
  */
 public final class GUIScreenNode extends GUIParentNode {

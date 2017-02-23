@@ -70,7 +70,7 @@ public final class GUIPanel extends GUIElement {
 	 * @see net.drewke.tdme.gui.GUIElement#createController(net.drewke.tdme.gui.GUINode)
 	 */
 	public GUINodeController createController(GUINode node) {
-		return null;
+		return new GUIPanelController(node);
 	}
 
 }

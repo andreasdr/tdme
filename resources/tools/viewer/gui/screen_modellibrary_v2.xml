@@ -1,7 +1,7 @@
-<screen id="modellibrary" background-color="#202020">
+<screen id="modellibrary" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
 		<panel alignment="none" width="100%" height="auto" padding="5">
-			<text font="resources/gui/fonts/Foo_25.fnt" text="Model Library" width="auto" height="auto"/>
+			<text id="screen_caption" font="resources/gui/fonts/Foo_25.fnt" text="Model Library" width="auto" height="auto"/>
 		</panel>
 		<space height="*"/>
 		<panel width="100%" height="220">
@@ -9,7 +9,7 @@
 				<tabs-header>
 					<tab id="tabs_properties_display" text="Display" />
 					<tab id="tabs_properties_model" text="Model" />
-					<tab id="tabs_properties_object_properties" text="Model Properties" />
+					<tab id="tabs_properties_object_properties" text="Properties" />
 					<tab id="tabs_properties_pivot" text="Pivot" />
 					<tab id="tabs_properties_boundingvolume" text="Bounding Volume" />
 					<tab id="tabs_properties_stats" text="Statistics" />
@@ -68,16 +68,13 @@
 							<layout width="auto" height="auto" alignment="vertical">
 								<layout width="auto" height="auto" alignment="horizontal">
 									<dropdown id="objectproperties_presets" name="objectproperties_presets" width="510" height="auto" text="Test">
-										<dropdown-option text="Option A" value="1" />
-										<dropdown-option text="Option B" value="2" />
+										<dropdown-option text="Test 1" value="1" />										
 									</dropdown>
 									<space width="10" />
 									<button id="button_object_properties_presetapply" name="button_object_properties_presetapply" text="Apply" width="80" />
 								</layout>
 								<space height="10" />
-								<selectbox id="objectproperties_listbox" name="objectproperties_listbox">
-									<selectbox-option text="Option A" value="1" />
-									<selectbox-option text="Option B" value="2" />
+								<selectbox id="objectproperties_listbox" name="objectproperties_listbox" height="70">
 								</selectbox>
 								<space height="10" />
 								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
@@ -105,19 +102,19 @@
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="50" height="auto" />
 								<space width="5" />
-								<input id="pivot_x" name="pivot_x" width="150" height="auto" text="X" />
+								<input id="pivot_x" name="pivot_x" width="150" height="auto" text="" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="50" height="auto" />
 								<space width="5" />
-								<input id="pivot_y" name="pivot_y" width="150" height="auto" text="Y" />
+								<input id="pivot_y" name="pivot_y" width="150" height="auto" text="" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="50" height="auto" />
 								<space width="5" />
-								<input id="pivot_z" name="pivot_z" width="150" height="auto" text="Z" />
+								<input id="pivot_z" name="pivot_z" width="150" height="auto" text="" />
 							</layout>
 							<space height="20" />
 							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
@@ -131,19 +128,19 @@
 							<layout width="auto" height="auto" alignment="vertical">
 								<layout width="auto" height="auto" alignment="horizontal">
 									<dropdown id="boundingvolume_type" name="boundingvolume_type" width="530" height="auto" text="Test">
-										<dropdown-option text="None" value="none" />
-										<dropdown-option text="Sphere" value="sphere" />
-										<dropdown-option text="Capsule" value="capsule" />
-										<dropdown-option text="Axis Aligned Bounding Box" value="aabb" />
-										<dropdown-option text="Oriented Bounding Box" value="obb" />
-										<dropdown-option text="Convex Mesh" value="convexmesh" />
+										<dropdown-option text="None" value="0" />
+										<dropdown-option text="Sphere" value="1" />
+										<dropdown-option text="Capsule" value="2" />
+										<dropdown-option text="Axis Aligned Bounding Box" value="3" />
+										<dropdown-option text="Oriented Bounding Box" value="4" />
+										<dropdown-option text="Convex Mesh" value="5" />
 									</dropdown>
 									<space width="10" />
 									<button id="button_boundingvolume_apply" name="button_boundingvolume_apply" text="Apply" width="60" height="auto" />
 								</layout>
 							</layout>
 							<space height="10" />
-							<element width="auto" height="100%">  
+							<element id="boundingvolume" width="auto" height="100%">  
 								<layout show-on="sphere" id="boundingvolume_sphere" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
 										<text font="resources/gui/fonts/Foo_25.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
@@ -236,19 +233,19 @@
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Opaque faces" width="200" height="auto" />
 								<space width="5" />
-								<input id="stats_opaque_faces" name="stats_opaque_faces" width="150" height="auto" text="A" disabled="true" />
+								<input id="stats_opaque_faces" name="stats_opaque_faces" width="150" height="auto" text="0" disabled="true" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Transparent faces" width="200" height="auto" />
 								<space width="5" />
-								<input id="stats_transparent_faces" name="stats_transparent_faces" width="150" height="auto" text="B" disabled="true" />
+								<input id="stats_transparent_faces" name="stats_transparent_faces" width="150" height="auto" text="0" disabled="true" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Material count" width="200" height="auto" />
 								<space width="5" />
-								<input id="stats_material_count" name="stats_material_count" width="150" height="auto" text="C" disabled="true" />
+								<input id="stats_material_count" name="stats_material_count" width="150" height="auto" text="0" disabled="true" />
 							</layout>
 						</layout>
 					</tab-content>

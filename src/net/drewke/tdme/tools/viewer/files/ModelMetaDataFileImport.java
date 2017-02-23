@@ -193,10 +193,8 @@ public final class ModelMetaDataFileImport {
 		for (int i = 0; i < jMapProperties.length(); i++) {
 			JSONObject jMapProperty = jMapProperties.getJSONObject(i);
 			levelEditorModel.addProperty(
-				new PropertyModelClass(
-					jMapProperty.getString("name"),
-					jMapProperty.getString("value")
-				)
+				jMapProperty.getString("name"),
+				jMapProperty.getString("value")
 			);
 		}
 

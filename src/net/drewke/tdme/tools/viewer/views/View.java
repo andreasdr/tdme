@@ -19,16 +19,9 @@ public abstract class View implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * Renders the view 
+	 * Renders the view
 	 */
 	public void display(GLAutoDrawable drawable) {
-	}
-
-	/**
-	 * handle nifty input events, ...
-	 * @param drawable
-	 */
-	public void doInputSystem(GLAutoDrawable drawable) {
 	}
 
 	/**
@@ -36,6 +29,13 @@ public abstract class View implements KeyListener, MouseListener {
 	 * @param drawable
 	 */
 	public void dispose(GLAutoDrawable drawable)  {
+	}
+
+	/**
+	 * handle nifty input events, ...
+	 * @param drawable
+	 */
+	public void doInputSystem() {
 	}
 
 }

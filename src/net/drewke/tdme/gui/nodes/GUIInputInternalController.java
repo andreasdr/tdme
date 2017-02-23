@@ -172,6 +172,9 @@ public final class GUIInputInternalController extends GUINodeController {
 		if (isDragging == true) {
 			// determine new dragging position, if dragging
 			node.getEventOffNodeRelativePosition(event, dragPosition);
+
+			// set event processed
+			event.setProcessed(true);
 		}
 	}
 

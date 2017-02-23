@@ -1,4 +1,4 @@
-<screen id="filedialog" background-color="#202020">
+<screen id="filedialog" background-color="#00000080">
 	<panel alignment="vertical" left="10%" top="10%" width="80%" height="80%" horizontal-align="center">
 		<space height="10" />
 		<text id="filedialog_caption" font="resources/gui/fonts/Foo_25.fnt" text="Load" width="auto" height="auto"/>
