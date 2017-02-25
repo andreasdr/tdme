@@ -1,6 +1,5 @@
 package net.drewke.tdme.tools.viewer.controller;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
