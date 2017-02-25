@@ -227,7 +227,8 @@ public final class ModelLibraryView extends View  {
 		// update object properties to gui
 		modelLibraryController.setObjectProperties(
 			presetId,
-			model.getProperties()
+			model.getProperties(),
+			null
 		);
 	}
 
@@ -242,11 +243,12 @@ public final class ModelLibraryView extends View  {
 		if (model == null) return false;
 
 		// try to update property
-		if (model.updateProperty(oldName, name, value) == true) { 
+		if (model.updateProperty(oldName, name, value) == true) {
 			//
 			modelLibraryController.setObjectProperties(
 				null,
-				model.getProperties()
+				model.getProperties(),
+				name
 			);
 
 			// 
@@ -269,7 +271,8 @@ public final class ModelLibraryView extends View  {
 			// 
 			modelLibraryController.setObjectProperties(
 				null,
-				model.getProperties()
+				model.getProperties(),
+				"new.property"
 			);
 
 			//
@@ -282,17 +285,21 @@ public final class ModelLibraryView extends View  {
 
 	/**
 	 * Remove a object property from object
-	 * @param object property
+	 * @param name
+	 * @return success
 	 */
 	public boolean objectPropertyRemove(String name) {
 		if (model == null) return false;
 
 		// try to remove property
-		if (model.removeProperty(name) == true) {
-			// 
+		int idx = model.getPropertyIndex(name);
+		if (idx != -1 && model.removeProperty(name) == true) {
+			//
+			PropertyModelClass property = model.getPropertyByIndex(idx);
 			modelLibraryController.setObjectProperties(
 				null,
-				model.getProperties()
+				model.getProperties(),
+				property == null?null:property.getName()
 			);
 
 			//
@@ -548,7 +555,7 @@ public final class ModelLibraryView extends View  {
 		if (model != null) {
 			modelLibraryController.setScreenCaption("Model Library - " + model.getModel().getName());
 			PropertyModelClass preset = model.getProperty("preset");
-			modelLibraryController.setObjectProperties(preset != null?preset.getValue():null, model.getProperties());
+			modelLibraryController.setObjectProperties(preset != null?preset.getValue():null, model.getProperties(), null);
 			modelLibraryController.setModelData(model.getName(), model.getDescription());
 			modelLibraryController.setPivot(model.getPivot());
 			modelLibraryController.setBoundingVolume();

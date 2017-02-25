@@ -273,9 +273,11 @@ public final class ModelLibraryController extends ScreenController implements GU
 		objectPropertiesPresetsInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
+		int idx = 0;
 		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
 		for (String objectPresetId: objectPresetIds) {
-			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + objectPresetId + "\" value=\"" + objectPresetId + "\" />\n";
+			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + objectPresetId + "\" value=\"" + objectPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+			idx++;
 		}
 
 		// inject sub nodes
@@ -293,20 +295,12 @@ public final class ModelLibraryController extends ScreenController implements GU
 	}
 
 	/**
-	 * @return object property preset selection
-	 */
-	public String getObjectPropertyPresetSelection() {
-		// TODO: is this in use???
-		return objectPropertiesPresets.getController().getValue().toString();
-	}
-
-	/**
 	 * Set up object properties
 	 * @param has properties
 	 * @param preset id
 	 * @param object properties
 	 */
-	public void setObjectProperties(String presetId, Iterable<PropertyModelClass> objectProperties) {
+	public void setObjectProperties(String presetId, Iterable<PropertyModelClass> objectProperties, String selectedValue) {
 		//
 		objectPropertiesPresets.getController().setDisabled(false);
 		objectPropertyPresetApply.getController().setDisabled(false);
@@ -324,16 +318,25 @@ public final class ModelLibraryController extends ScreenController implements GU
 
 		// object properties list box inner
 		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesList.getScreenNode().getNodeById(objectPropertiesList.getId() + "_inner"));
-
+		
 		// clear sub nodes
 		objectPropertiesListBoxInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 1;
 		String objectPropertiesListBoxSubNodesXML = "";
-		objectPropertiesListBoxSubNodesXML+= "<scrollarea-vertical width=\"100%\" height=\"100%\">\n";
+		objectPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + objectPropertiesList.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
 		for (PropertyModelClass objectProperty: objectProperties) {
-			objectPropertiesListBoxSubNodesXML+= "<selectbox-option text=\"" + objectProperty.getName() + ": " + objectProperty.getValue() + "\" value=\"" + objectProperty.getName() + "\" />\n";
+			objectPropertiesListBoxSubNodesXML+= 
+				"<selectbox-option text=\"" + 
+				objectProperty.getName() + 
+				": " + 
+				objectProperty.getValue() + 
+				"\" value=\"" + 
+				objectProperty.getName() + 
+				"\" " +
+				(selectedValue != null && objectProperty.getName().equals(selectedValue)?"selected=\"true\" ":"") +
+				"/>\n";
 		}
 		objectPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
 
@@ -349,13 +352,16 @@ public final class ModelLibraryController extends ScreenController implements GU
 
 		// relayout
 		objectPropertiesListBoxInnerNode.getScreenNode().layout();
+
+		//
+		onObjectPropertiesSelectionChanged();
 	}
 
 	/**
 	 * Unset object properties
 	 */
 	public void unsetObjectProperties() {
-		// TODO: objectPropertiesPresets.selectItemByIndex(0);
+		objectPropertiesPresets.getController().setValue(value.set("none"));
 		objectPropertiesPresets.getController().setDisabled(true);
 		objectPropertyPresetApply.getController().setDisabled(true);
 		objectPropertiesList.getController().setDisabled(true);
@@ -373,7 +379,6 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 */
 	public void onObjectPropertySave() {
 		ModelLibraryView modelLibraryView = ((ModelLibraryView)TDMEViewer.getInstance().getView());
-		// TODO: keep selection, viewport offsets
 		if (modelLibraryView.objectPropertySave(
 			objectPropertiesList.getController().getValue().toString(),
 			objectPropertyName.getController().getValue().toString(),
@@ -387,7 +392,6 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On object property add
 	 */
 	public void onObjectPropertyAdd() {
-		// TODO: keep selection, viewport offsets
 		if (((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new object property failed");
 		}
@@ -397,11 +401,8 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On object property remove
 	 */
 	public void onObjectPropertyRemove() {
-		// TODO: keep selection, viewport offsets
 		if (((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyRemove(objectPropertiesList.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing object property failed");
-		} else {
-			onObjectPropertiesSelectionChanged();
 		}
 	}
 
@@ -868,16 +869,14 @@ public final class ModelLibraryController extends ScreenController implements GU
 
 	/**
 	 * Shows the error pop up
-	 * 	TODO: move me into separate controllers
 	 */
 	public void showErrorPopUp(String caption, String message) {
+		// TODO: implement me and find a better software design structure
 		System.out.println("ModelLibraryController::showErrorPopUp(): '" + caption + "', '" + message + "'");
 	}
 
 	/**
-	 * Shows the file dialog pop up
-	 * 	TODO: move me into separate controllers
-	 * @throws IOException 
+	 * Shows the file dialog pop up 
 	 */
 	public void showFileDialogPopUp(FileDialogPopUpMode mode) {
 		((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(mode, new String[]{"tmm", "dae", "tm"});

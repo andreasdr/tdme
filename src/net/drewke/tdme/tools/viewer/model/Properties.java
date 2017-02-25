@@ -43,6 +43,32 @@ public class Properties {
 	}
 
 	/**
+	 * Get property index
+	 * @param name
+	 * @return index or -1 if not found
+	 */
+	public int getPropertyIndex(String name) {
+		for (int i = 0; i < properties.size(); i++) {
+			if (properties.get(i).getName().equals(name) == true) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Get property by index
+	 * @param idx
+	 * @return property or null
+	 */
+	public PropertyModelClass getPropertyByIndex(int idx) {
+		return
+			idx >= 0 && idx < properties.size()?
+				properties.get(idx):
+				null;
+	}
+
+	/**
 	 * Add a property
 	 * @param property
 	 */
