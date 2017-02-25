@@ -16,7 +16,7 @@ import net.drewke.tdme.gui.renderer.GUIRenderer;
  */
 public abstract class GUIParentNode extends GUINode {
 
-	enum Overflow {HIDDEN, SCROLL};
+	enum Overflow {HIDDEN, DOWNSIZE_CHILDREN, SCROLL};
 
 	protected ArrayList<GUINode> subNodes;
 
@@ -108,12 +108,26 @@ public abstract class GUIParentNode extends GUINode {
 	}
 
 	/**
-	 * Create flow
-	 * @param flow
-	 * @return flow
+	 * Create over flow
+	 * @param over flow
+	 * @return over flow
+	 * @throws gui parser exception
 	 */
-	public static Overflow createOverflow(String overflow) {
-		return Overflow.valueOf(overflow != null && overflow.length() > 0?overflow.toUpperCase():"HIDDEN");
+	public static Overflow createOverflow(String overflow) throws GUIParserException {
+		if (overflow.trim().equalsIgnoreCase("hidden") == true) {
+			return Overflow.HIDDEN;
+		} else 
+		if (overflow.trim().equalsIgnoreCase("downsize-children") == true) {
+			return Overflow.DOWNSIZE_CHILDREN;
+		} else
+		if (overflow.trim().equalsIgnoreCase("scroll") == true) {
+			return Overflow.SCROLL;
+		} else 
+		if (overflow == null || overflow.trim().length() == 0) {
+			return Overflow.HIDDEN;
+		} else {
+			throw new GUIParserException("Unknown overflow '" + overflow + "'");
+		}
 	}
 
 	/**

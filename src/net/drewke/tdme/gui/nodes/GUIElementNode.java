@@ -210,6 +210,37 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @see net.drewke.tdme.gui.GUIParentNode#layout()
 	 */
 	protected void layout() {
+		// workaround for a bug if element node and its sub nodes has a fixed pixel height and 
+		// sub nodes nodes do not fit into element node
+		// this is only done if DOWNSIZE_CHILDREN overflow is selected
+		// not sure if to keep this work around or fix it another way
+		//	height
+		if (requestedConstraints.heightType == RequestedConstraintsType.PIXEL) {
+			int subNodesHeight = requestedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode subNode = subNodes.get(i);
+				if (overflowY == Overflow.DOWNSIZE_CHILDREN &&
+					subNode.requestedConstraints.heightType == RequestedConstraintsType.PIXEL &&
+					subNode.requestedConstraints.height > subNodesHeight) {
+					//
+					subNode.requestedConstraints.height = subNodesHeight;
+				}
+			}
+		}
+		//	width
+		if (requestedConstraints.widthType == RequestedConstraintsType.PIXEL) {
+			int subNodesWidth = requestedConstraints.width - border.left - border.right - padding.left - padding.right;
+			for (int i = 0; i < subNodes.size(); i++) {
+				GUINode subNode = subNodes.get(i);
+				if (overflowY == Overflow.DOWNSIZE_CHILDREN &&
+					subNode.requestedConstraints.widthType == RequestedConstraintsType.PIXEL &&
+					subNode.requestedConstraints.width > subNodesWidth) {
+					//
+					subNode.requestedConstraints.width = subNodesWidth;
+				}
+			}
+		}
+
 		// super layout
 		super.layout();
 
