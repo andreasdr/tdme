@@ -1,6 +1,5 @@
 package net.drewke.tdme.tools.viewer.controller;
 
-import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 
 /**
