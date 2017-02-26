@@ -18,7 +18,7 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
-import net.drewke.tdme.gui.events.GUIInputEventsProcessor;
+import net.drewke.tdme.gui.events.GUIInputEventsHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
@@ -40,7 +40,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author andreas.drewke
  * @version $Id: 04313d20d0978eefc881024d6e0af748196c1425 $
  */
-public final class ModelLibraryView extends View implements GUIInputEventsProcessor {
+public final class ModelLibraryView extends View implements GUIInputEventsHandler {
 
 	private Engine engine;
 
@@ -339,9 +339,9 @@ public final class ModelLibraryView extends View implements GUIInputEventsProces
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.events.GUIInputEventsProcessor#processInputEvents()
+	 * @see net.drewke.tdme.gui.events.GUIInputEventsHandler#handleInputEvents()
 	 */
-	public void processInputEvents() {
+	public void handleInputEvents() {
 		// handle mouse events
 		for (int i = 0; i < engine.getGUI().getMouseEvents().size(); i++) {
 			GUIMouseEvent event = engine.getGUI().getMouseEvents().get(i);
