@@ -17,9 +17,9 @@ import net.drewke.tdme.gui.renderer.GUIRenderer;
  */
 public abstract class GUINode {
 
-	enum Flow {INTEGRATED, FLOATING};
-	enum AlignmentHorizontal {LEFT, CENTER, RIGHT};
-	enum AlignmentVertical {TOP, CENTER, BOTTOM};
+	protected enum Flow {INTEGRATED, FLOATING};
+	public enum AlignmentHorizontal {LEFT, CENTER, RIGHT};
+	public enum AlignmentVertical {TOP, CENTER, BOTTOM};
 
 	/**
 	 * Alignments

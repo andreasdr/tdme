@@ -18,6 +18,9 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
+import net.drewke.tdme.gui.events.GUIInputEventsProcessor;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.viewer.Tools;
@@ -30,8 +33,6 @@ import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
 import net.drewke.tdme.tools.viewer.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.viewer.model.PropertyModelClass;
 
-import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.opengl.GLAutoDrawable;
 
 /**
@@ -39,7 +40,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author andreas.drewke
  * @version $Id: 04313d20d0978eefc881024d6e0af748196c1425 $
  */
-public final class ModelLibraryView extends View  {
+public final class ModelLibraryView extends View implements GUIInputEventsProcessor {
 
 	private Engine engine;
 
@@ -336,11 +337,11 @@ public final class ModelLibraryView extends View  {
 		model.setDescription(description);
 	}
 
-	/**
-	 * Do input system
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.events.GUIInputEventsProcessor#processInputEvents()
 	 */
-	public void doInputSystem() {
-		engine.getGUI().lockMouseEvents();
+	public void processInputEvents() {
 		// handle mouse events
 		for (int i = 0; i < engine.getGUI().getMouseEvents().size(); i++) {
 			GUIMouseEvent event = engine.getGUI().getMouseEvents().get(i);
@@ -380,8 +381,30 @@ public final class ModelLibraryView extends View  {
 				if (scale < 0.05f) scale = 0.05f;
 			}
 		}
-		engine.getGUI().discardEvents();
-		engine.getGUI().unlockMouseEvents();
+
+		// handle keyboard events
+		for (int i = 0; i < engine.getGUI().getKeyboardEvents().size(); i++) {
+			GUIKeyboardEvent event = engine.getGUI().getKeyboardEvents().get(i);
+
+			// skip on processed events
+			if (event.isProcessed() == true) continue;
+
+			//
+			boolean isKeyDown = event.getType() == Type.KEY_PRESSED;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_LEFT) keyLeft = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_RIGHT) keyRight = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_UP) keyUp = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_DOWN) keyDown = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'a') keyA = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'd') keyD = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'w') keyW = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 's') keyS = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == '.') keyPeriod = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == ',') keyComma = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == '+') keyPlus = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == '-') keyMinus = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'r') keyR = isKeyDown;
+		}
 	}
 
 	/**
@@ -564,7 +587,7 @@ public final class ModelLibraryView extends View  {
 			engine.getGUI().render(infoDialogPopUpController.getScreenNode().getId());
 			activeId = infoDialogPopUpController.getScreenNode().getId();
 		}
-		engine.getGUI().handleEvents(activeId);
+		engine.getGUI().handleEvents(activeId, this);
 	}
 
 	/**
@@ -824,120 +847,6 @@ public final class ModelLibraryView extends View  {
 
 		model.setupBoundingVolumeConvexMesh(file);
 		updateModelBoundingVolume(model);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseClicked(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseEntered(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseExited(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseDragged(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseMoved(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
-	 */
-	public void keyPressed(com.jogamp.newt.event.KeyEvent event) {
-		if (event.isAutoRepeat() == true) return;
-
-		//
-		int keyCode = event.getKeyCode();
-		char keyChar = event.getKeyChar();
-		boolean keyConsumed = false;
-		if (keyCode == KeyEvent.VK_LEFT) { keyLeft = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_RIGHT) { keyRight = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_UP) { keyUp = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_DOWN) { keyDown = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_A) { keyA = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_D) { keyD = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_W) { keyW = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_S) { keyS = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_COMMA) { keyComma = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_PERIOD) { keyPeriod = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_PLUS || keyChar == '+') { keyPlus = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_MINUS || keyChar == '-') { keyMinus = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_R) {  keyR = true; keyConsumed = true; }
-
-		//
-		event.setConsumed(keyConsumed);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
-	 */
-	public void keyReleased(com.jogamp.newt.event.KeyEvent event) {
-		if (event.isAutoRepeat() == true) return;
-
-		//
-		int keyCode = event.getKeyCode();
-		char keyChar = event.getKeyChar();
-		boolean keyConsumed = false;
-		if (keyCode == KeyEvent.VK_LEFT) { keyLeft = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_RIGHT) {  keyRight = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_UP) {  keyUp = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_DOWN) { keyDown = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_A) { keyA = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_D) { keyD = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_W) { keyW = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_S) { keyS = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_COMMA) {  keyComma = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_PERIOD) {  keyPeriod = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_PLUS || keyChar == '+') { keyPlus = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_MINUS || keyChar == '-') { keyMinus = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_R) {  keyR = false; keyConsumed = true; }
-
-		//
-		event.setConsumed(keyConsumed);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseWheelMoved(MouseEvent arg0) {
 	}
 
 }

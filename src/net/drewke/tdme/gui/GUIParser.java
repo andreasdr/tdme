@@ -14,7 +14,6 @@ import net.drewke.tdme.gui.elements.GUIDropDown;
 import net.drewke.tdme.gui.elements.GUIDropDownOption;
 import net.drewke.tdme.gui.elements.GUIElement;
 import net.drewke.tdme.gui.elements.GUIInput;
-import net.drewke.tdme.gui.elements.GUIPanel;
 import net.drewke.tdme.gui.elements.GUIRadioButton;
 import net.drewke.tdme.gui.elements.GUIScrollArea;
 import net.drewke.tdme.gui.elements.GUIScrollAreaHorizontal;
@@ -35,7 +34,10 @@ import net.drewke.tdme.gui.nodes.GUIImageNode;
 import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 import net.drewke.tdme.gui.nodes.GUILayoutNode;
 import net.drewke.tdme.gui.nodes.GUINode;
+import net.drewke.tdme.gui.nodes.GUINode.AlignmentHorizontal;
+import net.drewke.tdme.gui.nodes.GUINode.AlignmentVertical;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.gui.nodes.GUIPanelNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUISpaceNode;
@@ -204,6 +206,61 @@ public final class GUIParser {
 		boolean guiElementControllerInstalled = false;
 		// parse sub nodes
 		for (Element node: getChildrenTags(xmlParentNode)) {
+			if (node.getNodeName().equals("panel")) {
+				// TODO: validate root node
+				GUIPanelNode guiPanelNode = new GUIPanelNode(
+					guiParentNode.getScreenNode(),
+					guiParentNode, 
+					node.getAttribute("id"),
+					GUINode.createFlow(node.getAttribute("flow")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-x")),
+					GUIParentNode.createOverflow(node.getAttribute("overflow-y")),
+					GUINode.createAlignments(
+						node.getAttribute("horizontal-align"), 
+						node.getAttribute("vertical-align")
+					),
+					GUIParentNode.createRequestedConstraints(
+						node.getAttribute("left"), 
+						node.getAttribute("top"), 
+						node.getAttribute("width"), 
+						node.getAttribute("height")
+					),
+					GUINode.getRequestedColor(node.getAttribute("background-color"), new GUIColor("#F0F0F0")),
+					GUINode.createBorder(
+						node.getAttribute("border"), 
+						node.getAttribute("border-left"), 
+						node.getAttribute("border-top"), 
+						node.getAttribute("border-right"), 
+						node.getAttribute("border-bottom"), 
+						node.getAttribute("border-color"),
+						node.getAttribute("border-color-left"), 
+						node.getAttribute("border-color-top"), 
+						node.getAttribute("border-color-right"), 
+						node.getAttribute("border-color-bottom")
+					),
+					GUINode.createPadding(
+						node.getAttribute("padding"), 
+						node.getAttribute("padding-left"), 
+						node.getAttribute("padding-top"), 
+						node.getAttribute("padding-right"), 
+						node.getAttribute("padding-bottom") 
+					),
+					GUINode.createConditions(node.getAttribute("show-on")),
+					GUINode.createConditions(node.getAttribute("hide-on")),
+					GUILayoutNode.createAlignment(node.getAttribute("alignment"))
+				);
+				guiParentNode.addSubNode(guiPanelNode);
+				// install gui element controller if not yet done
+				if (guiElement != null && guiElementControllerInstalled == false) {
+					guiElementController = guiElement.createController(guiPanelNode);
+					if (guiElementController != null) {
+						guiPanelNode.setController(guiElementController);
+					}
+					guiElementControllerInstalled = true;
+				}
+				// parse child nodes
+				parseGUINode(guiPanelNode, node, null);
+			} else
 			if (node.getNodeName().equals("layout")) {
 				// TODO: validate root node
 				GUILayoutNode guiLayoutNode = new GUILayoutNode(
@@ -215,7 +272,7 @@ public final class GUIParser {
 					GUIParentNode.createOverflow(node.getAttribute("overflow-y")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")
 					),
 					GUIParentNode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -268,7 +325,7 @@ public final class GUIParser {
 					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")
 					),
 					GUISpaceNode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -378,7 +435,7 @@ public final class GUIParser {
 					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")						
 					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -431,7 +488,7 @@ public final class GUIParser {
 					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")						
 					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -484,7 +541,7 @@ public final class GUIParser {
 					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")						
 					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -539,7 +596,7 @@ public final class GUIParser {
 					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")						
 					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -592,7 +649,7 @@ public final class GUIParser {
 					GUINode.createFlow(node.getAttribute("flow")),
 					GUINode.createAlignments(
 						node.getAttribute("horizontal-align"), 
-						node.getAttribute("vertical-align")							
+						node.getAttribute("vertical-align")						
 					),
 					GUINode.createRequestedConstraints(
 						node.getAttribute("left"), 
@@ -863,14 +920,6 @@ public final class GUIParser {
 		// add scrollbars
 		try {
 			GUIElement guiElement = new GUIScrollArea();
-			addElement(guiElement);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// add panel
-		try {
-			GUIElement guiElement = new GUIPanel();
 			addElement(guiElement);
 		} catch (Exception e) {
 			e.printStackTrace();

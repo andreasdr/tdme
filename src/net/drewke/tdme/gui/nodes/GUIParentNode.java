@@ -493,12 +493,6 @@ public abstract class GUIParentNode extends GUINode {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
-		// delegate event to sub nodes
-		for (int i = 0; i < subNodes.size(); i++) {
-			GUINode subNode = subNodes.get(i);
-			subNode.handleKeyboardEvent(event);
-		}
-
 		//
 		super.handleKeyboardEvent(event);
 	}

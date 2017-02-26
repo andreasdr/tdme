@@ -1,6 +1,7 @@
 package net.drewke.tdme.gui.nodes;
 
 import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 
@@ -315,6 +316,24 @@ public final class GUIElementNode extends GUIParentNode {
 
 		//
 		super.handleMouseEvent(event);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUINode#handleKeyboardEvent(net.drewke.tdme.gui.events.GUIKeyboardEvent)
+	 */
+	public void handleKeyboardEvent(GUIKeyboardEvent event) {
+		// check if conditions were met
+		if (conditionsMet == false) return;
+
+		// delegate event to sub nodes
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode subNode = subNodes.get(i);
+			subNode.handleKeyboardEvent(event);
+		}
+
+		//
+		super.handleKeyboardEvent(event);
 	}
 
 }

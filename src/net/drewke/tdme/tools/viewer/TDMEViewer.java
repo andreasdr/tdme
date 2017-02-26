@@ -131,8 +131,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		// replace view if requested
 		if (viewNew != null) {
 			if (view != null && viewInitialized == true) {
-				glWindow.removeMouseListener(view);
-				glWindow.removeKeyListener(view);
 				view.dispose(drawable);
 				viewInitialized = false;
 			}
@@ -144,8 +142,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		if (view != null) {
 			if (viewInitialized == false) {
 				view.init(drawable);
-				glWindow.addMouseListener(view);
-				glWindow.addKeyListener(view);
 				viewInitialized = true;
 			}
 			view.display(drawable);
@@ -176,8 +172,6 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 	public void dispose(GLAutoDrawable drawable) {
 		if (view != null && viewInitialized == true) {
 			view.dispose(drawable);
-			glWindow.removeMouseListener(view);
-			glWindow.removeKeyListener(view);
 			view = null;
 		}
 		engine.dispose(drawable);

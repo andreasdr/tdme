@@ -168,7 +168,7 @@ public class GUITest implements GLEventListener, WindowListener {
 	public void display(GLAutoDrawable drawable) {
 		engine.display(drawable);
 		engine.getGUI().render("test");
-		engine.getGUI().handleEvents("test");
+		engine.getGUI().handleEvents("test", null);
 		engine.getGUI().discardEvents();
 	}
 

@@ -9,7 +9,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public abstract class View implements KeyListener, MouseListener {
+public abstract class View {
 
 	/**
 	 * Initiates the view
@@ -32,8 +32,7 @@ public abstract class View implements KeyListener, MouseListener {
 	}
 
 	/**
-	 * handle nifty input events, ...
-	 * @param drawable
+	 * handle input events, ...
 	 */
 	public void doInputSystem() {
 	}
