@@ -22,6 +22,7 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.viewer.Tools;
 import net.drewke.tdme.tools.viewer.controller.FileDialogPopUpController;
+import net.drewke.tdme.tools.viewer.controller.InfoDialogPopUpController;
 import net.drewke.tdme.tools.viewer.controller.ModelLibraryController;
 import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileImport;
@@ -42,6 +43,7 @@ public final class ModelLibraryView extends View  {
 
 	private Engine engine;
 
+	private InfoDialogPopUpController infoDialogPopUpController;
 	private FileDialogPopUpController fileDialogPopUpController;
 	private ModelLibraryController modelLibraryController;
 
@@ -118,6 +120,13 @@ public final class ModelLibraryView extends View  {
 	 */
 	public FileDialogPopUpController getFileDialogPopUpController() {
 		return fileDialogPopUpController;
+	}
+
+	/**
+	 * @return info dialog popup controller
+	 */
+	public InfoDialogPopUpController getInfoDialogPopUpController() {
+		return infoDialogPopUpController;
 	}
 
 	/**
@@ -551,6 +560,10 @@ public final class ModelLibraryView extends View  {
 			engine.getGUI().render(fileDialogPopUpController.getScreenNode().getId());
 			activeId = fileDialogPopUpController.getScreenNode().getId();
 		}
+		if (infoDialogPopUpController.isActive() == true) {
+			engine.getGUI().render(infoDialogPopUpController.getScreenNode().getId());
+			activeId = infoDialogPopUpController.getScreenNode().getId();
+		}
 		engine.getGUI().handleEvents(activeId);
 	}
 
@@ -591,8 +604,11 @@ public final class ModelLibraryView extends View  {
 			modelLibraryController.init();
 			fileDialogPopUpController = new FileDialogPopUpController(modelLibraryController);
 			fileDialogPopUpController.init();
+			infoDialogPopUpController = new InfoDialogPopUpController(modelLibraryController);
+			infoDialogPopUpController.init();
 			engine.getGUI().addScreen(modelLibraryController.getScreenNode().getId(), modelLibraryController.getScreenNode()); 
 			engine.getGUI().addScreen(fileDialogPopUpController.getScreenNode().getId(), fileDialogPopUpController.getScreenNode());
+			engine.getGUI().addScreen(infoDialogPopUpController.getScreenNode().getId(), infoDialogPopUpController.getScreenNode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

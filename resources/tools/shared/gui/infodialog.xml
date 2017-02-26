@@ -1,4 +1,4 @@
-<screen id="infodialog">
+<screen id="infodialog" background-color="#00000080">
 	<panel alignment="none" width="100%" height="100%" vertical-align="center" horizontal-align="center" background-color="#ffffff00">
 		<panel alignment="vertical" width="80%" height="200" horizontal-align="center">
 			<space height="10" />

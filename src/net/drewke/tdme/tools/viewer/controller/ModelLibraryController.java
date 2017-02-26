@@ -870,8 +870,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		// TODO: implement me and find a better software design structure
-		System.out.println("ModelLibraryController::showErrorPopUp(): '" + caption + "', '" + message + "'");
+		((ModelLibraryView)TDMEViewer.getInstance().getView()).getInfoDialogPopUpController().show(caption, message);
 	}
 
 	/**
@@ -958,6 +957,9 @@ public final class ModelLibraryController extends ScreenController implements GU
 					} else
 					if (node.getId().equals("filedialog_abort")) {
 						((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+					} else
+					if (node.getId().equals("infodialog_ok")) {
+						((ModelLibraryView)TDMEViewer.getInstance().getView()).getInfoDialogPopUpController().close();
 					} else {
 						System.out.println("ModelLibraryController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
