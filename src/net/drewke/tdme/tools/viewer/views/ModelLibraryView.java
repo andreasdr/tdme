@@ -244,7 +244,7 @@ public final class ModelLibraryView extends View  {
 
 		// try to update property
 		if (model.updateProperty(oldName, name, value) == true) {
-			//
+			// reload object properties
 			modelLibraryController.setObjectProperties(
 				null,
 				model.getProperties(),
@@ -268,7 +268,7 @@ public final class ModelLibraryView extends View  {
 
 		// try to add property
 		if (model.addProperty("new.property", "new.value")) {
-			// 
+			// reload object properties
 			modelLibraryController.setObjectProperties(
 				null,
 				model.getProperties(),
@@ -294,8 +294,14 @@ public final class ModelLibraryView extends View  {
 		// try to remove property
 		int idx = model.getPropertyIndex(name);
 		if (idx != -1 && model.removeProperty(name) == true) {
-			//
+			// get property first at index that was removed 
 			PropertyModelClass property = model.getPropertyByIndex(idx);
+			if (property == null) {
+				// if current index does not work, take current one -1
+				property = model.getPropertyByIndex(idx - 1);
+			}
+
+			// reload object properties
 			modelLibraryController.setObjectProperties(
 				null,
 				model.getProperties(),
