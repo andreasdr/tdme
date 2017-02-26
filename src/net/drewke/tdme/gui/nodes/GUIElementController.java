@@ -91,8 +91,10 @@ public class GUIElementController extends GUINodeController {
 			if (event.getType() == Type.MOUSE_PRESSED) {
 				isActionPerforming = true;
 
-				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+				// set focussed node if focusable
+				if (((GUIElementNode)node).isFocusable() == true) {
+					node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+				}
 			} else
 			if (event.getType() == Type.MOUSE_DRAGGED) {
 				isActionPerforming = true;
