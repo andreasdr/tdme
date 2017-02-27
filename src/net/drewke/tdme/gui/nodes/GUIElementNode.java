@@ -25,6 +25,7 @@ public final class GUIElementNode extends GUIParentNode {
 	protected GUINodeConditions activeConditions = new GUINodeConditions();
 
 	protected boolean focusable;
+	protected boolean ignoreEvents;
 
 	/**
 	 * Constructor
@@ -46,6 +47,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @param selected
 	 * @param disabled
 	 * @param focusable
+	 * @param ignore events
 	 * @throws GUIParserException
 	 */
 	public GUIElementNode(
@@ -66,7 +68,8 @@ public final class GUIElementNode extends GUIParentNode {
 		String value,
 		boolean selected,
 		boolean disabled,
-		boolean focusable
+		boolean focusable,
+		boolean ignoreEvents
 		) throws GUIParserException {
 		//
 		super(screenNode, parentNode, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
@@ -77,9 +80,10 @@ public final class GUIElementNode extends GUIParentNode {
 		this.selected = selected;
 		this.disabled = disabled;
 		this.focusable = focusable;
+		this.ignoreEvents = ignoreEvents;
 
 		// controller
-		this.controller = new GUIElementController(this);
+		this.controller = ignoreEvents == true?new GUIElementIgnoreEventsController(this):new GUIElementController(this);
 		this.controller.init();
 	}
 
@@ -310,11 +314,11 @@ public final class GUIElementNode extends GUIParentNode {
 			switch (event.getType()) {
 				case MOUSE_MOVED:
 					activeConditions.add(CONDITION_ONMOUSEOVER);
-					event.setProcessed(true);
+					if (ignoreEvents == false) event.setProcessed(true);
 					break;
 				case MOUSE_PRESSED:
 					activeConditions.add(CONDITION_CLICK);
-					event.setProcessed(true);
+					if (ignoreEvents == false) event.setProcessed(true);
 					break;
 				default:
 					break;
@@ -330,6 +334,9 @@ public final class GUIElementNode extends GUIParentNode {
 	 * @see net.drewke.tdme.gui.nodes.GUINode#handleKeyboardEvent(net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUIKeyboardEvent event) {
+		// ignore events?
+		if (ignoreEvents == true) return;
+
 		// check if conditions were met
 		if (conditionsMet == false) return;
 

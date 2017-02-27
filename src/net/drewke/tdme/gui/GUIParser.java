@@ -412,7 +412,8 @@ public final class GUIParser {
 					node.getAttribute("value"),
 					node.getAttribute("selected").trim().equalsIgnoreCase("true"),
 					node.getAttribute("disabled").trim().equalsIgnoreCase("true"),
-					node.getAttribute("focusable").trim().equalsIgnoreCase("true")
+					node.getAttribute("focusable").trim().equalsIgnoreCase("true"),
+					node.getAttribute("ignore-events").trim().equalsIgnoreCase("true")
 				);
 				guiParentNode.addSubNode(guiElementNode);
 				// install gui element controller if not yet done
