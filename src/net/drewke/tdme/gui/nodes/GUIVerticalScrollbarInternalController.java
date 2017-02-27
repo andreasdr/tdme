@@ -167,12 +167,18 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 					mouseYOffset = (int)(event.getY() - barTop);
 					state = State.DRAGGING;
 				}
+
+				// set event processed
+				event.setProcessed(true);
 			} else
 			if (state == State.DRAGGING &&
 				event.getType() == Type.MOUSE_RELEASED ) {
 				//
 				mouseYOffset = -1;
 				state = State.NONE;
+
+				// set event processed
+				event.setProcessed(true);
 			} else
 			if (state == State.DRAGGING &&
 				event.getType() == Type.MOUSE_DRAGGED) {
@@ -180,10 +186,10 @@ public class GUIVerticalScrollbarInternalController extends GUINodeController {
 				float barTop = getBarTop();
 				float draggedY = event.getY() - barTop - mouseYOffset;
 				setDraggedY(draggedY);
-			}
 
-			// set event processed
-			event.setProcessed(true);
+				// set event processed
+				event.setProcessed(true);
+			}
 		} else {
 			state = State.NONE;
 		}

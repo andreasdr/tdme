@@ -167,12 +167,18 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 					mouseXOffset = (int)(event.getX() - barLeft);
 					state = State.DRAGGING;
 				}
+
+				// set event processed
+				event.setProcessed(true);
 			} else
 			if (state == State.DRAGGING &&
 				event.getType() == Type.MOUSE_RELEASED ) {
 				//
 				mouseXOffset = -1;
 				state = State.NONE;
+
+				// set event processed
+				event.setProcessed(true);
 			} else
 			if (state == State.DRAGGING &&
 				event.getType() == Type.MOUSE_DRAGGED) {
@@ -180,10 +186,10 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 				float barLeft = getBarLeft();
 				float draggedX = event.getX() - barLeft - mouseXOffset;
 				setDraggedX(draggedX);
-			}
 
-			// set event processed
-			event.setProcessed(true);
+				// set event processed
+				event.setProcessed(true);
+			}
 		} else {
 			state = State.NONE;
 		}

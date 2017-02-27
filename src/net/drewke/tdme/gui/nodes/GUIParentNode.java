@@ -6,6 +6,7 @@ import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUINode.Flow;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
@@ -430,6 +431,9 @@ public abstract class GUIParentNode extends GUINode {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
+		// skip if processed by floating node
+		if (screenNode.mouseEventProcessedByFloatingNode == true) return;
+
 		// mouse wheel event?
 		if (isEventBelongingToNode(event) == true &&
 			event.getType() == Type.MOUSE_WHEEL_MOVED) {
@@ -483,6 +487,12 @@ public abstract class GUIParentNode extends GUINode {
 
 		//
 		super.handleMouseEvent(event);
+
+		// did mouse event have been consumed on a floating node
+		// then mark those as consumed
+		if (flow == Flow.FLOATING && event.isProcessed() == true) {
+			screenNode.mouseEventProcessedByFloatingNode = true;
+		}
 	}
 
 	/*

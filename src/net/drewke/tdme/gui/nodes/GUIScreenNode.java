@@ -7,6 +7,7 @@ import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.utils.HashMap;
@@ -43,6 +44,8 @@ public final class GUIScreenNode extends GUIParentNode {
 	private ArrayList<GUIChangeListener> changeListener;
 
 	private ArrayList<GUINode> childControllerNodes;
+
+	protected boolean mouseEventProcessedByFloatingNode;
 
 	/**
 	 * Constructor
@@ -424,6 +427,15 @@ public final class GUIScreenNode extends GUIParentNode {
 			focussedNode.scrollToNodeX();
 			focussedNode.scrollToNodeY();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#handleMouseEvent(net.drewke.tdme.gui.events.GUIMouseEvent)
+	 */
+	public void handleMouseEvent(GUIMouseEvent event) {
+		mouseEventProcessedByFloatingNode = false;
+		super.handleMouseEvent(event);
 	}
 
 	/*

@@ -1013,6 +1013,9 @@ public abstract class GUINode {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
+		// skip if processed by floating node
+		if (screenNode.mouseEventProcessedByFloatingNode == true) return;
+
 		// determine first node up the tree with controller
 		GUINode node = this;
 		if (node.controller == null) {

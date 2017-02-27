@@ -297,17 +297,24 @@ public final class GUIElementNode extends GUIParentNode {
 		// check if conditions were met
 		if (conditionsMet == false) return;
 
-		// add mouseoever, click to active conditions
+		// remove mouse over, click to active conditions
 		activeConditions.remove(CONDITION_ONMOUSEOVER);
 		activeConditions.remove(CONDITION_CLICK);
+
+		// skip if processed by floating node
+		if (screenNode.mouseEventProcessedByFloatingNode == true) return;
+
+		//
 		if (isEventBelongingToNode(event)) {
 			//
 			switch (event.getType()) {
 				case MOUSE_MOVED:
 					activeConditions.add(CONDITION_ONMOUSEOVER);
+					event.setProcessed(true);
 					break;
 				case MOUSE_PRESSED:
 					activeConditions.add(CONDITION_CLICK);
+					event.setProcessed(true);
 					break;
 				default:
 					break;

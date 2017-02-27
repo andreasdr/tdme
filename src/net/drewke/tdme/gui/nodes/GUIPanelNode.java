@@ -77,6 +77,8 @@ public class GUIPanelNode extends GUILayoutNode {
 	 */
 	public void handleMouseEvent(GUIMouseEvent event) {
 		super.handleMouseEvent(event);
+
+		// if event belongs to panel node mark event as processed
 		if (isEventBelongingToNode(event) == true) {
 			event.setProcessed(true);
 		}
