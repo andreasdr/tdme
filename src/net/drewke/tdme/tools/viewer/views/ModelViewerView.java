@@ -671,8 +671,7 @@ public final class ModelViewerView extends View implements GUIInputEventsHandler
 				new Vector3()
 			);
 		} catch (Exception exception) {
-			JOptionPane.showMessageDialog(null, "Could not load object: " + exception.getMessage());
-			exception.printStackTrace();
+			infoDialogScreenController.show("Warning", exception.getMessage());
 		}
 
 		//
@@ -705,7 +704,7 @@ public final class ModelViewerView extends View implements GUIInputEventsHandler
 				break;
 		}
 	}
-	
+
 	/**
 	 * Load model method
 	 * @param id
