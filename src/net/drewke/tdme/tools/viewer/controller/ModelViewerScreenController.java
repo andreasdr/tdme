@@ -1,5 +1,6 @@
 package net.drewke.tdme.tools.viewer.controller;
 
+import java.io.IOException;
 import java.util.Collection;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
@@ -18,18 +19,17 @@ import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.tools.viewer.Tools;
-import net.drewke.tdme.tools.viewer.controller.FileDialogPopUpController.FileDialogPopUpMode;
 import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
 import net.drewke.tdme.tools.viewer.model.PropertyModelClass;
-import net.drewke.tdme.tools.viewer.views.ModelLibraryView;
+import net.drewke.tdme.tools.viewer.views.ModelViewerView;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * Model library controller
+ * Model viewer screen controller
  * @author Andreas Drewke
- * @version $Id: ModelLibraryController.java 82 2013-12-26 13:56:48Z drewke.net $
+ * @version $Id$
  */
-public final class ModelLibraryController extends ScreenController implements GUIActionListener, GUIChangeListener {
+public final class ModelViewerScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
 
 	public enum BoundingVolumeType {NONE, SPHERE, CAPSULE, BOUNDINGBOX, ORIENTEDBOUNDINGBOX, CONVEXMESH};
 
@@ -91,12 +91,12 @@ public final class ModelLibraryController extends ScreenController implements GU
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#init()
+	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#init(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
 	 */
 	public void init() {
 		// load screen node
 		try {
-			screenNode = GUIParser.parse("resources/tools/viewer/gui", "screen_modellibrary_v2.xml");
+			screenNode = GUIParser.parse("resources/tools/viewer/gui", "screen_modelviewer.xml");
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
@@ -162,18 +162,18 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * Set up display section
 	 */
 	public void setupDisplay() {
-		displayShadowing.getController().setValue(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayShadowing() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-		displayGround.getController().setValue(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayGroundPlate() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-		displayBoundingVolume.getController().setValue(((ModelLibraryView)TDMEViewer.getInstance().getView()).isDisplayBoundingVolume() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayShadowing.getController().setValue(((ModelViewerView)TDMEViewer.getInstance().getView()).isDisplayShadowing() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayGround.getController().setValue(((ModelViewerView)TDMEViewer.getInstance().getView()).isDisplayGroundPlate() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayBoundingVolume.getController().setValue(((ModelViewerView)TDMEViewer.getInstance().getView()).isDisplayBoundingVolume() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
 	}
 
 	/**
 	 * On display apply button event
 	 */
 	public void onDisplayApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayShadowing(displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED));
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayGroundPlate(displayGround.getController().getValue().equals(CHECKBOX_CHECKED));
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setDisplayBoundingVolume(displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelViewerView)TDMEViewer.getInstance().getView()).setDisplayShadowing(displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelViewerView)TDMEViewer.getInstance().getView()).setDisplayGroundPlate(displayGround.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelViewerView)TDMEViewer.getInstance().getView()).setDisplayBoundingVolume(displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED));
 	}
 
 	/**
@@ -377,8 +377,8 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On object property save
 	 */
 	public void onObjectPropertySave() {
-		ModelLibraryView modelLibraryView = ((ModelLibraryView)TDMEViewer.getInstance().getView());
-		if (modelLibraryView.objectPropertySave(
+		ModelViewerView modelViewerView = ((ModelViewerView)TDMEViewer.getInstance().getView());
+		if (modelViewerView.objectPropertySave(
 			objectPropertiesList.getController().getValue().toString(),
 			objectPropertyName.getController().getValue().toString(),
 			objectPropertyValue.getController().getValue().toString()) == false) {
@@ -391,7 +391,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On object property add
 	 */
 	public void onObjectPropertyAdd() {
-		if (((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyAdd() == false) {
+		if (((ModelViewerView)TDMEViewer.getInstance().getView()).objectPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new object property failed");
 		}
 	}
@@ -400,7 +400,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On object property remove
 	 */
 	public void onObjectPropertyRemove() {
-		if (((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertyRemove(objectPropertiesList.getController().getValue().toString()) == false) {
+		if (((ModelViewerView)TDMEViewer.getInstance().getView()).objectPropertyRemove(objectPropertiesList.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing object property failed");
 		}
 	}
@@ -409,7 +409,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On object property preset apply 
 	 */
 	public void onObjectPropertyPresetApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
+		((ModelViewerView)TDMEViewer.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
@@ -421,7 +421,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 		objectPropertyValue.getController().setDisabled(true);
 		objectPropertyValue.getController().setValue(TEXT_EMPTY);
 		objectPropertySave.getController().setDisabled(true);
-		PropertyModelClass objectProperty = ((ModelLibraryView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(objectPropertiesList.getController().getValue().toString());
+		PropertyModelClass objectProperty = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(objectPropertiesList.getController().getValue().toString());
 		if (objectProperty != null) {
 			objectPropertyName.getController().setValue(value.set(objectProperty.getName()));
 			objectPropertyValue.getController().setValue(value.set(objectProperty.getValue()));
@@ -454,35 +454,65 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On model load
 	 */
 	public void onModelLoad() {
-		showFileDialogPopUp(FileDialogPopUpMode.LOAD);
+		((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(
+			"Load from: ", 
+			new String[]{"tmm", "dae", "tm"},
+			new Action() {
+				public void performAction() {
+					((ModelViewerView)TDMEViewer.getInstance().getView()).loadFile(
+						((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
+						((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getFileName()
+					);
+					((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+				}
+				
+			}
+		);
 	}
 
 	/**
 	 * On model save
 	 */
 	public void onModelSave() {
-		showFileDialogPopUp(FileDialogPopUpMode.SAVE);
+		((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(
+			"Save from: ", 
+			new String[]{"tmm"},
+			new Action() {
+				public void performAction() {
+					try {
+						((ModelViewerView)TDMEViewer.getInstance().getView()).saveFile(
+							((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
+							((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getFileName()
+						);
+						((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+					} catch (Exception ioe) {
+						showErrorPopUp("Warning", ioe.getMessage());
+					}
+				}
+				
+			}
+		);
 	}
 
 	/**
 	 * On model reload
 	 */
 	public void onModelReload() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).reloadFile();
+		((ModelViewerView)TDMEViewer.getInstance().getView()).reloadFile();
 	}
 
 	/**
 	 * On model data apply
 	 */
 	public void onModelDataApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).setModelData(
+		((ModelViewerView)TDMEViewer.getInstance().getView()).setModelData(
 			modelName.getController().getValue().toString(), 
 			modelDescription.getController().getValue().toString()
 		);
 
 		// rename in library
 		/*
-		LevelEditorModel model = ((ModelLibraryView)TDMEViewer.getInstance().getView()).getSelectedModel();
+		LevelEditorModel model = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel();
 		if (model == null) return;
 		Element modelNameElement = screen.findElementByName("modelchoser_name_" + model.getId());
 		TextRenderer modelNameElementRenderer = modelNameElement.getRenderer(TextRenderer.class);
@@ -498,7 +528,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 			float x = Float.parseFloat(pivotX.getController().getValue().toString());
 			float y = Float.parseFloat(pivotY.getController().getValue().toString());
 			float z = Float.parseFloat(pivotZ.getController().getValue().toString());
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).pivotApply(x, y, z);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).pivotApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		}
@@ -508,7 +538,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * Unset bounding volume
 	 */
 	public void unsetBoundingVolume() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
+		((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
 		boundingVolumeTypeDropDown.getController().setDisabled(true);
 		boundingVolumeNoneApply.getController().setDisabled(true);
 	}
@@ -525,31 +555,31 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * Set up model bounding volume
 	 */
 	public void setupModelBoundingVolume() {
-		LevelEditorModel model = ((ModelLibraryView)TDMEViewer.getInstance().getView()).getSelectedModel();
+		LevelEditorModel model = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel();
 		if (model == null) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
 			return;
 		}
 		BoundingVolume bv = model.getBoundingVolume();
 		if (bv == null) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
 		} else
 		if (bv instanceof Sphere) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(1);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(1);
 		} else
 		if (bv instanceof Capsule) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(2);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(2);
 		} else
 		if (bv instanceof BoundingBox) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(3);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(3);
 		} else
 		if (bv instanceof OrientedBoundingBox) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(4);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(4);
 		} else
 		if (bv instanceof ConvexMesh) {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(5);
+			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(5);
 		} else {
-			System.out.println("ModelLibraryController::onTabSelected(): invalid bounding volume: " + bv);
+			System.out.println("ModelViewerScreenController::onTabSelected(): invalid bounding volume: " + bv);
 		}
 	}
 
@@ -763,7 +793,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 */
 	public void onBoundingVolumeTypeApply() {
 		int boundingVolumeTypeId = Tools.convertToIntSilent(boundingVolumeTypeDropDown.getController().getValue().toString());
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(boundingVolumeTypeId);
+		((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(boundingVolumeTypeId);
 		switch(boundingVolumeTypeId) {
 			case(0): onBoundingVolumeNoneApply(); break;
 			case(1): onBoundingVolumeSphereApply(); break;
@@ -778,7 +808,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On bounding volume sphere apply
 	 */
 	public void onBoundingVolumeNoneApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeNone();
+		((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeNone();
 	}
 
 	/**
@@ -786,7 +816,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 */
 	public void onBoundingVolumeSphereApply() {
 		try {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeSphere(
+			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeSphere(
 				Tools.convertToVector3(boundingvolumeSphereCenter.getController().getValue().toString()),
 				Tools.convertToFloat(boundingvolumeSphereRadius.getController().getValue().toString())
 			);
@@ -800,7 +830,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 */
 	public void onBoundingVolumeCapsuleApply() {
 		try {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeCapsule(
+			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeCapsule(
 				Tools.convertToVector3(boundingvolumeCapsuleA.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeCapsuleB.getController().getValue().toString()),
 				Tools.convertToFloat(boundingvolumeCapsuleRadius.getController().getValue().toString())
@@ -815,7 +845,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 */
 	public void onBoundingVolumeAabbApply() {
 		try {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeAabb(
+			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeAabb(
 				Tools.convertToVector3(boundingvolumeBoundingBoxMin.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeBoundingBoxMax.getController().getValue().toString())
 			);
@@ -829,7 +859,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 */
 	public void onBoundingVolumeObbApply() {
 		try {
-			((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeObb(
+			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeObb(
 				Tools.convertToVector3(boundingvolumeObbCenter.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeObbAxis0.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeObbAxis1.getController().getValue().toString()),
@@ -845,7 +875,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * On bounding volume convex mesh apply
 	 */
 	public void onBoundingVolumeConvexMeshApply() {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).applyBoundingVolumeConvexMesh(
+		((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeConvexMesh(
 			boundingvolumeConvexMeshFile.getController().getValue().toString()
 		);
 	}
@@ -855,7 +885,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * @see net.drewke.tdme.tools.viewer.controller.PopUpsController#saveFile(java.lang.String, java.lang.String)
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).saveFile(pathName, fileName);
+		((ModelViewerView)TDMEViewer.getInstance().getView()).saveFile(pathName, fileName);
 	}
 
 	/*
@@ -863,21 +893,14 @@ public final class ModelLibraryController extends ScreenController implements GU
 	 * @see net.drewke.tdme.tools.viewer.controller.PopUpsController#loadFile(java.lang.String, java.lang.String)
 	 */
 	public void loadFile(String pathName, String fileName) throws Exception {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).loadFile(pathName, fileName);
+		((ModelViewerView)TDMEViewer.getInstance().getView()).loadFile(pathName, fileName);
 	}
 
 	/**
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).getInfoDialogPopUpController().show(caption, message);
-	}
-
-	/**
-	 * Shows the file dialog pop up 
-	 */
-	public void showFileDialogPopUp(FileDialogPopUpMode mode) {
-		((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(mode, new String[]{"tmm", "dae", "tm"});
+		((ModelViewerView)TDMEViewer.getInstance().getView()).getInfoDialogPopUpController().show(caption, message);
 	}
 
 	/*
@@ -888,7 +911,7 @@ public final class ModelLibraryController extends ScreenController implements GU
 		if (node == objectPropertiesList) {
 			onObjectPropertiesSelectionChanged();
 		} else {
-			System.out.println("ModelLibraryController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+			System.out.println("ModelViewerScreenController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 		}
 	}
 
@@ -947,27 +970,14 @@ public final class ModelLibraryController extends ScreenController implements GU
 					} else
 					if (node.getId().equals("button_boundingvolume_convexmesh_apply")) {
 						onBoundingVolumeConvexMeshApply();
-					} else
-					if (node.getId().equals("filedialog_apply")) {
-						((ModelLibraryView)TDMEViewer.getInstance().getView()).loadFile(
-							((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-							((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getFileName()
-						);
-						((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
-					} else
-					if (node.getId().equals("filedialog_abort")) {
-						((ModelLibraryView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
-					} else
-					if (node.getId().equals("infodialog_ok")) {
-						((ModelLibraryView)TDMEViewer.getInstance().getView()).getInfoDialogPopUpController().close();
 					} else {
-						System.out.println("ModelLibraryController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
 					break;
 				}
 			case PERFORMING:
 				{
-					System.out.println("ModelLibraryController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					break;
 				}
 		}

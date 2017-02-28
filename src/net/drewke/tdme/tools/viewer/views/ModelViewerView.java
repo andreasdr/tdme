@@ -24,9 +24,9 @@ import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.viewer.Tools;
-import net.drewke.tdme.tools.viewer.controller.FileDialogPopUpController;
-import net.drewke.tdme.tools.viewer.controller.InfoDialogPopUpController;
-import net.drewke.tdme.tools.viewer.controller.ModelLibraryController;
+import net.drewke.tdme.tools.viewer.controller.FileDialogScreenController;
+import net.drewke.tdme.tools.viewer.controller.InfoDialogScreenController;
+import net.drewke.tdme.tools.viewer.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileImport;
 import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
@@ -36,17 +36,17 @@ import net.drewke.tdme.tools.viewer.model.PropertyModelClass;
 import com.jogamp.opengl.GLAutoDrawable;
 
 /**
- * TDME Model Library
- * @author andreas.drewke
- * @version $Id: 04313d20d0978eefc881024d6e0af748196c1425 $
+ * TDME Model Viewer View
+ * @author Andreas Drewke
+ * @version $Id$
  */
-public final class ModelLibraryView extends View implements GUIInputEventsHandler {
+public final class ModelViewerView extends View implements GUIInputEventsHandler {
 
 	private Engine engine;
 
-	private InfoDialogPopUpController infoDialogPopUpController;
-	private FileDialogPopUpController fileDialogPopUpController;
-	private ModelLibraryController modelLibraryController;
+	private InfoDialogScreenController infoDialogScreenController;
+	private FileDialogScreenController fileDialogScreenController;
+	private ModelViewerScreenController modelViewerScreenController;
 
 	private LevelEditorModel model;
 	private boolean loadModelRequested;
@@ -82,8 +82,8 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 	/**
 	 * Public constructor
 	 */
-	public ModelLibraryView() {
-		modelLibraryController = null;
+	public ModelViewerView() {
+		modelViewerScreenController = null;
 		loadModelRequested = false;
 		model = null;
 		modelFile = null;
@@ -119,15 +119,15 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 	/**
 	 * @return file dialog popup controller
 	 */
-	public FileDialogPopUpController getFileDialogPopUpController() {
-		return fileDialogPopUpController;
+	public FileDialogScreenController getFileDialogPopUpController() {
+		return fileDialogScreenController;
 	}
 
 	/**
 	 * @return info dialog popup controller
 	 */
-	public InfoDialogPopUpController getInfoDialogPopUpController() {
-		return infoDialogPopUpController;
+	public InfoDialogScreenController getInfoDialogPopUpController() {
+		return infoDialogScreenController;
 	}
 
 	/**
@@ -235,7 +235,7 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 		}
 
 		// update object properties to gui
-		modelLibraryController.setObjectProperties(
+		modelViewerScreenController.setObjectProperties(
 			presetId,
 			model.getProperties(),
 			null
@@ -255,7 +255,7 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 		// try to update property
 		if (model.updateProperty(oldName, name, value) == true) {
 			// reload object properties
-			modelLibraryController.setObjectProperties(
+			modelViewerScreenController.setObjectProperties(
 				null,
 				model.getProperties(),
 				name
@@ -279,7 +279,7 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 		// try to add property
 		if (model.addProperty("new.property", "new.value")) {
 			// reload object properties
-			modelLibraryController.setObjectProperties(
+			modelViewerScreenController.setObjectProperties(
 				null,
 				model.getProperties(),
 				"new.property"
@@ -312,7 +312,7 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 			}
 
 			// reload object properties
-			modelLibraryController.setObjectProperties(
+			modelViewerScreenController.setObjectProperties(
 				null,
 				model.getProperties(),
 				property == null?null:property.getName()
@@ -427,14 +427,14 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 
 				// set up model statistics
 				ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(model.getModel());
-				modelLibraryController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
+				modelViewerScreenController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
 
 				// set up oriented bounding box
 				BoundingBox aabb = Engine.getModelBoundingBox(model.getModel());
 				OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
 
 				// set up sphere
-				modelLibraryController.setupSphere(
+				modelViewerScreenController.setupSphere(
 					obb.getCenter(),
 					obb.getHalfExtension().computeLength()
 				);
@@ -477,14 +477,14 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 					}
 
 					// setup capsule
-					modelLibraryController.setupCapsule(a, b, radius);
+					modelViewerScreenController.setupCapsule(a, b, radius);
 				}
 
 				// set up AABB bounding box
-				modelLibraryController.setupBoundingBox(aabb.getMin(), aabb.getMax());
+				modelViewerScreenController.setupBoundingBox(aabb.getMin(), aabb.getMax());
 
 				// set up oriented bounding box
-				modelLibraryController.setupOrientedBoundingBox(
+				modelViewerScreenController.setupOrientedBoundingBox(
 					obb.getCenter(),
 					obb.getAxes()[0],
 					obb.getAxes()[1],
@@ -577,15 +577,15 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 		}
 
 		// Render screens and handle input
-		String activeId = modelLibraryController.getScreenNode().getId();
-		engine.getGUI().render(modelLibraryController.getScreenNode().getId());
-		if (fileDialogPopUpController.isActive() == true) {
-			engine.getGUI().render(fileDialogPopUpController.getScreenNode().getId());
-			activeId = fileDialogPopUpController.getScreenNode().getId();
+		String activeId = modelViewerScreenController.getScreenNode().getId();
+		engine.getGUI().render(modelViewerScreenController.getScreenNode().getId());
+		if (fileDialogScreenController.isActive() == true) {
+			engine.getGUI().render(fileDialogScreenController.getScreenNode().getId());
+			activeId = fileDialogScreenController.getScreenNode().getId();
 		}
-		if (infoDialogPopUpController.isActive() == true) {
-			engine.getGUI().render(infoDialogPopUpController.getScreenNode().getId());
-			activeId = infoDialogPopUpController.getScreenNode().getId();
+		if (infoDialogScreenController.isActive() == true) {
+			engine.getGUI().render(infoDialogScreenController.getScreenNode().getId());
+			activeId = infoDialogScreenController.getScreenNode().getId();
 		}
 		engine.getGUI().handleEvents(activeId, this);
 	}
@@ -595,19 +595,19 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 	 */
 	private void updateGUIElements(GLAutoDrawable drawable) {
 		if (model != null) {
-			modelLibraryController.setScreenCaption("Model Library - " + model.getModel().getName());
+			modelViewerScreenController.setScreenCaption("Model Viewer - " + model.getModel().getName());
 			PropertyModelClass preset = model.getProperty("preset");
-			modelLibraryController.setObjectProperties(preset != null?preset.getValue():null, model.getProperties(), null);
-			modelLibraryController.setModelData(model.getName(), model.getDescription());
-			modelLibraryController.setPivot(model.getPivot());
-			modelLibraryController.setBoundingVolume();
-			modelLibraryController.setupModelBoundingVolume();
+			modelViewerScreenController.setObjectProperties(preset != null?preset.getValue():null, model.getProperties(), null);
+			modelViewerScreenController.setModelData(model.getName(), model.getDescription());
+			modelViewerScreenController.setPivot(model.getPivot());
+			modelViewerScreenController.setBoundingVolume();
+			modelViewerScreenController.setupModelBoundingVolume();
 		} else {
-			modelLibraryController.setScreenCaption("Model Library - no model loaded");
-			modelLibraryController.unsetObjectProperties();
-			modelLibraryController.unsetModelData();
-			modelLibraryController.unsetPivot();
-			modelLibraryController.unsetBoundingVolume();
+			modelViewerScreenController.setScreenCaption("Model Viewer - no model loaded");
+			modelViewerScreenController.unsetObjectProperties();
+			modelViewerScreenController.unsetModelData();
+			modelViewerScreenController.unsetPivot();
+			modelViewerScreenController.unsetBoundingVolume();
 		}
 	}
 
@@ -623,31 +623,31 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 	 */
 	public void init(GLAutoDrawable drawable) {
 		try {
-			modelLibraryController = new ModelLibraryController();
-			modelLibraryController.init();
-			fileDialogPopUpController = new FileDialogPopUpController(modelLibraryController);
-			fileDialogPopUpController.init();
-			infoDialogPopUpController = new InfoDialogPopUpController(modelLibraryController);
-			infoDialogPopUpController.init();
-			engine.getGUI().addScreen(modelLibraryController.getScreenNode().getId(), modelLibraryController.getScreenNode()); 
-			engine.getGUI().addScreen(fileDialogPopUpController.getScreenNode().getId(), fileDialogPopUpController.getScreenNode());
-			engine.getGUI().addScreen(infoDialogPopUpController.getScreenNode().getId(), infoDialogPopUpController.getScreenNode());
+			modelViewerScreenController = new ModelViewerScreenController();
+			modelViewerScreenController.init();
+			fileDialogScreenController = new FileDialogScreenController();
+			fileDialogScreenController.init();
+			infoDialogScreenController = new InfoDialogScreenController();
+			infoDialogScreenController.init();
+			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode()); 
+			engine.getGUI().addScreen(fileDialogScreenController.getScreenNode().getId(), fileDialogScreenController.getScreenNode());
+			engine.getGUI().addScreen(infoDialogScreenController.getScreenNode().getId(), infoDialogScreenController.getScreenNode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// set up object properties presets
-		modelLibraryController.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
+		modelViewerScreenController.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 
 		// set up bounding volume types
-		modelLibraryController.setupBoundingVolumeTypes(
+		modelViewerScreenController.setupBoundingVolumeTypes(
 			new String[] {
 				"None", "Sphere",
 				"Capsule", "Bounding Box",
 				"Oriented Bounding Box", "Convex Mesh"
 			}
 		);
-		modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.NONE);
+		modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.NONE);
 
 		// set up gui
 		updateGUIElements(drawable);
@@ -686,22 +686,22 @@ public final class ModelLibraryView extends View implements GUIInputEventsHandle
 	public void selectBoundingVolumeType(int bvTypeId) {
 		switch (bvTypeId) {
 			case 0:
-				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.NONE);
+				modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.NONE);
 				break;
 			case 1:
-				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.SPHERE);
+				modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.SPHERE);
 				break;
 			case 2:
-				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.CAPSULE);
+				modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.CAPSULE);
 				break;
 			case 3:
-				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.BOUNDINGBOX);
+				modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.BOUNDINGBOX);
 				break;
 			case 4:
-				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
+				modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
 				break;
 			case 5:
-				modelLibraryController.selectBoundingVolume(ModelLibraryController.BoundingVolumeType.CONVEXMESH);
+				modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.CONVEXMESH);
 				break;
 		}
 	}

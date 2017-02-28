@@ -4,7 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.tools.viewer.views.ModelLibraryView;
+import net.drewke.tdme.tools.viewer.views.ModelViewerView;
 import net.drewke.tdme.tools.viewer.views.View;
 
 import com.jogamp.newt.event.WindowEvent;
@@ -193,7 +193,7 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		Tools.oseInit(drawable);
 
 		// view
-		setView(new ModelLibraryView());
+		setView(new ModelViewerView());
 	}
 
 	/**

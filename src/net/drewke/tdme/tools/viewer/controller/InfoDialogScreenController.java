@@ -1,19 +1,21 @@
 package net.drewke.tdme.tools.viewer.controller;
 
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.GUIActionListener;
+import net.drewke.tdme.gui.events.GUIChangeListener;
+import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.tools.viewer.TDMEViewer;
+import net.drewke.tdme.tools.viewer.views.ModelViewerView;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * Info dialog pop up screen controller
+ * Info dialog screen controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public class InfoDialogPopUpController extends ScreenController {
-
-	// model library controller
-	private ModelLibraryController modelLibraryController;
+public class InfoDialogScreenController extends ScreenController implements GUIActionListener {
 
 	//
 	private boolean active;
@@ -32,9 +34,8 @@ public class InfoDialogPopUpController extends ScreenController {
 	 * Public constructor
 	 * @param model library controller
 	 */
-	public InfoDialogPopUpController(ModelLibraryController modelLibraryController) {
+	public InfoDialogScreenController() {
 		this.active = false;
-		this.modelLibraryController = modelLibraryController;
 		this.value = new MutableString();
 	}
 
@@ -61,7 +62,7 @@ public class InfoDialogPopUpController extends ScreenController {
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "infodialog.xml");
-			screenNode.addActionListener(modelLibraryController);
+			screenNode.addActionListener(this);
 			captionNode = (GUITextNode)screenNode.getNodeById("infodialog_caption");
 			messageNode = (GUITextNode)screenNode.getNodeById("infodialog_message");
 		} catch (Exception e) {
@@ -91,6 +92,26 @@ public class InfoDialogPopUpController extends ScreenController {
 	 */
 	public void close() {
 		active = false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.events.GUIActionListener#onActionPerformed(net.drewke.tdme.gui.events.GUIActionListener.Type, net.drewke.tdme.gui.nodes.GUIElementNode)
+	 */
+	public void onActionPerformed(Type type, GUIElementNode node) {
+		switch(type) {
+			case PERFORMED: 
+				{
+					if (node.getId().equals("infodialog_ok")) {
+						close();
+					}
+					break;
+				}
+			default: 
+				{
+					break;
+				}
+			}
 	}
 
 }

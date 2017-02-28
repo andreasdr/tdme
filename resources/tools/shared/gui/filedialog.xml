@@ -24,7 +24,7 @@
 		<space height="10" />
 		<layout width="100%" height="auto" alignment="horizontal">
 			<space width="*" />
-			<button id="filedialog_apply" name="filedialog_apply" text="Load" />
+			<button id="filedialog_apply" name="filedialog_apply" text="Apply" />
 			<space width="*" />
 			<button id="filedialog_abort" name="filedialog_abort" text="Abort" />
 			<space width="*" />

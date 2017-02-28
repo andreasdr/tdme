@@ -5,26 +5,23 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.tools.viewer.TDMEViewer;
+import net.drewke.tdme.tools.viewer.views.ModelViewerView;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * File dialog popup controller
+ * File dialog screen controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public class FileDialogPopUpController extends ScreenController implements GUIChangeListener {
-
-	// file dialog pop up mode
-	public enum FileDialogPopUpMode {LOAD, SAVE};
-
-	// model library controller
-	private ModelLibraryController modelLibraryController;
+public class FileDialogScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
 
 	//
 	private boolean active;
@@ -35,9 +32,7 @@ public class FileDialogPopUpController extends ScreenController implements GUICh
 	// curent working dir, extensions
 	private File cwd;
 	private String[] extensions;
-
-	// pop up mode
-	private FileDialogPopUpMode mode;
+	private String captionText;
 
 	// gui elements
 	private GUITextNode caption;
@@ -47,19 +42,22 @@ public class FileDialogPopUpController extends ScreenController implements GUICh
 	//
 	private MutableString value;
 
+	//
+	private Action applyAction;
+
 	/**
 	 * Public constructor
 	 * @param model library controller
 	 */
-	public FileDialogPopUpController(ModelLibraryController modelLibraryController) {
+	public FileDialogScreenController() {
 		this.active = false;
-		this.modelLibraryController = modelLibraryController;
 		try {
 			this.cwd = new File(".").getCanonicalFile();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 		this.value = new MutableString();
+		this.applyAction = null;
 	}
 
 	/**
@@ -106,7 +104,7 @@ public class FileDialogPopUpController extends ScreenController implements GUICh
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "filedialog.xml");
-			screenNode.addActionListener(modelLibraryController);
+			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			caption = (GUITextNode)screenNode.getNodeById("filedialog_caption");
 			files = (GUIElementNode)screenNode.getNodeById("filedialog_files");
@@ -129,11 +127,6 @@ public class FileDialogPopUpController extends ScreenController implements GUICh
 	private void setupFileDialogListBox() {
 		// set up caption
 		{
-			String captionText = "";
-			switch(mode) {
-				case LOAD: captionText = "Load from "; break;
-				case SAVE: captionText = "Save into "; break;
-			}
 			String directory = cwd.getAbsolutePath();
 			if (directory.length() > 50) directory = "..." + directory.substring(directory.length() - 50 + 3);
 			caption.getText().set(captionText).append(directory);
@@ -188,15 +181,17 @@ public class FileDialogPopUpController extends ScreenController implements GUICh
 	
 	/**
 	 * Shows the file dialog pop up
-	 * @param mode
+	 * @param caption text
 	 * @param extensions
+	 * @param apply action
 	 * @throws IOException 
 	 */
-	public void show(FileDialogPopUpMode mode, String[] extensions) {
-		this.mode = mode;
+	public void show(String captionText, String[] extensions, Action applyAction) {
+		this.captionText = captionText;
 		this.extensions = extensions;
 		setupFileDialogListBox();
 		this.active = true;
+		this.applyAction = applyAction;
 	}
 
 	/**
@@ -226,6 +221,29 @@ public class FileDialogPopUpController extends ScreenController implements GUICh
 		}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.events.GUIActionListener#onActionPerformed(net.drewke.tdme.gui.events.GUIActionListener.Type, net.drewke.tdme.gui.nodes.GUIElementNode)
+	 */
+	public void onActionPerformed(Type type, GUIElementNode node) {
+		switch (type) {
+			case PERFORMED: 
+				{
+					if (node.getId().equals("filedialog_apply")) {
+						if (applyAction != null) applyAction.performAction();
+					} else
+					if (node.getId().equals("filedialog_abort")) {
+						close();
+					}
+					break;
+				}
+			default:
+				{
+					break;
+				}
 		}
 	}
 
