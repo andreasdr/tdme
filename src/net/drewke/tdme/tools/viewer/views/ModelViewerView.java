@@ -3,8 +3,6 @@ package net.drewke.tdme.tools.viewer.views;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
