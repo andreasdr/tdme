@@ -1,7 +1,5 @@
 package net.drewke.tdme.tools.viewer.views;
 
-import com.jogamp.newt.event.KeyListener;
-import com.jogamp.newt.event.MouseListener;
 import com.jogamp.opengl.GLAutoDrawable;
 
 /**
