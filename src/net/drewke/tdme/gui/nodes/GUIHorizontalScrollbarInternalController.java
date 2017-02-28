@@ -94,7 +94,11 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 		float scrollableWidth = contentWidth - elementWidth;
 		float childrenRenderOffsetX = contentNode.childrenRenderOffsetX;
 		float barWidth = (node.computedConstraints.width - node.border.left - node.border.right) * (elementWidth / contentWidth);
-		return node.computedConstraints.left + node.computedConstraints.alignmentLeft + node.border.left + (childrenRenderOffsetX * ((node.computedConstraints.width - barWidth) / scrollableWidth));
+		if (scrollableWidth > 0.0f) {
+			return node.computedConstraints.left + node.computedConstraints.alignmentLeft + node.border.left + (childrenRenderOffsetX * ((node.computedConstraints.width - barWidth) / scrollableWidth));
+		} else {
+			return node.computedConstraints.left + node.computedConstraints.alignmentLeft + node.border.left;
+		}
 	}
 
 	/**
