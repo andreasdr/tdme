@@ -186,9 +186,10 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 * @param apply action
 	 * @throws IOException 
 	 */
-	public void show(String captionText, String[] extensions, Action applyAction) {
+	public void show(String captionText, String[] extensions, String fileName, Action applyAction) {
 		this.captionText = captionText;
 		this.extensions = extensions;
+		this.fileName.getController().setValue(value.set(fileName));
 		setupFileDialogListBox();
 		this.active = true;
 		this.applyAction = applyAction;

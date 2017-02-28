@@ -183,6 +183,14 @@ public final class ModelViewerView extends View implements GUIInputEventsHandler
 	}
 
 	/**
+	 * @return current model file name
+	 */
+	public String getFileName() {
+		if (modelFile == null) return "";
+		return modelFile.getName();
+	}
+
+	/**
 	 * Issue file loading
 	 */
 	public void loadFile(String pathName, String fileName) {

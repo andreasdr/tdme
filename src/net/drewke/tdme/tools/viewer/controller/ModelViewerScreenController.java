@@ -457,6 +457,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(
 			"Load from: ", 
 			new String[]{"tmm", "dae", "tm"},
+			((ModelViewerView)TDMEViewer.getInstance().getView()).getFileName(),
 			new Action() {
 				public void performAction() {
 					((ModelViewerView)TDMEViewer.getInstance().getView()).loadFile(
@@ -474,9 +475,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model save
 	 */
 	public void onModelSave() {
+		String fileName = ((ModelViewerView)TDMEViewer.getInstance().getView()).getFileName();
+		if (fileName.toLowerCase().endsWith(".tmm") == false) {
+			fileName+= ".tmm";
+		}
 		((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(
 			"Save from: ", 
 			new String[]{"tmm"},
+			fileName,
 			new Action() {
 				public void performAction() {
 					try {
