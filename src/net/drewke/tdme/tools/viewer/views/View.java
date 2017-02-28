@@ -5,7 +5,7 @@ import com.jogamp.newt.event.MouseListener;
 import com.jogamp.opengl.GLAutoDrawable;
 
 /**
- * View interface
+ * View interface, this combines application logic, regarding a application view, with screen controllers
  * @author Andreas Drewke
  * @version $Id$
  */
@@ -34,7 +34,7 @@ public abstract class View {
 	/**
 	 * handle input events, ...
 	 */
-	public void doInputSystem() {
+	public void handleEvents() {
 	}
 
 }

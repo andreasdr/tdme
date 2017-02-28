@@ -9,7 +9,7 @@ import java.util.concurrent.Semaphore;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
-import net.drewke.tdme.gui.events.GUIInputEventsHandler;
+import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -280,7 +280,7 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @param screen id
 	 * @param input events handler
 	 */
-	public void handleEvents(String screenId, GUIInputEventsHandler eventsInputHandler) {
+	public void handleEvents(String screenId, GUIInputEventHandler inputEventHandler) {
 		GUIScreenNode screen = screens.get(screenId);
 		if (screen != null) {
 			// lock
@@ -299,7 +299,7 @@ public final class GUI implements MouseListener, KeyListener {
 			}
 
 			// events handler
-			if (eventsInputHandler != null) eventsInputHandler.handleInputEvents();
+			if (inputEventHandler != null) inputEventHandler.handleInputEvents();
 
 			// discard events
 			engine.getGUI().discardEvents();

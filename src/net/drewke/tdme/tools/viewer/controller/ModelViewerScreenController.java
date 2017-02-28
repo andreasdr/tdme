@@ -1,6 +1,5 @@
 package net.drewke.tdme.tools.viewer.controller;
 
-import java.io.IOException;
 import java.util.Collection;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
@@ -917,7 +916,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		if (node == objectPropertiesList) {
 			onObjectPropertiesSelectionChanged();
 		} else {
-			System.out.println("ModelViewerScreenController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+			// System.out.println("ModelViewerScreenController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 		}
 	}
 
@@ -983,7 +982,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 				}
 			case PERFORMING:
 				{
-					System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					// System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					break;
 				}
 		}

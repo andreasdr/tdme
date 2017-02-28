@@ -150,9 +150,9 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		//
 		engine.display(drawable);
 
-		// view inputsystem
+		// view handle events
 		if (view != null) {
-			view.doInputSystem();
+			view.handleEvents();
 		}
 
 		// render GUI

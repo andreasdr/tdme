@@ -3,7 +3,7 @@ package net.drewke.tdme.tools.viewer.controller;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 
 /**
- * Screen controller, which connects GUI screen definition with code to control it
+ * Screen controller, which connects GUI screen definition with code
  * @author Andreas Drewke
  * @version $Id$
  */

@@ -1,11 +1,11 @@
 package net.drewke.tdme.gui.events;
 
 /**
- * GUI input events handler
+ * GUI input event handler
  * @author Andreas Drewke
  * @version $Id$
  */
-public interface GUIInputEventsHandler {
+public interface GUIInputEventHandler {
 
 	/**
 	 * Handle input events that have not yet been processed

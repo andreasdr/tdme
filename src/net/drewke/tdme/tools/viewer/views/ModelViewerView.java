@@ -18,7 +18,7 @@ import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
-import net.drewke.tdme.gui.events.GUIInputEventsHandler;
+import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
@@ -40,7 +40,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class ModelViewerView extends View implements GUIInputEventsHandler {
+public final class ModelViewerView extends View implements GUIInputEventHandler {
 
 	private Engine engine;
 
@@ -347,7 +347,7 @@ public final class ModelViewerView extends View implements GUIInputEventsHandler
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.events.GUIInputEventsHandler#handleInputEvents()
+	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
 	 */
 	public void handleInputEvents() {
 		// handle mouse events
