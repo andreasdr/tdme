@@ -1,0 +1,172 @@
+<screen id="leveleditor" background-color="#00000000">
+	<layout alignment="vertical" width="100%" height="100%">
+		 <panel alignment="none" width="100%" height="auto" padding="5" horizontal-align="center">
+			<text id="screen_caption" font="resources/gui/fonts/Foo_25.fnt" text="Level Editor" width="auto" height="auto" />
+		</panel>
+		<element width="100%" height="*" border="1" border-color="#000000" focusable="true" ignore-events="true" />
+		<panel width="100%" height="220">
+			<tabs alignment="vertical" width="100%" height="100%">
+				<tabs-header>
+					<tab id="tab_properties_grid" text="Grid" />
+					<tab id="tab_properties_map" text="Map" />
+					<tab id="tab_properties_map_properties" text="Map Properties" />
+					<tab id="tab_properties_object" text="Object" />
+					<tab id="tab_properties_object_transformations" text="Transformations" />
+					<tab id="tab_properties_object_properties" text="Properties" />
+					<tab id="tab_properties_lights" text="Lights" />
+				</tabs-header>
+				<tabs-content>
+					<tab-content tab-id="tab_properties_grid" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_25.fnt" text="Y position" width="200" height="auto"/>
+								<space width="5" />
+								<input id="grid_y_position" name="grid_y_position" width="200" height="auto" text="Y position" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_25.fnt" text="Enable" width="200" height="auto"/>
+								<space width="5" />
+								<checkbox id="grid_enabled" name="grid_enabled" width="auto" height="auto" value="1" />
+							</layout>
+							<space height="20" />
+							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+								<button id="button_grid_apply" name="button_grid_apply" text="Apply" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_map" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_25.fnt" text="Width" width="200" height="auto"/>
+								<space width="5" />
+								<input id="map_width" name="map_width" width="200" height="auto" text="Width" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_25.fnt" text="Height" width="200" height="auto"/>
+								<space width="5" />
+								<input id="map_height" name="map_height" width="200" height="auto" text="Height" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_25.fnt" text="Depth" width="200" height="auto"/>
+								<space width="5" />
+								<input id="map_depth" name="map_depth" width="200" height="auto" text="Depth" />
+							</layout>
+							<space height="20" />
+							<layout width="100%" height="auto" alignment="horizontal" horizontal-align="center">
+								<button id="button_map_load" name="button_map_load" text="Load" />
+								<space width="20" />
+								<button id="button_map_save" name="button_map_save" text="Save" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_map_properties" vertical-align="center">
+						<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="605" height="auto" alignment="vertical">
+								<selectbox id="map_properties_listbox" name="map_properties_listbox" height="115">
+								</selectbox>
+								<space height="10" />
+								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="45" height="auto"/>
+									<space width="*" />
+									<input id="map_property_name" name="map_property_name" width="240" height="auto" text="Name" />
+									<space width="*" />
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Value" width="45" height="auto"/>
+									<space width="*" />
+									<input id="map_property_value" name="map_property_value" width="240" height="auto" text="Value" />
+								</layout>
+							</layout>
+							<space width="20" />
+							<layout width="auto" height="auto" alignment="vertical">
+								<button id="button_map_properties_add" name="button_map_properties_add" text="Add" width="80" />
+								<space height="5" />
+								<button id="button_map_properties_remove" name="button_map_properties_remove" text="Remove" width="80" />
+								<space height="5" />
+								<button id="button_map_properties_save" name="button_map_properties_save" text="Save" width="80" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_object" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal">
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_name" name="object_name" width="150" height="auto" text="Name" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Description" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_description" name="object_description" width="150" height="auto" text="Description" />
+									</layout>
+								</layout>
+								<space width="20" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Model" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_model" name="object_model" width="150" height="auto" text="Model" disabled="true" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Center" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_center" name="object_center" width="150" height="auto" text="Center" disabled="true" />
+									</layout>
+								</layout>
+							</layout>
+							<space height="20" />					
+							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+								<button id="button_objectdata_apply" name="button_objectdata_apply" text="Apply" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_object_transformations" vertical-align="center">
+						<text font="resources/gui/fonts/Foo_25.fnt" text="Transformations ..." width="auto" height="auto"/>
+					</tab-content>
+					<tab-content tab-id="tab_properties_object_properties" vertical-align="center">
+						<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="auto" height="auto" alignment="vertical">
+								<layout width="auto" height="auto" alignment="horizontal">
+									<dropdown id="object_properties_presets" name="object_properties_presets" width="510" height="auto" text="Test">
+										<dropdown-option text="Test 1" value="1" />										
+									</dropdown>
+									<space width="10" />
+									<button id="button_object_properties_presetapply" name="button_object_properties_presetapply" text="Apply" width="80" />
+								</layout>
+								<space height="10" />
+								<selectbox id="object_properties_listbox" name="object_properties_listbox" height="70">
+								</selectbox>
+								<space height="10" />
+								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="45" height="auto"/>
+									<space width="*" />
+									<input id="object_property_name" name="object_property_name" width="240" height="auto" text="Name" />
+									<space width="*" />
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Value" width="45" height="auto"/>
+									<space width="*" />
+									<input id="object_property_value" name="object_property_value" width="240" height="auto" text="Value" />
+								</layout>
+							</layout>
+							<space width="20" />
+							<layout width="auto" height="auto" alignment="vertical">
+								<button id="button_object_properties_add" name="button_object_properties_add" text="Add" width="80" />
+								<space height="5" />
+								<button id="button_object_properties_remove" name="button_object_properties_remove" text="Remove" width="80" />
+								<space height="5" />
+								<button id="button_object_properties_save" name="button_object_properties_save" text="Save" width="80" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_lights" vertical-align="center">
+						<text font="resources/gui/fonts/Foo_25.fnt" text="Lights ..." width="auto" height="auto"/>
+					</tab-content>
+				</tabs-content>
+			</tabs>
+		</panel>
+	</layout>
+</screen>
