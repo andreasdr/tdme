@@ -223,25 +223,25 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Apply object property preset
+	 * Apply model property preset
 	 * @param preset id
 	 */
-	public void objectPropertiesPreset(String presetId) {
+	public void modelPropertiesPreset(String presetId) {
 		if (model == null) return;
 
-		// clear object properties
+		// clear model properties
 		model.clearProperties();
 
-		// add object properties by preset if missing
-		ArrayList<PropertyModelClass> objectPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
-		if (objectPropertyPresetVector != null) {
-			for (PropertyModelClass objectPropertyPreset: objectPropertyPresetVector) {
-				model.addProperty(objectPropertyPreset.getName(), objectPropertyPreset.getValue());
+		// add model properties by preset if missing
+		ArrayList<PropertyModelClass> modelPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
+		if (modelPropertyPresetVector != null) {
+			for (PropertyModelClass modelPropertyPreset: modelPropertyPresetVector) {
+				model.addProperty(modelPropertyPreset.getName(), modelPropertyPreset.getValue());
 			}
 		}
 
-		// update object properties to gui
-		modelViewerScreenController.setObjectProperties(
+		// update model properties to gui
+		modelViewerScreenController.setModelProperties(
 			presetId,
 			model.getProperties(),
 			null
@@ -249,19 +249,19 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Save a object property
+	 * Save a model property
 	 * @param old name
 	 * @param name
 	 * @param value
 	 * @return success
 	 */
-	public boolean objectPropertySave(String oldName, String name, String value) {
+	public boolean modelPropertySave(String oldName, String name, String value) {
 		if (model == null) return false;
 
 		// try to update property
 		if (model.updateProperty(oldName, name, value) == true) {
-			// reload object properties
-			modelViewerScreenController.setObjectProperties(
+			// reload model properties
+			modelViewerScreenController.setModelProperties(
 				null,
 				model.getProperties(),
 				name
@@ -276,16 +276,16 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Add a object property
+	 * Add a model property
 	 * @return success
 	 */
-	public boolean objectPropertyAdd() {
+	public boolean modelPropertyAdd() {
 		if (model == null) return false;
 
 		// try to add property
 		if (model.addProperty("new.property", "new.value")) {
-			// reload object properties
-			modelViewerScreenController.setObjectProperties(
+			// reload model properties
+			modelViewerScreenController.setModelProperties(
 				null,
 				model.getProperties(),
 				"new.property"
@@ -300,11 +300,11 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Remove a object property from object
+	 * Remove a model property from model properties
 	 * @param name
 	 * @return success
 	 */
-	public boolean objectPropertyRemove(String name) {
+	public boolean modelPropertyRemove(String name) {
 		if (model == null) return false;
 
 		// try to remove property
@@ -317,8 +317,8 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 				property = model.getPropertyByIndex(idx - 1);
 			}
 
-			// reload object properties
-			modelViewerScreenController.setObjectProperties(
+			// reload model properties
+			modelViewerScreenController.setModelProperties(
 				null,
 				model.getProperties(),
 				property == null?null:property.getName()
@@ -603,14 +603,14 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 		if (model != null) {
 			modelViewerScreenController.setScreenCaption("Model Viewer - " + model.getModel().getName());
 			PropertyModelClass preset = model.getProperty("preset");
-			modelViewerScreenController.setObjectProperties(preset != null?preset.getValue():null, model.getProperties(), null);
+			modelViewerScreenController.setModelProperties(preset != null?preset.getValue():null, model.getProperties(), null);
 			modelViewerScreenController.setModelData(model.getName(), model.getDescription());
 			modelViewerScreenController.setPivot(model.getPivot());
 			modelViewerScreenController.setBoundingVolume();
 			modelViewerScreenController.setupModelBoundingVolume();
 		} else {
 			modelViewerScreenController.setScreenCaption("Model Viewer - no model loaded");
-			modelViewerScreenController.unsetObjectProperties();
+			modelViewerScreenController.unsetModelProperties();
 			modelViewerScreenController.unsetModelData();
 			modelViewerScreenController.unsetPivot();
 			modelViewerScreenController.unsetBoundingVolume();
@@ -642,8 +642,8 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 			e.printStackTrace();
 		}
 
-		// set up object properties presets
-		modelViewerScreenController.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
+		// set up model properties presets
+		modelViewerScreenController.setModelPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 
 		// set up bounding volume types
 		modelViewerScreenController.setupBoundingVolumeTypes(

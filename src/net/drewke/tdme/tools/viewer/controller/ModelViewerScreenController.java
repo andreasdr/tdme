@@ -46,14 +46,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private GUIElementNode modelApply;
 	private GUIElementNode modelReload;
 	private GUIElementNode modelSave;
-	private GUIElementNode objectPropertyName;
-	private GUIElementNode objectPropertyValue;
-	private GUIElementNode objectPropertySave;
-	private GUIElementNode objectPropertyAdd;
-	private GUIElementNode objectPropertyRemove;
-	private GUIElementNode objectPropertiesList;
-	private GUIElementNode objectPropertyPresetApply;
-	private GUIElementNode objectPropertiesPresets;
+	private GUIElementNode modelPropertyName;
+	private GUIElementNode modelPropertyValue;
+	private GUIElementNode modelPropertySave;
+	private GUIElementNode modelPropertyAdd;
+	private GUIElementNode modelPropertyRemove;
+	private GUIElementNode modelPropertiesList;
+	private GUIElementNode modelPropertyPresetApply;
+	private GUIElementNode modelPropertiesPresets;
 	private GUIElementNode pivotX;
 	private GUIElementNode pivotY;
 	private GUIElementNode pivotZ;
@@ -107,14 +107,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			modelApply = (GUIElementNode)screenNode.getNodeById("button_model_apply");
 			modelReload = (GUIElementNode)screenNode.getNodeById("button_model_reload");
 			modelSave = (GUIElementNode)screenNode.getNodeById("button_model_save");
-			objectPropertyName = (GUIElementNode)screenNode.getNodeById("object_property_name");
-			objectPropertyValue = (GUIElementNode)screenNode.getNodeById("object_property_value");
-			objectPropertySave = (GUIElementNode)screenNode.getNodeById("button_object_properties_save");
-			objectPropertyAdd = (GUIElementNode)screenNode.getNodeById("button_object_properties_add");
-			objectPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_object_properties_remove");
-			objectPropertiesList = (GUIElementNode)screenNode.getNodeById("objectproperties_listbox");
-			objectPropertyPresetApply = (GUIElementNode)screenNode.getNodeById("button_object_properties_presetapply");
-			objectPropertiesPresets = (GUIElementNode)screenNode.getNodeById("objectproperties_presets");
+			modelPropertyName = (GUIElementNode)screenNode.getNodeById("model_property_name");
+			modelPropertyValue = (GUIElementNode)screenNode.getNodeById("model_property_value");
+			modelPropertySave = (GUIElementNode)screenNode.getNodeById("button_model_properties_save");
+			modelPropertyAdd = (GUIElementNode)screenNode.getNodeById("button_model_properties_add");
+			modelPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_model_properties_remove");
+			modelPropertiesList = (GUIElementNode)screenNode.getNodeById("model_properties_listbox");
+			modelPropertyPresetApply = (GUIElementNode)screenNode.getNodeById("button_model_properties_presetapply");
+			modelPropertiesPresets = (GUIElementNode)screenNode.getNodeById("model_properties_presets");
 			pivotX = (GUIElementNode)screenNode.getNodeById("pivot_x");
 			pivotY = (GUIElementNode)screenNode.getNodeById("pivot_y");
 			pivotZ = (GUIElementNode)screenNode.getNodeById("pivot_z");
@@ -260,173 +260,175 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * Set up object property preset ids
-	 * @param object property preset ids
+	 * Set up model property preset ids
+	 * @param model property preset ids
 	 */
-	public void setObjectPresetIds(Collection<String> objectPresetIds) {
-		// object properties presets inner
-		GUIParentNode objectPropertiesPresetsInnerNode = (GUIParentNode)(objectPropertiesPresets.getScreenNode().getNodeById(objectPropertiesPresets.getId() + "_inner"));
+	public void setModelPresetIds(Collection<String> modelPresetIds) {
+		// model properties presets inner
+		GUIParentNode modelPropertiesPresetsInnerNode = (GUIParentNode)(modelPropertiesPresets.getScreenNode().getNodeById(modelPropertiesPresets.getId() + "_inner"));
 
 		// clear sub nodes
-		objectPropertiesPresetsInnerNode.clearSubNodes();
+		modelPropertiesPresetsInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 0;
-		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
-		for (String objectPresetId: objectPresetIds) {
-			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + objectPresetId + "\" value=\"" + objectPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+		String modelPropertiesPresetsInnerNodeSubNodesXML = "";
+		for (String modelPresetId: modelPresetIds) {
+			modelPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + modelPresetId + "\" value=\"" + modelPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 			idx++;
 		}
 
 		// inject sub nodes
 		try {
 			GUIParser.parse(
-				objectPropertiesPresetsInnerNode,
-				objectPropertiesPresetsInnerNodeSubNodesXML
+				modelPropertiesPresetsInnerNode,
+				modelPropertiesPresetsInnerNodeSubNodesXML
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// relayout
-		objectPropertiesPresetsInnerNode.getScreenNode().layout();
+		modelPropertiesPresetsInnerNode.getScreenNode().layout();
 	}
 
 	/**
-	 * Set up object properties
+	 * Set up model properties
 	 * @param has properties
 	 * @param preset id
-	 * @param object properties
+	 * @param model properties
 	 */
-	public void setObjectProperties(String presetId, Iterable<PropertyModelClass> objectProperties, String selectedValue) {
+	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedValue) {
 		//
-		objectPropertiesPresets.getController().setDisabled(false);
-		objectPropertyPresetApply.getController().setDisabled(false);
-		objectPropertiesList.getController().setDisabled(false);
-		objectPropertyAdd.getController().setDisabled(false);
-		objectPropertyRemove.getController().setDisabled(false);
-		objectPropertySave.getController().setDisabled(true);
-		objectPropertyName.getController().setDisabled(true);
-		objectPropertyValue.getController().setDisabled(true);
+		modelPropertiesPresets.getController().setDisabled(false);
+		modelPropertyPresetApply.getController().setDisabled(false);
+		modelPropertiesList.getController().setDisabled(false);
+		modelPropertyAdd.getController().setDisabled(false);
+		modelPropertyRemove.getController().setDisabled(false);
+		modelPropertySave.getController().setDisabled(true);
+		modelPropertyName.getController().setDisabled(true);
+		modelPropertyValue.getController().setDisabled(true);
 
 		// set up preset
 		if (presetId != null) {
-			objectPropertiesPresets.getController().setValue(value.set(presetId));
+			modelPropertiesPresets.getController().setValue(value.set(presetId));
 		}
 
-		// object properties list box inner
-		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesList.getScreenNode().getNodeById(objectPropertiesList.getId() + "_inner"));
+		// model properties list box inner
+		GUIParentNode modelPropertiesListBoxInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(modelPropertiesList.getId() + "_inner"));
 		
 		// clear sub nodes
-		objectPropertiesListBoxInnerNode.clearSubNodes();
+		modelPropertiesListBoxInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 1;
-		String objectPropertiesListBoxSubNodesXML = "";
-		objectPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + objectPropertiesList.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
-		for (PropertyModelClass objectProperty: objectProperties) {
-			objectPropertiesListBoxSubNodesXML+= 
+		String modelPropertiesListBoxSubNodesXML = "";
+		modelPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelPropertiesList.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (PropertyModelClass modelProperty: modelProperties) {
+			modelPropertiesListBoxSubNodesXML+= 
 				"<selectbox-option text=\"" + 
-				objectProperty.getName() + 
+				modelProperty.getName() + 
 				": " + 
-				objectProperty.getValue() + 
+				modelProperty.getValue() + 
 				"\" value=\"" + 
-				objectProperty.getName() + 
+				modelProperty.getName() + 
 				"\" " +
-				(selectedValue != null && objectProperty.getName().equals(selectedValue)?"selected=\"true\" ":"") +
+				(selectedValue != null && modelProperty.getName().equals(selectedValue)?"selected=\"true\" ":"") +
 				"/>\n";
 		}
-		objectPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+		modelPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
 
 		// inject sub nodes
 		try {
 			GUIParser.parse(
-				objectPropertiesListBoxInnerNode,
-				objectPropertiesListBoxSubNodesXML
+				modelPropertiesListBoxInnerNode,
+				modelPropertiesListBoxSubNodesXML
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// relayout
-		objectPropertiesListBoxInnerNode.getScreenNode().layout();
+		modelPropertiesListBoxInnerNode.getScreenNode().layout();
 
 		//
-		onObjectPropertiesSelectionChanged();
+		onModelPropertiesSelectionChanged();
 	}
 
 	/**
-	 * Unset object properties
+	 * Unset model properties
 	 */
-	public void unsetObjectProperties() {
-		objectPropertiesPresets.getController().setValue(value.set("none"));
-		objectPropertiesPresets.getController().setDisabled(true);
-		objectPropertyPresetApply.getController().setDisabled(true);
-		objectPropertiesList.getController().setDisabled(true);
-		objectPropertyAdd.getController().setDisabled(true);
-		objectPropertyRemove.getController().setDisabled(true);
-		objectPropertySave.getController().setDisabled(true);
-		objectPropertyName.getController().setValue(TEXT_EMPTY);
-		objectPropertyName.getController().setDisabled(true);
-		objectPropertyValue.getController().setValue(TEXT_EMPTY);
-		objectPropertyValue.getController().setDisabled(true);
+	public void unsetModelProperties() {
+		GUIParentNode modelPropertiesListBoxInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(modelPropertiesList.getId() + "_inner"));
+		modelPropertiesListBoxInnerNode.clearSubNodes();
+		modelPropertiesPresets.getController().setValue(value.set("none"));
+		modelPropertiesPresets.getController().setDisabled(true);
+		modelPropertyPresetApply.getController().setDisabled(true);
+		modelPropertiesList.getController().setDisabled(true);
+		modelPropertyAdd.getController().setDisabled(true);
+		modelPropertyRemove.getController().setDisabled(true);
+		modelPropertySave.getController().setDisabled(true);
+		modelPropertyName.getController().setValue(TEXT_EMPTY);
+		modelPropertyName.getController().setDisabled(true);
+		modelPropertyValue.getController().setValue(TEXT_EMPTY);
+		modelPropertyValue.getController().setDisabled(true);
 	}
 
 	/**
-	 * On object property save
+	 * On model property save
 	 */
-	public void onObjectPropertySave() {
+	public void onModelPropertySave() {
 		ModelViewerView modelViewerView = ((ModelViewerView)TDMEViewer.getInstance().getView());
-		if (modelViewerView.objectPropertySave(
-			objectPropertiesList.getController().getValue().toString(),
-			objectPropertyName.getController().getValue().toString(),
-			objectPropertyValue.getController().getValue().toString()) == false) {
+		if (modelViewerView.modelPropertySave(
+			modelPropertiesList.getController().getValue().toString(),
+			modelPropertyName.getController().getValue().toString(),
+			modelPropertyValue.getController().getValue().toString()) == false) {
 			//
-			showErrorPopUp("Warning", "Saving object property failed");
+			showErrorPopUp("Warning", "Saving model property failed");
 		}
 	}
 
 	/**
-	 * On object property add
+	 * On model property add
 	 */
-	public void onObjectPropertyAdd() {
-		if (((ModelViewerView)TDMEViewer.getInstance().getView()).objectPropertyAdd() == false) {
-			showErrorPopUp("Warning", "Adding new object property failed");
+	public void onModelPropertyAdd() {
+		if (((ModelViewerView)TDMEViewer.getInstance().getView()).modelPropertyAdd() == false) {
+			showErrorPopUp("Warning", "Adding new model property failed");
 		}
 	}
 
 	/**
-	 * On object property remove
+	 * On model property remove
 	 */
-	public void onObjectPropertyRemove() {
-		if (((ModelViewerView)TDMEViewer.getInstance().getView()).objectPropertyRemove(objectPropertiesList.getController().getValue().toString()) == false) {
-			showErrorPopUp("Warning", "Removing object property failed");
+	public void onModelPropertyRemove() {
+		if (((ModelViewerView)TDMEViewer.getInstance().getView()).modelPropertyRemove(modelPropertiesList.getController().getValue().toString()) == false) {
+			showErrorPopUp("Warning", "Removing model property failed");
 		}
 	}
 
 	/**
-	 * On object property preset apply 
+	 * On model property preset apply 
 	 */
-	public void onObjectPropertyPresetApply() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
+	public void onModelPropertyPresetApply() {
+		((ModelViewerView)TDMEViewer.getInstance().getView()).modelPropertiesPreset(modelPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
-	 * Event callback for object properties selection
+	 * Event callback for model properties selection
 	 */
-	public void onObjectPropertiesSelectionChanged() {
-		objectPropertyName.getController().setDisabled(true);
-		objectPropertyName.getController().setValue(TEXT_EMPTY);
-		objectPropertyValue.getController().setDisabled(true);
-		objectPropertyValue.getController().setValue(TEXT_EMPTY);
-		objectPropertySave.getController().setDisabled(true);
-		PropertyModelClass objectProperty = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(objectPropertiesList.getController().getValue().toString());
-		if (objectProperty != null) {
-			objectPropertyName.getController().setValue(value.set(objectProperty.getName()));
-			objectPropertyValue.getController().setValue(value.set(objectProperty.getValue()));
-			objectPropertyName.getController().setDisabled(false);
-			objectPropertyValue.getController().setDisabled(false);
-			objectPropertySave.getController().setDisabled(false);
+	public void onModelPropertiesSelectionChanged() {
+		modelPropertyName.getController().setDisabled(true);
+		modelPropertyName.getController().setValue(TEXT_EMPTY);
+		modelPropertyValue.getController().setDisabled(true);
+		modelPropertyValue.getController().setValue(TEXT_EMPTY);
+		modelPropertySave.getController().setDisabled(true);
+		PropertyModelClass modelProperty = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(modelPropertiesList.getController().getValue().toString());
+		if (modelProperty != null) {
+			modelPropertyName.getController().setValue(value.set(modelProperty.getName()));
+			modelPropertyValue.getController().setValue(value.set(modelProperty.getValue()));
+			modelPropertyName.getController().setDisabled(false);
+			modelPropertyValue.getController().setDisabled(false);
+			modelPropertySave.getController().setDisabled(false);
 		}
 	}
 
@@ -593,8 +595,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @param bounding volume types
 	 */
 	public void setupBoundingVolumeTypes(String[] boundingVolumeTypes) {
-		// object properties list box inner
-		GUIParentNode boundingVolumeTypeDropDownInnerNode = (GUIParentNode)(objectPropertiesList.getScreenNode().getNodeById(boundingVolumeTypeDropDown.getId() + "_inner"));
+		// bounding volume types drop downs inner
+		GUIParentNode boundingVolumeTypeDropDownInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(boundingVolumeTypeDropDown.getId() + "_inner"));
 
 		// clear sub nodes
 		boundingVolumeTypeDropDownInnerNode.clearSubNodes();
@@ -913,8 +915,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.gui.events.GUIChangeListener#onValueChanged(net.drewke.tdme.gui.nodes.GUIElementNode)
 	 */
 	public void onValueChanged(GUIElementNode node) {
-		if (node == objectPropertiesList) {
-			onObjectPropertiesSelectionChanged();
+		if (node == modelPropertiesList) {
+			onModelPropertiesSelectionChanged();
 		} else {
 			// System.out.println("ModelViewerScreenController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 		}
@@ -943,17 +945,17 @@ public final class ModelViewerScreenController extends ScreenController implemen
 					if (node.getId().equals("button_model_apply")) {
 						onModelDataApply();
 					} else
-					if (node.getId().equals("button_object_properties_presetapply")) {
-						onObjectPropertyPresetApply();
+					if (node.getId().equals("button_model_properties_presetapply")) {
+						onModelPropertyPresetApply();
 					} else
-					if (node.getId().equals("button_object_properties_add")) {
-						onObjectPropertyAdd();
+					if (node.getId().equals("button_model_properties_add")) {
+						onModelPropertyAdd();
 					} else
-					if (node.getId().equals("button_object_properties_remove")) {
-						onObjectPropertyRemove();
+					if (node.getId().equals("button_model_properties_remove")) {
+						onModelPropertyRemove();
 					} else
-					if (node.getId().equals("button_object_properties_save")) {
-						onObjectPropertySave();
+					if (node.getId().equals("button_model_properties_save")) {
+						onModelPropertySave();
 					} else
 					if (node.getId().equals("button_pivot_apply")) {
 						onPivotApply();

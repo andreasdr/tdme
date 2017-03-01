@@ -9,7 +9,7 @@
 				<tabs-header>
 					<tab id="tabs_properties_display" text="Display" />
 					<tab id="tabs_properties_model" text="Model" />
-					<tab id="tabs_properties_object_properties" text="Properties" />
+					<tab id="tabs_properties_model_properties" text="Properties" />
 					<tab id="tabs_properties_pivot" text="Pivot" />
 					<tab id="tabs_properties_boundingvolume" text="Bounding Volume" />
 					<tab id="tabs_properties_stats" text="Statistics" />
@@ -63,37 +63,37 @@
 							</layout>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tabs_properties_object_properties" vertical-align="center">
+					<tab-content tab-id="tabs_properties_model_properties" vertical-align="center">
 						<layout width="auto" height="auto" alignment="horizontal">
 							<layout width="auto" height="auto" alignment="vertical">
 								<layout width="auto" height="auto" alignment="horizontal">
-									<dropdown id="objectproperties_presets" name="objectproperties_presets" width="510" height="auto" text="Test">
+									<dropdown id="model_properties_presets" name="model_properties_presets" width="510" height="auto" text="Test">
 										<dropdown-option text="Test 1" value="1" />										
 									</dropdown>
 									<space width="10" />
-									<button id="button_object_properties_presetapply" name="button_object_properties_presetapply" text="Apply" width="80" />
+									<button id="button_model_properties_presetapply" name="button_model_properties_presetapply" text="Apply" width="80" />
 								</layout>
 								<space height="10" />
-								<selectbox id="objectproperties_listbox" name="objectproperties_listbox" height="70">
+								<selectbox id="model_properties_listbox" name="model_properties_listbox" height="70">
 								</selectbox>
 								<space height="10" />
 								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
 									<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="45" height="auto"/>
 									<space width="*" />
-									<input id="object_property_name" name="object_property_name" width="240" height="auto" text="Name" />
+									<input id="model_property_name" name="model_property_name" width="240" height="auto" text="Name" />
 									<space width="*" />
 									<text font="resources/gui/fonts/Foo_25.fnt" text="Value" width="45" height="auto"/>
 									<space width="*" />
-									<input id="object_property_value" name="object_property_value" width="240" height="auto" text="Value" />
+									<input id="model_property_value" name="model_property_value" width="240" height="auto" text="Value" />
 								</layout>
 							</layout>
 							<space width="20" />
 							<layout width="auto" height="auto" alignment="vertical">
-								<button id="button_object_properties_add" name="button_object_properties_add" text="Add" width="80" />
+								<button id="button_model_properties_add" name="button_model_properties_add" text="Add" width="80" />
 								<space height="5" />
-								<button id="button_object_properties_remove" name="button_object_properties_remove" text="Remove" width="80" />
+								<button id="button_model_properties_remove" name="button_model_properties_remove" text="Remove" width="80" />
 								<space height="5" />
-								<button id="button_object_properties_save" name="button_object_properties_save" text="Save" width="80" />
+								<button id="button_model_properties_save" name="button_model_properties_save" text="Save" width="80" />
 							</layout>
 						</layout>
 					</tab-content>
