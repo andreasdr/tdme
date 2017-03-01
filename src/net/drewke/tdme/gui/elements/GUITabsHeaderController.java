@@ -92,7 +92,9 @@ public final class GUITabsHeaderController extends GUINodeController {
 			GUINode childControllerNode = childControllerNodes.get(i);
 			GUINodeController childController = childControllerNode.getController(); 
 			if (childController instanceof GUITabController) {
-				((GUITabController)childController).setSelected(false);
+				GUITabController guiTabController = (GUITabController)childController;
+				if (guiTabController.getNode().getParentControllerNode() != node) continue;
+				guiTabController.setSelected(false);
 			}
 		}
 	}
@@ -108,6 +110,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 			GUINodeController childController = childControllerNode.getController();
 			if (childController instanceof GUITabController) {
 				GUITabController guiTabController = (GUITabController)childController;
+				if (guiTabController.getNode().getParentControllerNode() != node) continue;
 				if (guiTabController.isDisabled() == true) continue;
 				tabControllers.add(guiTabController);
 			}

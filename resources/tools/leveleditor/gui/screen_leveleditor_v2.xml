@@ -245,7 +245,28 @@
 						</layout>
 					</tab-content>
 					<tab-content tab-id="tab_properties_lights" vertical-align="center">
-						<text font="resources/gui/fonts/Foo_25.fnt" text="Lights ..." width="auto" height="auto"/>
+						<tabs alignment="vertical" width="100%" height="100%">
+							<tabs-header>
+								<tab id="tab_properties_light0" text="Light 0" />
+								<tab id="tab_properties_light1" text="Light 1" />
+								<tab id="tab_properties_light2" text="Light 2" />
+								<tab id="tab_properties_light3" text="Light 3" />
+							</tabs-header>
+							<tabs-content>
+								<tab-content tab-id="tab_properties_light0" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Light0 ..." width="auto" height="auto"/>
+								</tab-content>
+								<tab-content tab-id="tab_properties_light1" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Light1 ..." width="auto" height="auto"/>
+								</tab-content>
+								<tab-content tab-id="tab_properties_light2" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Light2 ..." width="auto" height="auto"/>
+								</tab-content>
+								<tab-content tab-id="tab_properties_light3" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_25.fnt" text="Light3 ..." width="auto" height="auto"/>
+								</tab-content>
+							</tabs-content>
+						</tabs>
 					</tab-content>
 				</tabs-content>
 			</tabs>

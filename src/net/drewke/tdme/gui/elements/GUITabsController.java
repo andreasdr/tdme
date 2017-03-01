@@ -17,6 +17,7 @@ import net.drewke.tdme.utils.MutableString;
 public final class GUITabsController extends GUINodeController {
 
 	private ArrayList<GUINode> childControllerNodes = new ArrayList<GUINode>();
+	private MutableString tabContentNodeId = new MutableString();
 
 	/**
 	 * Constructor
@@ -56,6 +57,7 @@ public final class GUITabsController extends GUINodeController {
 			GUINodeController childController = childControllerNode.getController(); 
 			if (childController instanceof GUITabController) {
 				GUITabController tabController = (GUITabController)childController;
+				if (tabController.getNode().getParentControllerNode().getParentControllerNode() != node) continue;
 				tabController.setSelected(true);
 				setTabContentSelected(tabController.getNode().getId());
 				break;
@@ -89,7 +91,9 @@ public final class GUITabsController extends GUINodeController {
 			GUINode childControllerNode = childControllerNodes.get(i);
 			GUINodeController childController = childControllerNode.getController(); 
 			if (childController instanceof GUITabController) {
-				((GUITabController)childController).setSelected(false);
+				GUITabController tabController = (GUITabController)childController; 
+				if (tabController.getNode().getParentControllerNode().getParentControllerNode() != node) continue;
+				tabController.setSelected(false);
 			}
 		}
 	}
@@ -99,14 +103,17 @@ public final class GUITabsController extends GUINodeController {
 	 * @param id
 	 */
 	protected void setTabContentSelected(String id) {
+		tabContentNodeId.set(id).append("-content");
 		// select selected content tab, unselect other content tabs
 		((GUIParentNode)node).getChildControllerNodes(childControllerNodes);
 		for (int i = 0; i < childControllerNodes.size(); i++) {
 			GUINode childControllerNode = childControllerNodes.get(i);
 			GUINodeController childController = childControllerNode.getController(); 
 			if (childController instanceof GUITabContentController) {
+				GUITabContentController tabContentController = (GUITabContentController)childController;
+				if (tabContentController.getNode().getParentControllerNode().getParentControllerNode() != node) continue;
 				((GUITabContentController)childController).setSelected(
-					childController.getNode().getId().equals(id + "-content")
+					tabContentNodeId.equals(childController.getNode().getId())
 				);
 			}
 		}
