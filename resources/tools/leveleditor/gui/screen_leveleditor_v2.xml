@@ -126,7 +126,89 @@
 						</layout>
 					</tab-content>
 					<tab-content tab-id="tab_properties_object_transformations" vertical-align="center">
-						<text font="resources/gui/fonts/Foo_25.fnt" text="Transformations ..." width="auto" height="auto"/>
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal">
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_translation_x" name="object_translation_x" width="150" height="auto" text="X" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_translation_y" name="object_translation_y" width="150" height="auto" text="Y" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_translation_z" name="object_translation_z" width="150" height="auto" text="Z" />
+									</layout>
+									<space height="20" />
+									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+										<button id="button_translation_apply" name="button_translation_apply" text="Translate" />
+									</layout>
+								</layout>
+								<space width="25" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_scale_x" name="object_scale_x" width="150" height="auto" text="X" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_scale_y" name="object_scale_y" width="150" height="auto" text="Y" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_scale_z" name="object_scale_z" width="150" height="auto" text="Z" />
+									</layout>
+									<space height="20" />
+									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+										<button id="button_scale_apply" name="button_scale_apply" text="Scale" />
+									</layout>
+								</layout>
+								<space width="25" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_rotations_x" name="object_rotations_x" width="150" height="auto" text="X" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_rotations_y" name="object_rotations_y" width="150" height="auto" text="Y" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_rotations_z" name="object_rotations_z" width="150" height="auto" text="Z" />
+									</layout>
+									<space height="20" />
+									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+										<button id="button_rotation_apply" name="button_rotation_apply" text="Rotate" />
+									</layout>
+								</layout>
+								<space width="25" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<button id="button_object_color" name="button_object_color" text="Color" width="80" />
+									<space height="5" />
+									<button id="button_object_center" name="button_object_center" text="Center" width="80" />
+									<space height="5" />
+									<button id="button_object_remove" name="button_rotation_apply" text="Remove" width="80" />
+								</layout>
+							</layout>
+						</layout>
 					</tab-content>
 					<tab-content tab-id="tab_properties_object_properties" vertical-align="center">
 						<layout width="auto" height="auto" alignment="horizontal">
