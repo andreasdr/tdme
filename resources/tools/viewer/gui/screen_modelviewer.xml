@@ -7,15 +7,15 @@
 		<panel width="100%" height="220">
 			<tabs alignment="vertical" width="100%" height="100%">
 				<tabs-header>
-					<tab id="tabs_properties_display" text="Display" />
-					<tab id="tabs_properties_model" text="Model" />
-					<tab id="tabs_properties_model_properties" text="Properties" />
-					<tab id="tabs_properties_pivot" text="Pivot" />
-					<tab id="tabs_properties_boundingvolume" text="Bounding Volume" />
-					<tab id="tabs_properties_stats" text="Statistics" />
+					<tab id="tab_properties_display" text="Display" />
+					<tab id="tab_properties_model" text="Model" />
+					<tab id="tab_properties_model_properties" text="Properties" />
+					<tab id="tab_properties_pivot" text="Pivot" />
+					<tab id="tab_properties_boundingvolume" text="Bounding Volume" />
+					<tab id="tab_properties_stats" text="Statistics" />
 				</tabs-header>
 				<tabs-content>
-					<tab-content tab-id="tabs_properties_display" vertical-align="center">
+					<tab-content tab-id="tab_properties_display" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal">
 								<checkbox id="display_ground" name="display_ground" value="1" />
@@ -38,7 +38,7 @@
 							</layout>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tabs_properties_model" vertical-align="center">
+					<tab-content tab-id="tab_properties_model" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="200" height="auto"/>
@@ -63,7 +63,7 @@
 							</layout>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tabs_properties_model_properties" vertical-align="center">
+					<tab-content tab-id="tab_properties_model_properties" vertical-align="center">
 						<layout width="auto" height="auto" alignment="horizontal">
 							<layout width="auto" height="auto" alignment="vertical">
 								<layout width="auto" height="auto" alignment="horizontal">
@@ -97,7 +97,7 @@
 							</layout>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tabs_properties_pivot">
+					<tab-content tab-id="tab_properties_pivot">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="50" height="auto" />
@@ -122,7 +122,7 @@
 							</layout>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tabs_properties_boundingvolume" vertical-align="top"> 
+					<tab-content tab-id="tab_properties_boundingvolume" vertical-align="top"> 
 						<layout width="100%" height="100%" horizontal-align="center" alignment="vertical">
 							<space height="10" />
 							<layout width="auto" height="auto" alignment="vertical">
@@ -228,7 +228,7 @@
 							</element>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tabs_properties_stats" vertical-align="center">
+					<tab-content tab-id="tab_properties_stats" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_25.fnt" text="Opaque faces" width="200" height="auto" />
