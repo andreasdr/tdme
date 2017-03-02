@@ -1,10 +1,10 @@
 <screen id="leveleditor" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
 		 <panel alignment="none" width="100%" height="auto" padding="5" horizontal-align="center">
-			<text id="screen_caption" font="resources/gui/fonts/Foo_25.fnt" text="Level Editor" width="auto" height="auto" />
+			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Level Editor" width="auto" height="auto" />
 		</panel>
 		<element width="100%" height="*" border="1" border-color="#000000" focusable="true" ignore-events="true" />
-		<panel width="100%" height="220">
+		<panel width="100%" height="200">
 			<tabs alignment="vertical" width="100%" height="100%">
 				<tabs-header>
 					<tab id="tab_properties_grid" text="Grid" />
@@ -19,13 +19,13 @@
 					<tab-content tab-id="tab_properties_grid" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Y position" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Y position" width="200" height="auto"/>
 								<space width="5" />
 								<input id="grid_y_position" name="grid_y_position" width="200" height="auto" text="Y position" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Enable" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Enable" width="200" height="auto"/>
 								<space width="5" />
 								<checkbox id="grid_enabled" name="grid_enabled" width="auto" height="auto" value="1" />
 							</layout>
@@ -38,19 +38,19 @@
 					<tab-content tab-id="tab_properties_map" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Width" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Width" width="200" height="auto"/>
 								<space width="5" />
 								<input id="map_width" name="map_width" width="200" height="auto" text="Width" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Height" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Height" width="200" height="auto"/>
 								<space width="5" />
 								<input id="map_height" name="map_height" width="200" height="auto" text="Height" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Depth" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Depth" width="200" height="auto"/>
 								<space width="5" />
 								<input id="map_depth" name="map_depth" width="200" height="auto" text="Depth" />
 							</layout>
@@ -69,11 +69,11 @@
 								</selectbox>
 								<space height="10" />
 								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="45" height="auto"/>
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="45" height="auto"/>
 									<space width="*" />
 									<input id="map_property_name" name="map_property_name" width="240" height="auto" text="Name" />
 									<space width="*" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Value" width="45" height="auto"/>
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Value" width="45" height="auto"/>
 									<space width="*" />
 									<input id="map_property_value" name="map_property_value" width="240" height="auto" text="Value" />
 								</layout>
@@ -93,13 +93,13 @@
 							<layout width="auto" height="auto" alignment="horizontal">
 								<layout width="auto" height="auto" alignment="vertical">
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="145" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="145" height="auto"/>
 										<space width="5" />
 										<input id="object_name" name="object_name" width="150" height="auto" text="Name" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Description" width="145" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Description" width="145" height="auto"/>
 										<space width="5" />
 										<input id="object_description" name="object_description" width="150" height="auto" text="Description" />
 									</layout>
@@ -107,13 +107,13 @@
 								<space width="20" />
 								<layout width="auto" height="auto" alignment="vertical">
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Model" width="145" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Model" width="145" height="auto"/>
 										<space width="5" />
 										<input id="object_model" name="object_model" width="150" height="auto" text="Model" disabled="true" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Center" width="145" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="145" height="auto"/>
 										<space width="5" />
 										<input id="object_center" name="object_center" width="150" height="auto" text="Center" disabled="true" />
 									</layout>
@@ -130,19 +130,19 @@
 							<layout width="auto" height="auto" alignment="horizontal">
 								<layout width="auto" height="auto" alignment="vertical">
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_translation_x" name="object_translation_x" width="150" height="auto" text="X" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_translation_y" name="object_translation_y" width="150" height="auto" text="Y" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_translation_z" name="object_translation_z" width="150" height="auto" text="Z" />
 									</layout>
@@ -154,19 +154,19 @@
 								<space width="25" />
 								<layout width="auto" height="auto" alignment="vertical">
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_scale_x" name="object_scale_x" width="150" height="auto" text="X" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_scale_y" name="object_scale_y" width="150" height="auto" text="Y" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_scale_z" name="object_scale_z" width="150" height="auto" text="Z" />
 									</layout>
@@ -178,19 +178,19 @@
 								<space width="25" />
 								<layout width="auto" height="auto" alignment="vertical">
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_rotations_x" name="object_rotations_x" width="150" height="auto" text="X" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_rotations_y" name="object_rotations_y" width="150" height="auto" text="Y" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="20" height="auto"/>
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
 										<space width="5" />
 										<input id="object_rotations_z" name="object_rotations_z" width="150" height="auto" text="Z" />
 									</layout>
@@ -225,11 +225,11 @@
 								</selectbox>
 								<space height="10" />
 								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="45" height="auto"/>
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="45" height="auto"/>
 									<space width="*" />
 									<input id="object_property_name" name="object_property_name" width="240" height="auto" text="Name" />
 									<space width="*" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Value" width="45" height="auto"/>
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Value" width="45" height="auto"/>
 									<space width="*" />
 									<input id="object_property_value" name="object_property_value" width="240" height="auto" text="Value" />
 								</layout>
@@ -267,11 +267,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Ambient" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_ambient" name="light0_ambient" width="150" height="auto" text="Ambient" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Diffuse" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_diffuse" name="light0_diffuse" width="150" height="auto" text="Diffuse" />
 												</layout>
@@ -279,7 +279,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Specular" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_specular" name="light0_specular" width="150" height="auto" text="Specular" />
 													<space width="320" />
@@ -288,11 +288,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="C. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_constant_attenuation" name="light0_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="L. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_linear_attenuation" name="light0_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
 												</layout>
@@ -300,7 +300,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_quadratic_attenuation" name="light0_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
 													<space width="320" />
@@ -309,11 +309,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot from" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_position" name="light0_position" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot to" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_spot_to" name="light0_spot_to" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -321,7 +321,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot direction" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_spot_direction" name="light0_spot_direction" width="150" height="auto" text="Spot direction" />
 													<space width="20" />
@@ -331,11 +331,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_spot_cutoff" name="light0_spot_cutoff" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot exponent" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light0_spot_exponent" name="light0_spot_exponent" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -343,7 +343,7 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
 												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Enabled" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
 													<space width="5" />
 													<checkbox id="light0_enabled" name="light0_enabled" width="auto" height="auto" value="1" />
 													<space width="*" />
@@ -372,11 +372,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Ambient" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_ambient" name="light1_ambient" width="150" height="auto" text="Ambient" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Diffuse" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_diffuse" name="light1_diffuse" width="150" height="auto" text="Diffuse" />
 												</layout>
@@ -384,7 +384,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Specular" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_specular" name="light1_specular" width="150" height="auto" text="Specular" />
 													<space width="320" />
@@ -393,11 +393,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="C. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_constant_attenuation" name="light1_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="L. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_linear_attenuation" name="light1_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
 												</layout>
@@ -405,7 +405,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_quadratic_attenuation" name="light1_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
 													<space width="320" />
@@ -414,11 +414,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot from" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_position" name="light1_position" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot to" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_spot_to" name="light1_spot_to" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -426,7 +426,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot direction" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_spot_direction" name="light1_spot_direction" width="150" height="auto" text="Spot direction" />
 													<space width="20" />
@@ -436,11 +436,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_spot_cutoff" name="light1_spot_cutoff" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot exponent" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light1_spot_exponent" name="light1_spot_exponent" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -448,7 +448,7 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
 												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Enabled" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
 													<space width="5" />
 													<checkbox id="light1_enabled" name="light1_enabled" width="auto" height="auto" value="1" />
 													<space width="*" />
@@ -477,11 +477,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Ambient" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_ambient" name="light2_ambient" width="150" height="auto" text="Ambient" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Diffuse" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_diffuse" name="light2_diffuse" width="150" height="auto" text="Diffuse" />
 												</layout>
@@ -489,7 +489,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Specular" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_specular" name="light2_specular" width="150" height="auto" text="Specular" />
 													<space width="320" />
@@ -498,11 +498,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="C. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_constant_attenuation" name="light2_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="L. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_linear_attenuation" name="light2_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
 												</layout>
@@ -510,7 +510,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_quadratic_attenuation" name="light2_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
 													<space width="320" />
@@ -519,11 +519,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot from" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_position" name="light2_position" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot to" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_spot_to" name="light2_spot_to" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -531,7 +531,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot direction" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_spot_direction" name="light2_spot_direction" width="150" height="auto" text="Spot direction" />
 													<space width="20" />
@@ -541,11 +541,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_spot_cutoff" name="light2_spot_cutoff" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot exponent" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light2_spot_exponent" name="light2_spot_exponent" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -553,7 +553,7 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
 												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Enabled" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
 													<space width="5" />
 													<checkbox id="light2_enabled" name="light2_enabled" width="auto" height="auto" value="1" />
 													<space width="*" />
@@ -582,11 +582,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Ambient" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_ambient" name="light3_ambient" width="150" height="auto" text="Ambient" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Diffuse" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_diffuse" name="light3_diffuse" width="150" height="auto" text="Diffuse" />
 												</layout>
@@ -594,7 +594,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Specular" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_specular" name="light3_specular" width="150" height="auto" text="Specular" />
 													<space width="320" />
@@ -603,11 +603,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="C. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_constant_attenuation" name="light3_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="L. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_linear_attenuation" name="light3_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
 												</layout>
@@ -615,7 +615,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_quadratic_attenuation" name="light3_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
 													<space width="320" />
@@ -624,11 +624,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot from" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_position" name="light3_position" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot to" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_spot_to" name="light3_spot_to" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -636,7 +636,7 @@
 											<space height="5" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot direction" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_spot_direction" name="light3_spot_direction" width="150" height="auto" text="Spot direction" />
 													<space width="20" />
@@ -646,11 +646,11 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto">
 												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_spot_cutoff" name="light3_spot_cutoff" width="150" height="auto" text="Spot from" />
 													<space width="20" />
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Spot exponent" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
 													<space width="5" />
 													<input id="light3_spot_exponent" name="light3_spot_exponent" width="150" height="auto" text="Spot to" />
 												</layout>
@@ -658,7 +658,7 @@
 											<space height="20" />
 											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
 												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_25.fnt" text="Enabled" width="145" height="auto"/>
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
 													<space width="5" />
 													<checkbox id="light3_enabled" name="light3_enabled" width="auto" height="auto" value="1" />
 													<space width="*" />

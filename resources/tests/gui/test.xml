@@ -21,34 +21,34 @@
 							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox1" value="1" disabled="true" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Check me!" color="#000000" height="100%" vertical-align="center" />
+								<text width="*" font="resources/gui/fonts/Foo_20.fnt" text="Check me!" color="#000000" height="100%" vertical-align="center" />
 							</layout>
 							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox2" value="1" selected="true" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Check me!" color="#000000" height="100%" vertical-align="center"  />
+								<text width="*" font="resources/gui/fonts/Foo_20.fnt" text="No! Check me!" color="#000000" height="100%" vertical-align="center"  />
 							</layout>
 							<layout padding="2" width="100%" alignment="horizontal">
 								<checkbox name="checkbox3" value="1" selected="true" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Rather check me!" color="#000000" height="100%" vertical-align="center" />
+								<text width="*" font="resources/gui/fonts/Foo_20.fnt" text="Rather check me!" color="#000000" height="100%" vertical-align="center" />
 							</layout>
 						</layout>
 						<layout border="1" padding="10" alignment="vertical" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="50%">
 							<layout padding="2" width="100%" alignment="horizontal">
 								<radiobutton name="radio" value="1" disabled="true"/>
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Select me!" color="#000000" />
+								<text width="*" font="resources/gui/fonts/Foo_20.fnt" text="Select me!" color="#000000" />
 							</layout>
 							<layout padding="2" width="100%" alignment="horizontal">
 								<radiobutton name="radio" value="2" selected="true" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="No! Select me!" color="#000000" />
+								<text width="*" font="resources/gui/fonts/Foo_20.fnt" text="No! Select me!" color="#000000" />
 							</layout>
 							<layout padding="2" width="100%" alignment="horizontal">
 								<radiobutton name="radio" value="3" />
 								<space width="10" />
-								<text width="*" font="resources/gui/fonts/Foo_25.fnt" text="Do select me!" color="#000000" />
+								<text width="*" font="resources/gui/fonts/Foo_20.fnt" text="Do select me!" color="#000000" />
 							</layout>
 						</layout>
 					</layout>
@@ -57,11 +57,11 @@
 					<layout padding="10" horizontal-align="center" alignment="vertical" width="100%">
 						<layout horizontal-align="center" alignment="none" width="80%">
 							<layout border="1" padding="10" alignment="horizontal" vertical-align="center" horizontal-align="center" background-color="#f0f0f0" width="80%">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Some" color="#000000" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Some" color="#000000" />
 								<space width="10" />
-								<text font="resources/gui/fonts/Foo_25.fnt" text="text" color="#000000" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="text" color="#000000" />
 								<space width="10" />
-								<text font="resources/gui/fonts/Foo_25.fnt" text="here" color="#000000" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="here" color="#000000" />
 							</layout>
 						</layout>
 						<space height="10" />
@@ -139,7 +139,7 @@
 							<image hide-on="mouseover,click" src="resources/tests/gui/images/button_normal.png" horizontal-align="center" vertical-align="center" />
 							<image show-on="mouseover" src="resources/tests/gui/images/button_mouseover.png" horizontal-align="center" vertical-align="center" />
 							<image show-on="click" src="resources/tests/gui/images/button_click.png" horizontal-align="center" vertical-align="center" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="ImageBtn!" color="#ffffff" horizontal-align="center" vertical-align="center" />
 						</element>
 						<space height="*" />
 						<button id="test_text_button" name="button" text="Test get/setValues()" />
@@ -184,11 +184,11 @@
 								</scrollarea-vertical>
 							</dropdown>
 							<space height="20" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="consetetur sadipscing elitr," color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="sed diam voluptua." color="#000000" />
 						</layout>
 					</layout>
 				</tab-content>
@@ -200,34 +200,34 @@
 				<tab-content tab-id="tab6" horizontal-align="center" vertical-align="center">
 					<scrollarea id="bbb" width="100%" height="100%">
 						<layout id="ccc" alignment="vertical" width="auto" height="auto">
-							<text font="resources/gui/fonts/Foo_25.fnt" text="START" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="consetetur sadipscing elitr," color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua." color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="labore et dolore magna aliquyam erat" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="sed diam voluptua" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="At vero eos et accusam et justo duo dolores et ea rebum" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Stet clita kasd gubergren" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="ccc pre eee" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="eee begin" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet, sed diam voluptua. in hendrerit in vulputate velit esse molestie consequat.consetetur sadipscing elitr." color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Left. Sed diam nonumy eirmod tempor invidunt, consetetur sadipscing elitr, ut labore et dolore magna aliquyam erat. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Right." color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="ccc post eee" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="no sea takimata sanctus est Lorem ipsum dolor sit amet" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Duis autem vel eum iriure dolor" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="in hendrerit in vulputate velit esse molestie consequat" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="vel illum dolore eu feugiat nulla facilisis" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="at vero eros et accumsan et iusto" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="odio dignissim qui blandit praesent" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="luptatum zzril delenit augue duis" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="START" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Lorem ipsum dolor sit amet," color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="consetetur sadipscing elitr," color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="sed diam nonumy eirmod tempor invidunt " color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="sed diam voluptua." color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="labore et dolore magna aliquyam erat" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="ut labore et dolore magna aliquyam erat" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="sed diam voluptua" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="At vero eos et accusam et justo duo dolores et ea rebum" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Stet clita kasd gubergren" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="ccc pre eee" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="eee begin" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Lorem ipsum dolor sit amet, sed diam voluptua. in hendrerit in vulputate velit esse molestie consequat.consetetur sadipscing elitr." color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Left. Sed diam nonumy eirmod tempor invidunt, consetetur sadipscing elitr, ut labore et dolore magna aliquyam erat. Lorem ipsum dolor sit amet, consetetur sadipscing elitr. Right." color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="ccc post eee" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="no sea takimata sanctus est Lorem ipsum dolor sit amet" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Duis autem vel eum iriure dolor" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="in hendrerit in vulputate velit esse molestie consequat" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="vel illum dolore eu feugiat nulla facilisis" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="at vero eros et accumsan et iusto" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="odio dignissim qui blandit praesent" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="luptatum zzril delenit augue duis" color="#000000" />
 							<button id="ddd" name="button2" text="I agree ccc" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="dolore te feugait nulla facilisi" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="Lorem ipsum dolor sit amet" color="#000000" />
-							<text font="resources/gui/fonts/Foo_25.fnt" text="END" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="dolore te feugait nulla facilisi" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="Lorem ipsum dolor sit amet" color="#000000" />
+							<text font="resources/gui/fonts/Foo_20.fnt" text="END" color="#000000" />
 						</layout>
 					</scrollarea>
 				</tab-content>

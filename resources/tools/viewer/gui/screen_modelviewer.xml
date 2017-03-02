@@ -1,10 +1,10 @@
 <screen id="modelviewer" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
 		 <panel alignment="none" width="100%" height="auto" padding="5" horizontal-align="center">
-			<text id="screen_caption" font="resources/gui/fonts/Foo_25.fnt" text="Model Viewer" width="auto" height="auto" />
+			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Model Viewer" width="auto" height="auto" />
 		</panel>
 		<element width="100%" height="*" border="1" border-color="#000000" focusable="true" ignore-events="true" />
-		<panel width="100%" height="220">
+		<panel width="100%" height="200">
 			<tabs alignment="vertical" width="100%" height="100%">
 				<tabs-header>
 					<tab id="tab_properties_display" text="Display" />
@@ -17,20 +17,20 @@
 				<tabs-content>
 					<tab-content tab-id="tab_properties_display" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
-							<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<checkbox id="display_ground" name="display_ground" value="1" />
 								<space width="5" />
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Ground" width="120" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Ground" width="120" height="auto"/>
 								<space width="20" />
 								<checkbox id="display_shadowing" name="display_shadowing" value="1" />
 								<space width="5" />
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Shadowing" width="120" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Shadowing" width="120" height="auto"/>
 							</layout>
 							<space height="5" />
-							<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<checkbox id="display_boundingvolume" name="display_boundingvolume" value="1" />
 								<space width="5" />
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Bounding Volume" width="auto" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Bounding Volume" width="auto" height="auto"/>
 							</layout>
 							<space height="20" />
 							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
@@ -41,13 +41,13 @@
 					<tab-content tab-id="tab_properties_model" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="200" height="auto"/>
 								<space width="5" />
 								<input id="model_name" name="model_name" width="200" height="auto" text="Name" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Description" width="200" height="auto"/>
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Description" width="200" height="auto"/>
 								<space width="5" />
 								<input id="model_description" name="model_description" width="200" height="auto" text="Description" />
 							</layout>
@@ -78,11 +78,11 @@
 								</selectbox>
 								<space height="10" />
 								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Name" width="45" height="auto"/>
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="45" height="auto"/>
 									<space width="*" />
 									<input id="model_property_name" name="model_property_name" width="240" height="auto" text="Name" />
 									<space width="*" />
-									<text font="resources/gui/fonts/Foo_25.fnt" text="Value" width="45" height="auto"/>
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Value" width="45" height="auto"/>
 									<space width="*" />
 									<input id="model_property_value" name="model_property_value" width="240" height="auto" text="Value" />
 								</layout>
@@ -100,19 +100,19 @@
 					<tab-content tab-id="tab_properties_pivot">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="X" width="50" height="auto" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="50" height="auto" />
 								<space width="5" />
 								<input id="pivot_x" name="pivot_x" width="150" height="auto" text="" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Y" width="50" height="auto" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="50" height="auto" />
 								<space width="5" />
 								<input id="pivot_y" name="pivot_y" width="150" height="auto" text="" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Z" width="50" height="auto" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="50" height="auto" />
 								<space width="5" />
 								<input id="pivot_z" name="pivot_z" width="150" height="auto" text="" />
 							</layout>
@@ -143,11 +143,11 @@
 							<element id="boundingvolume" width="auto" height="100%">  
 								<layout show-on="sphere" id="boundingvolume_sphere" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_sphere_center" name="boundingvolume_sphere_center" width="150" height="auto" text="0.0" />
 										<space width="*" />
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Radius" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Radius" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_sphere_radius" name="boundingvolume_sphere_radius" width="150" height="auto" text="0.0, 0.0, 0.0" />
 									</layout>
@@ -156,17 +156,17 @@
 								</layout>
 								<layout show-on="capsule" id="boundingvolume_capsule" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Point A" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Point A" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_capsule_a" name="boundingvolume_capsule_a" width="150" height="auto" text="0.0, 0.0, 0.0" />
 										<space width="*" />
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Point B" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Point B" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_capsule_b" name="boundingvolume_capsule_b" width="150" height="auto" text="0.0, 0.0, 0.0" />
 									</layout>
 									<space height="5" />
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Radius" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Radius" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_capsule_radius" name="boundingvolume_capsule_radius" width="150" height="auto" text="0.0" />
 										<space width="*" />
@@ -176,11 +176,11 @@
 								</layout>
 								<layout show-on="aabb" id="boundingvolume_aabb" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Min" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Min" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_aabb_min" name="boundingvolume_sphere_center" width="150" height="auto" text="0.0, 0.0, 0.0" />
 										<space width="*" />
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Max" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Max" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_aabb_max" name="boundingvolume_sphere_radius" width="150" height="auto" text="0.0, 0.0, 0.0" />
 									</layout>
@@ -189,27 +189,27 @@
 								</layout>
 								<layout show-on="obb" id="boundingvolume_obb" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_obb_center" name="boundingvolume_obb_center" width="150" height="auto" text="0.0, 0.0, 0.0" />
 										<space width="*" />
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Halfextension" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Halfextension" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_obb_halfextension" name="boundingvolume_obb_halfextension" width="150" height="auto" text="0.0, 0.0, 0.0" />
 									</layout>
 									<space height="5" />
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_obb_axis0" name="boundingvolume_obb_axis0" width="150" height="auto" text="0.0, 0.0, 0.0" />
 										<space width="*" />
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_obb_axis1" name="boundingvolume_obb_axis1" width="150" height="auto" text="0.0, 0.0, 0.0" />
 									</layout>
 									<space height="5" />
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_obb_axis2" name="boundingvolume_obb_axis2" width="150" height="auto" text="0.0, 0.0, 0.0" />
 										<space width="*" />
@@ -218,7 +218,7 @@
 								</layout> 
 								<layout show-on="convexmesh" id="boundingvolume_convexmesh" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 									<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-										<text font="resources/gui/fonts/Foo_25.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
 										<space width="5" />
 										<input id="boundingvolume_convexmesh_file" name="boundingvolume_convexmesh_file" width="455" height="auto" text="./model.tm" />
 									</layout>
@@ -231,19 +231,19 @@
 					<tab-content tab-id="tab_properties_stats" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Opaque faces" width="200" height="auto" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Opaque faces" width="200" height="auto" />
 								<space width="5" />
 								<input id="stats_opaque_faces" name="stats_opaque_faces" width="150" height="auto" text="0" disabled="true" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Transparent faces" width="200" height="auto" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Transparent faces" width="200" height="auto" />
 								<space width="5" />
 								<input id="stats_transparent_faces" name="stats_transparent_faces" width="150" height="auto" text="0" disabled="true" />
 							</layout>
 							<space height="5" />
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_25.fnt" text="Material count" width="200" height="auto" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Material count" width="200" height="auto" />
 								<space width="5" />
 								<input id="stats_material_count" name="stats_material_count" width="150" height="auto" text="0" disabled="true" />
 							</layout>
