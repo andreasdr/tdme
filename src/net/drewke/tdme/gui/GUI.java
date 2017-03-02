@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
@@ -53,7 +53,7 @@ public final class GUI implements MouseListener, KeyListener {
 	};
 	private ArrayList<GUIKeyboardEvent> keyboardEvents = new ArrayList<GUIKeyboardEvent>();
 
-	private Semaphore eventsMutex = new Semaphore(1);
+	private ReentrantLock eventsMutex = new ReentrantLock();
 
 	private int width;
 	private int height;
@@ -112,14 +112,14 @@ public final class GUI implements MouseListener, KeyListener {
 	 * Lock mouse events
 	 */
 	public void lockEvents() {
-		eventsMutex.acquireUninterruptibly();
+		eventsMutex.lock();
 	}
 
 	/**
 	 * Unlock events
 	 */
 	public void unlockEvents() {
-		eventsMutex.release();
+		eventsMutex.unlock();
 	}
 
 	/**
