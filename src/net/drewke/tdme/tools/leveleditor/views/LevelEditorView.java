@@ -3,7 +3,6 @@ package net.drewke.tdme.tools.leveleditor.views;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
@@ -96,9 +95,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	private final static String MODEL_ROOT = "/resources/models/";
 	private final static String GAME_ROOT = "/../../../";
 
-	private final static int MOUSE_BUTTON_LEFT = 0;
-	private final static int MOUSE_BUTTON_MIDDLE = 1;
-	private final static int MOUSE_BUTTON_RIGHT = 2;
+	private final static int MOUSE_BUTTON_NONE = 0;
+	private final static int MOUSE_BUTTON_LEFT = 1;
+	private final static int MOUSE_BUTTON_MIDDLE = 2;
+	private final static int MOUSE_BUTTON_RIGHT = 3;
 	private final static int MOUSE_DOWN_LAST_POSITION_NONE = -1;
 	private final static int MOUSE_PANNING_NONE = 0;
 	private final static int MOUSE_ROTATION_NONE = 0;
@@ -331,14 +331,17 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			levelEditorScreenController.unselectObjectsInObjectListBox();
 		}
 
+		// handle mouse events
 		for (int i = 0; i < engine.getGUI().getMouseEvents().size(); i++) {
 			GUIMouseEvent event = engine.getGUI().getMouseEvents().get(i);
 
 			// skip on processed events
 			if (event.isProcessed() == true) continue;
 
+			System.out.println(event);
+
 			// check if dragging
-			if (event.getButton() == 1) {
+			if (event.getButton() != MOUSE_BUTTON_NONE) {
 				// check if dragging
 				if (mouseDragging == false) {
 					if (mouseDownLastX != event.getX() ||
@@ -357,7 +360,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			}
 
 			// selection
-			if (event.getButton() == 1 && event.getButton() == MOUSE_BUTTON_LEFT) {
+			if (event.getButton() == MOUSE_BUTTON_LEFT) {
 				// check if dragging
 				if (mouseDragging == false) {
 					if (mouseDownLastX != event.getX() ||
@@ -380,8 +383,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 						setStandardObjectColorEffect(objectToRemove);
 						selectedObjects.remove(objectToRemove);
 						selectedObjectsById.remove(objectToRemove.getId());
+						levelEditorScreenController.unselectObjectInObjectListBox(objectToRemove.getId());
 					}
-					levelEditorScreenController.unselectObjectsInObjectListBox();
 				}
 
 				// check if ground plate was clicked
@@ -420,24 +423,24 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				updateGUIElements();
 			} else
 			// panning
-			if (event.getButton() == 1 && event.getButton() == MOUSE_BUTTON_RIGHT) {
+			if (event.getButton() == MOUSE_BUTTON_RIGHT) {
 				if (mouseDownLastX != MOUSE_DOWN_LAST_POSITION_NONE &&
 					mouseDownLastY != MOUSE_DOWN_LAST_POSITION_NONE) {
-					mousePanningSide = (event.getX() - mouseDownLastX);
-					mousePanningForward = (event.getY() - mouseDownLastY);
+					mousePanningSide = event.getX() - mouseDownLastX;
+					mousePanningForward = event.getY() - mouseDownLastY;
 				}
 			} else
-			if (event.getButton() == 1 && event.getButton() == MOUSE_BUTTON_MIDDLE) {
+			if (event.getButton() == MOUSE_BUTTON_MIDDLE) {
 				centerObject();
 				if (mouseDownLastX != MOUSE_DOWN_LAST_POSITION_NONE &&
 					mouseDownLastY != MOUSE_DOWN_LAST_POSITION_NONE) {
-					mouseRotationX = (event.getX() - mouseDownLastX);
-					mouseRotationY = (event.getY() - mouseDownLastY);
+					mouseRotationX = event.getX() - mouseDownLastX;
+					mouseRotationY = event.getY() - mouseDownLastY;
 				}
 			}
 
 			// last mouse down position
-			if (event.getButton() == 1) {
+			if (event.getButton() != MOUSE_BUTTON_NONE) {
 				//
 				mouseDownLastX = event.getX();
 				mouseDownLastY = event.getY();
@@ -565,10 +568,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Select objects by id
-	 * @param id
+	 * Select objects
+	 * @param object ids
 	 */
-	public void selectObjectsById(List<String> selection) {
+	public void selectObjects(ArrayList<String> objectIds) {
 		// remove all objects which are currently selected 
 		ArrayList<Object3D> objectsToRemove = (ArrayList<Object3D>)selectedObjects.clone();
 		for (Object3D objectToRemove: objectsToRemove) {
@@ -578,7 +581,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		}
 
 		// select objects from selection
-		for (String objectId: selection) {
+		for (String objectId: objectIds) {
 			Entity selectedObject = engine.getEntity(objectId);
 			setStandardObjectColorEffect(selectedObject);
 			setHighlightObjectColorEffect(selectedObject);
@@ -1070,7 +1073,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			selectedObjectsById.put(object.getId(), object);
 
 			// update in objects listbox
-			levelEditorScreenController.updateObjectInObjectListbox(oldId, name);
+			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		}
 
 		// set description
@@ -1174,7 +1177,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			engine.addEntity(object);
 
 			// add to objects listbox
-			levelEditorScreenController.addObjectToObjectListbox(levelEditorObject.getId());
+			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		}
 	}
 
@@ -1194,7 +1197,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			pasteObjects.remove(objectToRemove);
 			selectedObjects.remove(objectToRemove);
 			// add to objects listbox
-			levelEditorScreenController.removeObjectFromObjectListbox(objectToRemove.getId());
+			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		}
 		level.computeDimension();
 		updateGUIElements();
@@ -1668,9 +1671,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			engine.addEntity(object);
 
 			// add to objects listbox
-			levelEditorScreenController.addObjectToObjectListbox(levelEditorObject.getId());
+			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		}
-
 	}
 
 	/**

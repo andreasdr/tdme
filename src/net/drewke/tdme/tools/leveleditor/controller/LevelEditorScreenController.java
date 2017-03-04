@@ -1,7 +1,9 @@
-package net.drewke.tdme.tools.leveleditor.controller;
+ package net.drewke.tdme.tools.leveleditor.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.gui.GUIParser;
@@ -93,6 +95,8 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private GUIElementNode[] lightsEnabled;
 
 	private MutableString value;
+	private MutableString selectedObjects;
+	private ArrayList<String> selectedObjectList;
 
 	/*
 	 * (non-Javadoc)
@@ -193,6 +197,8 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	
 			modelThumbnailSelected = null;
 			value = new MutableString();
+			selectedObjects = new MutableString();
+			selectedObjectList = new ArrayList<String>();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -337,46 +343,68 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * @param object id enumerator
 	 */
 	public void setObjectListbox(Iterator<String> objectIdsIterator) {
-		// TODO: fill objects list box
-	}
+		// store selected object ids
+		selectedObjects.set(objectsListBox.getController().getValue());
 
-	/**
-	 * Add a object to object list box
-	 * @param object id
-	 */
-	public void addObjectToObjectListbox(String objectId) {
-		// TODO: add to objects list box
-	}
+		// model properties list box inner
+		GUIParentNode objectsListBoxInnerNode = (GUIParentNode)(objectsListBox.getScreenNode().getNodeById(objectsListBox.getId() + "_inner"));
+		
+		// clear sub nodes
+		objectsListBoxInnerNode.clearSubNodes();
 
-	/**
-	 * Remove a object from object list box
-	 * @param object id
-	 */
-	public void removeObjectFromObjectListbox(String objectId) {
-		// TODO: remove object from objects list box
-	}
+		// construct XML for sub nodes
+		int idx = 1;
+		String objectsListBoxSubNodesXML = "";
+		objectsListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + objectsListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		while (objectIdsIterator.hasNext()) {
+			String objectId = objectIdsIterator.next();
+			objectsListBoxSubNodesXML+= 
+				"<selectbox-multiple-option text=\"" + 
+				objectId + 
+				"\" value=\"" + 
+				objectId + 
+				"\" " +
+				// (selectedValue != null && modelProperty.getName().equals(selectedValue)?"selected=\"true\" ":"") +
+				"/>\n";
+		}
+		objectsListBoxSubNodesXML+= "</scrollarea-vertical>\n";
 
-	/**
-	 * Update a object from in object list box
-	 * @param object id enumerator
-	 */
-	public void updateObjectInObjectListbox(String oldObjectId, String newObjectId) {
-		// TODO: remove old object from objects list box
-		// TODO: add object to objects list box
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				objectsListBoxInnerNode,
+				objectsListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		objectsListBoxInnerNode.getScreenNode().layout();
+
+		// store selected object ids
+		objectsListBox.getController().setValue(selectedObjects);
 	}
 
 	/**
 	 * Unselect objects in object list box
 	 */
 	public void unselectObjectInObjectListBox(String objectId) {
-		// TODO: deselect object from objects list box
+		// store selected object ids
+		selectedObjects.set(objectsListBox.getController().getValue());
+		// find and remove object id from value list
+		value.set('|').append(objectId).append('|');
+		int pos = selectedObjects.indexOf(value);
+		if (pos != -1) selectedObjects.delete(pos, value.length());
+		// set new value
+		objectsListBox.getController().setValue(selectedObjects);
 	}
 
 	/**
 	 * Unselect objects in object list box
 	 */
 	public void unselectObjectsInObjectListBox() {
-		// TODO: deselect all object from objects list box
+		objectsListBox.getController().setValue(value.reset());
 	}
 
 	/**
@@ -384,16 +412,26 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * @param object id
 	 */
 	public void selectObjectInObjectListbox(String objectId) {
-		// TODO: select item in objects list box
+		// store selected object ids
+		selectedObjects.set(objectsListBox.getController().getValue());
+		// make sure object is not yet selected and add object id if it does not yet exist
+		value.set('|').append(objectId).append('|');
+		int pos = selectedObjects.indexOf(value);
+		if (pos == -1) selectedObjects.append(value);
+		objectsListBox.getController().setValue(selectedObjects);
 	}
 
 	/**
 	 * On objects select button click event
 	 */
 	public void onObjectsSelect() {
-		// TODO: on objects select: select objects in view from objects list box
-		// LevelEditorView view = (LevelEditorView)TDMELevelEditor.getInstance().getView();
-		// if (objectsListBox.getSelection().isEmpty() == false) view.selectObjectsById(objectsListBox.getSelection());
+		LevelEditorView view = (LevelEditorView)TDMELevelEditor.getInstance().getView();
+		selectedObjectList.clear();
+		StringTokenizer t = new StringTokenizer(objectsListBox.getController().getValue().toString(), "|");
+		while (t.hasMoreTokens()) {
+			selectedObjectList.add(t.nextToken());
+		}
+		if (selectedObjectList.isEmpty() == false) view.selectObjects(selectedObjectList);
 	}
 
 	/**
@@ -1065,7 +1103,11 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.gui.events.GUIChangeListener#onValueChanged(net.drewke.tdme.gui.nodes.GUIElementNode)
 	 */
 	public void onValueChanged(GUIElementNode node) {
-		System.out.println("LevelEditorScreenController::onValueChanged: " + node.getId());
+		if (node.getId().equals("objects_listbox") == true) {
+			// no op
+		} else {
+			System.out.println("LevelEditorScreenController::onValueChanged: " + node.getId());
+		}
 	}
 
 	/*
