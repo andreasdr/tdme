@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.controller;
+package net.drewke.tdme.tools.shared.controller;
 
 import java.util.Collection;
 
@@ -16,11 +16,11 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.views.ModelViewerView;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.tools.viewer.Tools;
-import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
-import net.drewke.tdme.tools.viewer.model.PropertyModelClass;
-import net.drewke.tdme.tools.viewer.views.ModelViewerView;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -82,7 +82,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#getScreenNode()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getScreenNode()
 	 */
 	public GUIScreenNode getScreenNode() {
 		return screenNode;
@@ -90,12 +90,12 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#init(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
 	 */
 	public void init() {
 		// load screen node
 		try {
-			screenNode = GUIParser.parse("resources/tools/viewer/gui", "screen_modelviewer.xml");
+			screenNode = GUIParser.parse("resources/tools/shared/gui", "screen_modelviewer.xml");
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
@@ -152,7 +152,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#dispose()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#dispose()
 	 */
 	public void dispose() {
 	}
@@ -889,7 +889,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.PopUpsController#saveFile(java.lang.String, java.lang.String)
+	 * @see net.drewke.tdme.tools.shared.controller.PopUpsController#saveFile(java.lang.String, java.lang.String)
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
 		((ModelViewerView)TDMEViewer.getInstance().getView()).saveFile(pathName, fileName);
@@ -897,7 +897,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.PopUpsController#loadFile(java.lang.String, java.lang.String)
+	 * @see net.drewke.tdme.tools.shared.controller.PopUpsController#loadFile(java.lang.String, java.lang.String)
 	 */
 	public void loadFile(String pathName, String fileName) throws Exception {
 		((ModelViewerView)TDMEViewer.getInstance().getView()).loadFile(pathName, fileName);

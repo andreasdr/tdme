@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.model;
+package net.drewke.tdme.tools.shared.model;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.leveleditor.files.ModelMetaDataFileImport;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel.ModelType;
+import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
 
 /**
  * Model Editor Model Library

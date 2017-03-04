@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.model;
+package net.drewke.tdme.tools.shared.model;
 
 /**
  * Property model class

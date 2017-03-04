@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.files;
+package net.drewke.tdme.tools.shared.files;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,13 +13,13 @@ import net.drewke.tdme.engine.primitives.Capsule;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLight;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModelLibrary;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorObject;
-import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelEditorLight;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorObject;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONException;

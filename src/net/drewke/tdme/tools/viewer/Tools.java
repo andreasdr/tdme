@@ -26,7 +26,7 @@ import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
-import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 
 import com.jogamp.opengl.GLAutoDrawable;
 

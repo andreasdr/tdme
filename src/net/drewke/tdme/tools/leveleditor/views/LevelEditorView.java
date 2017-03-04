@@ -25,34 +25,35 @@ import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
+import net.drewke.tdme.gui.events.GUIInputEventHandler;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent;
+import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
+import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.Tools;
-import net.drewke.tdme.tools.leveleditor.controller.LevelEditorController;
-import net.drewke.tdme.tools.leveleditor.files.LevelFileExport;
-import net.drewke.tdme.tools.leveleditor.files.LevelFileImport;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModelLibrary;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorObject;
-import net.drewke.tdme.tools.leveleditor.model.LevelPropertyPresets;
-import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
+import net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController;
+import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
+import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
+import net.drewke.tdme.tools.shared.files.LevelFileExport;
+import net.drewke.tdme.tools.shared.files.LevelFileImport;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorObject;
+import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.views.View;
 
-import com.jogamp.newt.event.KeyEvent;
-import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.opengl.GLAutoDrawable;
 
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem;
-import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem.MouseInputEvent;
-
 /**
- * TDME Level Editor
+ * TDME Level Editor View
  * @author andreas.drewke
  * @version $Id: 04313d20d0978eefc881024d6e0af748196c1425 $
  */
-public final class LevelEditorView extends View  {
+public final class LevelEditorView extends View implements GUIInputEventHandler  {
 
 	/**
 	 * Object Color
@@ -105,7 +106,10 @@ public final class LevelEditorView extends View  {
 	private int GRID_DIMENSION_X = 20;
 	private int GRID_DIMENSION_Y = 20;
 
-	private Nifty nifty;
+	private InfoDialogScreenController infoDialogScreenController;
+	private FileDialogScreenController fileDialogScreenController;
+	private LevelEditorScreenController levelEditorScreenController;
+
 	private Engine engine;
 
 	private LevelEditorModel selectedModel;
@@ -136,6 +140,7 @@ public final class LevelEditorView extends View  {
 	private Vector3 gridCenterLast;
 	private boolean gridEnabled;
 	private float gridY;
+
 	private boolean keyLeft;
 	private boolean keyRight;
 	private boolean keyUp;
@@ -163,7 +168,6 @@ public final class LevelEditorView extends View  {
 	 * Public constructor
 	 */
 	public LevelEditorView() {
-		nifty = null;
 		level = TDMELevelEditor.getInstance().getLevel();
 		reloadModelLibrary = false;
 		selectedModel = null;
@@ -207,6 +211,27 @@ public final class LevelEditorView extends View  {
 		engine = Engine.getInstance();
 		camLookFrom = engine.getCamera().getLookFrom();
 		camLookAt = engine.getCamera().getLookAt();
+	}
+
+	/**
+	 * @return file dialog popup controller
+	 */
+	public FileDialogScreenController getFileDialogPopUpController() {
+		return fileDialogScreenController;
+	}
+
+	/**
+	 * @return info dialog popup controller
+	 */
+	public InfoDialogScreenController getInfoDialogPopUpController() {
+		return infoDialogScreenController;
+	}
+
+	/**
+	 * @return level file name
+	 */
+	public String getFileName() {
+		return new File(level.getFileName()).getName();
 	}
 
 	/**
@@ -261,23 +286,37 @@ public final class LevelEditorView extends View  {
 		selectedModel = TDMELevelEditor.getInstance().getModelLibrary().getModel(id);
 	}
 
-	/**
-	 * Do input system
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
 	 */
-	public void doInputSystem(GLAutoDrawable drawable) {
-		// process mouse events
-		JoglInputSystem niftyInputSystem = TDMELevelEditor.getInstance().getNiftyInputSystem();
-		if (niftyInputSystem == null) return;
+	public void handleInputEvents() {
+		// handle keyboard events
+		for (int i = 0; i < engine.getGUI().getKeyboardEvents().size(); i++) {
+			GUIKeyboardEvent event = engine.getGUI().getKeyboardEvents().get(i);
 
-		// Nifty reports events that should have been consumed!
-		/*
-		while (TDMELevelEditor.getInstance().getNiftyInputSystem().hasNextKeyboardEvent()) {
-			KeyboardInputEvent event = niftyInputSystem.nextKeyboardEvent();
-			System.out.println(event.getKey() + ":" + event.getCharacter());
+			// skip on processed events
+			if (event.isProcessed() == true) continue;
+
+			//
+			boolean isKeyDown = event.getType() == Type.KEY_PRESSED;
+
+			//
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_CONTROL) keyControl = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_ESCAPE) keyEscape = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_LEFT) keyLeft = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_RIGHT) keyRight = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_UP) keyUp = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_DOWN) keyDown = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'a') keyA = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'd') keyD = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'w') keyW = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 's') keyS = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == '+') keyPlus = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == '-') keyMinus= isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'r') keyR = isKeyDown;
 		}
-		*/
 
-		// keyboard
 		// 	unselect objects by key escape
 		if (keyEscape == true && selectedObjects.size() > 0) {
 			ArrayList<Entity> objectsToRemove = new ArrayList<Entity>();
@@ -289,19 +328,21 @@ public final class LevelEditorView extends View  {
 				selectedObjects.remove(objectToRemove);
 				selectedObjectsById.remove(objectToRemove.getId());
 			}
-			((LevelEditorController)nifty.getCurrentScreen().getScreenController()).unselectObjectsInObjectListBox();
+			levelEditorScreenController.unselectObjectsInObjectListBox();
 		}
 
-		// mouse
-		while (TDMELevelEditor.getInstance().getNiftyInputSystem().hasNextMouseEvent()) {
-			MouseInputEvent event = niftyInputSystem.nextMouseEvent();
+		for (int i = 0; i < engine.getGUI().getMouseEvents().size(); i++) {
+			GUIMouseEvent event = engine.getGUI().getMouseEvents().get(i);
+
+			// skip on processed events
+			if (event.isProcessed() == true) continue;
 
 			// check if dragging
-			if (event.isButtonDown()) {
+			if (event.getButton() == 1) {
 				// check if dragging
 				if (mouseDragging == false) {
-					if (mouseDownLastX != event.getMouseX() ||
-						mouseDownLastY != event.getMouseY()) {
+					if (mouseDownLastX != event.getX() ||
+						mouseDownLastY != event.getY()) {
 						mouseDragging = true;
 					}
 				}
@@ -316,15 +357,14 @@ public final class LevelEditorView extends View  {
 			}
 
 			// selection
-			if (event.isButtonDown() && event.getButton() == MOUSE_BUTTON_LEFT) {
+			if (event.getButton() == 1 && event.getButton() == MOUSE_BUTTON_LEFT) {
 				// check if dragging
 				if (mouseDragging == false) {
-					if (mouseDownLastX != event.getMouseX() ||
-						mouseDownLastY != event.getMouseY()) {
+					if (mouseDownLastX != event.getX() ||
+						mouseDownLastY != event.getY()) {
 						mouseDragging = true;
 					}
 				}
-				LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
 
 				// unselect current selected objects
 				if (keyControl == false) {
@@ -341,11 +381,11 @@ public final class LevelEditorView extends View  {
 						selectedObjects.remove(objectToRemove);
 						selectedObjectsById.remove(objectToRemove.getId());
 					}
-					((LevelEditorController)nifty.getCurrentScreen().getScreenController()).unselectObjectsInObjectListBox();
+					levelEditorScreenController.unselectObjectsInObjectListBox();
 				}
 
 				// check if ground plate was clicked
-				Entity selectedObject = engine.getObjectByMousePosition(event.getMouseX(), event.getMouseY());
+				Entity selectedObject = engine.getObjectByMousePosition(event.getX(), event.getY());
 
 				// select cell if any was selected
 				if (selectedObject != null) {
@@ -360,7 +400,7 @@ public final class LevelEditorView extends View  {
 							selectedObjectsById.put(selectedObject.getId(), selectedObject);
 
 							// select in objects listbox
-							((LevelEditorController)nifty.getCurrentScreen().getScreenController()).selectObjectInObjectListbox(selectedObject.getId());
+							levelEditorScreenController.selectObjectInObjectListbox(selectedObject.getId());
 						} else {
 							// undo add
 							setStandardObjectColorEffect(selectedObject);
@@ -368,7 +408,7 @@ public final class LevelEditorView extends View  {
 							selectedObjectsById.remove(selectedObject.getId());
 
 							// unselect in objects listbox
-							((LevelEditorController)nifty.getCurrentScreen().getScreenController()).unselectObjectInObjectListBox(selectedObject.getId());
+							levelEditorScreenController.unselectObjectInObjectListBox(selectedObject.getId());
 						}
 					}
 				}
@@ -380,48 +420,37 @@ public final class LevelEditorView extends View  {
 				updateGUIElements();
 			} else
 			// panning
-			if (event.isButtonDown() && event.getButton() == MOUSE_BUTTON_RIGHT) {
+			if (event.getButton() == 1 && event.getButton() == MOUSE_BUTTON_RIGHT) {
 				if (mouseDownLastX != MOUSE_DOWN_LAST_POSITION_NONE &&
 					mouseDownLastY != MOUSE_DOWN_LAST_POSITION_NONE) {
-					mousePanningSide = (event.getMouseX() - mouseDownLastX);
-					mousePanningForward = (event.getMouseY() - mouseDownLastY);
+					mousePanningSide = (event.getX() - mouseDownLastX);
+					mousePanningForward = (event.getY() - mouseDownLastY);
 				}
 			} else
-			if (event.isButtonDown() && event.getButton() == MOUSE_BUTTON_MIDDLE) {
+			if (event.getButton() == 1 && event.getButton() == MOUSE_BUTTON_MIDDLE) {
 				centerObject();
 				if (mouseDownLastX != MOUSE_DOWN_LAST_POSITION_NONE &&
 					mouseDownLastY != MOUSE_DOWN_LAST_POSITION_NONE) {
-					mouseRotationX = (event.getMouseX() - mouseDownLastX);
-					mouseRotationY = (event.getMouseY() - mouseDownLastY);
+					mouseRotationX = (event.getX() - mouseDownLastX);
+					mouseRotationY = (event.getY() - mouseDownLastY);
 				}
 			}
 
 			// last mouse down position
-			if (event.isButtonDown()) {
+			if (event.getButton() == 1) {
 				//
-				mouseDownLastX = event.getMouseX();
-				mouseDownLastY = event.getMouseY();
+				mouseDownLastX = event.getX();
+				mouseDownLastY = event.getY();
 			}
 
 			// process mouse wheel events
-			int mouseWheel = event.getMouseWheel();
+			float mouseWheel = event.getWheelY();
 			if (mouseWheel != 0) {
 				camScale+= -mouseWheel * 0.05f;
 				if (camScale < camScaleMin) camScale = camScaleMin;
 				if (camScale > camScaleMax) camScale = camScaleMax;
 			}
 		}
-
-		// keyboard
-		//
-		// I dont get that, i always get all keyboard event, no matter if they were consumed
-		// by nifty or not :(
-		/*
-		while (TDMELevelEditor.getInstance().getNiftyInputSystem().hasNextKeyboardEvent()) {
-			KeyboardInputEvent event = niftyInputSystem.nextKeyboardEvent();
-			System.out.println(event.getCharacter() + "," + event.getKey());
-		}
-		*/
 	}
 
 	/**
@@ -429,14 +458,12 @@ public final class LevelEditorView extends View  {
 	 */
 	public void display(GLAutoDrawable drawable) {
 		if (reloadModelLibrary == true) {
-			LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-			controller.removeModels();
-			TDMELevelEditor.getInstance().getNifty(drawable).update();
+			levelEditorScreenController.removeModels();
 			LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
 			for (int i = 0; i < modelLibrary.getModelCount(); i++) {
 				selectedModel = modelLibrary.getModelAt(i);
 				Tools.oseThumbnail(drawable, selectedModel);
-				controller.addModel(selectedModel);
+				levelEditorScreenController.addModel(selectedModel);
 			}
 			reloadModelLibrary = false;
 		}
@@ -521,6 +548,20 @@ public final class LevelEditorView extends View  {
 		// update grid
 		gridCenter.set(camLookAt);
 		updateGrid();
+
+		// gui
+		// Render screens and handle input
+		String activeId = levelEditorScreenController.getScreenNode().getId();
+		engine.getGUI().render(levelEditorScreenController.getScreenNode().getId());
+		if (fileDialogScreenController.isActive() == true) {
+			engine.getGUI().render(fileDialogScreenController.getScreenNode().getId());
+			activeId = fileDialogScreenController.getScreenNode().getId();
+		}
+		if (infoDialogScreenController.isActive() == true) {
+			engine.getGUI().render(infoDialogScreenController.getScreenNode().getId());
+			activeId = infoDialogScreenController.getScreenNode().getId();
+		}
+		engine.getGUI().handleEvents(activeId, this);
 	}
 
 	/**
@@ -563,7 +604,7 @@ public final class LevelEditorView extends View  {
 		}
 
 		//
-		((LevelEditorController)nifty.getCurrentScreen().getScreenController()).unselectObjectsInObjectListBox();
+		levelEditorScreenController.unselectObjectsInObjectListBox();
 
 		// update gui elements
 		updateGUIElements();
@@ -579,19 +620,18 @@ public final class LevelEditorView extends View  {
 	 *		object data  
 	 */
 	private void updateGUIElements() {
-		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-		controller.setScreenCaption("Level Editor - " + level.getFileName());
-		controller.setLevelSize(level.getDimension().getX(), level.getDimension().getZ(), level.getDimension().getY());
+		levelEditorScreenController.setScreenCaption("Level Editor - " + level.getFileName());
+		levelEditorScreenController.setLevelSize(level.getDimension().getX(), level.getDimension().getZ(), level.getDimension().getY());
 		if (selectedObjects.size() == 1) {
 			Entity selectedObject = selectedObjects.get(0);
 			if (selectedObject != null && selectedObject.getId().startsWith("leveleditor.") == false) {
 				LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
 				PropertyModelClass preset = levelEditorObject.getProperty("preset");
-				controller.setObjectProperties(
+				levelEditorScreenController.setObjectProperties(
 					preset != null?preset.getValue():"",
 					levelEditorObject.getProperties()
 				);
-				controller.setObject(
+				levelEditorScreenController.setObject(
 					selectedObject.getTranslation(),
 					selectedObject.getScale(),
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisXIndex()).getAngle(),
@@ -601,38 +641,38 @@ public final class LevelEditorView extends View  {
 				BoundingVolume bv = levelEditorObject.getModel().getBoundingBox().clone();
 				bv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
 				Vector3 objectCenter = bv.getCenter();
-				controller.setObjectData(
+				levelEditorScreenController.setObjectData(
 					levelEditorObject.getId(),
 					levelEditorObject.getDescription(),
 					levelEditorObject.getModel().getName(),
 					objectCenter
 				);
 			} else {
-				controller.unsetObjectData();
-				controller.unsetObject();
-				controller.unsetObjectProperties();
+				levelEditorScreenController.unsetObjectData();
+				levelEditorScreenController.unsetObject();
+				levelEditorScreenController.unsetObjectProperties();
 			}
 		} else
 		if (selectedObjects.size() > 1) {
-			controller.unsetObjectData();
-			controller.setObject(
+			levelEditorScreenController.unsetObjectData();
+			levelEditorScreenController.setObject(
 				new Vector3(0f,0f,0f),
 				new Vector3(1f,1f,1f),
 				0f,
 				0f, 
 				0f
 			);			
-			controller.unsetObjectProperties();
+			levelEditorScreenController.unsetObjectProperties();
 		} else
 		if (selectedObjects.size() == 0) {
-			controller.unsetObjectData();
-			controller.unsetObject();
-			controller.unsetObjectProperties();
+			levelEditorScreenController.unsetObjectData();
+			levelEditorScreenController.unsetObject();
+			levelEditorScreenController.unsetObjectProperties();
 		}
 
 		// set up lights
 		for (int i = 0; i < 4; i++) {
-			controller.setLight(
+			levelEditorScreenController.setLight(
 				i,
 				level.getLightAt(i).getAmbient(),
 				level.getLightAt(i).getDiffuse(),
@@ -654,16 +694,14 @@ public final class LevelEditorView extends View  {
 	 * Updates objects list box
 	 */
 	public void setObjectsListBox() {
-		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-		controller.setObjectListbox(level.getObjectIdsIterator());
+		levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 	}
 
 	/**
 	 * Unselect light presets
 	 */
 	public void unselectLightPresets() {
-		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-		controller.unselectLightPresets();
+		levelEditorScreenController.unselectLightPresets();
 	}
 
 	/**
@@ -677,31 +715,38 @@ public final class LevelEditorView extends View  {
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
-		nifty = TDMELevelEditor.getInstance().getNifty(drawable);
+		try {
+			levelEditorScreenController = new LevelEditorScreenController();
+			levelEditorScreenController.init();
+			fileDialogScreenController = new FileDialogScreenController();
+			fileDialogScreenController.init();
+			infoDialogScreenController = new InfoDialogScreenController();
+			infoDialogScreenController.init();
+			engine.getGUI().addScreen(levelEditorScreenController.getScreenNode().getId(), levelEditorScreenController.getScreenNode()); 
+			engine.getGUI().addScreen(fileDialogScreenController.getScreenNode().getId(), fileDialogScreenController.getScreenNode());
+			engine.getGUI().addScreen(infoDialogScreenController.getScreenNode().getId(), infoDialogScreenController.getScreenNode());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		//
-		nifty.fromXml("resources/tools/leveleditor/gui/screen_leveleditor.xml", "leveleditor");
-		nifty.update();
-
-		//
-		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
 		LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
 		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
 			selectedModel = modelLibrary.getModelAt(i);
-			controller.addModel(selectedModel);
+			levelEditorScreenController.addModel(selectedModel);
 		}
 
 		// set up grid
-		controller.setGrid(gridEnabled, gridY);
+		levelEditorScreenController.setGrid(gridEnabled, gridY);
 
 		// set up map properties
-		controller.setMapProperties(level.getProperties());
+		levelEditorScreenController.setMapProperties(level.getProperties());
 
 		// set up object properties presets
-		controller.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
+		levelEditorScreenController.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 
 		// set up ligh presets
-		controller.setLightPresetsIds(LevelPropertyPresets.getInstance().getLightPresets().keySet());
+		levelEditorScreenController.setLightPresetsIds(LevelPropertyPresets.getInstance().getLightPresets().keySet());
 
 		//
 		updateGUIElements();
@@ -1025,7 +1070,7 @@ public final class LevelEditorView extends View  {
 			selectedObjectsById.put(object.getId(), object);
 
 			// update in objects listbox
-			((LevelEditorController)nifty.getCurrentScreen().getScreenController()).updateObjectInObjectListbox(oldId, name);
+			levelEditorScreenController.updateObjectInObjectListbox(oldId, name);
 		}
 
 		// set description
@@ -1129,7 +1174,7 @@ public final class LevelEditorView extends View  {
 			engine.addEntity(object);
 
 			// add to objects listbox
-			((LevelEditorController)nifty.getCurrentScreen().getScreenController()).addObjectToObjectListbox(levelEditorObject.getId());
+			levelEditorScreenController.addObjectToObjectListbox(levelEditorObject.getId());
 		}
 	}
 
@@ -1137,7 +1182,6 @@ public final class LevelEditorView extends View  {
 	 * Removes selected object
 	 */
 	public void removeObject() {
-		LevelEditorController levelEditorController = ((LevelEditorController)nifty.getCurrentScreen().getScreenController());
 		ArrayList<Entity> objectsToRemove = new ArrayList<Entity>();
 		for (Entity selectedObject: selectedObjects) {
 			if (selectedObject != null && selectedObject.getId().startsWith("leveleditor.") == false) {
@@ -1150,7 +1194,7 @@ public final class LevelEditorView extends View  {
 			pasteObjects.remove(objectToRemove);
 			selectedObjects.remove(objectToRemove);
 			// add to objects listbox
-			levelEditorController.removeObjectFromObjectListbox(objectToRemove.getId());
+			levelEditorScreenController.removeObjectFromObjectListbox(objectToRemove.getId());
 		}
 		level.computeDimension();
 		updateGUIElements();
@@ -1170,7 +1214,7 @@ public final class LevelEditorView extends View  {
 			String color = OBJECTCOLOR_NAMES[0];
 			PropertyModelClass colorProperty = levelEditorObject.getProperty("object.color");
 			if (colorProperty == null) {
-				levelEditorObject.addProperty(colorProperty = new PropertyModelClass("object.color", color));
+				levelEditorObject.addProperty("object.color", color);
 			} else {
 				// switch color
 				color = colorProperty.getValue();
@@ -1185,7 +1229,7 @@ public final class LevelEditorView extends View  {
 				if (color.equals("none")) {
 					levelEditorObject.removeProperty("object.color");
 				} else {
-					levelEditorObject.updateProperty(colorProperty, "object.color", color);
+					levelEditorObject.updateProperty(colorProperty.getName(), "object.color", color);
 				}
 			}
 			setStandardObjectColorEffect(selectedObject);
@@ -1193,22 +1237,21 @@ public final class LevelEditorView extends View  {
 		}
 
 		// set object properties if changed
-		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
 		if (selectedObjects.size() == 1) {
 			Entity selectedObject = selectedObjects.get(0);
 			if (selectedObject != null && selectedObject.getId().startsWith("leveleditor.") == false) {
 				LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
 				PropertyModelClass preset = levelEditorObject.getProperty("preset");
-				controller.setObjectProperties(
+				levelEditorScreenController.setObjectProperties(
 					preset != null?preset.getValue():"",
 					levelEditorObject.getProperties()
 				);
 			} else {
-				controller.unsetObjectProperties();
+				levelEditorScreenController.unsetObjectProperties();
 			}
 		} else
 		if (selectedObjects.size() > 1) {
-			controller.unsetObjectProperties();
+			levelEditorScreenController.unsetObjectProperties();
 		}
 	}
 
@@ -1267,8 +1310,7 @@ public final class LevelEditorView extends View  {
 				selectedObject.fromTransformations(currentEntity.getTransformations());				
 			}
 			// reset controller object properties
-			LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-			controller.setObject(
+			levelEditorScreenController.setObject(
 				new Vector3(0f,0f,0f),
 				new Vector3(1f,1f,1f),
 				0f,
@@ -1310,8 +1352,7 @@ public final class LevelEditorView extends View  {
 				selectedObject.fromTransformations(currentEntity.getTransformations());
 			}
 			// reset controller object properties
-			LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-			controller.setObject(
+			levelEditorScreenController.setObject(
 				new Vector3(0f,0f,0f),
 				new Vector3(1f,1f,1f),
 				0f,
@@ -1364,8 +1405,7 @@ public final class LevelEditorView extends View  {
 				selectedObject.fromTransformations(currentEntity.getTransformations());
 			}
 			// reset controller object properties
-			LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-			controller.setObject(
+			levelEditorScreenController.setObject(
 				new Vector3(0f,0f,0f),
 				new Vector3(1f,1f,1f),
 				0f,
@@ -1387,12 +1427,10 @@ public final class LevelEditorView extends View  {
 
 	/**
 	 * Add a map property
-	 * @return map property
+	 * @return success
 	 */
-	public PropertyModelClass mapPropertyAdd() {
-		PropertyModelClass mapProperty = new PropertyModelClass("new.property", "new.value");
-		if (level.addProperty(mapProperty) == true) return mapProperty;
-		return null;
+	public boolean mapPropertyAdd() {
+		return level.addProperty("new.property", "new.value");
 	}
 
 	/**
@@ -1403,7 +1441,7 @@ public final class LevelEditorView extends View  {
 	 * @return
 	 */
 	public boolean mapPropertySave(PropertyModelClass mapProperty, String name, String value) {
-		return level.updateProperty(mapProperty, name, value);
+		return level.updateProperty(mapProperty.getValue(), name, value);
 	}
 
 	/**
@@ -1436,9 +1474,6 @@ public final class LevelEditorView extends View  {
 			LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
 			if (levelEditorObject == null) return;
 	
-			//
-			LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
-	
 			// clear object properties
 			levelEditorObject.clearProperties();
 	
@@ -1446,12 +1481,12 @@ public final class LevelEditorView extends View  {
 			ArrayList<PropertyModelClass> objectPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
 			if (objectPropertyPresetVector != null) {
 				for (PropertyModelClass objectPropertyPreset: objectPropertyPresetVector) {
-					levelEditorObject.addProperty(objectPropertyPreset.clone());
+					levelEditorObject.addProperty(objectPropertyPreset.getName(), objectPropertyPreset.getValue());
 				}
 			}
 	
 			// update object properties to gui
-			controller.setObjectProperties(
+			levelEditorScreenController.setObjectProperties(
 				presetId,
 				levelEditorObject.getProperties()
 			);
@@ -1476,7 +1511,7 @@ public final class LevelEditorView extends View  {
 			if (levelEditorObject == null) return false;
 	
 			//
-			return levelEditorObject.updateProperty(objectProperty, name, value);
+			return levelEditorObject.updateProperty(objectProperty.getName(), name, value);
 		}
 
 		return false;
@@ -1484,31 +1519,24 @@ public final class LevelEditorView extends View  {
 
 	/**
 	 * Add a object property
-	 * @return map property
 	 */
-	public PropertyModelClass objectPropertyAdd() {
-		if (selectedObjects.size() == 0) return null;
+	public void objectPropertyAdd() {
+		if (selectedObjects.size() == 0) return;
 
 		// handle single object
 		if (selectedObjects.size() == 1) {
 			Entity   selectedObject = selectedObjects.get(0);
 			LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
-			if (levelEditorObject == null) return null;
+			if (levelEditorObject == null) return;
 	
-			PropertyModelClass objectProperty = new PropertyModelClass("new.property", "new.value");
-			if (levelEditorObject.addProperty(objectProperty)) return objectProperty;
-			return null;
+			levelEditorObject.addProperty("new.property", "new.value");
 		}
-
-		//
-		return null;
 	}
 
 	/**
 	 * Triggers loading a map
 	 */
 	public void loadMap(String path, String file) {
-		LevelEditorController controller = (LevelEditorController)nifty.getCurrentScreen().getScreenController();
 		selectedModel = null;
 		try {
 			// export level from DAE if requested
@@ -1528,15 +1556,15 @@ public final class LevelEditorView extends View  {
 			);
 
 			// set up map properties
-			controller.setMapProperties(level.getProperties());
-			controller.unsetObjectProperties();
-			controller.unsetObject();
+			levelEditorScreenController.setMapProperties(level.getProperties());
+			levelEditorScreenController.unsetObjectProperties();
+			levelEditorScreenController.unsetObject();
 			loadLevel();
 			reloadModelLibrary = true;
 			updateGUIElements();
 		} catch (Exception exception) {
 			exception.printStackTrace();
-			controller.showErrorPopUp("Warning: Could not load level file", exception.getMessage());
+			levelEditorScreenController.showErrorPopUp("Warning: Could not load level file", exception.getMessage());
 		}
 	}
 
@@ -1553,7 +1581,6 @@ public final class LevelEditorView extends View  {
 	 * Copy current selected objects
 	 */
 	private void copyObjects() {
-		LevelEditorController levelEditorController = ((LevelEditorController)nifty.getCurrentScreen().getScreenController());
 		pasteObjects.clear();
 		for (Entity selectedObject: selectedObjects) {
 			if (selectedObject != null && selectedObject.getId().startsWith("leveleditor.") == false) {
@@ -1628,7 +1655,7 @@ public final class LevelEditorView extends View  {
 
 			// copy properties
 			for (PropertyModelClass property: selectedLevelEditorObject.getProperties()) {
-				levelEditorObject.addProperty(property.clone());
+				levelEditorObject.addProperty(property.getName(), property.getValue());
 			}
 
 			//	add to level
@@ -1641,7 +1668,7 @@ public final class LevelEditorView extends View  {
 			engine.addEntity(object);
 
 			// add to objects listbox
-			((LevelEditorController)nifty.getCurrentScreen().getScreenController()).addObjectToObjectListbox(levelEditorObject.getId());
+			levelEditorScreenController.addObjectToObjectListbox(levelEditorObject.getId());
 		}
 
 	}
@@ -1686,7 +1713,7 @@ public final class LevelEditorView extends View  {
 		);
 
 		// set light in controller
-		((LevelEditorController)nifty.getCurrentScreen().getScreenController()).setLight(
+		levelEditorScreenController.setLight(
 			i,
 			level.getLightAt(i).getAmbient(),
 			level.getLightAt(i).getDiffuse(),
@@ -1804,7 +1831,7 @@ public final class LevelEditorView extends View  {
 		engine.getLightAt(i).setEnabled(enabled);
 
 		// set light in controller
-		((LevelEditorController)nifty.getCurrentScreen().getScreenController()).setLight(
+		levelEditorScreenController.setLight(
 			i,
 			level.getLightAt(i).getAmbient(),
 			level.getLightAt(i).getDiffuse(),
@@ -1819,131 +1846,6 @@ public final class LevelEditorView extends View  {
 			level.getLightAt(i).getSpotCutOff(),
 			level.getLightAt(i).isEnabled()
 		);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseClicked(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseEntered(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseExited(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseExited(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mousePressed(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseDragged(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseMoved(MouseEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
-	 */
-	public void keyPressed(com.jogamp.newt.event.KeyEvent event) {
-		if (event.isAutoRepeat() == true) return;
-
-		//
-		int keyCode = event.getKeyCode();
-		char keyChar = event.getKeyChar();
-		boolean keyConsumed = false;
-
-		if (keyControl == true) {
-			if (keyCode == KeyEvent.VK_C) {
-				copyObjects(); keyConsumed = true; 
-			} else
-				if (keyCode == KeyEvent.VK_V) {
-				pasteObjects(); keyConsumed = true; 
-			}
-		}
-
-		if (keyCode == KeyEvent.VK_LEFT) { keyLeft = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_RIGHT) { keyRight = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_UP) { keyUp = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_DOWN) { keyDown = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_D) { keyD = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_A) { keyA = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_W) { keyW = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_S) { keyS = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_PLUS || keyChar == '+') { keyPlus = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_MINUS || keyChar == '-') { keyMinus = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_R) {  keyR = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_CONTROL) {  keyControl = true; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_ESCAPE) {  keyEscape = true; keyConsumed = true; }
-
-		//
-		event.setConsumed(keyConsumed);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
-	 */
-	public void keyReleased(com.jogamp.newt.event.KeyEvent event) {
-		if (event.isAutoRepeat() == true) return;
-
-		//
-		int keyCode = event.getKeyCode();
-		char keyChar = event.getKeyChar();
-		boolean keyConsumed = false;
-
-		if (keyCode == KeyEvent.VK_LEFT) { keyLeft = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_RIGHT) {  keyRight = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_UP) {  keyUp = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_DOWN) { keyDown = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_D) { keyD = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_A) { keyA = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_W) { keyW = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_S) { keyS = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_PLUS || keyChar == '+') { keyPlus = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_MINUS || keyChar == '-') { keyMinus = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_R) {  keyR = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_CONTROL) {  keyControl = false; keyConsumed = true; }
-		if (keyCode == KeyEvent.VK_ESCAPE) {  keyEscape = false; keyConsumed = true; }
-
-		//
-		event.setConsumed(keyConsumed);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
-	 */
-	public void mouseWheelMoved(MouseEvent arg0) {
 	}
 
 }

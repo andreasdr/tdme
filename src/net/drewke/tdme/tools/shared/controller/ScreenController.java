@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.controller;
+package net.drewke.tdme.tools.shared.controller;
 
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 

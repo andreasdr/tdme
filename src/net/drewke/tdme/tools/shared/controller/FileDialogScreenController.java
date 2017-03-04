@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.controller;
+package net.drewke.tdme.tools.shared.controller;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -12,8 +12,8 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.tools.shared.views.ModelViewerView;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
-import net.drewke.tdme.tools.viewer.views.ModelViewerView;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -69,7 +69,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#getScreenNode()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getScreenNode()
 	 */
 	public GUIScreenNode getScreenNode() {
 		return screenNode;
@@ -98,7 +98,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#init()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init()
 	 */
 	public void init() {
 		// load screen node
@@ -116,7 +116,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.viewer.controller.ScreenController#dispose()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#dispose()
 	 */
 	public void dispose() {
 	}

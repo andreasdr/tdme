@@ -21,7 +21,7 @@
             -->
         </effect>
     </style>
-	<screen id="leveleditor" controller="net.drewke.tdme.tools.leveleditor.controller.LevelEditorController">
+	<screen id="leveleditor" controller="net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController">
 		<layer id="layer_screen" childLayout="vertical">
 			<panel style="nifty-panel" childLayout="horizontal" width="100%" height="60px" visibleToMouse="true" valign="center">
 				<text id="screen_caption" color="#ff0000" text="Level Editor" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />

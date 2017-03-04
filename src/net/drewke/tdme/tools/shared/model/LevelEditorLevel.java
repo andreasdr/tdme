@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.model;
+package net.drewke.tdme.tools.shared.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public final class LevelEditorLevel extends Properties {
 		modelLibrary = new LevelEditorModelLibrary();
 		if (defaultMapProperties != null) {
 			for (PropertyModelClass mapProperty: defaultMapProperties) {
-				addProperty(mapProperty.clone());
+				addProperty(mapProperty.getName(), mapProperty.getValue());
 			}
 		}
 		objectsById = new HashMap<String, LevelEditorObject>();

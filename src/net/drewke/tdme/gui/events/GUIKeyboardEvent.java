@@ -15,6 +15,8 @@ public class GUIKeyboardEvent {
 	public final static int KEYCODE_UP = 150;
 	public final static int KEYCODE_RIGHT = 151;
 	public final static int KEYCODE_DOWN = 152;
+	public final static int KEYCODE_CONTROL = 17;
+	public final static int KEYCODE_ESCAPE = 27;
 
 	public enum Type {NONE, KEY_PRESSED, KEY_RELEASED};
 

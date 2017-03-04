@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.views;
+package net.drewke.tdme.tools.shared.views;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,15 +21,15 @@ import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
+import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
+import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
+import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
+import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.viewer.Tools;
-import net.drewke.tdme.tools.viewer.controller.FileDialogScreenController;
-import net.drewke.tdme.tools.viewer.controller.InfoDialogScreenController;
-import net.drewke.tdme.tools.viewer.controller.ModelViewerScreenController;
-import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileExport;
-import net.drewke.tdme.tools.viewer.files.ModelMetaDataFileImport;
-import net.drewke.tdme.tools.viewer.model.LevelEditorModel;
-import net.drewke.tdme.tools.viewer.model.LevelPropertyPresets;
-import net.drewke.tdme.tools.viewer.model.PropertyModelClass;
 
 import com.jogamp.opengl.GLAutoDrawable;
 

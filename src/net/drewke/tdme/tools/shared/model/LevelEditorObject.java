@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.model;
+package net.drewke.tdme.tools.shared.model;
 
 import net.drewke.tdme.engine.Transformations;
 
@@ -89,16 +89,16 @@ public final class LevelEditorObject extends Properties {
 
 		// clone model properties
 		for (PropertyModelClass modelProperty: getModel().getProperties()) {
-			properties.addProperty(modelProperty.clone());
+			properties.addProperty(modelProperty.getName(), modelProperty.getValue());
 		}
 
 		// add object properties
 		for (PropertyModelClass objectProperty: getProperties()) {
 			PropertyModelClass property = properties.getProperty(objectProperty.getName());
 			if (property != null) {
-				properties.updateProperty(property, objectProperty.getName(), objectProperty.getValue());
+				properties.updateProperty(property.getName(), objectProperty.getName(), objectProperty.getValue());
 			} else {
-				properties.addProperty(objectProperty.clone());
+				properties.addProperty(objectProperty.getName(), objectProperty.getValue());
 			}
 		}
 

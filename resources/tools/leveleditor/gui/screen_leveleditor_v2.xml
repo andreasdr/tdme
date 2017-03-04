@@ -4,7 +4,7 @@
 			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Level Editor" width="auto" height="auto" />
 		</panel>
 		<layout width="100%" height="*" alignment="horizontal">
-			<element width="100%" height="100%">
+			<element width="100%" height="100%" ignore-events="true">
 				<element width="100%" height="100%" border="1" border-color="#000000" focusable="true" ignore-events="true" />
 				<layout width="100%" height="100%" alignment="vertical">
 					<space height="*" />
@@ -275,19 +275,19 @@
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
 										<space width="5" />
-										<input id="object_rotations_x" name="object_rotations_x" width="150" height="auto" text="X" />
+										<input id="object_rotation_x" name="object_rotation_x" width="150" height="auto" text="X" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
 										<space width="5" />
-										<input id="object_rotations_y" name="object_rotations_y" width="150" height="auto" text="Y" />
+										<input id="object_rotation_y" name="object_rotation_y" width="150" height="auto" text="Y" />
 									</layout>
 									<space height="5" />
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
 										<space width="5" />
-										<input id="object_rotations_z" name="object_rotations_z" width="150" height="auto" text="Z" />
+										<input id="object_rotation_z" name="object_rotation_z" width="150" height="auto" text="Z" />
 									</layout>
 									<space height="20" />
 									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
@@ -300,7 +300,7 @@
 									<space height="5" />
 									<button id="button_object_center" name="button_object_center" text="Center" width="80" />
 									<space height="5" />
-									<button id="button_object_remove" name="button_rotation_apply" text="Remove" width="80" />
+									<button id="button_object_remove" name="button_object_remove" text="Remove" width="80" />
 								</layout>
 							</layout>
 						</layout>

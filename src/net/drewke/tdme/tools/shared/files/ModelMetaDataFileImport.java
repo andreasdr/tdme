@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.files;
+package net.drewke.tdme.tools.shared.files;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +16,8 @@ import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel.ModelType;
-import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -193,10 +192,8 @@ public final class ModelMetaDataFileImport {
 		for (int i = 0; i < jMapProperties.length(); i++) {
 			JSONObject jMapProperty = jMapProperties.getJSONObject(i);
 			levelEditorModel.addProperty(
-				new PropertyModelClass(
-					jMapProperty.getString("name"),
-					jMapProperty.getString("value")
-				)
+				jMapProperty.getString("name"),
+				jMapProperty.getString("value")
 			);
 		}
 

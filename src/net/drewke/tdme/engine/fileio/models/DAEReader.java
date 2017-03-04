@@ -34,11 +34,11 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
-import net.drewke.tdme.tools.leveleditor.files.LevelFileExport;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorObject;
-import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.files.LevelFileExport;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorObject;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;

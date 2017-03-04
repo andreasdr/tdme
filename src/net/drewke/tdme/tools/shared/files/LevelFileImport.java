@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.files;
+package net.drewke.tdme.tools.shared.files;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,12 +10,12 @@ import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLight;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModel.ModelType;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorObject;
-import net.drewke.tdme.tools.leveleditor.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelEditorLight;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorObject;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -63,10 +63,8 @@ public final class LevelFileImport {
 		for (int i = 0; i < jMapProperties.length(); i++) {
 			JSONObject jMapProperty = jMapProperties.getJSONObject(i);
 			level.addProperty(
-				new PropertyModelClass(
-					jMapProperty.getString("name"),
-					jMapProperty.getString("value")
-				)
+				jMapProperty.getString("name"),
+				jMapProperty.getString("value")
 			);
 		}
 		// lights
@@ -191,10 +189,8 @@ public final class LevelFileImport {
 				for (int j = 0; j < jModelProperties.length(); j++) {
 					JSONObject jModelProperty = jModelProperties.getJSONObject(j);
 					levelEditorModel.addProperty(
-						new PropertyModelClass(
-							jModelProperty.getString("name"),
-							jModelProperty.getString("value")
-						)
+						jModelProperty.getString("name"),
+						jModelProperty.getString("value")
 					);
 				}
 			}
@@ -245,10 +241,8 @@ public final class LevelFileImport {
 				for (int j = 0; j < jObjectProperties.length(); j++) {
 					JSONObject jObjectProperty = jObjectProperties.getJSONObject(j);
 					levelEditorObject.addProperty(
-						new PropertyModelClass(
-							jObjectProperty.getString("name"),
-							jObjectProperty.getString("value")
-						)
+						jObjectProperty.getString("name"),
+						jObjectProperty.getString("value")
 					);
 				}
 			}

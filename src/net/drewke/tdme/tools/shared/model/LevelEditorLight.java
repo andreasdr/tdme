@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor.model;
+package net.drewke.tdme.tools.shared.model;
 
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;

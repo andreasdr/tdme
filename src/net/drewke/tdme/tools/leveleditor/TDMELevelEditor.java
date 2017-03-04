@@ -4,12 +4,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorLevel;
-import net.drewke.tdme.tools.leveleditor.model.LevelEditorModelLibrary;
-import net.drewke.tdme.tools.leveleditor.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
-import net.drewke.tdme.tools.leveleditor.views.ModelLibraryView;
-import net.drewke.tdme.tools.leveleditor.views.View;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.tools.shared.views.View;
 
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.event.WindowListener;
@@ -37,6 +36,8 @@ import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
  */
 public final class TDMELevelEditor implements GLEventListener, WindowListener {
 
+	private final static String VERSION = "0.9.9";
+
 	private static TDMELevelEditor instance;
 
 	private Engine engine;
@@ -44,8 +45,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	private GLWindow glWindow;
 	private FPSAnimator animator;
 
-	private Nifty nifty;
-	private JoglInputSystem niftyInputSystem;
 	private View view;
 	private boolean viewInitialized;
 	private View viewNew;
@@ -61,8 +60,8 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		String modelFileName = null;
 
 		//
-		System.out.println("TDMELevelEditor 0.9.5a");
-		System.out.println("Programmed 2014 by Andreas Drewke, drewke.net.");
+		System.out.println("TDMELevelEditor " + VERSION);
+		System.out.println("Programmed 2014,...,2017 by Andreas Drewke, drewke.net.");
 		System.out.println();
 
 		// no nifty logging
@@ -76,7 +75,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 
 		// create GL window
 		GLWindow glWindow = GLWindow.create(caps);
-		glWindow.setTitle("TDMELevelEditor 0.9.5a");
+		glWindow.setTitle("TDMELevelEditor " + VERSION);
 
 		// animator
 		FPSAnimator animator = new FPSAnimator(glWindow, 60);
@@ -106,8 +105,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		TDMELevelEditor.instance = this;
 		level = new LevelEditorLevel(LevelPropertyPresets.getInstance().getMapPropertiesPreset());
 		engine = Engine.getInstance();
-		nifty = null;
-		niftyInputSystem = null;
 		view = null;
 		viewInitialized = false;
 		viewNew = null;
@@ -150,39 +147,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	}
 
 	/**
-	 * @return Nifty instance
-	 */
-	public Nifty getNifty(GLAutoDrawable drawable) {
-		// create nifty if not yet created
-		if (nifty == null) {
-			// create nifty instance
-			niftyInputSystem = new JoglInputSystem(glWindow);
-			glWindow.addMouseListener(niftyInputSystem);
-			glWindow.addKeyListener(niftyInputSystem);
-			System.out.println("Nifty::delegated renderer::GL2 = " + drawable.getGL().isGL2() + ", GLES2 = " + drawable.getGL().isGLES2() + ", GL3 = " + drawable.getGL().isGL3());
-			nifty = new Nifty(
-				drawable.getGL().isGL3() || drawable.getGL().isGLES2()?
-					new BatchRenderDevice(JoglBatchRenderBackendCoreProfileFactory.create(glWindow)):
-					new BatchRenderDevice(JoglBatchRenderBackendFactory.create(glWindow)),
-				new OpenALSoundDevice(),
-				niftyInputSystem,
-				new AccurateTimeProvider()
-			);
-			nifty.fromXml("resources/tools/leveleditor/gui/globals.xml", null);
-		}
-
-		//
-		return nifty;
-	}
-
-	/**
-	 * @return nifty input system or null if not yet initialized
-	 */
-	public JoglInputSystem getNiftyInputSystem() {
-		return niftyInputSystem;
-	}
-
-	/**
 	 * Request to exit the viewer
 	 */
 	public void quit() {
@@ -196,8 +160,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		// replace view if requested
 		if (viewNew != null) {
 			if (view != null && viewInitialized == true) {
-				glWindow.removeMouseListener(view);
-				glWindow.removeKeyListener(view);
 				view.dispose(drawable);
 				viewInitialized = false;
 			}
@@ -209,10 +171,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		if (view != null) {
 			if (viewInitialized == false) {
 				view.init(drawable);
-				Screen niftyScreen = nifty.getCurrentScreen();
-				niftyScreen.getFocusHandler().setKeyFocus(niftyScreen.findElementByName(niftyScreen.getDefaultFocusElementId()));;
-				glWindow.addMouseListener(view);
-				glWindow.addKeyListener(view);
 				viewInitialized = true;
 			}
 			view.display(drawable);
@@ -223,15 +181,14 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 
 		// view inputsystem
 		if (view != null) {
-			view.doInputSystem(drawable);
+			view.handleEvents();
 		}
 
 		//
 		Engine.getInstance().initGUIMode();
 
-		// render GUI
-		nifty.update();
-		nifty.render(false);
+		// render view
+		view.display(drawable);
 
 		//
 		Engine.getInstance().doneGUIMode();
@@ -250,8 +207,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	public void dispose(GLAutoDrawable drawable) {
 		if (view != null && viewInitialized == true) {
 			view.dispose(drawable);
-			glWindow.removeMouseListener(view);
-			glWindow.removeKeyListener(view);
 			view = null;
 		}
 		engine.dispose(drawable);
@@ -263,7 +218,15 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 */
 	public void init(GLAutoDrawable drawable) {
 		engine.init(drawable);
+
+		// register gui to mouse, keyboard events
+		glWindow.addMouseListener(engine.getGUI());
+		glWindow.addKeyListener(engine.getGUI());
+
+		// init off screen engine
 		Tools.oseInit(drawable);
+
+		// show up level editor view
 		setView(new LevelEditorView());
 	}
 
@@ -272,7 +235,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 */
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		engine.reshape(drawable, x, y, width, height);
-		if (nifty != null) nifty.resolutionChanged();
 	}
 
 	/**
@@ -286,7 +248,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Switch to level editor
 	 */
 	public void switchToModelLibrary() {
-		setView(new ModelLibraryView());
+		// setView(new ModelLibraryView());
 	}
 
 	/*

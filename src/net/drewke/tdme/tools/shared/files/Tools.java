@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.files;
+package net.drewke.tdme.tools.shared.files;
 
 import java.io.BufferedReader;
 import java.io.IOException;

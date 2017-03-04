@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.viewer.views;
+package net.drewke.tdme.tools.shared.views;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
