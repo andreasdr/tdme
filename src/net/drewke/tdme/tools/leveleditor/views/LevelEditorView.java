@@ -338,8 +338,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			// skip on processed events
 			if (event.isProcessed() == true) continue;
 
-			System.out.println(event);
-
 			// check if dragging
 			if (event.getButton() != MOUSE_BUTTON_NONE) {
 				// check if dragging
