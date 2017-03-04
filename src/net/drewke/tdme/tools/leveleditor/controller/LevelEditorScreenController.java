@@ -8,6 +8,7 @@ import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
@@ -17,10 +18,10 @@ import net.drewke.tdme.tools.leveleditor.Tools;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
+import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.views.ModelViewerView;
-import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -493,7 +494,34 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * @param light presets
 	 */
 	public void setLightPresetsIds(Collection<String> lightPresetIds) {
-		// TODO: fill light presets
+		for (int i = 0; i < 4; i++) {
+			// model properties presets inner
+			GUIParentNode lightPresetsInnerNode = (GUIParentNode)(lightsPresets[i].getScreenNode().getNodeById(lightsPresets[i].getId() + "_inner"));
+
+			// clear sub nodes
+			lightPresetsInnerNode.clearSubNodes();
+
+			// construct XML for sub nodes
+			int idx = 0;
+			String lightPresetsInnerNodeSubNodesXML = "";
+			for (String lightPresetId: lightPresetIds) {
+				lightPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + lightPresetId + "\" value=\"" + lightPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+				idx++;
+			}
+
+			// inject sub nodes
+			try {
+				GUIParser.parse(
+					lightPresetsInnerNode,
+					lightPresetsInnerNodeSubNodesXML
+				);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			// relayout
+			lightPresetsInnerNode.getScreenNode().layout();
+		}
 	}
 
 	/**
@@ -947,10 +975,8 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * @param i
 	 */
 	public void onLightPresetApply(int lightIdx) {
-		// TODO
-		/*
 		// get preset
-		LevelEditorLight lightPreset = LevelPropertyPresets.getInstance().getLightPresets().get(lightsPresets[lightIdx].getSelection());
+		LevelEditorLight lightPreset = LevelPropertyPresets.getInstance().getLightPresets().get(lightsPresets[lightIdx].getController().getValue().toString());
 		if (lightPreset == null) return;
 
 		// apply preset
@@ -969,7 +995,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			lightPreset.getSpotCutOff(),
 			lightPreset.isEnabled()
 		);
-		*/
 	}
 
 	/**
