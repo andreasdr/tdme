@@ -25,6 +25,8 @@ import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.views.ModelViewerView;
+import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -78,7 +80,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private GUIElementNode btnObjectPropertyPresetApply;
 	private GUIElementNode objectPropertiesListBox;
 	private GUIElementNode objectPropertiesPresets;
-	private GUIElementNode modelThumbnailSelected = null;
 	private GUIElementNode objectsListBox;
 	private GUIElementNode[] lightsPresets;
 	private GUIElementNode[] lightsAmbient;
@@ -128,7 +129,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			mapPropertyName = (GUIElementNode)screenNode.getNodeById("map_property_name");
 			mapPropertyValue = (GUIElementNode)screenNode.getNodeById("map_property_value");
 			mapPropertySave = (GUIElementNode)screenNode.getNodeById("button_map_properties_save");
-			mapPropertiesListBox = (GUIElementNode)screenNode.getNodeById("mapproperties_listbox");
+			mapPropertiesListBox = (GUIElementNode)screenNode.getNodeById("map_properties_listbox");
 			objectName = (GUIElementNode)screenNode.getNodeById("object_name");
 			objectDescription = (GUIElementNode)screenNode.getNodeById("object_description");
 			objectModel = (GUIElementNode)screenNode.getNodeById("object_model");
@@ -196,7 +197,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 				lightsEnabled[i] = (GUIElementNode)screenNode.getNodeById("light" + i + "_enabled"); 
 			}
 	
-			modelThumbnailSelected = null;
 			value = new MutableString();
 			selectedObjects = new MutableString();
 			selectedObjectList = new ArrayList<String>();
@@ -241,17 +241,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		mapWidth.getController().setValue(value.set(Tools.formatFloat(width)));
 		mapDepth.getController().setValue(value.set(Tools.formatFloat(depth)));
 		mapHeight.getController().setValue(value.set(Tools.formatFloat(height)));
-	}
-
-	/**
-	 * Set up map properties
-	 * @param map properties
-	 */
-	public void setMapProperties(Iterable<PropertyModelClass> mapProperties) {
-		mapPropertyName.getController().setDisabled(true);
-		mapPropertyValue.getController().setDisabled(true);
-		mapPropertySave.getController().setDisabled(true);
-		// TODO: fill map properties list box
 	}
 
 	/**
@@ -673,7 +662,102 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * @param event
 	 */
 	public void onMapPropertiesSelectionChanged() {
-		// TODO: on map properties selection changed
+		mapPropertyName.getController().setDisabled(true);
+		mapPropertyName.getController().setValue(TEXT_EMPTY);
+		mapPropertyValue.getController().setDisabled(true);
+		mapPropertyValue.getController().setValue(TEXT_EMPTY);
+		mapPropertySave.getController().setDisabled(true);
+		PropertyModelClass mapProperty = ((LevelEditorView)TDMELevelEditor.getInstance().getView()).getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
+		if (mapProperty != null) {
+			mapPropertyName.getController().setValue(value.set(mapProperty.getName()));
+			mapPropertyValue.getController().setValue(value.set(mapProperty.getValue()));
+			mapPropertyName.getController().setDisabled(false);
+			mapPropertyValue.getController().setDisabled(false);
+			mapPropertySave.getController().setDisabled(false);
+		}
+	}
+
+	/**
+	 * Set up map properties
+	 * @param map properties
+	 */
+	public void setMapProperties(Iterable<PropertyModelClass> mapProperties, String selectedName) {
+		//
+		mapPropertyName.getController().setDisabled(true);
+		mapPropertyValue.getController().setDisabled(true);
+		mapPropertySave.getController().setDisabled(true);
+
+		// map properties list box inner
+		GUIParentNode mapPropertiesListBoxInnerNode = (GUIParentNode)(mapPropertiesListBox.getScreenNode().getNodeById(mapPropertiesListBox.getId() + "_inner"));
+
+		// clear sub nodes
+		mapPropertiesListBoxInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 1;
+		String mapPropertiesListBoxSubNodesXML = "";
+		mapPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + mapPropertiesListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (PropertyModelClass mapProperty: mapProperties) {
+			mapPropertiesListBoxSubNodesXML+=
+				"<selectbox-option text=\"" +
+				mapProperty.getName() +
+				": " +
+				mapProperty.getValue() +
+				"\" value=\"" +
+				mapProperty.getName() +
+				"\" " +
+				(selectedName != null && mapProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
+				"/>\n";
+		}
+		mapPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				mapPropertiesListBoxInnerNode,
+				mapPropertiesListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		mapPropertiesListBoxInnerNode.getScreenNode().layout();
+
+		//
+		onMapPropertiesSelectionChanged();
+	}
+
+	/**
+	 * On map property save
+	 */
+	public void onMapPropertySave() {
+		LevelEditorView levelEditorView = ((LevelEditorView)TDMELevelEditor.getInstance().getView());
+		if (levelEditorView.mapPropertySave(
+			mapPropertiesListBox.getController().getValue().toString(),
+			mapPropertyName.getController().getValue().toString(),
+			mapPropertyValue.getController().getValue().toString()) == false) {
+			//
+			showErrorPopUp("Warning", "Saving map property failed");
+		}
+	}
+
+	/**
+	 * On model property add
+	 */
+	public void onMapPropertyAdd() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyAdd() == false) {
+			showErrorPopUp("Warning", "Adding new map property failed");
+		}
+	}
+
+	/**
+	 * On model property remove
+	 */
+	public void onMapPropertyRemove() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
+			showErrorPopUp("Warning", "Removing map property failed");
+		}
 	}
 
 	/**
@@ -683,6 +767,27 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onObjectPropertiesSelectionChanged() {
 		// TODO: on object properties selection changed
+	}
+
+	/**
+	 * On object property save
+	 */
+	public void onObjectPropertySave() {
+		// TODO: on object property save
+	}
+
+	/**
+	 * On object property add
+	 */
+	public void onObjectPropertyAdd() {
+		// TODO: on object property add
+	}
+
+	/**
+	 * On object property remove
+	 */
+	public void onObjectPropertyRemove() {
+		// TODO: on object property remove
 	}
 
 	/**
@@ -877,48 +982,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 				
 			}
 		);
-	}
-
-	/**
-	 * On map property save
-	 */
-	public void onMapPropertySave() {
-		// TODO: on map property save
-	}
-
-	/**
-	 * On map property remove
-	 */
-	public void onMapPropertyRemove() {
-		// TODO: on map property remove
-	}
-
-	/**
-	 * On map property add
-	 */
-	public void onMapPropertyAdd() {
-		// TODO: on map property add
-	}
-
-	/**
-	 * On object property save
-	 */
-	public void onObjectPropertySave() {
-		// TODO: on object property save
-	}
-
-	/**
-	 * On object property add
-	 */
-	public void onObjectPropertyAdd() {
-		// TODO: on object property add
-	}
-
-	/**
-	 * On object property remove
-	 */
-	public void onObjectPropertyRemove() {
-		// TODO: on object property remove
 	}
 
 	/**

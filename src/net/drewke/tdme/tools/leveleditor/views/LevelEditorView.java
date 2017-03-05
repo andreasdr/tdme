@@ -235,6 +235,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
+	 * @return level
+	 */
+	public LevelEditorLevel getLevel() {
+		return level;
+	}
+
+	/**
 	 * @return grid enabled
 	 */
 	public boolean isGridEnabled() {
@@ -737,7 +744,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		levelEditorScreenController.setGrid(gridEnabled, gridY);
 
 		// set up map properties
-		levelEditorScreenController.setMapProperties(level.getProperties());
+		levelEditorScreenController.setMapProperties(level.getProperties(), null);
 
 		// set up object properties presets
 		levelEditorScreenController.setObjectPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
@@ -1415,11 +1422,27 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Remove a map property from level
-	 * @param map property
+	 * Save a map property
+	 * @param old name
+	 * @param name
+	 * @param value
+	 * @return success
 	 */
-	public void mapPropertyRemove(PropertyModelClass mapProperty) {
-		level.removeProperty(mapProperty.getName());
+	public boolean mapPropertySave(String oldName, String name, String value) {
+		// try to update property
+		if (level.updateProperty(oldName, name, value) == true) {
+			// reload model properties
+			levelEditorScreenController.setMapProperties(
+				level.getProperties(),
+				name
+			);
+
+			//
+			return true;
+		}
+
+		//
+		return false;
 	}
 
 	/**
@@ -1427,18 +1450,50 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * @return success
 	 */
 	public boolean mapPropertyAdd() {
-		return level.addProperty("new.property", "new.value");
+		// try to add property
+		if (level.addProperty("new.property", "new.value")) {
+			// reload model properties
+			levelEditorScreenController.setMapProperties(
+				level.getProperties(),
+				"new.property"
+			);
+
+			//
+			return true;
+		}
+
+		//
+		return false;
 	}
 
 	/**
-	 * Save a map property
-	 * @param mapProperty 
+	 * Remove a map property from model properties
 	 * @param name
-	 * @param value
-	 * @return
+	 * @return success
 	 */
-	public boolean mapPropertySave(PropertyModelClass mapProperty, String name, String value) {
-		return level.updateProperty(mapProperty.getValue(), name, value);
+	public boolean mapPropertyRemove(String name) {
+		// try to remove property
+		int idx = level.getPropertyIndex(name);
+		if (idx != -1 && level.removeProperty(name) == true) {
+			// get property first at index that was removed
+			PropertyModelClass property = level.getPropertyByIndex(idx);
+			if (property == null) {
+				// if current index does not work, take current one -1
+				property = level.getPropertyByIndex(idx - 1);
+			}
+
+			// reload model properties
+			levelEditorScreenController.setMapProperties(
+				level.getProperties(),
+				property == null?null:property.getName()
+			);
+
+			//
+			return true;
+		}
+
+		//
+		return false;
 	}
 
 	/**
@@ -1553,7 +1608,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			);
 
 			// set up map properties
-			levelEditorScreenController.setMapProperties(level.getProperties());
+			levelEditorScreenController.setMapProperties(level.getProperties(), null);
 			levelEditorScreenController.unsetObjectProperties();
 			levelEditorScreenController.unsetObject();
 			loadLevel();

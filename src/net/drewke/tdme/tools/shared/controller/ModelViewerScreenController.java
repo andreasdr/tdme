@@ -294,11 +294,11 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/**
 	 * Set up model properties
-	 * @param has properties
 	 * @param preset id
 	 * @param model properties
+	 * @param selected name
 	 */
-	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedValue) {
+	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
 		//
 		modelPropertiesPresets.getController().setDisabled(false);
 		modelPropertyPresetApply.getController().setDisabled(false);
@@ -333,7 +333,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 				"\" value=\"" + 
 				modelProperty.getName() + 
 				"\" " +
-				(selectedValue != null && modelProperty.getName().equals(selectedValue)?"selected=\"true\" ":"") +
+				(selectedName != null && modelProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
 				"/>\n";
 		}
 		modelPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
