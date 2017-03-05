@@ -23,10 +23,9 @@ import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.views.ModelViewerView;
-import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -57,6 +56,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private GUIElementNode mapPropertyName;
 	private GUIElementNode mapPropertyValue;
 	private GUIElementNode mapPropertySave;
+	private GUIElementNode mapPropertyRemove;
 	private GUIElementNode mapPropertiesListBox;
 	private GUIElementNode objectName;
 	private GUIElementNode objectDescription;
@@ -129,6 +129,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			mapPropertyName = (GUIElementNode)screenNode.getNodeById("map_property_name");
 			mapPropertyValue = (GUIElementNode)screenNode.getNodeById("map_property_value");
 			mapPropertySave = (GUIElementNode)screenNode.getNodeById("button_map_properties_save");
+			mapPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_map_properties_remove");
 			mapPropertiesListBox = (GUIElementNode)screenNode.getNodeById("map_properties_listbox");
 			objectName = (GUIElementNode)screenNode.getNodeById("object_name");
 			objectDescription = (GUIElementNode)screenNode.getNodeById("object_description");
@@ -153,6 +154,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			objectPropertyName = (GUIElementNode)screenNode.getNodeById("object_property_name");
 			objectPropertyValue = (GUIElementNode)screenNode.getNodeById("object_property_value");
 			btnObjectPropertySave = (GUIElementNode)screenNode.getNodeById("button_object_properties_save");
+			btnObjectPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_object_properties_remove");
 			btnObjectPropertyAdd = (GUIElementNode)screenNode.getNodeById("button_object_properties_add");
 			btnObjectPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_object_properties_remove");
 			btnObjectPropertyPresetApply = (GUIElementNode)screenNode.getNodeById("button_object_properties_presetapply");
@@ -244,18 +246,10 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * Set up object property preset ids
-	 * @param object property preset ids
-	 */
-	public void setObjectPresetIds(Collection<String> objectPresetIds) {
-		// TODO: fill object properties presets
-	}
-
-	/**
 	 * Unset object properties
 	 */
 	public void unsetObjectProperties() {
-		// TODO: objectPropertiesPresets.selectItemByIndex(0);
+		objectPropertiesPresets.getController().setValue(value.set("none"));
 		objectPropertiesPresets.getController().setDisabled(true);
 		btnObjectPropertyPresetApply.getController().setDisabled(true);
 		objectPropertiesListBox.getController().setDisabled(true);
@@ -266,7 +260,11 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		objectPropertyName.getController().setDisabled(true);
 		objectPropertyValue.getController().setValue(TEXT_EMPTY);
 		objectPropertyValue.getController().setDisabled(true);
-		// TODO: objectPropertiesListBox.clear();
+
+		// object properties list box inner
+		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesListBox.getScreenNode().getNodeById(objectPropertiesListBox.getId() + "_inner"));
+		// 	clear sub nodes
+		objectPropertiesListBoxInnerNode.clearSubNodes();
 	}
 
 	/**
@@ -433,26 +431,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * Set up object properties
-	 * @param has properties
-	 * @param preset id
-	 * @param object properties
-	 */
-	public void setObjectProperties(String presetId, Iterable<PropertyModelClass> objectProperties) {
-		objectPropertiesPresets.getController().setDisabled(false);
-		btnObjectPropertyPresetApply.getController().setDisabled(false);
-		objectPropertiesListBox.getController().setDisabled(false);
-		btnObjectPropertyAdd.getController().setDisabled(false);
-		btnObjectPropertyRemove.getController().setDisabled(false);
-		btnObjectPropertySave.getController().setDisabled(true);
-		objectPropertyName.getController().setDisabled(true);
-		objectPropertyValue.getController().setDisabled(true);
-		// TODO: clear object property list box
-		// TODO: select preset in objects properties presets
-		// TODO: add object properties in object properties list box
-	}
-
-	/**
 	 * Set up object
 	 * @param translation
 	 * @param scale
@@ -515,6 +493,484 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		objectRotationX.getController().setValue(TEXT_EMPTY);
 		objectRotationY.getController().setValue(TEXT_EMPTY);
 		objectRotationZ.getController().setValue(TEXT_EMPTY);
+	}
+
+	/**
+	 * Event callback for map properties selection
+	 * @param id
+	 * @param event
+	 */
+	public void onMapPropertiesSelectionChanged() {
+		mapPropertyName.getController().setDisabled(true);
+		mapPropertyName.getController().setValue(TEXT_EMPTY);
+		mapPropertyValue.getController().setDisabled(true);
+		mapPropertyValue.getController().setValue(TEXT_EMPTY);
+		mapPropertySave.getController().setDisabled(true);
+		mapPropertyRemove.getController().setDisabled(true);
+		PropertyModelClass mapProperty = ((LevelEditorView)TDMELevelEditor.getInstance().getView()).getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
+		if (mapProperty != null) {
+			mapPropertyName.getController().setValue(value.set(mapProperty.getName()));
+			mapPropertyValue.getController().setValue(value.set(mapProperty.getValue()));
+			mapPropertyName.getController().setDisabled(false);
+			mapPropertyValue.getController().setDisabled(false);
+			mapPropertySave.getController().setDisabled(false);
+			mapPropertyRemove.getController().setDisabled(false);
+		}
+	}
+
+	/**
+	 * Set up map properties
+	 * @param map properties
+	 */
+	public void setMapProperties(Iterable<PropertyModelClass> mapProperties, String selectedName) {
+		//
+		mapPropertyName.getController().setDisabled(true);
+		mapPropertyValue.getController().setDisabled(true);
+		mapPropertySave.getController().setDisabled(true);
+
+		// map properties list box inner
+		GUIParentNode mapPropertiesListBoxInnerNode = (GUIParentNode)(mapPropertiesListBox.getScreenNode().getNodeById(mapPropertiesListBox.getId() + "_inner"));
+
+		// clear sub nodes
+		mapPropertiesListBoxInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 1;
+		String mapPropertiesListBoxSubNodesXML = "";
+		mapPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + mapPropertiesListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (PropertyModelClass mapProperty: mapProperties) {
+			mapPropertiesListBoxSubNodesXML+=
+				"<selectbox-option text=\"" +
+				mapProperty.getName() +
+				": " +
+				mapProperty.getValue() +
+				"\" value=\"" +
+				mapProperty.getName() +
+				"\" " +
+				(selectedName != null && mapProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
+				"/>\n";
+		}
+		mapPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				mapPropertiesListBoxInnerNode,
+				mapPropertiesListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		mapPropertiesListBoxInnerNode.getScreenNode().layout();
+
+		//
+		onMapPropertiesSelectionChanged();
+	}
+
+	/**
+	 * On map property save
+	 */
+	public void onMapPropertySave() {
+		LevelEditorView levelEditorView = ((LevelEditorView)TDMELevelEditor.getInstance().getView());
+		if (levelEditorView.mapPropertySave(
+			mapPropertiesListBox.getController().getValue().toString(),
+			mapPropertyName.getController().getValue().toString(),
+			mapPropertyValue.getController().getValue().toString()) == false) {
+			//
+			showErrorPopUp("Warning", "Saving map property failed");
+		}
+	}
+
+	/**
+	 * On model property add
+	 */
+	public void onMapPropertyAdd() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyAdd() == false) {
+			showErrorPopUp("Warning", "Adding new map property failed");
+		}
+	}
+
+	/**
+	 * On model property remove
+	 */
+	public void onMapPropertyRemove() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
+			showErrorPopUp("Warning", "Removing map property failed");
+		}
+	}
+
+	/**
+	 * Set up object property preset ids
+	 * @param object property preset ids
+	 */
+	public void setObjectPresetIds(Collection<String> objectPresetIds) {
+		// model properties presets inner
+		GUIParentNode objectPropertiesPresetsInnerNode = (GUIParentNode)(objectPropertiesPresets.getScreenNode().getNodeById(objectPropertiesPresets.getId() + "_inner"));
+
+		// clear sub nodes
+		objectPropertiesPresetsInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 0;
+		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
+		for (String modelPresetId: objectPresetIds) {
+			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + modelPresetId + "\" value=\"" + modelPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+			idx++;
+		}
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				objectPropertiesPresetsInnerNode,
+				objectPropertiesPresetsInnerNodeSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		objectPropertiesPresetsInnerNode.getScreenNode().layout();
+	}
+
+	/**
+	 * Event callback for object properties selection
+	 * @param id
+	 * @param event
+	 */
+	public void onObjectPropertiesSelectionChanged() {
+		//
+		objectPropertyName.getController().setDisabled(true);
+		objectPropertyName.getController().setValue(TEXT_EMPTY);
+		objectPropertyValue.getController().setDisabled(true);
+		objectPropertyValue.getController().setValue(TEXT_EMPTY);
+		btnObjectPropertySave.getController().setDisabled(true);
+		btnObjectPropertyRemove.getController().setDisabled(true);
+
+		// get selected level editor object
+		LevelEditorObject levelEditorObject = ((LevelEditorView)TDMELevelEditor.getInstance().getView()).getSelectedObject();
+		if (levelEditorObject == null) return;
+
+		// get model property
+		PropertyModelClass modelProperty = levelEditorObject.getProperty(objectPropertiesListBox.getController().getValue().toString());
+		if (modelProperty != null) {
+			objectPropertyName.getController().setValue(value.set(modelProperty.getName()));
+			objectPropertyValue.getController().setValue(value.set(modelProperty.getValue()));
+			objectPropertyName.getController().setDisabled(false);
+			objectPropertyValue.getController().setDisabled(false);
+			btnObjectPropertySave.getController().setDisabled(false);
+			btnObjectPropertyRemove.getController().setDisabled(false);
+		}
+	}
+
+	/**
+	 * Set up object properties
+	 * @param preset id
+	 * @param object properties
+	 * @param selected name
+	 */
+	public void setObjectProperties(String presetId, Iterable<PropertyModelClass> objectProperties, String selectedName) {
+		objectPropertiesPresets.getController().setDisabled(false);
+		btnObjectPropertyPresetApply.getController().setDisabled(false);
+		objectPropertiesListBox.getController().setDisabled(false);
+		btnObjectPropertyAdd.getController().setDisabled(false);
+		btnObjectPropertyRemove.getController().setDisabled(false);
+		btnObjectPropertySave.getController().setDisabled(true);
+		objectPropertyName.getController().setDisabled(true);
+		objectPropertyValue.getController().setDisabled(true);
+		// set up preset
+		if (presetId != null) {
+			objectPropertiesPresets.getController().setValue(value.set(presetId));
+		}
+
+		// object properties list box inner
+		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesListBox.getScreenNode().getNodeById(objectPropertiesListBox.getId() + "_inner"));
+		
+		// clear sub nodes
+		objectPropertiesListBoxInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 1;
+		String objectPropertiesListBoxSubNodesXML = "";
+		objectPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + objectPropertiesListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (PropertyModelClass objectProperty: objectProperties) {
+			objectPropertiesListBoxSubNodesXML+= 
+				"<selectbox-option text=\"" + 
+				objectProperty.getName() + 
+				": " + 
+				objectProperty.getValue() + 
+				"\" value=\"" + 
+				objectProperty.getName() + 
+				"\" " +
+				(selectedName != null && objectProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
+				"/>\n";
+		}
+		objectPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				objectPropertiesListBoxInnerNode,
+				objectPropertiesListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		objectPropertiesListBoxInnerNode.getScreenNode().layout();
+
+		//
+		onObjectPropertiesSelectionChanged();
+	}
+
+	/**
+	 * On object property save
+	 */
+	public void onObjectPropertySave() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertySave(
+			objectPropertiesListBox.getController().getValue().toString(),
+			objectPropertyName.getController().getValue().toString(),
+			objectPropertyValue.getController().getValue().toString()) == false) {
+			//
+			showErrorPopUp("Warning", "Saving object property failed");
+		}
+	}
+
+	/**
+	 * On object property add
+	 */
+	public void onObjectPropertyAdd() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertyAdd() == false) {
+			showErrorPopUp("Warning", "Adding new object property failed");
+		}
+	}
+
+	/**
+	 * On object property remove
+	 */
+	public void onObjectPropertyRemove() {
+		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertyRemove(objectPropertiesListBox.getController().getValue().toString()) == false) {
+			showErrorPopUp("Warning", "Removing object property failed");
+		}
+	}
+
+	/**
+	 * On quit action
+	 */
+	public void onQuit() {
+		TDMELevelEditor.getInstance().quit();
+	}
+
+	/**
+	 * On library action
+	 */
+	public void onLibrary() {
+		TDMELevelEditor.getInstance().switchToModelLibrary();
+	}
+
+	/**
+	 * Add a model to level editor view
+	 * @param model
+	 */
+	public void setModelLibrary(LevelEditorModelLibrary modelLibrary) {
+		// model properties list box inner
+		GUIParentNode modelLibraryListBoxInnerNode = (GUIParentNode)(modelLibraryListBox.getScreenNode().getNodeById(modelLibraryListBox.getId() + "_inner"));
+
+		// clear sub nodes
+		modelLibraryListBoxInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 1;
+		String modelLibraryListBoxSubNodesXML = "";
+		modelLibraryListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelLibraryListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
+			int objectId = modelLibrary.getModelAt(i).getId();
+			String objectName = modelLibrary.getModelAt(i).getName();
+			modelLibraryListBoxSubNodesXML+= 
+				"<selectbox-option text=\"" + 
+				objectName + 
+				"\" value=\"" + 
+				objectId + 
+				"\" " +
+				(i == 0?"selected=\"true\" ":"") +
+				"/>\n";
+		}
+		modelLibraryListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				modelLibraryListBoxInnerNode,
+				modelLibraryListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		modelLibraryListBoxInnerNode.getScreenNode().layout();
+
+		//
+		onModelSelectionChanged();
+	}
+
+	/**
+	 * On model changed
+	 */
+	public void onModelSelectionChanged() {
+		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
+		if (model != null) {
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadModelFromLibrary(model.getId());
+		}
+	}
+
+	/**
+	 * place model button clicked
+	 */
+	public void onPlaceModel() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).placeObject();
+	}
+
+	/**
+	 * On object translation apply action
+	 */
+	public void onObjectTranslationApply() {
+		try {
+			float x = Float.parseFloat(objectTranslationX.getController().getValue().toString());
+			float y = Float.parseFloat(objectTranslationY.getController().getValue().toString());
+			float z = Float.parseFloat(objectTranslationZ.getController().getValue().toString());
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectTranslationApply(x, y, z);
+		} catch (NumberFormatException nfe) {
+			showErrorPopUp("Warning", "Invalid number entered");
+		} catch (IllegalArgumentException iae) {
+			showErrorPopUp("Warning", iae.getMessage());
+		}
+	}
+
+	/**
+	 * On object scale apply action
+	 */
+	public void onObjectScaleApply() {
+		try {
+			float x = Float.parseFloat(objectScaleX.getController().getValue().toString());
+			float y = Float.parseFloat(objectScaleY.getController().getValue().toString());
+			float z = Float.parseFloat(objectScaleZ.getController().getValue().toString());
+			if (x < -10f || x > 10f) throw new IllegalArgumentException("x scale must be within -10 .. +10");
+			if (y < -10f || y > 10f) throw new IllegalArgumentException("y scale must be within -10 .. +10");
+			if (z < -10f || z > 10f) throw new IllegalArgumentException("z scale must be within -10 .. +10");
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectScaleApply(x, y, z);
+		} catch (NumberFormatException nfe) {
+			showErrorPopUp("Warning", "Invalid number entered");
+		} catch (IllegalArgumentException iae) {
+			showErrorPopUp("Warning", iae.getMessage());
+		}
+	}
+
+	/**
+	 * On object rotations apply action
+	 */
+	public void onObjectRotationsApply() {
+		try {
+			float x = Float.parseFloat(objectRotationX.getController().getValue().toString());
+			float y = Float.parseFloat(objectRotationY.getController().getValue().toString());
+			float z = Float.parseFloat(objectRotationZ.getController().getValue().toString());
+			if (x < -360f || x > 360f) throw new IllegalArgumentException("x axis rotation must be within -360 .. +360");
+			if (y < -360f || y > 360f) throw new IllegalArgumentException("y axis rotation must be within -360 .. +360");
+			if (z < -360f || z > 360f) throw new IllegalArgumentException("z axis rotation must be within -360 .. +360");
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectRotationsApply(x, y, z);
+		} catch (NumberFormatException nfe) {
+			showErrorPopUp("Warning", "Invalid number entered");
+		} catch (IllegalArgumentException iae) {
+			showErrorPopUp("Warning", iae.getMessage());
+		}
+	}
+
+	/**
+	 * On object remove action
+	 */
+	public void onObjectRemove() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).removeObject();		
+	}
+
+	/**
+	 * On object color action
+	 */
+	public void onObjectColor() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).colorObject();		
+	}
+
+	/**
+	 * On object center action
+	 */
+	public void onObjectCenter() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).centerObject();		
+	}
+
+	/**
+	 * On map load action
+	 */
+	public void onMapLoad() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().show(
+			"Load from: ", 
+			new String[]{"tl", "dae"},
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileName(),
+			new Action() {
+				public void performAction() {
+					((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadMap(
+						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
+						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getFileName()
+					);
+					((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().close();
+				}
+				
+			}
+		);
+	}
+
+	/**
+	 * On map save action
+	 */
+	public void onMapSave() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().show(
+			"Save to: ", 
+			new String[]{"tl"},
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileName(),
+			new Action() {
+				public void performAction() {
+					((LevelEditorView)TDMELevelEditor.getInstance().getView()).saveMap(
+						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
+						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getFileName()
+					);
+					((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().close();
+				}
+				
+			}
+		);
+	}
+
+	/**
+	 * On grid apply button
+	 */
+	public void onGridApply() {
+		try {
+			float gridY = Float.parseFloat(gridYPosition.getController().getValue().toString());
+			if (gridY < -5f || gridY > 5f) throw new IllegalArgumentException("grid y position must be within -5 .. +5");
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).setGridY(gridY);
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).setGridEnabled(gridEnabled.getController().getValue().equals(CHECKBOX_CHECKED));
+		} catch (NumberFormatException nfe) {
+			showErrorPopUp("Warning", "Invalid number entered");
+		} catch (IllegalArgumentException iae) {
+			showErrorPopUp("Warning", iae.getMessage());
+		}
+	}
+
+	/**
+	 * On object property preset apply 
+	 */
+	public void onObjectPropertyPresetApply() {
+		((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
@@ -654,357 +1110,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		lightsSpotExponent[i].getController().setDisabled(enabled == false);
 		lightsSpotCutoff[i].getController().setDisabled(enabled == false);
 		ligthsSpotDirectionCompute[i].getController().setDisabled(enabled == false);
-	}
-
-	/**
-	 * Event callback for map properties selection
-	 * @param id
-	 * @param event
-	 */
-	public void onMapPropertiesSelectionChanged() {
-		mapPropertyName.getController().setDisabled(true);
-		mapPropertyName.getController().setValue(TEXT_EMPTY);
-		mapPropertyValue.getController().setDisabled(true);
-		mapPropertyValue.getController().setValue(TEXT_EMPTY);
-		mapPropertySave.getController().setDisabled(true);
-		PropertyModelClass mapProperty = ((LevelEditorView)TDMELevelEditor.getInstance().getView()).getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
-		if (mapProperty != null) {
-			mapPropertyName.getController().setValue(value.set(mapProperty.getName()));
-			mapPropertyValue.getController().setValue(value.set(mapProperty.getValue()));
-			mapPropertyName.getController().setDisabled(false);
-			mapPropertyValue.getController().setDisabled(false);
-			mapPropertySave.getController().setDisabled(false);
-		}
-	}
-
-	/**
-	 * Set up map properties
-	 * @param map properties
-	 */
-	public void setMapProperties(Iterable<PropertyModelClass> mapProperties, String selectedName) {
-		//
-		mapPropertyName.getController().setDisabled(true);
-		mapPropertyValue.getController().setDisabled(true);
-		mapPropertySave.getController().setDisabled(true);
-
-		// map properties list box inner
-		GUIParentNode mapPropertiesListBoxInnerNode = (GUIParentNode)(mapPropertiesListBox.getScreenNode().getNodeById(mapPropertiesListBox.getId() + "_inner"));
-
-		// clear sub nodes
-		mapPropertiesListBoxInnerNode.clearSubNodes();
-
-		// construct XML for sub nodes
-		int idx = 1;
-		String mapPropertiesListBoxSubNodesXML = "";
-		mapPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + mapPropertiesListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
-		for (PropertyModelClass mapProperty: mapProperties) {
-			mapPropertiesListBoxSubNodesXML+=
-				"<selectbox-option text=\"" +
-				mapProperty.getName() +
-				": " +
-				mapProperty.getValue() +
-				"\" value=\"" +
-				mapProperty.getName() +
-				"\" " +
-				(selectedName != null && mapProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
-				"/>\n";
-		}
-		mapPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
-
-		// inject sub nodes
-		try {
-			GUIParser.parse(
-				mapPropertiesListBoxInnerNode,
-				mapPropertiesListBoxSubNodesXML
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// relayout
-		mapPropertiesListBoxInnerNode.getScreenNode().layout();
-
-		//
-		onMapPropertiesSelectionChanged();
-	}
-
-	/**
-	 * On map property save
-	 */
-	public void onMapPropertySave() {
-		LevelEditorView levelEditorView = ((LevelEditorView)TDMELevelEditor.getInstance().getView());
-		if (levelEditorView.mapPropertySave(
-			mapPropertiesListBox.getController().getValue().toString(),
-			mapPropertyName.getController().getValue().toString(),
-			mapPropertyValue.getController().getValue().toString()) == false) {
-			//
-			showErrorPopUp("Warning", "Saving map property failed");
-		}
-	}
-
-	/**
-	 * On model property add
-	 */
-	public void onMapPropertyAdd() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyAdd() == false) {
-			showErrorPopUp("Warning", "Adding new map property failed");
-		}
-	}
-
-	/**
-	 * On model property remove
-	 */
-	public void onMapPropertyRemove() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
-			showErrorPopUp("Warning", "Removing map property failed");
-		}
-	}
-
-	/**
-	 * Event callback for object properties selection
-	 * @param id
-	 * @param event
-	 */
-	public void onObjectPropertiesSelectionChanged() {
-		// TODO: on object properties selection changed
-	}
-
-	/**
-	 * On object property save
-	 */
-	public void onObjectPropertySave() {
-		// TODO: on object property save
-	}
-
-	/**
-	 * On object property add
-	 */
-	public void onObjectPropertyAdd() {
-		// TODO: on object property add
-	}
-
-	/**
-	 * On object property remove
-	 */
-	public void onObjectPropertyRemove() {
-		// TODO: on object property remove
-	}
-
-	/**
-	 * On quit action
-	 */
-	public void onQuit() {
-		TDMELevelEditor.getInstance().quit();
-	}
-
-	/**
-	 * On library action
-	 */
-	public void onLibrary() {
-		TDMELevelEditor.getInstance().switchToModelLibrary();
-	}
-
-	/**
-	 * Add a model to level editor view
-	 * @param model
-	 */
-	public void setModelLibrary(LevelEditorModelLibrary modelLibrary) {
-		// model properties list box inner
-		GUIParentNode modelLibraryListBoxInnerNode = (GUIParentNode)(modelLibraryListBox.getScreenNode().getNodeById(modelLibraryListBox.getId() + "_inner"));
-
-		// clear sub nodes
-		modelLibraryListBoxInnerNode.clearSubNodes();
-
-		// construct XML for sub nodes
-		int idx = 1;
-		String modelLibraryListBoxSubNodesXML = "";
-		modelLibraryListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelLibraryListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
-		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
-			int objectId = modelLibrary.getModelAt(i).getId();
-			String objectName = modelLibrary.getModelAt(i).getName();
-			modelLibraryListBoxSubNodesXML+= 
-				"<selectbox-option text=\"" + 
-				objectName + 
-				"\" value=\"" + 
-				objectId + 
-				"\" " +
-				(i == 0?"selected=\"true\" ":"") +
-				"/>\n";
-		}
-		modelLibraryListBoxSubNodesXML+= "</scrollarea-vertical>\n";
-
-		// inject sub nodes
-		try {
-			GUIParser.parse(
-				modelLibraryListBoxInnerNode,
-				modelLibraryListBoxSubNodesXML
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// relayout
-		modelLibraryListBoxInnerNode.getScreenNode().layout();
-
-		//
-		onModelChanged();
-	}
-
-	/**
-	 * On model changed
-	 */
-	public void onModelChanged() {
-		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
-		if (model != null) {
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadModelFromLibrary(model.getId());
-		}
-	}
-
-	/**
-	 * place model button clicked
-	 */
-	public void onPlaceModel() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).placeObject();
-	}
-
-	/**
-	 * On object translation apply action
-	 */
-	public void onObjectTranslationApply() {
-		try {
-			float x = Float.parseFloat(objectTranslationX.getController().getValue().toString());
-			float y = Float.parseFloat(objectTranslationY.getController().getValue().toString());
-			float z = Float.parseFloat(objectTranslationZ.getController().getValue().toString());
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectTranslationApply(x, y, z);
-		} catch (NumberFormatException nfe) {
-			showErrorPopUp("Warning", "Invalid number entered");
-		} catch (IllegalArgumentException iae) {
-			showErrorPopUp("Warning", iae.getMessage());
-		}
-	}
-
-	/**
-	 * On object scale apply action
-	 */
-	public void onObjectScaleApply() {
-		try {
-			float x = Float.parseFloat(objectScaleX.getController().getValue().toString());
-			float y = Float.parseFloat(objectScaleY.getController().getValue().toString());
-			float z = Float.parseFloat(objectScaleZ.getController().getValue().toString());
-			if (x < -10f || x > 10f) throw new IllegalArgumentException("x scale must be within -10 .. +10");
-			if (y < -10f || y > 10f) throw new IllegalArgumentException("y scale must be within -10 .. +10");
-			if (z < -10f || z > 10f) throw new IllegalArgumentException("z scale must be within -10 .. +10");
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectScaleApply(x, y, z);
-		} catch (NumberFormatException nfe) {
-			showErrorPopUp("Warning", "Invalid number entered");
-		} catch (IllegalArgumentException iae) {
-			showErrorPopUp("Warning", iae.getMessage());
-		}
-	}
-
-	/**
-	 * On object rotations apply action
-	 */
-	public void onObjectRotationsApply() {
-		try {
-			float x = Float.parseFloat(objectRotationX.getController().getValue().toString());
-			float y = Float.parseFloat(objectRotationY.getController().getValue().toString());
-			float z = Float.parseFloat(objectRotationZ.getController().getValue().toString());
-			if (x < -360f || x > 360f) throw new IllegalArgumentException("x axis rotation must be within -360 .. +360");
-			if (y < -360f || y > 360f) throw new IllegalArgumentException("y axis rotation must be within -360 .. +360");
-			if (z < -360f || z > 360f) throw new IllegalArgumentException("z axis rotation must be within -360 .. +360");
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectRotationsApply(x, y, z);
-		} catch (NumberFormatException nfe) {
-			showErrorPopUp("Warning", "Invalid number entered");
-		} catch (IllegalArgumentException iae) {
-			showErrorPopUp("Warning", iae.getMessage());
-		}
-	}
-
-	/**
-	 * On object remove action
-	 */
-	public void onObjectRemove() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).removeObject();		
-	}
-
-	/**
-	 * On object color action
-	 */
-	public void onObjectColor() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).colorObject();		
-	}
-
-	/**
-	 * On object center action
-	 */
-	public void onObjectCenter() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).centerObject();		
-	}
-
-	/**
-	 * On map load action
-	 */
-	public void onMapLoad() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().show(
-			"Load from: ", 
-			new String[]{".tl", "dae"},
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileName(),
-			new Action() {
-				public void performAction() {
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadMap(
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getFileName()
-					);
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().close();
-				}
-				
-			}
-		);
-	}
-
-	/**
-	 * On map save action
-	 */
-	public void onMapSave() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().show(
-			"Save to: ", 
-			new String[]{".tl"},
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileName(),
-			new Action() {
-				public void performAction() {
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).saveMap(
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getFileName()
-					);
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().close();
-				}
-				
-			}
-		);
-	}
-
-	/**
-	 * On grid apply button
-	 */
-	public void onGridApply() {
-		try {
-			float gridY = Float.parseFloat(gridYPosition.getController().getValue().toString());
-			if (gridY < -5f || gridY > 5f) throw new IllegalArgumentException("grid y position must be within -5 .. +5");
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).setGridY(gridY);
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).setGridEnabled(gridEnabled.getController().getValue().equals(CHECKBOX_CHECKED));
-		} catch (NumberFormatException nfe) {
-			showErrorPopUp("Warning", "Invalid number entered");
-		} catch (IllegalArgumentException iae) {
-			showErrorPopUp("Warning", iae.getMessage());
-		}
-	}
-
-	/**
-	 * On object property preset apply 
-	 */
-	public void onObjectPropertyPresetApply() {
-		// TODO: ((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getSelection());
 	}
 
 	/**
@@ -1201,10 +1306,13 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			// no op
 		} else 
 		if (node.getId().equals("model_library_listbox") == true) {
-			onModelChanged();
+			onModelSelectionChanged();
 		} else
 		if (node.getId().equals("map_properties_listbox") == true) {
 			onMapPropertiesSelectionChanged();
+		} else 
+		if (node.getId().equals("object_properties_listbox") == true) {
+			onObjectPropertiesSelectionChanged();
 		} else {
 			System.out.println("LevelEditorScreenController::onValueChanged: " + node.getId());
 		}

@@ -244,7 +244,7 @@ public final class LevelFileImport {
 						jObjectProperty.getString("name"),
 						jObjectProperty.getString("value")
 					);
-				}
+				} 
 			}
 
 			// check if entity already exists

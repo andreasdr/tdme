@@ -10,6 +10,8 @@
 		<property name="player.death.score_attacker" value="5" />
 	</map>
 	<object>
+		<type id="none">
+		</type>
 		<type id="moveable">
 			<property name="dynamic" value="true" />
 			<property name="dynamic.mass" value="100" />

@@ -242,6 +242,24 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
+	 * @return selected selectedModel
+	 */
+	public LevelEditorModel getSelectedModel() {
+		return selectedModel;
+	}
+
+	/**
+	 * @return selected level editor object
+	 */
+	public LevelEditorObject getSelectedObject() {
+		if (selectedObjects.size() != 1) return null;
+
+		//
+		Entity selectedObject = selectedObjects.get(0);
+		return selectedObject != null && selectedObject.getId().startsWith("leveleditor.") == false?level.getObjectById(selectedObject.getId()):null;
+	}
+
+	/**
 	 * @return grid enabled
 	 */
 	public boolean isGridEnabled() {
@@ -276,13 +294,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		if (gridEnabled) removeGrid();
 		this.gridY = gridY;
 		if (gridEnabled) updateGrid();
-	}
-
-	/**
-	 * @return selected selectedModel
-	 */
-	public LevelEditorModel getSelectedModel() {
-		return selectedModel;
 	}
 
 	/**
@@ -636,7 +647,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				PropertyModelClass preset = levelEditorObject.getProperty("preset");
 				levelEditorScreenController.setObjectProperties(
 					preset != null?preset.getValue():"",
-					levelEditorObject.getProperties()
+					levelEditorObject.getProperties(),
+					null
 				);
 				levelEditorScreenController.setObject(
 					selectedObject.getTranslation(),
@@ -1248,7 +1260,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				PropertyModelClass preset = levelEditorObject.getProperty("preset");
 				levelEditorScreenController.setObjectProperties(
 					preset != null?preset.getValue():"",
-					levelEditorObject.getProperties()
+					levelEditorObject.getProperties(),
+					null
 				);
 			} else {
 				levelEditorScreenController.unsetObjectProperties();
@@ -1497,20 +1510,41 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Remove a object property from object
-	 * @param object property
+	 * Remove a object property from object properties
+	 * @param name
+	 * @return success
 	 */
-	public void objectPropertyRemove(PropertyModelClass property) {
-		if (selectedObjects.size() == 0) return;
+	public boolean objectPropertyRemove(String name) {
+		if (selectedObjects.size() != 1) return false;
 
 		// handle single object
-		if (selectedObjects.size() == 1) {
-			Entity selectedObject = selectedObjects.get(0);
-			LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
-			if (levelEditorObject == null) return;
+		Entity selectedObject = selectedObjects.get(0);
+		LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
+		if (levelEditorObject == null) return false;
 
-			levelEditorObject.removeProperty(property.getName());
+		// try to remove property
+		int idx = levelEditorObject.getPropertyIndex(name);
+		if (idx != -1 && levelEditorObject.removeProperty(name) == true) {
+			// get property first at index that was removed
+			PropertyModelClass property = levelEditorObject.getPropertyByIndex(idx);
+			if (property == null) {
+				// if current index does not work, take current one -1
+				property = levelEditorObject.getPropertyByIndex(idx - 1);
+			}
+
+			// reload model properties
+			levelEditorScreenController.setObjectProperties(
+				null,
+				levelEditorObject.getProperties(),
+				property == null?null:property.getName()
+			);
+
+			//
+			return true;
 		}
+
+		//
+		return false;
 	}
 
 	/**
@@ -1518,71 +1552,91 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * @param preset id
 	 */
 	public void objectPropertiesPreset(String presetId) {
-		if (selectedObjects.size() == 0) return;
+		if (selectedObjects.size() != 1) return;
 
 		// handle single object
-		if (selectedObjects.size() == 1) {
-			Entity selectedObject = selectedObjects.get(0);
-			LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
-			if (levelEditorObject == null) return;
-	
-			// clear object properties
-			levelEditorObject.clearProperties();
-	
-			// add object properties by preset if missing
-			ArrayList<PropertyModelClass> objectPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
-			if (objectPropertyPresetVector != null) {
-				for (PropertyModelClass objectPropertyPreset: objectPropertyPresetVector) {
-					levelEditorObject.addProperty(objectPropertyPreset.getName(), objectPropertyPreset.getValue());
-				}
+		Entity selectedObject = selectedObjects.get(0);
+		LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
+		if (levelEditorObject == null) return;
+
+		// clear object properties
+		levelEditorObject.clearProperties();
+
+		// add object properties by preset if missing
+		ArrayList<PropertyModelClass> objectPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
+		if (objectPropertyPresetVector != null) {
+			for (PropertyModelClass objectPropertyPreset: objectPropertyPresetVector) {
+				levelEditorObject.addProperty(objectPropertyPreset.getName(), objectPropertyPreset.getValue());
 			}
-	
-			// update object properties to gui
-			levelEditorScreenController.setObjectProperties(
-				presetId,
-				levelEditorObject.getProperties()
-			);
 		}
+
+		// update object properties to gui
+		levelEditorScreenController.setObjectProperties(
+			presetId,
+			levelEditorObject.getProperties(),
+			null
+		);
 	}
 
 	/**
-	 * Save a object property
-	 * @param object property
+	 * Save a model property
+	 * @param old name
 	 * @param name
 	 * @param value
 	 * @return success
 	 */
-	public boolean objectPropertySave(PropertyModelClass objectProperty, String name, String value) {
-		if (selectedObjects.size() == 0) return false;
+	public boolean objectPropertySave(String oldName, String name, String value) {
+		if (selectedObjects.size() != 1) return false;
 
 		// handle single object
-		if (selectedObjects.size() == 1) {
-			Entity selectedObject = selectedObjects.get(0);
+		Entity selectedObject = selectedObjects.get(0);
+		LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
+		if (levelEditorObject == null) return false;
 
-			LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
-			if (levelEditorObject == null) return false;
-	
-			//
-			return levelEditorObject.updateProperty(objectProperty.getName(), name, value);
+		// try to update property
+		if (levelEditorObject.updateProperty(oldName, name, value) == true) {
+			// reload model properties
+			levelEditorScreenController.setObjectProperties(
+				null,
+				levelEditorObject.getProperties(),
+				name
+			);
+
+			// 
+			return true;
 		}
 
+		//
 		return false;
 	}
 
 	/**
-	 * Add a object property
+	 * Add a model property
+	 * @return success
 	 */
-	public void objectPropertyAdd() {
-		if (selectedObjects.size() == 0) return;
+	public boolean objectPropertyAdd() {
+		if (selectedObjects.size() != 1) return false;
 
 		// handle single object
-		if (selectedObjects.size() == 1) {
-			Entity   selectedObject = selectedObjects.get(0);
-			LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
-			if (levelEditorObject == null) return;
-	
-			levelEditorObject.addProperty("new.property", "new.value");
+		Entity selectedObject = selectedObjects.get(0);
+		LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
+		if (levelEditorObject == null) return false;
+
+		// try to add property
+		if (levelEditorObject.addProperty("new.property", "new.value")) {
+			// reload model properties
+			levelEditorScreenController.setObjectProperties(
+				null,
+				levelEditorObject.getProperties(),
+				"new.property"
+			);
+
+			//
+			return true;
 		}
+
+		//
+		return false;
 	}
 
 	/**

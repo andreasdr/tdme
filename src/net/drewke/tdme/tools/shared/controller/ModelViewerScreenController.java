@@ -422,6 +422,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		modelPropertyValue.getController().setDisabled(true);
 		modelPropertyValue.getController().setValue(TEXT_EMPTY);
 		modelPropertySave.getController().setDisabled(true);
+		modelPropertyRemove.getController().setDisabled(true);
 		PropertyModelClass modelProperty = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(modelPropertiesList.getController().getValue().toString());
 		if (modelProperty != null) {
 			modelPropertyName.getController().setValue(value.set(modelProperty.getName()));
@@ -429,6 +430,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			modelPropertyName.getController().setDisabled(false);
 			modelPropertyValue.getController().setDisabled(false);
 			modelPropertySave.getController().setDisabled(false);
+			modelPropertyRemove.getController().setDisabled(false);
 		}
 	}
 

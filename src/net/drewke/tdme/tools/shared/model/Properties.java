@@ -114,4 +114,12 @@ public class Properties {
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "Properties [properties=" + properties + "]";
+	}
+
 }
