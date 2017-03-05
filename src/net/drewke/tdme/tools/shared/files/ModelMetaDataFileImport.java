@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import net.drewke.tdme.engine.Object3DModel;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
+import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -165,7 +166,15 @@ public final class ModelMetaDataFileImport {
 		}
 
 		// load model
-		Model model = DAEReader.read(pathName, jRoot.getString("file"));
+		Model model = null;
+		if (modelFile.toLowerCase().endsWith(".dae")) {
+			model = DAEReader.read(pathName, modelFile);
+		} else
+		if (modelFile.toLowerCase().endsWith(".tm")) {
+			model = TMReader.read(pathName, modelFile);
+		} else {
+			throw new Exception("Unsupported mode file: " + modelFile);
+		}
 
 		// create bounding volume model
 		if (boundingVolume != null && modelBoundingVolume == null) {
@@ -178,7 +187,7 @@ public final class ModelMetaDataFileImport {
 			modelType,
 			name,
 			description,
-			new File(pathName, fileName).getCanonicalPath(),
+			new File(pathName, modelFile).getCanonicalPath(),
 			modelThumbnail,
 			model,
 			boundingVolumeMeshFile,

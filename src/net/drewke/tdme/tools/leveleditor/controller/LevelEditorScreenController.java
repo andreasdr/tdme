@@ -681,10 +681,9 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		btnObjectPropertySave.getController().setDisabled(true);
 		objectPropertyName.getController().setDisabled(true);
 		objectPropertyValue.getController().setDisabled(true);
+
 		// set up preset
-		if (presetId != null) {
-			objectPropertiesPresets.getController().setValue(value.set(presetId));
-		}
+		objectPropertiesPresets.getController().setValue(presetId != null?value.set(presetId):value.set("none"));
 
 		// object properties list box inner
 		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesListBox.getScreenNode().getNodeById(objectPropertiesListBox.getId() + "_inner"));

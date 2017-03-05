@@ -312,9 +312,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		modelPropertyValue.getController().setDisabled(true);
 
 		// set up preset
-		if (presetId != null) {
-			modelPropertiesPresets.getController().setValue(value.set(presetId));
-		}
+		modelPropertiesPresets.getController().setValue(presetId != null?value.set(presetId):value.set("none"));
 
 		// model properties list box inner
 		GUIParentNode modelPropertiesListBoxInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(modelPropertiesList.getId() + "_inner"));
