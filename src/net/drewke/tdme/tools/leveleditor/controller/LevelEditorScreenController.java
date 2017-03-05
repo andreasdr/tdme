@@ -615,10 +615,12 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		// construct XML for sub nodes
 		int idx = 0;
 		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
+		objectPropertiesPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + objectPropertiesPresets.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
 		for (String modelPresetId: objectPresetIds) {
 			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + modelPresetId + "\" value=\"" + modelPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 			idx++;
 		}
+		objectPropertiesPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>\n";
 
 		// inject sub nodes
 		try {
@@ -988,10 +990,12 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			// construct XML for sub nodes
 			int idx = 0;
 			String lightPresetsInnerNodeSubNodesXML = "";
+			lightPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + lightsPresets[i].getId() + "_inner_scrollarea\" width=\"100%\" height=\"50\">\n";
 			for (String lightPresetId: lightPresetIds) {
 				lightPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + lightPresetId + "\" value=\"" + lightPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 				idx++;
 			}
+			lightPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>\n";
 
 			// inject sub nodes
 			try {

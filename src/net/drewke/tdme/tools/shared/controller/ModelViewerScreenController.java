@@ -273,10 +273,12 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		// construct XML for sub nodes
 		int idx = 0;
 		String modelPropertiesPresetsInnerNodeSubNodesXML = "";
+		modelPropertiesPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + modelPropertiesPresets.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
 		for (String modelPresetId: modelPresetIds) {
 			modelPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + modelPresetId + "\" value=\"" + modelPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 			idx++;
 		}
+		modelPropertiesPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>";
 
 		// inject sub nodes
 		try {
