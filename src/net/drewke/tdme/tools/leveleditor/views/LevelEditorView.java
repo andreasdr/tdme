@@ -44,6 +44,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.views.View;
+import net.drewke.tdme.utils.Pool;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -159,10 +160,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	float groundPlateDepth = 1.0f;
 	private Model levelEditorGround;
 
-	LevelEditorLevel level;
-	ArrayList<Entity> selectedObjects = null;
-	HashMap<String, Entity> selectedObjectsById = null;
-	ArrayList<Entity> pasteObjects = null;
+	private LevelEditorLevel level;
+	private ArrayList<Entity> selectedObjects = null;
+	private HashMap<String, Entity> selectedObjectsById = null;
+	private ArrayList<Entity> pasteObjects = null;
 
 	/**
 	 * Public constructor
@@ -883,6 +884,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		// check if to display grid
 		if (gridEnabled == false) return;
 
+		// TODO: use pool
+
 		// check if to move grid
 		int centerX = (int)gridCenter.getX();
 		int centerZ = (int)gridCenter.getZ();
@@ -936,7 +939,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			}
 		}
 		// some stats to check if its working
-		// System.out.println("readded: " + reAddedCells + ", added: " + addedCells + ", removed: " + removedCells + ", total:" + engine.getObjects().size());
+		// System.out.println("readded: " + reAddedCells + ", added: " + addedCells + ", removed: " + removedCells + ", total:" + engine.getEntityCount());
 		if (gridCenterLast == null) gridCenterLast = new Vector3();
 		gridCenterLast.set(gridCenter);
 	}
@@ -946,14 +949,19 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	private void removeGrid() {
 		if (gridCenterLast == null) return;
+		int removedCells = 0;
 		int centerX = (int)gridCenterLast.getX();
 		int centerZ = (int)gridCenterLast.getZ();
 		for (int gridZ = -GRID_DIMENSION_Y; gridZ < GRID_DIMENSION_Y; gridZ++)
 		for (int gridX = -GRID_DIMENSION_X; gridX < GRID_DIMENSION_X; gridX++) {
 			String objectId = "leveleditor.ground@" + (centerX + gridX) + "," + (centerZ + gridZ);
 			Entity _object = engine.getEntity(objectId);
-			if (_object != null) engine.removeEntity(objectId);
+			if (_object != null) {
+				removedCells++;
+				engine.removeEntity(objectId);
+			}
 		}
+		// System.out.println("removed: " + removedCells + ", total:" + engine.getEntityCount());
 		gridCenterLast = null;
 	}
 

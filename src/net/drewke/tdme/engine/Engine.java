@@ -428,10 +428,10 @@ public final class Engine {
 	}
 
 	/**
-	 * @return a copy of hash map containing current entities indexed by id
+	 * @return entity count
 	 */
-	public HashMap<String, Entity> getEntitiesByIds() {
-		return entitiesById;
+	public int getEntityCount() {
+		return entitiesById.size();
 	}
 
 	/**
