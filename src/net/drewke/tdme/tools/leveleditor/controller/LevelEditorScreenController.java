@@ -1202,6 +1202,9 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		} else 
 		if (node.getId().equals("model_library_listbox") == true) {
 			onModelChanged();
+		} else
+		if (node.getId().equals("map_properties_listbox") == true) {
+			onMapPropertiesSelectionChanged();
 		} else {
 			System.out.println("LevelEditorScreenController::onValueChanged: " + node.getId());
 		}
