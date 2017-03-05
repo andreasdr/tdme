@@ -22,6 +22,7 @@ import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.utils.MutableString;
@@ -38,7 +39,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
 	private GUIScreenNode screenNode;
-	private GUIElementNode modelChoser;
+	private GUIElementNode modelLibraryListBox;
 	private GUITextNode screenCaption;
 	private GUIElementNode btnObjectTranslationApply;
 	private GUIElementNode btnObjectScaleApply;
@@ -118,7 +119,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 			// 
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
-			modelChoser = (GUIElementNode)screenNode.getNodeById("modelchoser");
+			modelLibraryListBox = (GUIElementNode)screenNode.getNodeById("model_library_listbox");
 			gridEnabled = (GUIElementNode)screenNode.getNodeById("grid_enabled");
 			gridYPosition = (GUIElementNode)screenNode.getNodeById("grid_y_position");
 			mapWidth = (GUIElementNode)screenNode.getNodeById("map_width");
@@ -702,26 +703,56 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Add a model to level editor view
 	 * @param model
 	 */
-	public void addModel(LevelEditorModel model) {
-		// TODO: add model
+	public void setModelLibrary(LevelEditorModelLibrary modelLibrary) {
+		// model properties list box inner
+		GUIParentNode modelLibraryListBoxInnerNode = (GUIParentNode)(modelLibraryListBox.getScreenNode().getNodeById(modelLibraryListBox.getId() + "_inner"));
+
+		// clear sub nodes
+		modelLibraryListBoxInnerNode.clearSubNodes();
+
+		// construct XML for sub nodes
+		int idx = 1;
+		String modelLibraryListBoxSubNodesXML = "";
+		modelLibraryListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelLibraryListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
+			int objectId = modelLibrary.getModelAt(i).getId();
+			String objectName = modelLibrary.getModelAt(i).getName();
+			modelLibraryListBoxSubNodesXML+= 
+				"<selectbox-option text=\"" + 
+				objectName + 
+				"\" value=\"" + 
+				objectId + 
+				"\" " +
+				(i == 0?"selected=\"true\" ":"") +
+				"/>\n";
+		}
+		modelLibraryListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+
+		// inject sub nodes
+		try {
+			GUIParser.parse(
+				modelLibraryListBoxInnerNode,
+				modelLibraryListBoxSubNodesXML
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// relayout
+		modelLibraryListBoxInnerNode.getScreenNode().layout();
+
+		//
+		onModelChanged();
 	}
 
 	/**
-	 * Removes all models
+	 * On model changed
 	 */
-	public void removeModels() {
-		// TODO: remove all models
-	}
-
-	/**
-	 * Clickevent model list scrollbar
-	 * @param x
-	 * @param y
-	 */
-	public void onListModelsClick(int mouseX, int mouseY) {
-		// TODO: on list models click
-		// LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(id);
-		// ((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadModelFromLibrary(model.getId());
+	public void onModelChanged() {
+		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
+		if (model != null) {
+			((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadModelFromLibrary(model.getId());
+		}
 	}
 
 	/**
@@ -1105,6 +1136,9 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	public void onValueChanged(GUIElementNode node) {
 		if (node.getId().equals("objects_listbox") == true) {
 			// no op
+		} else 
+		if (node.getId().equals("model_library_listbox") == true) {
+			onModelChanged();
 		} else {
 			System.out.println("LevelEditorScreenController::onValueChanged: " + node.getId());
 		}

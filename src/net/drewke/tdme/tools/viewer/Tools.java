@@ -113,7 +113,7 @@ public final class Tools {
 	 */
 	public static int convertToIntSilent(String text) {
 		try {
-			return Integer.parseInt(text);	
+			return Integer.parseInt(text);
 		} catch (NumberFormatException nfe) {
 			return -1;
 		}

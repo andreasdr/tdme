@@ -459,14 +459,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	public void display(GLAutoDrawable drawable) {
 		if (reloadModelLibrary == true) {
-			levelEditorScreenController.removeModels();
 			LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
 			for (int i = 0; i < modelLibrary.getModelCount(); i++) {
 				selectedModel = modelLibrary.getModelAt(i);
 				Tools.oseThumbnail(drawable, selectedModel);
-				levelEditorScreenController.addModel(selectedModel);
 			}
 			reloadModelLibrary = false;
+			levelEditorScreenController.setModelLibrary(modelLibrary);
 		}
 
 		// do camera rotation by middle mouse button
@@ -732,10 +731,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		//
 		LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
-		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
-			selectedModel = modelLibrary.getModelAt(i);
-			levelEditorScreenController.addModel(selectedModel);
-		}
+		levelEditorScreenController.setModelLibrary(modelLibrary);
 
 		// set up grid
 		levelEditorScreenController.setGrid(gridEnabled, gridY);

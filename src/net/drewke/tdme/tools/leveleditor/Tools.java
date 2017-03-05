@@ -107,6 +107,19 @@ public final class Tools {
 	}
 
 	/**
+	 * Convert string to int
+	 * @param text
+	 * @return int
+	 */
+	public static int convertToIntSilent(String text) {
+		try {
+			return Integer.parseInt(text);
+		} catch (NumberFormatException nfe) {
+			return -1;
+		}
+	}
+
+	/**
 	 * Set up given engine light with default light
 	 * @param light
 	 */
