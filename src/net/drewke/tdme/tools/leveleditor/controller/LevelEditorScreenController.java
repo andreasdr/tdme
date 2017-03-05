@@ -348,9 +348,9 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			String objectId = objectIdsIterator.next();
 			objectsListBoxSubNodesXML+= 
 				"<selectbox-multiple-option text=\"" + 
-				objectId + 
+				GUIParser.escapeQuotes(objectId) + 
 				"\" value=\"" + 
-				objectId + 
+				GUIParser.escapeQuotes(objectId) + 
 				"\" " +
 				// (selectedValue != null && modelProperty.getName().equals(selectedValue)?"selected=\"true\" ":"") +
 				"/>\n";
@@ -541,11 +541,11 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		for (PropertyModelClass mapProperty: mapProperties) {
 			mapPropertiesListBoxSubNodesXML+=
 				"<selectbox-option text=\"" +
-				mapProperty.getName() +
+				GUIParser.escapeQuotes(mapProperty.getName()) +
 				": " +
-				mapProperty.getValue() +
+				GUIParser.escapeQuotes(mapProperty.getValue()) +
 				"\" value=\"" +
-				mapProperty.getName() +
+				GUIParser.escapeQuotes(mapProperty.getName()) +
 				"\" " +
 				(selectedName != null && mapProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
 				"/>\n";
@@ -617,7 +617,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
 		objectPropertiesPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + objectPropertiesPresets.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
 		for (String modelPresetId: objectPresetIds) {
-			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + modelPresetId + "\" value=\"" + modelPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+			objectPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(modelPresetId) + "\" value=\"" + GUIParser.escapeQuotes(modelPresetId) + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 			idx++;
 		}
 		objectPropertiesPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>\n";
@@ -699,11 +699,11 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		for (PropertyModelClass objectProperty: objectProperties) {
 			objectPropertiesListBoxSubNodesXML+= 
 				"<selectbox-option text=\"" + 
-				objectProperty.getName() + 
+				GUIParser.escapeQuotes(objectProperty.getName()) + 
 				": " + 
-				objectProperty.getValue() + 
+				GUIParser.escapeQuotes(objectProperty.getValue()) + 
 				"\" value=\"" + 
-				objectProperty.getName() + 
+				GUIParser.escapeQuotes(objectProperty.getName()) + 
 				"\" " +
 				(selectedName != null && objectProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
 				"/>\n";
@@ -792,7 +792,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			String objectName = modelLibrary.getModelAt(i).getName();
 			modelLibraryListBoxSubNodesXML+= 
 				"<selectbox-option text=\"" + 
-				objectName + 
+				GUIParser.escapeQuotes(objectName) + 
 				"\" value=\"" + 
 				objectId + 
 				"\" " +
@@ -992,7 +992,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			String lightPresetsInnerNodeSubNodesXML = "";
 			lightPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + lightsPresets[i].getId() + "_inner_scrollarea\" width=\"100%\" height=\"50\">\n";
 			for (String lightPresetId: lightPresetIds) {
-				lightPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + lightPresetId + "\" value=\"" + lightPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+				lightPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(lightPresetId) + "\" value=\"" + GUIParser.escapeQuotes(lightPresetId) + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 				idx++;
 			}
 			lightPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>\n";

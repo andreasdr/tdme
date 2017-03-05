@@ -275,7 +275,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		String modelPropertiesPresetsInnerNodeSubNodesXML = "";
 		modelPropertiesPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + modelPropertiesPresets.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
 		for (String modelPresetId: modelPresetIds) {
-			modelPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + modelPresetId + "\" value=\"" + modelPresetId + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+			modelPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(modelPresetId) + "\" value=\"" + GUIParser.escapeQuotes(modelPresetId) + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
 			idx++;
 		}
 		modelPropertiesPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>";
@@ -329,11 +329,11 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		for (PropertyModelClass modelProperty: modelProperties) {
 			modelPropertiesListBoxSubNodesXML+= 
 				"<selectbox-option text=\"" + 
-				modelProperty.getName() + 
+				GUIParser.escapeQuotes(modelProperty.getName()) + 
 				": " + 
-				modelProperty.getValue() + 
+				GUIParser.escapeQuotes(modelProperty.getValue()) + 
 				"\" value=\"" + 
-				modelProperty.getName() + 
+				GUIParser.escapeQuotes(modelProperty.getName()) + 
 				"\" " +
 				(selectedName != null && modelProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
 				"/>\n";
@@ -609,7 +609,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		int idx = 0;
 		String boundingVolumeTypeDropDownSubNodesXML = "";
 		for (String bvType: boundingVolumeTypes) {
-			boundingVolumeTypeDropDownSubNodesXML+= "<dropdown-option text=\"" + bvType + "\" value=\"" +  + (idx++) + "\" />\n";
+			boundingVolumeTypeDropDownSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(bvType) + "\" value=\"" +  + (idx++) + "\" />\n";
 		}
 
 		// inject sub nodes

@@ -408,8 +408,8 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("name"),
-					node.getAttribute("value"),
+					unescapeQuotes(node.getAttribute("name")),
+					unescapeQuotes(node.getAttribute("value")),
 					node.getAttribute("selected").trim().equalsIgnoreCase("true"),
 					node.getAttribute("disabled").trim().equalsIgnoreCase("true"),
 					node.getAttribute("focusable").trim().equalsIgnoreCase("true"),
@@ -466,7 +466,7 @@ public final class GUIParser {
 					),
 					GUINode.createConditions(node.getAttribute("show-on")),
 					GUINode.createConditions(node.getAttribute("hide-on")),
-					node.getAttribute("src"),
+					unescapeQuotes(node.getAttribute("src")),
 					GUINode.getRequestedColor(node.getAttribute("effect-color-mul"), GUIColor.EFFECT_COLOR_MUL),
 					GUINode.getRequestedColor(node.getAttribute("effect-color-add"), GUIColor.EFFECT_COLOR_ADD)
 				);
@@ -521,7 +521,7 @@ public final class GUIParser {
 					GUINode.createConditions(node.getAttribute("hide-on")),
 					node.getAttribute("font"),
 					node.getAttribute("color"),
-					new MutableString(node.getAttribute("text"))
+					new MutableString(unescapeQuotes(node.getAttribute("text")))
 				);
 				guiParentNode.addSubNode(guiTextNode);
 				// install gui element controller if not yet done
@@ -575,7 +575,7 @@ public final class GUIParser {
 					node.getAttribute("font"),
 					node.getAttribute("color"),
 					node.getAttribute("color-disabled"),
-					new MutableString(node.getAttribute("text")),
+					new MutableString(unescapeQuotes(node.getAttribute("text"))),
 					GUIInputInternalNode.createMaxLength(node.getAttribute("maxlength"))
 				);
 				guiParentNode.addSubNode(guiInputInternalNode);
@@ -766,6 +766,24 @@ public final class GUIParser {
 	    String result = sb.toString();
 	    result = result.replace("<?xml version=\"1.0\" encoding=\"UTF-16\"?>", "");
 	    return result;
+	}
+
+	/**
+	 * Unescape quotes
+	 * @param string
+	 * @return string with unescaped quotes
+	 */
+	public static String unescapeQuotes(String string) {
+		return string.replace("&quote;", "\"");
+	}
+
+	/**
+	 * Escape quotes
+	 * @param string
+	 * @return string with escaped quotes
+	 */
+	public static String escapeQuotes(String string) {
+		return string.replace("\"", "&quote;");
 	}
 
 	/**

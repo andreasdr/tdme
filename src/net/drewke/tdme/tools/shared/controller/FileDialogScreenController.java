@@ -161,7 +161,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		filesInnerNodeSubNodesXML+= "<scrollarea width=\"100%\" height=\"100%\">\n";
 		filesInnerNodeSubNodesXML+= "<selectbox-option text=\"..\" value=\"..\" />\n";
 		for (String file: fileList) {
-			filesInnerNodeSubNodesXML+= "<selectbox-option text=\"" + file + "\" value=\"" + file + "\" />\n";
+			filesInnerNodeSubNodesXML+= "<selectbox-option text=\"" + GUIParser.escapeQuotes(file) + "\" value=\"" + GUIParser.escapeQuotes(file) + "\" />\n";
 		}
 		filesInnerNodeSubNodesXML+= "</scrollarea>\n";
 
