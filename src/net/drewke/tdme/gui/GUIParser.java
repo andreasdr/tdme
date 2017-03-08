@@ -704,11 +704,11 @@ public final class GUIParser {
 				String newGuiElementTemplate = newGuiElement.getTemplate();
 				for (int i = 0; i < node.getAttributes().getLength(); i++) {
 					Node attribute = node.getAttributes().item(i);
-					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + attribute.getNodeName() + "}", attribute.getNodeValue());
+					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + attribute.getNodeName() + "}", escapeQuotes(attribute.getNodeValue()));
 				}
 				HashMap<String, String> newGuiElementAttributes = newGuiElement.getAttributes(guiParentNode.getScreenNode());
 				for (String newGuiElementAttributeKey: newGuiElementAttributes.getKeysIterator()) {
-					String guiElementAttributeValue = newGuiElementAttributes.get(newGuiElementAttributeKey);
+					String guiElementAttributeValue = escapeQuotes(newGuiElementAttributes.get(newGuiElementAttributeKey));
 					newGuiElementTemplate = newGuiElementTemplate.replace("{$" + newGuiElementAttributeKey + "}", guiElementAttributeValue);
 				}
 				newGuiElementTemplate = newGuiElementTemplate.replace("{$innerXml}", getInnerXml(node));
@@ -774,7 +774,8 @@ public final class GUIParser {
 	 * @return string with unescaped quotes
 	 */
 	public static String unescapeQuotes(String string) {
-		return string.replace("&quote;", "\"");
+		// return string.replace("&quot;", "\"");
+		return string;
 	}
 
 	/**
@@ -783,7 +784,7 @@ public final class GUIParser {
 	 * @return string with escaped quotes
 	 */
 	public static String escapeQuotes(String string) {
-		return string.replace("\"", "&quote;");
+		return string.replace("\"", "&quot;");
 	}
 
 	/**
