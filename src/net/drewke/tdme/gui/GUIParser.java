@@ -774,8 +774,7 @@ public final class GUIParser {
 	 * @return string with unescaped quotes
 	 */
 	public static String unescapeQuotes(String string) {
-		// return string.replace("&quot;", "\"");
-		return string;
+		return string.replace("&quot;", "\"");
 	}
 
 	/**
