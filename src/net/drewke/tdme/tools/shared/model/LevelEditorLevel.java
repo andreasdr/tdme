@@ -31,7 +31,7 @@ public final class LevelEditorLevel extends Properties {
 	 * Public constructor
 	 * @param default map properties or null
 	 */
-	public LevelEditorLevel(ArrayList<PropertyModelClass> defaultMapProperties) {
+	public LevelEditorLevel() {
 		pathName = ".";
 		fileName = "untitled.tl";
 		rotationOrder = RotationOrder.XYZ;
@@ -63,10 +63,9 @@ public final class LevelEditorLevel extends Properties {
 
 		//
 		modelLibrary = new LevelEditorModelLibrary();
-		if (defaultMapProperties != null) {
-			for (PropertyModelClass mapProperty: defaultMapProperties) {
-				addProperty(mapProperty.getName(), mapProperty.getValue());
-			}
+		ArrayList<PropertyModelClass> defaultMapProperties = LevelPropertyPresets.getInstance().getMapPropertiesPreset();
+		for (PropertyModelClass mapProperty: defaultMapProperties) {
+			addProperty(mapProperty.getName(), mapProperty.getValue());
 		}
 		objectsById = new HashMap<String, LevelEditorObject>();
 		objects = new ArrayList<LevelEditorObject>();

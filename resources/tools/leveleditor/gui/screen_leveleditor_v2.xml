@@ -106,8 +106,8 @@
 					<tab id="tab_properties_map" text="Map" />
 					<tab id="tab_properties_map_properties" text="Map Properties" />
 					<tab id="tab_properties_object" text="Object" />
-					<tab id="tab_properties_object_transformations" text="Transformations" />
-					<tab id="tab_properties_object_properties" text="Properties" />
+					<tab id="tab_properties_object_transformations" text="Object Transformations" />
+					<tab id="tab_properties_object_properties" text="Object Properties" />
 					<tab id="tab_properties_lights" text="Lights" />
 				</tabs-header>
 				<tabs-content>

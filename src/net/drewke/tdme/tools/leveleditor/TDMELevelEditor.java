@@ -103,7 +103,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		this.glWindow = glWindow;
 		this.animator = animator;
 		TDMELevelEditor.instance = this;
-		level = new LevelEditorLevel(LevelPropertyPresets.getInstance().getMapPropertiesPreset());
+		level = new LevelEditorLevel();
 		engine = Engine.getInstance();
 		view = null;
 		viewInitialized = false;

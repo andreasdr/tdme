@@ -177,7 +177,7 @@ public final class DAEReader {
 		tmFilesFolder.mkdir();
 
 		//
-		LevelEditorLevel levelEditorLevel = new LevelEditorLevel(new ArrayList<PropertyModelClass>());
+		LevelEditorLevel levelEditorLevel = new LevelEditorLevel();
 
 		// load dae xml document
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
