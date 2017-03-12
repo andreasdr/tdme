@@ -7,7 +7,7 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
-import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.tools.shared.views.ModelViewerView;
 import net.drewke.tdme.tools.shared.views.View;
 
 import com.jogamp.newt.event.WindowEvent;
@@ -19,15 +19,6 @@ import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.util.FPSAnimator;
-
-import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.render.batch.BatchRenderDevice;
-import de.lessvoid.nifty.renderer.jogl.input.JoglInputSystem;
-import de.lessvoid.nifty.renderer.jogl.render.JoglBatchRenderBackendCoreProfileFactory;
-import de.lessvoid.nifty.renderer.jogl.render.JoglBatchRenderBackendFactory;
-import de.lessvoid.nifty.screen.Screen;
-import de.lessvoid.nifty.sound.openal.OpenALSoundDevice;
-import de.lessvoid.nifty.spi.time.impl.AccurateTimeProvider;
 
 /**
  * TDME Level Editor
@@ -248,7 +239,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Switch to level editor
 	 */
 	public void switchToModelLibrary() {
-		// setView(new ModelLibraryView());
+		setView(new ModelViewerView());
 	}
 
 	/*

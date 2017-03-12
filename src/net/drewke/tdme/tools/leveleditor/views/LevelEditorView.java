@@ -736,7 +736,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	public void init(GLAutoDrawable drawable) {
 		try {
-			levelEditorScreenController = new LevelEditorScreenController();
+			levelEditorScreenController = new LevelEditorScreenController(this);
 			levelEditorScreenController.init();
 			fileDialogScreenController = new FileDialogScreenController();
 			fileDialogScreenController.init();

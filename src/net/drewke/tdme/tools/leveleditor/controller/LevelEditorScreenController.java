@@ -26,6 +26,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.views.View;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -39,6 +40,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
+	private View view;
 	private GUIScreenNode screenNode;
 	private GUIElementNode modelLibraryListBox;
 	private GUITextNode screenCaption;
@@ -99,6 +101,22 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private MutableString value;
 	private MutableString selectedObjects;
 	private ArrayList<String> selectedObjectList;
+
+	/**
+	 * Public constructor
+	 * @param view
+	 */
+	public LevelEditorScreenController(View view) {
+		this.view = view;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getView()
+	 */
+	public View getView() {
+		return view;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -318,7 +336,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object data apply
 	 */
 	public void onObjectDataApply() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectDataApply(
+		if (((LevelEditorView)view).objectDataApply(
 				objectName.getController().getValue().toString(), 
 				objectDescription.getController().getValue().toString()
 			) == false) {
@@ -413,21 +431,19 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On objects select button click event
 	 */
 	public void onObjectsSelect() {
-		LevelEditorView view = (LevelEditorView)TDMELevelEditor.getInstance().getView();
 		selectedObjectList.clear();
 		StringTokenizer t = new StringTokenizer(objectsListBox.getController().getValue().toString(), "|");
 		while (t.hasMoreTokens()) {
 			selectedObjectList.add(t.nextToken());
 		}
-		if (selectedObjectList.isEmpty() == false) view.selectObjects(selectedObjectList);
+		if (selectedObjectList.isEmpty() == false) ((LevelEditorView)view).selectObjects(selectedObjectList);
 	}
 
 	/**
 	 * On objects unselect button click event
 	 */
 	public void onObjectsUnselect() {
-		LevelEditorView view = (LevelEditorView)TDMELevelEditor.getInstance().getView();
-		view.unselectObjects();
+		((LevelEditorView)view).unselectObjects();
 	}
 
 	/**
@@ -507,7 +523,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		mapPropertyValue.getController().setValue(TEXT_EMPTY);
 		mapPropertySave.getController().setDisabled(true);
 		mapPropertyRemove.getController().setDisabled(true);
-		PropertyModelClass mapProperty = ((LevelEditorView)TDMELevelEditor.getInstance().getView()).getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
+		PropertyModelClass mapProperty = ((LevelEditorView)view).getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
 		if (mapProperty != null) {
 			mapPropertyName.getController().setValue(value.set(mapProperty.getName()));
 			mapPropertyValue.getController().setValue(value.set(mapProperty.getValue()));
@@ -573,8 +589,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On map property save
 	 */
 	public void onMapPropertySave() {
-		LevelEditorView levelEditorView = ((LevelEditorView)TDMELevelEditor.getInstance().getView());
-		if (levelEditorView.mapPropertySave(
+		if (((LevelEditorView)view).mapPropertySave(
 			mapPropertiesListBox.getController().getValue().toString(),
 			mapPropertyName.getController().getValue().toString(),
 			mapPropertyValue.getController().getValue().toString()) == false) {
@@ -587,7 +602,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On model property add
 	 */
 	public void onMapPropertyAdd() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyAdd() == false) {
+		if (((LevelEditorView)view).mapPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new map property failed");
 		}
 	}
@@ -596,7 +611,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On model property remove
 	 */
 	public void onMapPropertyRemove() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
+		if (((LevelEditorView)view).mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing map property failed");
 		}
 	}
@@ -651,7 +666,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		btnObjectPropertyRemove.getController().setDisabled(true);
 
 		// get selected level editor object
-		LevelEditorObject levelEditorObject = ((LevelEditorView)TDMELevelEditor.getInstance().getView()).getSelectedObject();
+		LevelEditorObject levelEditorObject = ((LevelEditorView)view).getSelectedObject();
 		if (levelEditorObject == null) return;
 
 		// get model property
@@ -730,7 +745,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property save
 	 */
 	public void onObjectPropertySave() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertySave(
+		if (((LevelEditorView)view).objectPropertySave(
 			objectPropertiesListBox.getController().getValue().toString(),
 			objectPropertyName.getController().getValue().toString(),
 			objectPropertyValue.getController().getValue().toString()) == false) {
@@ -743,7 +758,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property add
 	 */
 	public void onObjectPropertyAdd() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertyAdd() == false) {
+		if (((LevelEditorView)view).objectPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new object property failed");
 		}
 	}
@@ -752,7 +767,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property remove
 	 */
 	public void onObjectPropertyRemove() {
-		if (((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertyRemove(objectPropertiesListBox.getController().getValue().toString()) == false) {
+		if (((LevelEditorView)view).objectPropertyRemove(objectPropertiesListBox.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing object property failed");
 		}
 	}
@@ -823,7 +838,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	public void onModelSelectionChanged() {
 		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
 		if (model != null) {
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadModelFromLibrary(model.getId());
+			((LevelEditorView)view).loadModelFromLibrary(model.getId());
 		}
 	}
 
@@ -831,7 +846,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * place model button clicked
 	 */
 	public void onPlaceModel() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).placeObject();
+		((LevelEditorView)view).placeObject();
 	}
 
 	/**
@@ -842,7 +857,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			float x = Float.parseFloat(objectTranslationX.getController().getValue().toString());
 			float y = Float.parseFloat(objectTranslationY.getController().getValue().toString());
 			float z = Float.parseFloat(objectTranslationZ.getController().getValue().toString());
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectTranslationApply(x, y, z);
+			((LevelEditorView)view).objectTranslationApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -861,7 +876,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			if (x < -10f || x > 10f) throw new IllegalArgumentException("x scale must be within -10 .. +10");
 			if (y < -10f || y > 10f) throw new IllegalArgumentException("y scale must be within -10 .. +10");
 			if (z < -10f || z > 10f) throw new IllegalArgumentException("z scale must be within -10 .. +10");
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectScaleApply(x, y, z);
+			((LevelEditorView)view).objectScaleApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -880,7 +895,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			if (x < -360f || x > 360f) throw new IllegalArgumentException("x axis rotation must be within -360 .. +360");
 			if (y < -360f || y > 360f) throw new IllegalArgumentException("y axis rotation must be within -360 .. +360");
 			if (z < -360f || z > 360f) throw new IllegalArgumentException("z axis rotation must be within -360 .. +360");
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectRotationsApply(x, y, z);
+			((LevelEditorView)view).objectRotationsApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -892,38 +907,38 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object remove action
 	 */
 	public void onObjectRemove() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).removeObject();		
+		((LevelEditorView)view).removeObject();
 	}
 
 	/**
 	 * On object color action
 	 */
 	public void onObjectColor() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).colorObject();		
+		((LevelEditorView)view).colorObject();
 	}
 
 	/**
 	 * On object center action
 	 */
 	public void onObjectCenter() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).centerObject();		
+		((LevelEditorView)view).centerObject();
 	}
 
 	/**
 	 * On map load action
 	 */
 	public void onMapLoad() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().show(
+		((LevelEditorView)view).getFileDialogPopUpController().show(
 			"Load from: ", 
 			new String[]{"tl", "dae"},
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileName(),
+			((LevelEditorView)view).getFileName(),
 			new Action() {
 				public void performAction() {
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadMap(
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getFileName()
+					((LevelEditorView)view).loadMap(
+						((LevelEditorView)view).getFileDialogPopUpController().getPathName(),
+						((LevelEditorView)view).getFileDialogPopUpController().getFileName()
 					);
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().close();
+					((LevelEditorView)view).getFileDialogPopUpController().close();
 				}
 				
 			}
@@ -934,17 +949,17 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On map save action
 	 */
 	public void onMapSave() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().show(
+		((LevelEditorView)view).getFileDialogPopUpController().show(
 			"Save to: ", 
 			new String[]{"tl"},
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileName(),
+			((LevelEditorView)view).getFileName(),
 			new Action() {
 				public void performAction() {
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).saveMap(
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-						((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().getFileName()
+					((LevelEditorView)view).saveMap(
+						((LevelEditorView)view).getFileDialogPopUpController().getPathName(),
+						((LevelEditorView)view).getFileDialogPopUpController().getFileName()
 					);
-					((LevelEditorView)TDMELevelEditor.getInstance().getView()).getFileDialogPopUpController().close();
+					((LevelEditorView)view).getFileDialogPopUpController().close();
 				}
 				
 			}
@@ -958,8 +973,8 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		try {
 			float gridY = Float.parseFloat(gridYPosition.getController().getValue().toString());
 			if (gridY < -5f || gridY > 5f) throw new IllegalArgumentException("grid y position must be within -5 .. +5");
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).setGridY(gridY);
-			((LevelEditorView)TDMELevelEditor.getInstance().getView()).setGridEnabled(gridEnabled.getController().getValue().equals(CHECKBOX_CHECKED));
+			((LevelEditorView)view).setGridY(gridY);
+			((LevelEditorView)view).setGridEnabled(gridEnabled.getController().getValue().equals(CHECKBOX_CHECKED));
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -971,7 +986,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property preset apply 
 	 */
 	public void onObjectPropertyPresetApply() {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
+		((LevelEditorView)view).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
@@ -1150,7 +1165,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	public void onLightApply(int lightIdx) {
 		try {
 			boolean enabled = lightsEnabled[lightIdx].getController().getValue().equals(CHECKBOX_CHECKED);
-			((LevelEditorView)TDMELevelEditor.getInstance(). getView()).applyLight(
+			((LevelEditorView)view).applyLight(
 				lightIdx,
 				Tools.convertToColor4(lightsAmbient[lightIdx].getController().getValue().toString()),
 				Tools.convertToColor4(lightsDiffuse[lightIdx].getController().getValue().toString()),
@@ -1220,7 +1235,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		if (lightPreset == null) return;
 
 		// apply preset
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).applyLight(
+		((LevelEditorView)view).applyLight(
 			lightIdx,
 			lightPreset.getAmbient(),
 			lightPreset.getDiffuse(),
@@ -1270,7 +1285,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onLightSpotDirectionCompute(int lightIdx) {		
 		try {
-			((LevelEditorView)TDMELevelEditor.getInstance(). getView()).computeSpotDirection(
+			((LevelEditorView)view).computeSpotDirection(
 				lightIdx,
 				Tools.convertToVector4(lightsPosition[lightIdx].getController().getValue().toString()),
 				Tools.convertToVector3(lightsSpotTo[lightIdx].getController().getValue().toString())
@@ -1284,7 +1299,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * 
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).saveMap(
+		((LevelEditorView)view).saveMap(
 			pathName,
 			fileName
 		);
@@ -1294,7 +1309,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * 
 	 */
 	public void loadFile(String pathName, String fileName) throws Exception {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).loadMap(
+		((LevelEditorView)view).loadMap(
 			pathName,
 			fileName
 		);
@@ -1435,7 +1450,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		((LevelEditorView)TDMELevelEditor.getInstance().getView()).getInfoDialogPopUpController().show(caption, message);
+		((LevelEditorView)view).getInfoDialogPopUpController().show(caption, message);
 	}
 
 }

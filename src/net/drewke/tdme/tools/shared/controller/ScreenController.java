@@ -1,6 +1,7 @@
 package net.drewke.tdme.tools.shared.controller;
 
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
+import net.drewke.tdme.tools.shared.views.View;
 
 /**
  * Screen controller, which connects GUI screen definition with code
@@ -8,6 +9,11 @@ import net.drewke.tdme.gui.nodes.GUIScreenNode;
  * @version $Id$
  */
 public abstract class ScreenController {
+
+	/**
+	 * @return view
+	 */
+	public abstract View getView();
 
 	/**
 	 * @return screen node

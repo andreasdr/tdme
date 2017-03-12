@@ -629,7 +629,7 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	 */
 	public void init(GLAutoDrawable drawable) {
 		try {
-			modelViewerScreenController = new ModelViewerScreenController();
+			modelViewerScreenController = new ModelViewerScreenController(this);
 			modelViewerScreenController.init();
 			fileDialogScreenController = new FileDialogScreenController();
 			fileDialogScreenController.init();

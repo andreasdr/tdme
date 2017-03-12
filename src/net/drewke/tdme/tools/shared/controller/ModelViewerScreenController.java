@@ -19,6 +19,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
+import net.drewke.tdme.tools.shared.views.View;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.tools.viewer.Tools;
 import net.drewke.tdme.utils.MutableString;
@@ -36,6 +37,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
+	private View view;
 	private GUIScreenNode screenNode;
 	private GUITextNode screenCaption;
 	private GUIElementNode displayBoundingVolume;
@@ -79,6 +81,22 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private GUIElementNode boundingvolumeConvexMeshFile;
 
 	private MutableString value;
+
+	/**
+	 * Public constructor
+	 * @param view
+	 */
+	public ModelViewerScreenController(View view) {
+		this.view = view;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getView()
+	 */
+	public View getView() {
+		return view;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -161,18 +179,18 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Set up display section
 	 */
 	public void setupDisplay() {
-		displayShadowing.getController().setValue(((ModelViewerView)TDMEViewer.getInstance().getView()).isDisplayShadowing() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-		displayGround.getController().setValue(((ModelViewerView)TDMEViewer.getInstance().getView()).isDisplayGroundPlate() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-		displayBoundingVolume.getController().setValue(((ModelViewerView)TDMEViewer.getInstance().getView()).isDisplayBoundingVolume() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayShadowing.getController().setValue(((ModelViewerView)view).isDisplayShadowing() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayGround.getController().setValue(((ModelViewerView)view).isDisplayGroundPlate() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
+		displayBoundingVolume.getController().setValue(((ModelViewerView)view).isDisplayBoundingVolume() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
 	}
 
 	/**
 	 * On display apply button event
 	 */
 	public void onDisplayApply() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).setDisplayShadowing(displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED));
-		((ModelViewerView)TDMEViewer.getInstance().getView()).setDisplayGroundPlate(displayGround.getController().getValue().equals(CHECKBOX_CHECKED));
-		((ModelViewerView)TDMEViewer.getInstance().getView()).setDisplayBoundingVolume(displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelViewerView)view).setDisplayShadowing(displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelViewerView)view).setDisplayGroundPlate(displayGround.getController().getValue().equals(CHECKBOX_CHECKED));
+		((ModelViewerView)view).setDisplayBoundingVolume(displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED));
 	}
 
 	/**
@@ -378,7 +396,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model property save
 	 */
 	public void onModelPropertySave() {
-		ModelViewerView modelViewerView = ((ModelViewerView)TDMEViewer.getInstance().getView());
+		ModelViewerView modelViewerView = ((ModelViewerView)view);
 		if (modelViewerView.modelPropertySave(
 			modelPropertiesList.getController().getValue().toString(),
 			modelPropertyName.getController().getValue().toString(),
@@ -392,7 +410,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model property add
 	 */
 	public void onModelPropertyAdd() {
-		if (((ModelViewerView)TDMEViewer.getInstance().getView()).modelPropertyAdd() == false) {
+		if (((ModelViewerView)view).modelPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new model property failed");
 		}
 	}
@@ -401,7 +419,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model property remove
 	 */
 	public void onModelPropertyRemove() {
-		if (((ModelViewerView)TDMEViewer.getInstance().getView()).modelPropertyRemove(modelPropertiesList.getController().getValue().toString()) == false) {
+		if (((ModelViewerView)view).modelPropertyRemove(modelPropertiesList.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing model property failed");
 		}
 	}
@@ -410,7 +428,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model property preset apply 
 	 */
 	public void onModelPropertyPresetApply() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).modelPropertiesPreset(modelPropertiesPresets.getController().getValue().toString());
+		((ModelViewerView)view).modelPropertiesPreset(modelPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
@@ -423,7 +441,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		modelPropertyValue.getController().setValue(TEXT_EMPTY);
 		modelPropertySave.getController().setDisabled(true);
 		modelPropertyRemove.getController().setDisabled(true);
-		PropertyModelClass modelProperty = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel().getProperty(modelPropertiesList.getController().getValue().toString());
+		PropertyModelClass modelProperty = ((ModelViewerView)view).getSelectedModel().getProperty(modelPropertiesList.getController().getValue().toString());
 		if (modelProperty != null) {
 			modelPropertyName.getController().setValue(value.set(modelProperty.getName()));
 			modelPropertyValue.getController().setValue(value.set(modelProperty.getValue()));
@@ -457,17 +475,17 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model load
 	 */
 	public void onModelLoad() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(
+		((ModelViewerView)view).getFileDialogPopUpController().show(
 			"Load from: ", 
 			new String[]{"tmm", "dae", "tm"},
-			((ModelViewerView)TDMEViewer.getInstance().getView()).getFileName(),
+			((ModelViewerView)view).getFileName(),
 			new Action() {
 				public void performAction() {
-					((ModelViewerView)TDMEViewer.getInstance().getView()).loadFile(
-						((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-						((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getFileName()
+					((ModelViewerView)view).loadFile(
+						((ModelViewerView)view).getFileDialogPopUpController().getPathName(),
+						((ModelViewerView)view).getFileDialogPopUpController().getFileName()
 					);
-					((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+					((ModelViewerView)view).getFileDialogPopUpController().close();
 				}
 				
 			}
@@ -478,22 +496,22 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model save
 	 */
 	public void onModelSave() {
-		String fileName = ((ModelViewerView)TDMEViewer.getInstance().getView()).getFileName();
+		String fileName = ((ModelViewerView)view).getFileName();
 		if (fileName.toLowerCase().endsWith(".tmm") == false) {
 			fileName+= ".tmm";
 		}
-		((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().show(
+		((ModelViewerView)view).getFileDialogPopUpController().show(
 			"Save from: ", 
 			new String[]{"tmm"},
 			fileName,
 			new Action() {
 				public void performAction() {
 					try {
-						((ModelViewerView)TDMEViewer.getInstance().getView()).saveFile(
-							((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getPathName(), 
-							((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().getFileName()
+						((ModelViewerView)view).saveFile(
+							((ModelViewerView)view).getFileDialogPopUpController().getPathName(),
+							((ModelViewerView)view).getFileDialogPopUpController().getFileName()
 						);
-						((ModelViewerView)TDMEViewer.getInstance().getView()).getFileDialogPopUpController().close();
+						((ModelViewerView)view).getFileDialogPopUpController().close();
 					} catch (Exception ioe) {
 						showErrorPopUp("Warning", ioe.getMessage());
 					}
@@ -507,21 +525,21 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model reload
 	 */
 	public void onModelReload() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).reloadFile();
+		((ModelViewerView)view).reloadFile();
 	}
 
 	/**
 	 * On model data apply
 	 */
 	public void onModelDataApply() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).setModelData(
+		((ModelViewerView)view).setModelData(
 			modelName.getController().getValue().toString(), 
 			modelDescription.getController().getValue().toString()
 		);
 
 		// rename in library
 		/*
-		LevelEditorModel model = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel();
+		LevelEditorModel model = ((ModelViewerView)view).getSelectedModel();
 		if (model == null) return;
 		Element modelNameElement = screen.findElementByName("modelchoser_name_" + model.getId());
 		TextRenderer modelNameElementRenderer = modelNameElement.getRenderer(TextRenderer.class);
@@ -537,7 +555,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			float x = Float.parseFloat(pivotX.getController().getValue().toString());
 			float y = Float.parseFloat(pivotY.getController().getValue().toString());
 			float z = Float.parseFloat(pivotZ.getController().getValue().toString());
-			((ModelViewerView)TDMEViewer.getInstance().getView()).pivotApply(x, y, z);
+			((ModelViewerView)view).pivotApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		}
@@ -547,7 +565,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Unset bounding volume
 	 */
 	public void unsetBoundingVolume() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
+		((ModelViewerView)view).selectBoundingVolumeType(0);
 		boundingVolumeTypeDropDown.getController().setDisabled(true);
 		boundingVolumeNoneApply.getController().setDisabled(true);
 	}
@@ -564,29 +582,29 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Set up model bounding volume
 	 */
 	public void setupModelBoundingVolume() {
-		LevelEditorModel model = ((ModelViewerView)TDMEViewer.getInstance().getView()).getSelectedModel();
+		LevelEditorModel model = ((ModelViewerView)view).getSelectedModel();
 		if (model == null) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
+			((ModelViewerView)view).selectBoundingVolumeType(0);
 			return;
 		}
 		BoundingVolume bv = model.getBoundingVolume();
 		if (bv == null) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(0);
+			((ModelViewerView)view).selectBoundingVolumeType(0);
 		} else
 		if (bv instanceof Sphere) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(1);
+			((ModelViewerView)view).selectBoundingVolumeType(1);
 		} else
 		if (bv instanceof Capsule) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(2);
+			((ModelViewerView)view).selectBoundingVolumeType(2);
 		} else
 		if (bv instanceof BoundingBox) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(3);
+			((ModelViewerView)view).selectBoundingVolumeType(3);
 		} else
 		if (bv instanceof OrientedBoundingBox) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(4);
+			((ModelViewerView)view).selectBoundingVolumeType(4);
 		} else
 		if (bv instanceof ConvexMesh) {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(5);
+			((ModelViewerView)view).selectBoundingVolumeType(5);
 		} else {
 			System.out.println("ModelViewerScreenController::onTabSelected(): invalid bounding volume: " + bv);
 		}
@@ -802,7 +820,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onBoundingVolumeTypeApply() {
 		int boundingVolumeTypeId = Tools.convertToIntSilent(boundingVolumeTypeDropDown.getController().getValue().toString());
-		((ModelViewerView)TDMEViewer.getInstance().getView()).selectBoundingVolumeType(boundingVolumeTypeId);
+		((ModelViewerView)view).selectBoundingVolumeType(boundingVolumeTypeId);
 		switch(boundingVolumeTypeId) {
 			case(0): onBoundingVolumeNoneApply(); break;
 			case(1): onBoundingVolumeSphereApply(); break;
@@ -817,7 +835,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On bounding volume sphere apply
 	 */
 	public void onBoundingVolumeNoneApply() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeNone();
+		((ModelViewerView)view).applyBoundingVolumeNone();
 	}
 
 	/**
@@ -825,7 +843,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onBoundingVolumeSphereApply() {
 		try {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeSphere(
+			((ModelViewerView)view).applyBoundingVolumeSphere(
 				Tools.convertToVector3(boundingvolumeSphereCenter.getController().getValue().toString()),
 				Tools.convertToFloat(boundingvolumeSphereRadius.getController().getValue().toString())
 			);
@@ -839,7 +857,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onBoundingVolumeCapsuleApply() {
 		try {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeCapsule(
+			((ModelViewerView)view).applyBoundingVolumeCapsule(
 				Tools.convertToVector3(boundingvolumeCapsuleA.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeCapsuleB.getController().getValue().toString()),
 				Tools.convertToFloat(boundingvolumeCapsuleRadius.getController().getValue().toString())
@@ -854,7 +872,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onBoundingVolumeAabbApply() {
 		try {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeAabb(
+			((ModelViewerView)view).applyBoundingVolumeAabb(
 				Tools.convertToVector3(boundingvolumeBoundingBoxMin.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeBoundingBoxMax.getController().getValue().toString())
 			);
@@ -868,7 +886,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onBoundingVolumeObbApply() {
 		try {
-			((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeObb(
+			((ModelViewerView)view).applyBoundingVolumeObb(
 				Tools.convertToVector3(boundingvolumeObbCenter.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeObbAxis0.getController().getValue().toString()),
 				Tools.convertToVector3(boundingvolumeObbAxis1.getController().getValue().toString()),
@@ -884,7 +902,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On bounding volume convex mesh apply
 	 */
 	public void onBoundingVolumeConvexMeshApply() {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).applyBoundingVolumeConvexMesh(
+		((ModelViewerView)view).applyBoundingVolumeConvexMesh(
 			boundingvolumeConvexMeshFile.getController().getValue().toString()
 		);
 	}
@@ -894,7 +912,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.tools.shared.controller.PopUpsController#saveFile(java.lang.String, java.lang.String)
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).saveFile(pathName, fileName);
+		((ModelViewerView)view).saveFile(pathName, fileName);
 	}
 
 	/*
@@ -902,14 +920,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.tools.shared.controller.PopUpsController#loadFile(java.lang.String, java.lang.String)
 	 */
 	public void loadFile(String pathName, String fileName) throws Exception {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).loadFile(pathName, fileName);
+		((ModelViewerView)view).loadFile(pathName, fileName);
 	}
 
 	/**
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		((ModelViewerView)TDMEViewer.getInstance().getView()).getInfoDialogPopUpController().show(caption, message);
+		((ModelViewerView)view).getInfoDialogPopUpController().show(caption, message);
 	}
 
 	/*

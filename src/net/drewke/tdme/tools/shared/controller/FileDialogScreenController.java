@@ -13,6 +13,7 @@ import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
+import net.drewke.tdme.tools.shared.views.View;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.utils.MutableString;
 
@@ -65,6 +66,14 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 */
 	public boolean isActive() {
 		return active;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getView()
+	 */
+	public View getView() {
+		return null;
 	}
 
 	/*
