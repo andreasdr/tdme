@@ -40,7 +40,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
-	private View view;
+	private LevelEditorView view;
 	private GUIScreenNode screenNode;
 	private GUIElementNode modelLibraryListBox;
 	private GUITextNode screenCaption;
@@ -106,7 +106,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Public constructor
 	 * @param view
 	 */
-	public LevelEditorScreenController(View view) {
+	public LevelEditorScreenController(LevelEditorView view) {
 		this.view = view;
 	}
 
@@ -336,7 +336,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object data apply
 	 */
 	public void onObjectDataApply() {
-		if (((LevelEditorView)view).objectDataApply(
+		if (view.objectDataApply(
 				objectName.getController().getValue().toString(), 
 				objectDescription.getController().getValue().toString()
 			) == false) {
@@ -436,14 +436,14 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		while (t.hasMoreTokens()) {
 			selectedObjectList.add(t.nextToken());
 		}
-		if (selectedObjectList.isEmpty() == false) ((LevelEditorView)view).selectObjects(selectedObjectList);
+		if (selectedObjectList.isEmpty() == false) view.selectObjects(selectedObjectList);
 	}
 
 	/**
 	 * On objects unselect button click event
 	 */
 	public void onObjectsUnselect() {
-		((LevelEditorView)view).unselectObjects();
+		view.unselectObjects();
 	}
 
 	/**
@@ -523,7 +523,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		mapPropertyValue.getController().setValue(TEXT_EMPTY);
 		mapPropertySave.getController().setDisabled(true);
 		mapPropertyRemove.getController().setDisabled(true);
-		PropertyModelClass mapProperty = ((LevelEditorView)view).getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
+		PropertyModelClass mapProperty = view.getLevel().getProperty(mapPropertiesListBox.getController().getValue().toString());
 		if (mapProperty != null) {
 			mapPropertyName.getController().setValue(value.set(mapProperty.getName()));
 			mapPropertyValue.getController().setValue(value.set(mapProperty.getValue()));
@@ -589,7 +589,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On map property save
 	 */
 	public void onMapPropertySave() {
-		if (((LevelEditorView)view).mapPropertySave(
+		if (view.mapPropertySave(
 			mapPropertiesListBox.getController().getValue().toString(),
 			mapPropertyName.getController().getValue().toString(),
 			mapPropertyValue.getController().getValue().toString()) == false) {
@@ -602,7 +602,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On model property add
 	 */
 	public void onMapPropertyAdd() {
-		if (((LevelEditorView)view).mapPropertyAdd() == false) {
+		if (view.mapPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new map property failed");
 		}
 	}
@@ -611,7 +611,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On model property remove
 	 */
 	public void onMapPropertyRemove() {
-		if (((LevelEditorView)view).mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
+		if (view.mapPropertyRemove(mapPropertiesListBox.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing map property failed");
 		}
 	}
@@ -666,7 +666,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		btnObjectPropertyRemove.getController().setDisabled(true);
 
 		// get selected level editor object
-		LevelEditorObject levelEditorObject = ((LevelEditorView)view).getSelectedObject();
+		LevelEditorObject levelEditorObject = view.getSelectedObject();
 		if (levelEditorObject == null) return;
 
 		// get model property
@@ -745,7 +745,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property save
 	 */
 	public void onObjectPropertySave() {
-		if (((LevelEditorView)view).objectPropertySave(
+		if (view.objectPropertySave(
 			objectPropertiesListBox.getController().getValue().toString(),
 			objectPropertyName.getController().getValue().toString(),
 			objectPropertyValue.getController().getValue().toString()) == false) {
@@ -758,7 +758,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property add
 	 */
 	public void onObjectPropertyAdd() {
-		if (((LevelEditorView)view).objectPropertyAdd() == false) {
+		if (view.objectPropertyAdd() == false) {
 			showErrorPopUp("Warning", "Adding new object property failed");
 		}
 	}
@@ -767,7 +767,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property remove
 	 */
 	public void onObjectPropertyRemove() {
-		if (((LevelEditorView)view).objectPropertyRemove(objectPropertiesListBox.getController().getValue().toString()) == false) {
+		if (view.objectPropertyRemove(objectPropertiesListBox.getController().getValue().toString()) == false) {
 			showErrorPopUp("Warning", "Removing object property failed");
 		}
 	}
@@ -838,7 +838,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	public void onModelSelectionChanged() {
 		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
 		if (model != null) {
-			((LevelEditorView)view).loadModelFromLibrary(model.getId());
+			view.loadModelFromLibrary(model.getId());
 		}
 	}
 
@@ -846,7 +846,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * place model button clicked
 	 */
 	public void onPlaceModel() {
-		((LevelEditorView)view).placeObject();
+		view.placeObject();
 	}
 
 	/**
@@ -857,7 +857,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			float x = Float.parseFloat(objectTranslationX.getController().getValue().toString());
 			float y = Float.parseFloat(objectTranslationY.getController().getValue().toString());
 			float z = Float.parseFloat(objectTranslationZ.getController().getValue().toString());
-			((LevelEditorView)view).objectTranslationApply(x, y, z);
+			view.objectTranslationApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -876,7 +876,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			if (x < -10f || x > 10f) throw new IllegalArgumentException("x scale must be within -10 .. +10");
 			if (y < -10f || y > 10f) throw new IllegalArgumentException("y scale must be within -10 .. +10");
 			if (z < -10f || z > 10f) throw new IllegalArgumentException("z scale must be within -10 .. +10");
-			((LevelEditorView)view).objectScaleApply(x, y, z);
+			view.objectScaleApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -895,7 +895,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			if (x < -360f || x > 360f) throw new IllegalArgumentException("x axis rotation must be within -360 .. +360");
 			if (y < -360f || y > 360f) throw new IllegalArgumentException("y axis rotation must be within -360 .. +360");
 			if (z < -360f || z > 360f) throw new IllegalArgumentException("z axis rotation must be within -360 .. +360");
-			((LevelEditorView)view).objectRotationsApply(x, y, z);
+			view.objectRotationsApply(x, y, z);
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -907,38 +907,38 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object remove action
 	 */
 	public void onObjectRemove() {
-		((LevelEditorView)view).removeObject();
+		view.removeObject();
 	}
 
 	/**
 	 * On object color action
 	 */
 	public void onObjectColor() {
-		((LevelEditorView)view).colorObject();
+		view.colorObject();
 	}
 
 	/**
 	 * On object center action
 	 */
 	public void onObjectCenter() {
-		((LevelEditorView)view).centerObject();
+		view.centerObject();
 	}
 
 	/**
 	 * On map load action
 	 */
 	public void onMapLoad() {
-		((LevelEditorView)view).getFileDialogPopUpController().show(
+		view.getFileDialogPopUpController().show(
 			"Load from: ", 
 			new String[]{"tl", "dae"},
-			((LevelEditorView)view).getFileName(),
+			view.getFileName(),
 			new Action() {
 				public void performAction() {
-					((LevelEditorView)view).loadMap(
-						((LevelEditorView)view).getFileDialogPopUpController().getPathName(),
-						((LevelEditorView)view).getFileDialogPopUpController().getFileName()
+					view.loadMap(
+						view.getFileDialogPopUpController().getPathName(),
+						view.getFileDialogPopUpController().getFileName()
 					);
-					((LevelEditorView)view).getFileDialogPopUpController().close();
+					view.getFileDialogPopUpController().close();
 				}
 				
 			}
@@ -949,17 +949,17 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On map save action
 	 */
 	public void onMapSave() {
-		((LevelEditorView)view).getFileDialogPopUpController().show(
+		view.getFileDialogPopUpController().show(
 			"Save to: ", 
 			new String[]{"tl"},
-			((LevelEditorView)view).getFileName(),
+			view.getFileName(),
 			new Action() {
 				public void performAction() {
-					((LevelEditorView)view).saveMap(
-						((LevelEditorView)view).getFileDialogPopUpController().getPathName(),
-						((LevelEditorView)view).getFileDialogPopUpController().getFileName()
+					view.saveMap(
+						view.getFileDialogPopUpController().getPathName(),
+						view.getFileDialogPopUpController().getFileName()
 					);
-					((LevelEditorView)view).getFileDialogPopUpController().close();
+					view.getFileDialogPopUpController().close();
 				}
 				
 			}
@@ -973,8 +973,8 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		try {
 			float gridY = Float.parseFloat(gridYPosition.getController().getValue().toString());
 			if (gridY < -5f || gridY > 5f) throw new IllegalArgumentException("grid y position must be within -5 .. +5");
-			((LevelEditorView)view).setGridY(gridY);
-			((LevelEditorView)view).setGridEnabled(gridEnabled.getController().getValue().equals(CHECKBOX_CHECKED));
+			view.setGridY(gridY);
+			view.setGridEnabled(gridEnabled.getController().getValue().equals(CHECKBOX_CHECKED));
 		} catch (NumberFormatException nfe) {
 			showErrorPopUp("Warning", "Invalid number entered");
 		} catch (IllegalArgumentException iae) {
@@ -986,7 +986,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On object property preset apply 
 	 */
 	public void onObjectPropertyPresetApply() {
-		((LevelEditorView)view).objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
+		view.objectPropertiesPreset(objectPropertiesPresets.getController().getValue().toString());
 	}
 
 	/**
@@ -1165,7 +1165,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	public void onLightApply(int lightIdx) {
 		try {
 			boolean enabled = lightsEnabled[lightIdx].getController().getValue().equals(CHECKBOX_CHECKED);
-			((LevelEditorView)view).applyLight(
+			view.applyLight(
 				lightIdx,
 				Tools.convertToColor4(lightsAmbient[lightIdx].getController().getValue().toString()),
 				Tools.convertToColor4(lightsDiffuse[lightIdx].getController().getValue().toString()),
@@ -1235,7 +1235,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		if (lightPreset == null) return;
 
 		// apply preset
-		((LevelEditorView)view).applyLight(
+		view.applyLight(
 			lightIdx,
 			lightPreset.getAmbient(),
 			lightPreset.getDiffuse(),
@@ -1285,7 +1285,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onLightSpotDirectionCompute(int lightIdx) {		
 		try {
-			((LevelEditorView)view).computeSpotDirection(
+			view.computeSpotDirection(
 				lightIdx,
 				Tools.convertToVector4(lightsPosition[lightIdx].getController().getValue().toString()),
 				Tools.convertToVector3(lightsSpotTo[lightIdx].getController().getValue().toString())
@@ -1299,7 +1299,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * 
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
-		((LevelEditorView)view).saveMap(
+		view.saveMap(
 			pathName,
 			fileName
 		);
@@ -1309,7 +1309,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * 
 	 */
 	public void loadFile(String pathName, String fileName) throws Exception {
-		((LevelEditorView)view).loadMap(
+		view.loadMap(
 			pathName,
 			fileName
 		);
@@ -1450,7 +1450,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		((LevelEditorView)view).getInfoDialogPopUpController().show(caption, message);
+		view.getInfoDialogPopUpController().show(caption, message);
 	}
 
 }
