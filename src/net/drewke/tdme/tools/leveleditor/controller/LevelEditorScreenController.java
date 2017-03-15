@@ -124,7 +124,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void init() {
 		try {
-			screenNode = GUIParser.parse("resources/tools/leveleditor/gui", "screen_leveleditor_v2.xml");
+			screenNode = GUIParser.parse("resources/tools/leveleditor/gui", "screen_leveleditor.xml");
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 

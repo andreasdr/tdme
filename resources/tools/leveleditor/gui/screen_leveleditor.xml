@@ -1,795 +1,778 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<nifty>
-	<!-- The style of a tab button that is not the activated one. -->
-    <style id="nifty-tab-button">
-        <attributes backgroundImage="tabs/tabs.png"
-                    imageMode="sprite-resize:31,23,2,15,1,15,11,15,1,15,1,15,1,15,11" paddingLeft="11px"
-                    paddingRight="11px" width="147px" height="23px" childLayout="center" visibleToMouse="true"/>
-        <effect>
-            <onHover name="imageOverlay" filename="tabs/tabs.png"
-                     imageMode="sprite-resize:31,23,1,15,1,15,11,15,1,15,1,15,1,15,11" post="true"/>
-        </effect>
-    </style>
-    <!-- The style of a tab button that is the activated one. -->
-    <style id="nifty-tab-button-active">
-        <attributes backgroundImage="tabs/tabs.png"
-                    imageMode="sprite-resize:31,23,0,15,1,15,11,15,1,15,1,15,1,15,11" paddingLeft="11px"
-                    paddingRight="11px" width="147px" height="23px" childLayout="center" visibleToMouse="true"/>
-        <effect>
-           <onHover name="imageOverlay" filename="tabs/tabs.png"
-                    imageMode="sprite-resize:31,23,0,15,1,15,11,15,1,15,1,15,1,15,11" post="true"/>
-            -->
-        </effect>
-    </style>
-	<screen id="leveleditor" controller="net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController">
-		<layer id="layer_screen" childLayout="vertical">
-			<panel style="nifty-panel" childLayout="horizontal" width="100%" height="60px" visibleToMouse="true" valign="center">
-				<text id="screen_caption" color="#ff0000" text="Level Editor" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
-			</panel>
-			<panel childLayout="horizontal" width="100%" height="*" visibleToMouse="false">
-				<panel style="nifty-panel" childLayout="vertical" width="200px" height="380px" visibleToMouse="true" valign="center" align="center">
-            		<control id="objects_listbox" name="listBox" width="170px" displayItems="13" selectionMode="multiple" forceSelection="false" horizontal="off" vertical="on">
-               		</control>
-	   			    <panel height="*" />
-				    <panel childLayout="horizontal" width="100%" height="30px" align="center" valign="center">
-				        <panel width="*" />
-				        <control id="button_objects_select" name="button" label="Select" height="30px" width="80px" align="center">
-							<interact onClick="onObjectsSelect()" />
-						</control>
-				        <control id="button_objects_unselect" name="button" label="Unselect" height="30px" width="80px" align="center">
-							<interact onClick="onObjectsUnselect()" />
-						</control>
-						<panel width="*" />
-				    </panel>
-               	</panel>
-			    <panel width="*" />
-				<panel style="nifty-panel" childLayout="vertical" width="200px" height="*" visibleToMouse="true" valign="center" align="right">
-	   			    <control id="modelchoser_scrollbar" name="scrollPanel" height="*" vertical="true" horizontal="false">
-	   			        <panel id="modelchoser" childLayout="vertical" width="200px" height="200px">
-							<interact onClick="onListModelsClick()"/>
-	   			    	</panel>
-	   			    </control>
-	   			    <panel height="5px" />
-				    <panel childLayout="horizontal" width="100%" height="30px" align="center" valign="center">
-				        <panel width="*" />
-				        <control id="button_model_place" name="button" label="Place" height="30px" width="80px" align="center">
-							<interact onClick="onPlaceModel()" />
-						</control>
-				        <control id="button_model_library" name="button" label="Library" height="30px" width="80px" align="center">
-							<interact onClick="onLibrary()" />
-						</control>
-						<panel width="*" />
-				    </panel>
-				</panel>
-			</panel>
-		    <control id="tabs_properties" name="tabGroup" childLayout="vertical" width="100%" height="190px" visibleToMouse="true" buttonWidth="40px">
-    		    <control id="tabs_properties_grid" name="tab" caption="Grid">
-    		        <!-- y position; visible -->
-    	            <panel childLayout="vertical" width="200px" height="90px" valign="center">
-		                <panel childLayout="horizontal" height="30px">
-							<text width="60px" color="#ffffff" text="Y position" font="aurulent-sans-16.fnt" textHAlign="right" valign="center" height="30px" />
-							<panel width="15px" />
-							<control width="125px" name="textfield" maxLength="255" id="grid_y_position" />
-						</panel>
-		                <panel childLayout="horizontal" height="30px">
-							<text width="60px" color="#ffffff" text="Enabled" font="aurulent-sans-16.fnt" textHAlign="right" valign="center" height="30px" />
-							<panel width="15px" />
-							<panel width="125px" childLayout="horizontal">
-								<control id="grid_enabled" name="checkbox" checked="true" valign="center" height="30px" />
-								<panel width="*" />
-							</panel>
-						</panel>
-						<panel height="5px" />
-		                <panel childLayout="horizontal" height="30px">
-							<panel width="*" />
-		                    <panel childLayout="center">
-					        	<control id="button_grid_apply" name="button" label="Apply" height="30px" width="80px" align="center">
-									<interact onClick="onGridApply()" />
-								</control>
-							</panel>
-						</panel>
-    	            </panel>
-				</control>
-    		    <control id="tabs_properties_map" name="tab" caption="Map">
-    		        <!-- height; width -->
-	    	        <panel childLayout="horizontal" width="300px" height="100%" valign="center" align="center">
-	    	            <panel childLayout="vertical" width="200px" height="90px" valign="center">
-			                <panel childLayout="horizontal" height="30px">
-								<text width="50px" color="#ffffff" text="Width" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="145px" name="textfield" maxLength="255" id="map_width" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="50px" color="#ffffff" text="Height" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="145px" name="textfield" maxLength="255" id="map_height" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="50px" color="#ffffff" text="Depth" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="145px" name="textfield" maxLength="255" id="map_depth" />
-							</panel>
-	    	            </panel>
-	    	            <panel width="20px" />
-	    	            <panel childLayout="vertical" width="80px" height="90px" valign="center">
-				        	<control id="button_map_load" name="button" label="Load" height="30px" width="80px" align="center">
-								<interact onClick="onMapLoad()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_map_save" name="button" label="Save" height="30px" width="80px" align="center">
-								<interact onClick="onMapSave()" />
-							</control>
-							<panel height="*" />
-	    	            </panel>
-					</panel>
-				</control>
-    		    <control id="tabs_properties_map_properties" name="tab" caption="Map Properties">
-	    	        <panel childLayout="horizontal" width="700px" height="100%" align="center" valign="center">
-	    	            <panel childLayout="vertical" width="600px" height="100%" valign="center">
-	    	            	<panel height="*" />
-	    	            	<control id="mapproperties_listbox" name="listBox" width="600px" displayItems="4" selectionMode="single" forceSelection="false" horizontal="off" vertical="on">
-    	                	</control>
-    	                	<panel height="10px" />
-			                <panel childLayout="horizontal" height="30px">
-								<text width="45px"color="#ffffff" text="Name" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="240px"name="textfield" maxLength="255" id="map_property_name" />
-								<panel width="20px" />
-								<text width="45px"color="#ffffff" text="Value" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="240px"name="textfield" maxLength="255" id="map_property_value" />
-							</panel>
-							<panel height="*" />
-    	                </panel>
-   	    	            <panel width="20px" />
-	    	            <panel childLayout="vertical" width="80px" height="100%">
-	    	                <panel height="*" />
-				        	<control id="button_map_properties_add" name="button" label="Add" height="30px" width="80px" align="center">
-								<interact onClick="onMapPropertyAdd()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_map_properties_remove" name="button" label="Remove" height="30px" width="80px" align="center">
-								<interact onClick="onMapPropertyRemove()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_map_properties_save" name="button" label="Save" height="30px" width="80px" align="center">
-								<interact onClick="onMapPropertySave()" />
-							</control>
-   				        	<panel height="*" />
-	    	            </panel>
-					</panel>
-				</control>
-		        <control id="tabs_properties_object" name="tab" caption="Object" >
-		            <panel childLayout="horizontal" width="630px" height="90px" valign="center">
-		                <panel childLayout="vertical" width="300px" height="90px" valign="center">
-			                <panel childLayout="horizontal" height="30px">
-								<text color="#ffffff" text="Name" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-								<panel width="5px" />
-								<control name="textfield" maxLength="255" id="object_name" />
-							</panel>
-							<panel childLayout="horizontal" height="30px">
-								<text color="#ffffff" text="Description" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-								<panel width="5px" />
-								<control name="textfield" maxLength="255" id="object_description" />
-							</panel>
-							<panel childLayout="horizontal" height="30px">
-								<panel width="*" />            		
-	    				        <control id="button_objectdata_apply" name="button" label="Apply" height="30px" width="60px">
-									<interact onClick="onObjectDataApply()" />
-								</control>
-							</panel>
-						</panel>
-						<panel width="30px" />
-		                <panel childLayout="vertical" width="300px" height="90px" valign="center">
-			                <panel childLayout="horizontal" height="30px">
-								<text color="#ffffff" text="Model" font="aurulent-sans-16.fnt" valign="center" width="60px" height="30px" textHAlign="left" />
-								<panel width="5px" />
-								<control name="textfield" maxLength="255" id="object_model" />
-							</panel>
-							<panel childLayout="horizontal" height="30px">
-								<text color="#ffffff" text="Center" font="aurulent-sans-16.fnt" valign="center" width="60px" height="30px" textHAlign="left" />
-								<panel width="5px" />
-								<control name="textfield" maxLength="255" id="object_center" />
-							</panel>
-						</panel>
-					</panel>
-				</control>
-    		    <control id="tabs_properties_object_transformations" name="tab" caption="Object Transformations">
-	    	        <panel childLayout="horizontal" width="680px" height="100%" valign="center">
-	    	            <panel childLayout="vertical" width="175px" height="100%">
-	    	            	<panel height="*" />
-		    	            <!-- translation x; translation y; translation z; -->
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="X" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_translation_x" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="Y" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_translation_y" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="Z" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_translation_z" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-			                    <panel childLayout="horizontal" height="30px">
-			                        <panel width="*" />
-						        	<control id="button_translation_apply" name="button" label="Translate" height="30px" width="80px" align="center">
-										<interact onClick="onObjectTranslationApply()" />
-									</control>
-								</panel>
-							</panel>
-							<panel height="*" />
-	    	            </panel>
-	    	            <panel width="25px" />
-	    	            <panel childLayout="vertical" width="175px" height="100%">
-	    	            	<panel height="*" />
-	    	                <!-- scale x; translation y; translation z; -->
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="X" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_scale_x" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="Y" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_scale_y" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="Z" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_scale_z" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-			                    <panel childLayout="horizontal" height="30px">
-			                        <panel width="*" />
-						        	<control id="button_scale_apply" name="button" label="Scale" height="30px" width="80px" align="center">
-										<interact onClick="onObjectScaleApply()" />
-									</control>
-								</panel>
-							</panel>
-							<panel height="*" />
-	    	            </panel>
-	    	            <panel width="25px" />
-	    	            <panel childLayout="vertical" width="175px" height="100%">
-	    	            	<panel height="*" />
-	    	                <!-- rotate x; translation y; translation z; -->
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="X" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_rotation_x" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="Y" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_rotation_y" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-								<text width="20px"color="#ffffff" text="Z" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="150px"name="textfield" maxLength="255" id="object_rotation_z" />
-							</panel>
-			                <panel childLayout="horizontal" height="30px">
-			                    <panel childLayout="horizontal">
-			                        <panel width="*" />
-						        	<control id="button_rotations_apply" name="button" label="Rotate" height="30px" width="80px" align="center">
-										<interact onClick="onObjectRotationsApply()" />
-									</control>
-								</panel>
-							</panel>
-							<panel height="*" />
-	    	            </panel>
-	    	            <panel width="25px" />
-	    	            <panel childLayout="vertical" width="80px" height="100%">
-	    	                <panel height="*" />
-				        	<control id="button_object_color" name="button" label="Color" height="30px" width="80px" align="center">
-								<interact onClick="onObjectColor()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_object_center" name="button" label="Center" height="30px" width="80px" align="center">
-								<interact onClick="onObjectCenter()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_object_remove" name="button" label="Remove" height="30px" width="80px" align="center">
-								<interact onClick="onObjectRemove()" />
-							</control>
-				        	<panel height="*" />
-	    	            </panel>
-					</panel>
-				</control>
-				<control id="tabs_properties_object_properties" name="tab" caption="Object Properties">
-	    	        <panel childLayout="horizontal" width="700px" height="100%" align="center" valign="center">
-	    	            <panel childLayout="vertical" width="600px" height="100%" valign="center">
-	    	            	<panel height="*" />
-	    	                <panel childLayout="horizontal" height="30px">
-	    	            		<control id="objectproperties_presets" name="dropDown" width="530px" displayItems="4" height="23px">
-    	                		</control>
-    	                		<panel width="10px" />
-     				        	<control id="button_object_properties_presetapply" name="button" label="Apply" height="23px" width="60px">
-									<interact onClick="onObjectPropertyPresetApply()" />
-								</control>            		
-    	                	</panel>
-    	                	<panel height="10px" />
-	    	            	<control id="objectproperties_listbox" name="listBox" width="600px" displayItems="2" selectionMode="single" forceSelection="false" horizontal="off" vertical="on">
-    	                	</control>
-    	                	<panel height="10px" />
-			                <panel childLayout="horizontal" height="30px">
-								<text width="45px"color="#ffffff" text="Name" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="240px"name="textfield" maxLength="255" id="object_property_name" />
-								<panel width="20px" />
-								<text width="45px"color="#ffffff" text="Value" font="aurulent-sans-16.fnt" valign="center" height="30px" />
-								<panel width="5px" />
-								<control width="240px"name="textfield" maxLength="255" id="object_property_value" />
-							</panel>
-							<panel height="*" />
-    	                </panel>
-   	    	            <panel width="20px" />
-	    	            <panel childLayout="vertical" width="80px" height="100%">
-	    	                <panel height="*" />
-				        	<control id="button_object_properties_add" name="button" label="Add" height="30px" width="80px" align="center">
-								<interact onClick="onObjectPropertyAdd()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_object_properties_remove" name="button" label="Remove" height="30px" width="80px" align="center">
-								<interact onClick="onObjectPropertyRemove()" />
-							</control>
-							<panel height="5px" />
-				        	<control id="button_object_properties_save" name="button" label="Save" height="30px" width="80px" align="center">
-								<interact onClick="onObjectPropertySave()" />
-							</control>
-   				        	<panel height="*" />
-	    	            </panel>
-					</panel>
-				</control>
-				<control id="tabs_properties_lights" name="tab" caption="Lights">
-					<control id="tabs_lights" name="tabGroup" childLayout="vertical" width="100%" height="100%" visibleToMouse="true" buttonWidth="40px">
-    		    		<control id="tabs_properties_light0" name="tab" caption="Light 0" childLayout="center">
-    		    			<control id="tabs_properties_light0_scrollpanel" name="scrollPanel" horizontal="false" height="100%">
-    		    				<panel backgroundColor="#555" childLayout="horizontal" width="100%" height="340px" valign="center">
-    		    				   	<panel width="*" />
-			            	    	<panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-			            	    		<control id="presets_light0" name="dropDown" width="300px" displayItems="4" height="23px">
-    	                				</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Ambient" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_ambient" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Specular" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_specular" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Const. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_constant_attenuation" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Quad. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_quadratic_attenuation" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot from" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_position" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot direction" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_spot_direction" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot cutoff" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_spot_cutoff" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<panel width="*" />            		
-		    						        <control id="button_light0_apply" name="button" label="Apply" height="30px" width="100px">
-												<interact onClick="onLight0Apply()" />
-											</control>
-										</panel>
-									</panel>
-									<panel width="30px" />
-			    		            <panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-     				        			<control id="button_light0_presetapply" name="button" label="Apply" height="23px" width="60px">
-											<interact onClick="onLight0PresetApply()" />
-										</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Diffuse" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_diffuse" />
-										</panel>
-										<panel height="40px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Lin. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_linear_attenuation" />
-										</panel>
-										<panel height="40px" />
-									  	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot to" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_spot_to" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-		    						        <control id="button_light0_spotdirection_compute" name="button" label="Compute spot direction" height="24px" width="140px">
-												<interact onClick="onLight0SpotDirectionCompute()" />
-											</control>
-											<panel width="*" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot exponent" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light0_spot_exponent" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Enabled" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="checkbox" checked="false" id="light0_enabled" valign="center" height="30px" />
-										</panel>
-									</panel>
-									<panel width="*" />
-								</panel>
-							</control>
-    		    		</control>
-    		    		<control id="tabs_properties_light1" name="tab" caption="Light 1" childLayout="horizontal">
-    		    			<control id="tabs_properties_light1_scrollpanel" name="scrollPanel" horizontal="false" height="100%">
-    		    				<panel backgroundColor="#555" childLayout="horizontal" width="100%" height="340px" valign="center">
-    		    				   	<panel width="*" />
-			            	    	<panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-			            	    		<control id="presets_light1" name="dropDown" width="300px" displayItems="4" height="23px">
-    	                				</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Ambient" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_ambient" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Specular" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_specular" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Const. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_constant_attenuation" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Quad. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_quadratic_attenuation" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot from" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_position" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot direction" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_spot_direction" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot cutoff" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_spot_cutoff" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<panel width="*" />            		
-		    						        <control id="button_light1_apply" name="button" label="Apply" height="30px" width="100px">
-												<interact onClick="onLight1Apply()" />
-											</control>
-										</panel>
-									</panel>
-									<panel width="30px" />
-			    		            <panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-     				        			<control id="button_light1_presetapply" name="button" label="Apply" height="23px" width="60px">
-											<interact onClick="onLight1PresetApply()" />
-										</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Diffuse" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_diffuse" />
-										</panel>
-										<panel height="40px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Lin. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_linear_attenuation" />
-										</panel>
-										<panel height="40px" />
-									  	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot to" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_spot_to" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-		    						        <control id="button_light1_spotdirection_compute" name="button" label="Compute spot direction" height="24px" width="140px">
-												<interact onClick="onLight1SpotDirectionCompute()" />
-											</control>
-											<panel width="*" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot exponent" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light1_spot_exponent" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Enabled" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="checkbox" checked="false" id="light1_enabled" valign="center" height="30px" />
-										</panel>
-									</panel>
-									<panel width="*" />
-								</panel>
-							</control>
-    		    		</control>
-    		    		<control id="tabs_properties_light2" name="tab" caption="Light 2" childLayout="horizontal">
-    		    			<control id="tabs_properties_light2_scrollpanel" name="scrollPanel" horizontal="false" height="100%">
-    		    				<panel backgroundColor="#555" childLayout="horizontal" width="100%" height="340px" valign="center">
-    		    				   	<panel width="*" />
-			            	    	<panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-			            	    		<control id="presets_light2" name="dropDown" width="300px" displayItems="4" height="23px">
-    	                				</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Ambient" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_ambient" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Specular" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_specular" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Const. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_constant_attenuation" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Quad. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_quadratic_attenuation" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot from" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_position" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot direction" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_spot_direction" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot cutoff" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_spot_cutoff" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<panel width="*" />            		
-		    						        <control id="button_light2_apply" name="button" label="Apply" height="30px" width="100px">
-												<interact onClick="onLight2Apply()" />
-											</control>
-										</panel>
-									</panel>
-									<panel width="30px" />
-			    		            <panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-     				        			<control id="button_light2_presetapply" name="button" label="Apply" height="23px" width="60px">
-											<interact onClick="onLight2PresetApply()" />
-										</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Diffuse" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_diffuse" />
-										</panel>
-										<panel height="40px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Lin. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_linear_attenuation" />
-										</panel>
-										<panel height="40px" />
-									  	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot to" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_spot_to" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-		    						        <control id="button_light2_spotdirection_compute" name="button" label="Compute spot direction" height="24px" width="140px">
-												<interact onClick="onLight2SpotDirectionCompute()" />
-											</control>
-											<panel width="*" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot exponent" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light2_spot_exponent" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Enabled" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="checkbox" checked="false" id="light2_enabled" valign="center" height="30px" />
-										</panel>
-									</panel>
-									<panel width="*" />
-								</panel>
-							</control>
-    		    		</control>
-    		    		<control id="tabs_properties_light3" name="tab" caption="Light 3" childLayout="horizontal">
-    		    			<control id="tabs_properties_light3_scrollpanel" name="scrollPanel" horizontal="false" height="100%">
-    		    				<panel backgroundColor="#555" childLayout="horizontal" width="100%" height="340px" valign="center">
-    		    				   	<panel width="*" />
-			            	    	<panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-			            	    		<control id="presets_light3" name="dropDown" width="300px" displayItems="4" height="23px">
-    	                				</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Ambient" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_ambient" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Specular" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_specular" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Const. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_constant_attenuation" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Quad. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_quadratic_attenuation" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot from" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_position" />
-										</panel>
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot direction" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_spot_direction" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot cutoff" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_spot_cutoff" />
-										</panel>
-										<panel height="10px" />
-										<panel childLayout="horizontal" height="30px">
-											<panel width="*" />            		
-		    						        <control id="button_light3_apply" name="button" label="Apply" height="30px" width="100px">
-												<interact onClick="onLight3Apply()" />
-											</control>
-										</panel>
-									</panel>
-									<panel width="30px" />
-			    		            <panel childLayout="vertical" width="300px" height="100%" valign="center">
-			            	    		<panel height="5px" />
-     				        			<control id="button_light3_presetapply" name="button" label="Apply" height="23px" width="60px">
-											<interact onClick="onLight3PresetApply()" />
-										</control>
-			            	    		<panel height="20px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Diffuse" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_diffuse" />
-										</panel>
-										<panel height="40px" />
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Lin. attenuation" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_linear_attenuation" />
-										</panel>
-										<panel height="40px" />
-									  	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot to" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_spot_to" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-		    						        <control id="button_light3_spotdirection_compute" name="button" label="Compute spot direction" height="24px" width="140px">
-												<interact onClick="onLight3SpotDirectionCompute()" />
-											</control>
-											<panel width="*" />
-										</panel>
-										<panel height="10px" />
-					                	<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Spot exponent" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="textfield" maxLength="255" id="light3_spot_exponent" />
-										</panel>
-										<panel childLayout="horizontal" height="30px">
-											<text color="#ffffff" text="Enabled" font="aurulent-sans-16.fnt" valign="center" width="100px" height="30px" textHAlign="left" />
-											<panel width="5px" />
-											<control name="checkbox" checked="false" id="light3_enabled" valign="center" height="30px" />
-										</panel>
-									</panel>
-									<panel width="*" />
-								</panel>
-							</control>
-						</control>
-					</control>
-				</control>
-			</control>
-		</layer>
-	</screen>
-    <popup id="filedialog_popup" childLayout="center" backgroundColor="#0000">
-    	<panel style="nifty-panel" childLayout="vertical" width="600px" height="380px" visibleToMouse="true"> 
-	        <panel height="5px" />
-       	    <text id="filedialog_popup_caption" color="#ff0000" text="Load" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
-       	   	<panel height="5px" />
-   	    	<control id="filedialog_popup_files" name="listBox" width="560px" height="240px" displayItems="10" selectionMode="Single" forceSelection="false" horizontal="off" vertical="on" />
-   	    	<panel height="5px" />
-       	    <control name="textfield" maxLength="255" width="560" id="filedialog_popup_filename" />
-	        <panel height="*" />
-	        <panel childLayout="horizontal" height="30px">
-	        	<panel width="*" />
-				<control id="filedialog_popup_apply" name="button" label="Apply" height="30px" width="80px" align="center">
-					<interact onClick="applyFileDialogPopUp()" />
-				</control>
-				<panel width="*" />
-				<control id="filedialog_popup_abort" name="button" label="Abort" height="30px" width="80px" align="center">
-					<interact onClick="abortFileDialogPopUp()" />
-				</control>
-				<panel width="*" />
-			</panel>
-	        <panel height="5px" />
+<screen id="leveleditor" background-color="#00000000">
+	<layout alignment="vertical" width="100%" height="100%">
+		 <panel alignment="none" width="100%" height="auto" padding="5" horizontal-align="center">
+			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Level Editor" width="auto" height="auto" />
 		</panel>
-    </popup>
-    <popup id="error_popup" childLayout="center" backgroundColor="#0000">
-        <panel style="nifty-panel" childLayout="vertical" width="320px" height="200px" visibleToMouse="true">
-	        <panel height="5px" />
-       	    <text id="error_popup_caption" color="#ff0000" text="Error" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
-	        <panel height="*" />
-            <text id="error_popup_message" color="#000000" text="An error occurred" font="aurulent-sans-16.fnt" height="30px" width="100%" textHAlign="center" />
-	        <panel height="*" />
-	        <control id="error_popup_ok" name="button" label="Damn!" height="30px" width="80px" align="center">
-				<interact onClick="closeErrorPopUp()" />
-			</control>
-	        <panel height="5px" />
-        </panel>
-    </popup>
-</nifty>
+		<layout width="100%" height="*" alignment="horizontal">
+			<element width="100%" height="100%" ignore-events="true">
+				<element width="100%" height="100%" border="1" border-color="#000000" focusable="true" ignore-events="true" />
+				<layout width="100%" height="100%" alignment="vertical">
+					<space height="*" />
+					<layout width="100%" height="80%" alignment="horizontal">
+						<panel alignment="vertical" width="180" height="100%">
+							<selectbox-multiple id="objects_listbox" name="objects_listbox" width="100%" height="*">
+								<scrollarea-vertical id="objects_listbox_scrollarea" width="100%" height="100%">
+									<selectbox-multiple-option text="Option A" value="1" />
+									<selectbox-multiple-option text="Option B" value="2" selected="true" />
+									<selectbox-multiple-option text="Option C" value="3" />
+									<selectbox-multiple-option text="Option D" value="4"  selected="true"/>
+									<selectbox-multiple-option text="Option E" value="5" />
+									<selectbox-multiple-option text="Option F" value="6" selected="true" />
+									<selectbox-multiple-option text="Option G" value="7" />
+									<selectbox-multiple-option text="Option H" value="8" />
+									<selectbox-multiple-option text="Option I" value="9" />
+									<selectbox-multiple-option text="Option J" value="10" />
+									<selectbox-multiple-option text="Option K" value="11" />
+									<selectbox-multiple-option text="Option L" value="12" />
+									<selectbox-multiple-option text="Option M" value="13" />
+									<selectbox-multiple-option text="Option N" value="14" />
+									<selectbox-multiple-option text="Option O" value="15" />
+									<selectbox-multiple-option text="Option P" value="16" />
+									<selectbox-multiple-option text="Option Q" value="17" />
+									<selectbox-multiple-option text="Option R" value="18" />
+									<selectbox-multiple-option text="Option S" value="19" />
+									<selectbox-multiple-option text="Option T" value="20" selected="true" />
+									<selectbox-multiple-option text="Option U" value="21" />
+									<selectbox-multiple-option text="Option V" value="22" selected="true" />
+									<selectbox-multiple-option text="Option W" value="23" />
+									<selectbox-multiple-option text="Option X" value="24" selected="true" />
+									<selectbox-multiple-option text="Option Y" value="25" />
+									<selectbox-multiple-option text="Option Z" value="26" />
+								</scrollarea-vertical>
+							</selectbox-multiple>
+							<space height="10" />
+							<layout width="100%" height="auto" alignment="horizontal">
+								<space width="*" />
+								<button id="button_objects_select" name="button_objects_select" text="Select" />
+								<space width="*" />
+								<button id="button_objects_unselect" name="button_objects_unselect" text="Unselect" />
+								<space width="*" />
+							</layout>
+							<space height="10" />
+						</panel>
+						<space width="*" />
+						<panel width="180" height="100%">
+							<layout alignment="vertical" width="100%" height="100%">
+								<selectbox id="model_library_listbox" name="model_library_listbox" width="100%" height="*">
+									<scrollarea-vertical id="d" width="100%" height="100%">
+										<selectbox-option text="Option A" value="1" />
+										<selectbox-option text="Option B" value="2" />
+										<selectbox-option text="Option C" value="3" />
+										<selectbox-option text="Option D" value="4" />
+										<selectbox-option text="Option E" value="5" />
+										<selectbox-option text="Option F" value="6" />
+										<selectbox-option text="Option G" value="7" />
+										<selectbox-option text="Option H" value="8" />
+										<selectbox-option text="Option I" value="9" />
+										<selectbox-option text="Option J" value="10" selected="true" />
+										<selectbox-option text="Option K" value="11" />
+										<selectbox-option text="Option L" value="12" />
+										<selectbox-option text="Option M" value="13" />
+										<selectbox-option text="Option N" value="14" />
+										<selectbox-option text="Option O" value="15" />
+										<selectbox-option text="Option P" value="16" />
+										<selectbox-option text="Option Q" value="17" />
+										<selectbox-option text="Option R" value="18" />
+										<selectbox-option text="Option S" value="19" />
+										<selectbox-option text="Option T" value="20" />
+										<selectbox-option text="Option U" value="21" />
+										<selectbox-option text="Option V" value="22" />
+										<selectbox-option text="Option W" value="23" />
+										<selectbox-option text="Option X" value="24" />
+										<selectbox-option text="Option Y" value="25" />
+										<selectbox-option text="Option Z" value="26" />
+									</scrollarea-vertical>
+								</selectbox>
+								<space height="10" />
+								<layout width="100%" height="auto" alignment="horizontal">
+									<space width="*" />
+									<button id="button_model_library_place" name="button_model_place" text="Place" />
+									<space width="*" />
+									<button id="button_model_library_edit" name="button_model_library" text="Library" />
+									<space width="*" />
+								</layout>
+								<space height="10" />
+							</layout>
+						</panel>
+					</layout>
+					<space height="*" />
+				</layout>
+			</element>
+		</layout>
+		<panel width="100%" height="200">
+			<tabs alignment="vertical" width="100%" height="100%">
+				<tabs-header>
+					<tab id="tab_properties_grid" text="Grid" />
+					<tab id="tab_properties_map" text="Map" />
+					<tab id="tab_properties_map_properties" text="Map Properties" />
+					<tab id="tab_properties_object" text="Object" />
+					<tab id="tab_properties_object_transformations" text="Object Transformations" />
+					<tab id="tab_properties_object_properties" text="Object Properties" />
+					<tab id="tab_properties_lights" text="Lights" />
+				</tabs-header>
+				<tabs-content>
+					<tab-content tab-id="tab_properties_grid" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Y position" width="200" height="auto"/>
+								<space width="5" />
+								<input id="grid_y_position" name="grid_y_position" width="200" height="auto" text="Y position" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Enable" width="200" height="auto"/>
+								<space width="5" />
+								<checkbox id="grid_enabled" name="grid_enabled" width="auto" height="auto" value="1" />
+							</layout>
+							<space height="20" />
+							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+								<button id="button_grid_apply" name="button_grid_apply" text="Apply" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_map" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Width" width="200" height="auto"/>
+								<space width="5" />
+								<input id="map_width" name="map_width" width="200" height="auto" text="Width" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Height" width="200" height="auto"/>
+								<space width="5" />
+								<input id="map_height" name="map_height" width="200" height="auto" text="Height" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Depth" width="200" height="auto"/>
+								<space width="5" />
+								<input id="map_depth" name="map_depth" width="200" height="auto" text="Depth" />
+							</layout>
+							<space height="20" />
+							<layout width="100%" height="auto" alignment="horizontal" horizontal-align="center">
+								<button id="button_map_load" name="button_map_load" text="Load" />
+								<space width="20" />
+								<button id="button_map_save" name="button_map_save" text="Save" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_map_properties" vertical-align="center">
+						<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="605" height="auto" alignment="vertical">
+								<selectbox id="map_properties_listbox" name="map_properties_listbox" height="115">
+								</selectbox>
+								<space height="10" />
+								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="45" height="auto"/>
+									<space width="*" />
+									<input id="map_property_name" name="map_property_name" width="240" height="auto" text="Name" />
+									<space width="*" />
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Value" width="45" height="auto"/>
+									<space width="*" />
+									<input id="map_property_value" name="map_property_value" width="240" height="auto" text="Value" />
+								</layout>
+							</layout>
+							<space width="20" />
+							<layout width="auto" height="auto" alignment="vertical">
+								<button id="button_map_properties_add" name="button_map_properties_add" text="Add" width="80" />
+								<space height="5" />
+								<button id="button_map_properties_remove" name="button_map_properties_remove" text="Remove" width="80" />
+								<space height="5" />
+								<button id="button_map_properties_save" name="button_map_properties_save" text="Save" width="80" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_object" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal">
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_name" name="object_name" width="150" height="auto" text="Name" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Description" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_description" name="object_description" width="150" height="auto" text="Description" />
+									</layout>
+								</layout>
+								<space width="20" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Model" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_model" name="object_model" width="150" height="auto" text="Model" disabled="true" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="145" height="auto"/>
+										<space width="5" />
+										<input id="object_center" name="object_center" width="150" height="auto" text="Center" disabled="true" />
+									</layout>
+								</layout>
+							</layout>
+							<space height="20" />					
+							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+								<button id="button_objectdata_apply" name="button_objectdata_apply" text="Apply" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_object_transformations" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal">
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_translation_x" name="object_translation_x" width="150" height="auto" text="X" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_translation_y" name="object_translation_y" width="150" height="auto" text="Y" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_translation_z" name="object_translation_z" width="150" height="auto" text="Z" />
+									</layout>
+									<space height="20" />
+									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+										<button id="button_translation_apply" name="button_translation_apply" text="Translate" />
+									</layout>
+								</layout>
+								<space width="25" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_scale_x" name="object_scale_x" width="150" height="auto" text="X" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_scale_y" name="object_scale_y" width="150" height="auto" text="Y" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_scale_z" name="object_scale_z" width="150" height="auto" text="Z" />
+									</layout>
+									<space height="20" />
+									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+										<button id="button_scale_apply" name="button_scale_apply" text="Scale" />
+									</layout>
+								</layout>
+								<space width="25" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="X" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_rotation_x" name="object_rotation_x" width="150" height="auto" text="X" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Y" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_rotation_y" name="object_rotation_y" width="150" height="auto" text="Y" />
+									</layout>
+									<space height="5" />
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Z" width="20" height="auto"/>
+										<space width="5" />
+										<input id="object_rotation_z" name="object_rotation_z" width="150" height="auto" text="Z" />
+									</layout>
+									<space height="20" />
+									<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+										<button id="button_rotation_apply" name="button_rotation_apply" text="Rotate" />
+									</layout>
+								</layout>
+								<space width="25" />
+								<layout width="auto" height="auto" alignment="vertical">
+									<button id="button_object_color" name="button_object_color" text="Color" width="80" />
+									<space height="5" />
+									<button id="button_object_center" name="button_object_center" text="Center" width="80" />
+									<space height="5" />
+									<button id="button_object_remove" name="button_object_remove" text="Remove" width="80" />
+								</layout>
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_object_properties" vertical-align="center">
+						<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="auto" height="auto" alignment="vertical">
+								<layout width="auto" height="auto" alignment="horizontal">
+									<dropdown id="object_properties_presets" name="object_properties_presets" width="510" height="auto" text="Test">
+										<dropdown-option text="Test 1" value="1" />										
+									</dropdown>
+									<space width="10" />
+									<button id="button_object_properties_presetapply" name="button_object_properties_presetapply" text="Apply" width="80" />
+								</layout>
+								<space height="10" />
+								<selectbox id="object_properties_listbox" name="object_properties_listbox" height="70">
+								</selectbox>
+								<space height="10" />
+								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="45" height="auto"/>
+									<space width="*" />
+									<input id="object_property_name" name="object_property_name" width="240" height="auto" text="Name" />
+									<space width="*" />
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Value" width="45" height="auto"/>
+									<space width="*" />
+									<input id="object_property_value" name="object_property_value" width="240" height="auto" text="Value" />
+								</layout>
+							</layout>
+							<space width="20" />
+							<layout width="auto" height="auto" alignment="vertical">
+								<button id="button_object_properties_add" name="button_object_properties_add" text="Add" width="80" />
+								<space height="5" />
+								<button id="button_object_properties_remove" name="button_object_properties_remove" text="Remove" width="80" />
+								<space height="5" />
+								<button id="button_object_properties_save" name="button_object_properties_save" text="Save" width="80" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_lights" vertical-align="center">
+						<tabs alignment="vertical" width="100%" height="100%">
+							<tabs-header>
+								<tab id="tab_properties_light0" text="Light 0" />
+								<tab id="tab_properties_light1" text="Light 1" />
+								<tab id="tab_properties_light2" text="Light 2" />
+								<tab id="tab_properties_light3" text="Light 3" />
+							</tabs-header>
+							<tabs-content>
+								<tab-content tab-id="tab_properties_light0">
+									<scrollarea-vertical width="100%" height="100%">
+										<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+											<space height="20" />
+											<layout width="auto" height="auto" alignment="horizontal">
+												<dropdown id="presets_light0" name="presets_light0" width="530" height="auto" text="Test">
+													<dropdown-option text="Test 1" value="1" />
+												</dropdown>
+												<space width="10" />
+												<button id="button_light0_presetapply" name="button_light0_presetapply" text="Apply" width="80" />
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_ambient" name="light0_ambient" width="150" height="auto" text="Ambient" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_diffuse" name="light0_diffuse" width="150" height="auto" text="Diffuse" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_specular" name="light0_specular" width="150" height="auto" text="Specular" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_constant_attenuation" name="light0_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_linear_attenuation" name="light0_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_quadratic_attenuation" name="light0_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_position" name="light0_position" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_spot_to" name="light0_spot_to" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_spot_direction" name="light0_spot_direction" width="150" height="auto" text="Spot direction" />
+													<space width="20" />
+													<button id="button_light0_spotdirection_compute" name="button_light0_spotdirection_compute" text="Compute spot direction" width="300" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_spot_cutoff" name="light0_spot_cutoff" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light0_spot_exponent" name="light0_spot_exponent" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
+													<space width="5" />
+													<checkbox id="light0_enabled" name="light0_enabled" width="auto" height="auto" value="1" />
+													<space width="*" />
+												</layout>
+												<space width="20" />
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<space width="*" />
+													<button id="button_light0_apply" name="button_light0_apply" text="Apply" width="150" />
+												</layout>
+											</layout>
+											<space height="20" />
+										</layout>
+									</scrollarea-vertical>
+								</tab-content>
+								<tab-content tab-id="tab_properties_light1" vertical-align="center">
+									<scrollarea-vertical width="100%" height="100%">
+										<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+											<space height="20" />
+											<layout width="auto" height="auto" alignment="horizontal">
+												<dropdown id="presets_light1" name="presets_light1" width="530" height="auto" text="Test">
+													<dropdown-option text="Test 1" value="1" />
+												</dropdown>
+												<space width="10" />
+												<button id="button_light1_presetapply" name="button_light1_presetapply" text="Apply" width="80" />
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_ambient" name="light1_ambient" width="150" height="auto" text="Ambient" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_diffuse" name="light1_diffuse" width="150" height="auto" text="Diffuse" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_specular" name="light1_specular" width="150" height="auto" text="Specular" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_constant_attenuation" name="light1_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_linear_attenuation" name="light1_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_quadratic_attenuation" name="light1_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_position" name="light1_position" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_spot_to" name="light1_spot_to" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_spot_direction" name="light1_spot_direction" width="150" height="auto" text="Spot direction" />
+													<space width="20" />
+													<button id="button_light1_spotdirection_compute" name="button_light1_spotdirection_compute" text="Compute spot direction" width="300" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_spot_cutoff" name="light1_spot_cutoff" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light1_spot_exponent" name="light1_spot_exponent" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
+													<space width="5" />
+													<checkbox id="light1_enabled" name="light1_enabled" width="auto" height="auto" value="1" />
+													<space width="*" />
+												</layout>
+												<space width="20" />
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<space width="*" />
+													<button id="button_light1_apply" name="button_light1_apply" text="Apply" width="150" />
+												</layout>
+											</layout>
+											<space height="20" />
+										</layout>
+									</scrollarea-vertical>
+								</tab-content>
+								<tab-content tab-id="tab_properties_light2" vertical-align="center">
+									<scrollarea-vertical width="100%" height="100%">
+										<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+											<space height="20" />
+											<layout width="auto" height="auto" alignment="horizontal">
+												<dropdown id="presets_light2" name="presets_light2" width="530" height="auto" text="Test">
+													<dropdown-option text="Test 1" value="1" />
+												</dropdown>
+												<space width="10" />
+												<button id="button_light2_presetapply" name="button_light2_presetapply" text="Apply" width="80" />
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_ambient" name="light2_ambient" width="150" height="auto" text="Ambient" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_diffuse" name="light2_diffuse" width="150" height="auto" text="Diffuse" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_specular" name="light2_specular" width="150" height="auto" text="Specular" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_constant_attenuation" name="light2_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_linear_attenuation" name="light2_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_quadratic_attenuation" name="light2_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_position" name="light2_position" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_spot_to" name="light2_spot_to" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_spot_direction" name="light2_spot_direction" width="150" height="auto" text="Spot direction" />
+													<space width="20" />
+													<button id="button_light2_spotdirection_compute" name="button_light2_spotdirection_compute" text="Compute spot direction" width="300" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_spot_cutoff" name="light2_spot_cutoff" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light2_spot_exponent" name="light2_spot_exponent" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
+													<space width="5" />
+													<checkbox id="light2_enabled" name="light2_enabled" width="auto" height="auto" value="1" />
+													<space width="*" />
+												</layout>
+												<space width="20" />
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<space width="*" />
+													<button id="button_light2_apply" name="button_light2_apply" text="Apply" width="150" />
+												</layout>
+											</layout>
+											<space height="20" />
+										</layout>
+									</scrollarea-vertical>
+								</tab-content>
+								<tab-content tab-id="tab_properties_light3" vertical-align="center">
+									<scrollarea-vertical width="100%" height="100%">
+										<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+											<space height="20" />
+											<layout width="auto" height="auto" alignment="horizontal">
+												<dropdown id="presets_light3" name="presets_light3" width="530" height="auto" text="Test">
+													<dropdown-option text="Test 1" value="1" />
+												</dropdown>
+												<space width="10" />
+												<button id="button_light3_presetapply" name="button_light3_presetapply" text="Apply" width="80" />
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Ambient" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_ambient" name="light3_ambient" width="150" height="auto" text="Ambient" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Diffuse" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_diffuse" name="light3_diffuse" width="150" height="auto" text="Diffuse" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Specular" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_specular" name="light3_specular" width="150" height="auto" text="Specular" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="C. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_constant_attenuation" name="light3_constant_attenuation" width="150" height="auto" text="C. Attenuation" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="L. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_linear_attenuation" name="light3_linear_attenuation" width="150" height="auto" text="L. Attenuation" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Q. attenuation" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_quadratic_attenuation" name="light3_quadratic_attenuation" width="150" height="auto" text="Q. Attenuation" />
+													<space width="320" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot from" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_position" name="light3_position" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot to" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_spot_to" name="light3_spot_to" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="5" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot direction" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_spot_direction" name="light3_spot_direction" width="150" height="auto" text="Spot direction" />
+													<space width="20" />
+													<button id="button_light3_spotdirection_compute" name="button_light3_spotdirection_compute" text="Compute spot direction" width="300" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto">
+												<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot cutoff" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_spot_cutoff" name="light3_spot_cutoff" width="150" height="auto" text="Spot from" />
+													<space width="20" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Spot exponent" width="145" height="auto"/>
+													<space width="5" />
+													<input id="light3_spot_exponent" name="light3_spot_exponent" width="150" height="auto" text="Spot to" />
+												</layout>
+											</layout>
+											<space height="20" />
+											<layout alignment="horizontal" width="auto" height="auto" vertical-align="center">
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Enabled" width="145" height="auto"/>
+													<space width="5" />
+													<checkbox id="light3_enabled" name="light3_enabled" width="auto" height="auto" value="1" />
+													<space width="*" />
+												</layout>
+												<space width="20" />
+												<layout width="300" height="auto" alignment="horizontal" vertical-align="center">
+													<space width="*" />
+													<button id="button_light3_apply" name="button_light3_apply" text="Apply" width="150" />
+												</layout>
+											</layout>
+											<space height="20" />
+										</layout>
+									</scrollarea-vertical>
+								</tab-content>
+							</tabs-content>
+						</tabs>
+					</tab-content>
+				</tabs-content>
+			</tabs>
+		</panel>
+	</layout>
+</screen>
