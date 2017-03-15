@@ -92,14 +92,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getView()
-	 */
-	public View getView() {
-		return view;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getScreenNode()
 	 */
 	public GUIScreenNode getScreenNode() {

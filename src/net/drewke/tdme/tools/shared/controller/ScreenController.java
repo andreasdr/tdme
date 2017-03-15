@@ -11,11 +11,6 @@ import net.drewke.tdme.tools.shared.views.View;
 public abstract class ScreenController {
 
 	/**
-	 * @return view
-	 */
-	public abstract View getView();
-
-	/**
 	 * @return screen node
 	 */
 	public abstract GUIScreenNode getScreenNode();

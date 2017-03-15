@@ -42,14 +42,6 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getView()
-	 */
-	public View getView() {
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#getScreenNode()
 	 */
 	public GUIScreenNode getScreenNode() {
