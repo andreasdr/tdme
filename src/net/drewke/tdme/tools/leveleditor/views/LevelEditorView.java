@@ -32,6 +32,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.Tools;
+import net.drewke.tdme.tools.leveleditor.controller.LevelEditorModelLibraryScreenController;
 import net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController;
 import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
 import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
@@ -44,7 +45,6 @@ import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.views.View;
-import net.drewke.tdme.utils.Pool;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -107,6 +107,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	private int GRID_DIMENSION_X = 20;
 	private int GRID_DIMENSION_Y = 20;
 
+	private LevelEditorModelLibraryScreenController levelEditorModelLibraryScreenController;
 	private InfoDialogScreenController infoDialogScreenController;
 	private FileDialogScreenController fileDialogScreenController;
 	private LevelEditorScreenController levelEditorScreenController;
@@ -310,6 +311,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
 	 */
 	public void handleInputEvents() {
+		// handle level editor model library screen controller events
+		engine.getGUI().handleEvents(levelEditorModelLibraryScreenController.getScreenNode().getId(), null, false);
+
 		// handle keyboard events
 		for (int i = 0; i < engine.getGUI().getKeyboardEvents().size(); i++) {
 			GUIKeyboardEvent event = engine.getGUI().getKeyboardEvents().get(i);
@@ -484,7 +488,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				Tools.oseThumbnail(drawable, selectedModel);
 			}
 			reloadModelLibrary = false;
-			levelEditorScreenController.setModelLibrary(modelLibrary);
+			levelEditorModelLibraryScreenController.setModelLibrary(modelLibrary);
 		}
 
 		// do camera rotation by middle mouse button
@@ -572,6 +576,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		// Render screens and handle input
 		String activeId = levelEditorScreenController.getScreenNode().getId();
 		engine.getGUI().render(levelEditorScreenController.getScreenNode().getId());
+		engine.getGUI().render(levelEditorModelLibraryScreenController.getScreenNode().getId());
 		if (fileDialogScreenController.isActive() == true) {
 			engine.getGUI().render(fileDialogScreenController.getScreenNode().getId());
 			activeId = fileDialogScreenController.getScreenNode().getId();
@@ -736,12 +741,15 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	public void init(GLAutoDrawable drawable) {
 		try {
+			levelEditorModelLibraryScreenController = new LevelEditorModelLibraryScreenController();
+			levelEditorModelLibraryScreenController.init();
 			levelEditorScreenController = new LevelEditorScreenController(this);
 			levelEditorScreenController.init();
 			fileDialogScreenController = new FileDialogScreenController();
 			fileDialogScreenController.init();
 			infoDialogScreenController = new InfoDialogScreenController();
 			infoDialogScreenController.init();
+			engine.getGUI().addScreen(levelEditorModelLibraryScreenController.getScreenNode().getId(), levelEditorModelLibraryScreenController.getScreenNode());
 			engine.getGUI().addScreen(levelEditorScreenController.getScreenNode().getId(), levelEditorScreenController.getScreenNode()); 
 			engine.getGUI().addScreen(fileDialogScreenController.getScreenNode().getId(), fileDialogScreenController.getScreenNode());
 			engine.getGUI().addScreen(infoDialogScreenController.getScreenNode().getId(), infoDialogScreenController.getScreenNode());
@@ -751,7 +759,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		//
 		LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
-		levelEditorScreenController.setModelLibrary(modelLibrary);
+		levelEditorModelLibraryScreenController.setModelLibrary(modelLibrary);
 
 		// set up grid
 		levelEditorScreenController.setGrid(gridEnabled, gridY);

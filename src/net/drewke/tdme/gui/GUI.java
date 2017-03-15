@@ -281,6 +281,16 @@ public final class GUI implements MouseListener, KeyListener {
 	 * @param input events handler
 	 */
 	public void handleEvents(String screenId, GUIInputEventHandler inputEventHandler) {
+		handleEvents(screenId, inputEventHandler, true);
+	}
+	
+	/**
+	 * Handle events
+	 * @param screen id
+	 * @param input events handler
+	 * @param discard events 
+	 */
+	public void handleEvents(String screenId, GUIInputEventHandler inputEventHandler, boolean discardEvents) {
 		GUIScreenNode screen = screens.get(screenId);
 		if (screen != null) {
 			// lock
@@ -304,7 +314,9 @@ public final class GUI implements MouseListener, KeyListener {
 			if (inputEventHandler != null) inputEventHandler.handleInputEvents();
 
 			// discard events
-			engine.getGUI().discardEvents();
+			if (discardEvents == true) {
+				engine.getGUI().discardEvents();
+			}
 
 			// unlock
 			unlockEvents();

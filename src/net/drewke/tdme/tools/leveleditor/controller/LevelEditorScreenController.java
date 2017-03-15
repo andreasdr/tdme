@@ -42,7 +42,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 	private LevelEditorView view;
 	private GUIScreenNode screenNode;
-	private GUIElementNode modelLibraryListBox;
 	private GUITextNode screenCaption;
 	private GUIElementNode btnObjectTranslationApply;
 	private GUIElementNode btnObjectScaleApply;
@@ -130,7 +129,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 			// 
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
-			modelLibraryListBox = (GUIElementNode)screenNode.getNodeById("model_library_listbox");
 			gridEnabled = (GUIElementNode)screenNode.getNodeById("grid_enabled");
 			gridYPosition = (GUIElementNode)screenNode.getNodeById("grid_y_position");
 			mapWidth = (GUIElementNode)screenNode.getNodeById("map_width");
@@ -779,69 +777,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * Add a model to level editor view
-	 * @param model
-	 */
-	public void setModelLibrary(LevelEditorModelLibrary modelLibrary) {
-		// model properties list box inner
-		GUIParentNode modelLibraryListBoxInnerNode = (GUIParentNode)(modelLibraryListBox.getScreenNode().getNodeById(modelLibraryListBox.getId() + "_inner"));
-
-		// clear sub nodes
-		modelLibraryListBoxInnerNode.clearSubNodes();
-
-		// construct XML for sub nodes
-		int idx = 1;
-		String modelLibraryListBoxSubNodesXML = "";
-		modelLibraryListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelLibraryListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
-		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
-			int objectId = modelLibrary.getModelAt(i).getId();
-			String objectName = modelLibrary.getModelAt(i).getName();
-			modelLibraryListBoxSubNodesXML+= 
-				"<selectbox-option text=\"" + 
-				GUIParser.escapeQuotes(objectName) + 
-				"\" value=\"" + 
-				objectId + 
-				"\" " +
-				(i == 0?"selected=\"true\" ":"") +
-				"/>\n";
-		}
-		modelLibraryListBoxSubNodesXML+= "</scrollarea-vertical>\n";
-
-		// inject sub nodes
-		try {
-			GUIParser.parse(
-				modelLibraryListBoxInnerNode,
-				modelLibraryListBoxSubNodesXML
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// relayout
-		modelLibraryListBoxInnerNode.getScreenNode().layout();
-
-		//
-		onModelSelectionChanged();
-	}
-
-	/**
-	 * On model changed
-	 */
-	public void onModelSelectionChanged() {
-		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
-		if (model != null) {
-			view.loadModelFromLibrary(model.getId());
-		}
-	}
-
-	/**
-	 * place model button clicked
-	 */
-	public void onPlaceModel() {
-		view.placeObject();
-	}
-
-	/**
 	 * On object translation apply action
 	 */
 	public void onObjectTranslationApply() {
@@ -1315,9 +1250,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		if (node.getId().equals("objects_listbox") == true) {
 			// no op
 		} else 
-		if (node.getId().equals("model_library_listbox") == true) {
-			onModelSelectionChanged();
-		} else
 		if (node.getId().equals("map_properties_listbox") == true) {
 			onMapPropertiesSelectionChanged();
 		} else 
@@ -1339,9 +1271,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			} else
 			if (node.getId().equals("button_objects_unselect") == true) {
 				onObjectsUnselect();
-			} else
-			if (node.getId().equals("button_model_library_place") == true) {
-				onPlaceModel();
 			} else
 			if (node.getId().equals("button_model_library_edit") == true) {
 				onLibrary();
