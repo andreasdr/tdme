@@ -9,7 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import net.drewke.tdme.os.FileSystem;
-import net.drewke.tdme.tools.leveleditor.Tools;
+import net.drewke.tdme.tools.shared.tools.Tools;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

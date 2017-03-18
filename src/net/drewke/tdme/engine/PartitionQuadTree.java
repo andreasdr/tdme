@@ -21,7 +21,7 @@ import net.drewke.tdme.utils.Pool;
 public final class PartitionQuadTree extends Partition {
 
 	/**
-	 * Partition tree node
+	 * PartitionQuadTree tree node
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
@@ -290,7 +290,6 @@ public final class PartitionQuadTree extends Partition {
 		if (node.partitionObjects != null) {
 			for (int i = 0; i < node.partitionObjects.size(); i++) {
 				Entity entity = node.partitionObjects.get(i);
-				if (entity.isEnabled() == false) continue;
 				boolean hasEntity = false;
 				for (int j = 0; j < visibleEntities.size(); j++) {
 					if (visibleEntities.get(j) == entity) {

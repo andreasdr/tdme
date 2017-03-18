@@ -6,7 +6,7 @@ import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 
 /**
- * Partition interface
+ * PartitionQuadTree interface
  * @author Andreas Drewke
  * @version $Id$
  */

@@ -31,11 +31,7 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
-import net.drewke.tdme.tools.leveleditor.Tools;
-import net.drewke.tdme.tools.leveleditor.controller.LevelEditorModelLibraryScreenController;
 import net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController;
-import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
-import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.files.LevelFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
@@ -44,6 +40,8 @@ import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
 
 import com.jogamp.opengl.GLAutoDrawable;
@@ -107,9 +105,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	private int GRID_DIMENSION_X = 20;
 	private int GRID_DIMENSION_Y = 20;
 
-	private LevelEditorModelLibraryScreenController levelEditorModelLibraryScreenController;
-	private InfoDialogScreenController infoDialogScreenController;
-	private FileDialogScreenController fileDialogScreenController;
 	private LevelEditorScreenController levelEditorScreenController;
 
 	private Engine engine;
@@ -166,10 +161,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	private HashMap<String, Entity> selectedObjectsById = null;
 	private ArrayList<Entity> pasteObjects = null;
 
+	private PopUps popUps;
+
 	/**
 	 * Public constructor
 	 */
-	public LevelEditorView() {
+	public LevelEditorView(PopUps popUps) {
+		this.popUps = popUps;
 		level = TDMELevelEditor.getInstance().getLevel();
 		reloadModelLibrary = false;
 		selectedModel = null;
@@ -216,17 +214,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * @return file dialog popup controller
+	 * @return pop ups
 	 */
-	public FileDialogScreenController getFileDialogPopUpController() {
-		return fileDialogScreenController;
-	}
-
-	/**
-	 * @return info dialog popup controller
-	 */
-	public InfoDialogScreenController getInfoDialogPopUpController() {
-		return infoDialogScreenController;
+	public PopUps getPopUps() {
+		return popUps;
 	}
 
 	/**
@@ -312,7 +303,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	public void handleInputEvents() {
 		// handle level editor model library screen controller events
-		engine.getGUI().handleEvents(levelEditorModelLibraryScreenController.getScreenNode().getId(), null, false);
+		engine.getGUI().handleEvents(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId(), null, false);
 
 		// handle keyboard events
 		for (int i = 0; i < engine.getGUI().getKeyboardEvents().size(); i++) {
@@ -488,7 +479,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				Tools.oseThumbnail(drawable, selectedModel);
 			}
 			reloadModelLibrary = false;
-			levelEditorModelLibraryScreenController.setModelLibrary(modelLibrary);
+			TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
 		}
 
 		// do camera rotation by middle mouse button
@@ -576,14 +567,14 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		// Render screens and handle input
 		String activeId = levelEditorScreenController.getScreenNode().getId();
 		engine.getGUI().render(levelEditorScreenController.getScreenNode().getId());
-		engine.getGUI().render(levelEditorModelLibraryScreenController.getScreenNode().getId());
-		if (fileDialogScreenController.isActive() == true) {
-			engine.getGUI().render(fileDialogScreenController.getScreenNode().getId());
-			activeId = fileDialogScreenController.getScreenNode().getId();
+		engine.getGUI().render(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
+		if (popUps.getFileDialogScreenController().isActive() == true) {
+			engine.getGUI().render(popUps.getFileDialogScreenController().getScreenNode().getId());
+			activeId = popUps.getFileDialogScreenController().getScreenNode().getId();
 		}
-		if (infoDialogScreenController.isActive() == true) {
-			engine.getGUI().render(infoDialogScreenController.getScreenNode().getId());
-			activeId = infoDialogScreenController.getScreenNode().getId();
+		if (popUps.getInfoDialogScreenController().isActive() == true) {
+			engine.getGUI().render(popUps.getInfoDialogScreenController().getScreenNode().getId());
+			activeId = popUps.getInfoDialogScreenController().getScreenNode().getId();
 		}
 		engine.getGUI().handleEvents(activeId, this);
 	}
@@ -741,25 +732,15 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	public void init(GLAutoDrawable drawable) {
 		try {
-			levelEditorModelLibraryScreenController = new LevelEditorModelLibraryScreenController();
-			levelEditorModelLibraryScreenController.init();
 			levelEditorScreenController = new LevelEditorScreenController(this);
 			levelEditorScreenController.init();
-			fileDialogScreenController = new FileDialogScreenController();
-			fileDialogScreenController.init();
-			infoDialogScreenController = new InfoDialogScreenController();
-			infoDialogScreenController.init();
-			engine.getGUI().addScreen(levelEditorModelLibraryScreenController.getScreenNode().getId(), levelEditorModelLibraryScreenController.getScreenNode());
 			engine.getGUI().addScreen(levelEditorScreenController.getScreenNode().getId(), levelEditorScreenController.getScreenNode()); 
-			engine.getGUI().addScreen(fileDialogScreenController.getScreenNode().getId(), fileDialogScreenController.getScreenNode());
-			engine.getGUI().addScreen(infoDialogScreenController.getScreenNode().getId(), infoDialogScreenController.getScreenNode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		//
-		LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
-		levelEditorModelLibraryScreenController.setModelLibrary(modelLibrary);
+		TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
 
 		// set up grid
 		levelEditorScreenController.setGrid(gridEnabled, gridY);
@@ -788,11 +769,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		cam.setZNear(1f);
 		cam.setZFar(1000f);
 		camLookAt.set(level.computeCenter());
+		gridCenter.set(camLookAt);
+		gridCenterLast = null;
 
 		//
 		loadLevel();
-
-		//
 	}
 
 	/**
@@ -845,7 +826,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	/**
 	 * Loads a level from internal level representation to tdme
 	 */
-	private void loadLevel() {
+	public void loadLevel() {
 		engine.reset();
 		selectedObjects.clear();
 		selectedObjectsById.clear();
@@ -877,9 +858,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		}
 
 		//
-		camLookAt.set(level.computeCenter());
-		gridCenter.set(camLookAt);
 		gridCenterLast = null;
+
+		//
 		setObjectsListBox();
 		unselectLightPresets();
 		updateGrid();
@@ -1682,6 +1663,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			levelEditorScreenController.unsetObjectProperties();
 			levelEditorScreenController.unsetObject();
 			loadLevel();
+
+			// reset cam
+			camLookAt.set(level.computeCenter());
+			gridCenter.set(camLookAt);
+			gridCenterLast = null;
+
+			//
 			reloadModelLibrary = true;
 			updateGUIElements();
 		} catch (Exception exception) {

@@ -8,7 +8,7 @@ import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 
 /**
- * Partition none implementation
+ * PartitionQuadTree none implementation
  * @author Andreas Drewke
  * @version $Id$
  */

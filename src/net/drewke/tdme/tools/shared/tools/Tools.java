@@ -1,4 +1,4 @@
-package net.drewke.tdme.tools.leveleditor;
+package net.drewke.tdme.tools.shared.tools;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -164,7 +164,7 @@ public final class Tools {
 	 * @param drawable
 	 */
 	public static void oseDispose(GLAutoDrawable drawable) {
-		osEngine.display(drawable);
+		osEngine.dispose(drawable);
 	}
 
 	/**

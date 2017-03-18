@@ -16,17 +16,14 @@ import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
-import net.drewke.tdme.tools.leveleditor.Tools;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.views.View;
+import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -770,13 +767,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * On library action
-	 */
-	public void onLibrary() {
-		TDMELevelEditor.getInstance().switchToModelLibrary();
-	}
-
-	/**
 	 * On object translation apply action
 	 */
 	public void onObjectTranslationApply() {
@@ -855,17 +845,17 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On map load action
 	 */
 	public void onMapLoad() {
-		view.getFileDialogPopUpController().show(
+		view.getPopUps().getFileDialogScreenController().show(
 			"Load from: ", 
 			new String[]{"tl", "dae"},
 			view.getFileName(),
 			new Action() {
 				public void performAction() {
 					view.loadMap(
-						view.getFileDialogPopUpController().getPathName(),
-						view.getFileDialogPopUpController().getFileName()
+						view.getPopUps().getFileDialogScreenController().getPathName(),
+						view.getPopUps().getFileDialogScreenController().getFileName()
 					);
-					view.getFileDialogPopUpController().close();
+					view.getPopUps().getFileDialogScreenController().close();
 				}
 				
 			}
@@ -876,17 +866,17 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * On map save action
 	 */
 	public void onMapSave() {
-		view.getFileDialogPopUpController().show(
+		view.getPopUps().getFileDialogScreenController().show(
 			"Save to: ", 
 			new String[]{"tl"},
 			view.getFileName(),
 			new Action() {
 				public void performAction() {
 					view.saveMap(
-						view.getFileDialogPopUpController().getPathName(),
-						view.getFileDialogPopUpController().getFileName()
+						view.getPopUps().getFileDialogScreenController().getPathName(),
+						view.getPopUps().getFileDialogScreenController().getFileName()
 					);
-					view.getFileDialogPopUpController().close();
+					view.getPopUps().getFileDialogScreenController().close();
 				}
 				
 			}
@@ -1272,9 +1262,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			if (node.getId().equals("button_objects_unselect") == true) {
 				onObjectsUnselect();
 			} else
-			if (node.getId().equals("button_model_library_edit") == true) {
-				onLibrary();
-			} else
 			if (node.getId().equals("button_grid_apply") == true) {
 				onGridApply();
 			} else
@@ -1371,7 +1358,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		view.getInfoDialogPopUpController().show(caption, message);
+		view.getPopUps().getInfoDialogScreenController().show(caption, message);
 	}
 
 }

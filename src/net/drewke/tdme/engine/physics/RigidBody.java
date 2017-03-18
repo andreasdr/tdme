@@ -28,6 +28,7 @@ package net.drewke.tdme.engine.physics;
 
 import java.util.ArrayList;
 
+import net.drewke.tdme.engine.Partition;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -49,6 +50,8 @@ public final class RigidBody {
 
 	private final static float VELOCITY_SLEEPTOLERANCE = 1.0f;
 	private final static int SLEEPING_FRAMES = 5 * 60;
+
+	protected PartitionQuadTree partition;
 
 	protected int idx;
 	protected String id;
@@ -167,6 +170,7 @@ public final class RigidBody {
 
 	/**
 	 * Constructor
+	 * @param partition
 	 * @param idx
 	 * @param id
 	 * @param enabled
@@ -176,7 +180,8 @@ public final class RigidBody {
 	 * @param restitution
 	 * @param mass in kg
 	 */
-	public RigidBody(int idx, String id, boolean enabled, int typeId, BoundingVolume obv, Transformations transformations, float restitution, float friction, float mass, Matrix4x4 inverseInertia) {
+	public RigidBody(PartitionQuadTree partition, int idx, String id, boolean enabled, int typeId, BoundingVolume obv, Transformations transformations, float restitution, float friction, float mass, Matrix4x4 inverseInertia) {
+		this.partition = partition;
 		this.idx = idx;
 		this.id = id;
 		this.enabled = enabled;
@@ -250,6 +255,11 @@ public final class RigidBody {
 	 * @param enabled
 	 */
 	public void setEnabled(boolean enabled) {
+		if (enabled == true) {
+			partition.addRigidBody(this);
+		} else {
+			partition.removeRigidBody(this);
+		}
 		this.enabled = enabled;
 	}
 

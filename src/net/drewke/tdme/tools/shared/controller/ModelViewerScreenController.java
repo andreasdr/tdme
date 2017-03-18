@@ -18,10 +18,9 @@ import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
-import net.drewke.tdme.tools.shared.views.View;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
-import net.drewke.tdme.tools.viewer.Tools;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -432,7 +431,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		modelPropertyValue.getController().setValue(TEXT_EMPTY);
 		modelPropertySave.getController().setDisabled(true);
 		modelPropertyRemove.getController().setDisabled(true);
-		PropertyModelClass modelProperty = view.getSelectedModel().getProperty(modelPropertiesList.getController().getValue().toString());
+		PropertyModelClass modelProperty = view.getModel().getProperty(modelPropertiesList.getController().getValue().toString());
 		if (modelProperty != null) {
 			modelPropertyName.getController().setValue(value.set(modelProperty.getName()));
 			modelPropertyValue.getController().setValue(value.set(modelProperty.getValue()));
@@ -466,17 +465,17 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model load
 	 */
 	public void onModelLoad() {
-		view.getFileDialogPopUpController().show(
+		view.getPopUpsViews().getFileDialogScreenController().show(
 			"Load from: ", 
 			new String[]{"tmm", "dae", "tm"},
 			view.getFileName(),
 			new Action() {
 				public void performAction() {
 					view.loadFile(
-						view.getFileDialogPopUpController().getPathName(),
-						view.getFileDialogPopUpController().getFileName()
+						view.getPopUpsViews().getFileDialogScreenController().getPathName(),
+						view.getPopUpsViews().getFileDialogScreenController().getFileName()
 					);
-					view.getFileDialogPopUpController().close();
+					view.getPopUpsViews().getFileDialogScreenController().close();
 				}
 				
 			}
@@ -491,7 +490,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		if (fileName.toLowerCase().endsWith(".tmm") == false) {
 			fileName+= ".tmm";
 		}
-		view.getFileDialogPopUpController().show(
+		view.getPopUpsViews().getFileDialogScreenController().show(
 			"Save from: ", 
 			new String[]{"tmm"},
 			fileName,
@@ -499,10 +498,10 @@ public final class ModelViewerScreenController extends ScreenController implemen
 				public void performAction() {
 					try {
 						view.saveFile(
-							view.getFileDialogPopUpController().getPathName(),
-							view.getFileDialogPopUpController().getFileName()
+							view.getPopUpsViews().getFileDialogScreenController().getPathName(),
+							view.getPopUpsViews().getFileDialogScreenController().getFileName()
 						);
-						view.getFileDialogPopUpController().close();
+						view.getPopUpsViews().getFileDialogScreenController().close();
 					} catch (Exception ioe) {
 						showErrorPopUp("Warning", ioe.getMessage());
 					}
@@ -573,7 +572,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Set up model bounding volume
 	 */
 	public void setupModelBoundingVolume() {
-		LevelEditorModel model = view.getSelectedModel();
+		LevelEditorModel model = view.getModel();
 		if (model == null) {
 			view.selectBoundingVolumeType(0);
 			return;
@@ -918,7 +917,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		view.getInfoDialogPopUpController().show(caption, message);
+		view.getPopUpsViews().getInfoDialogScreenController().show(caption, message);
 	}
 
 	/*

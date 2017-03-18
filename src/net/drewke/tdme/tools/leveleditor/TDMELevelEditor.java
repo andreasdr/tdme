@@ -4,10 +4,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.tools.leveleditor.controller.LevelEditorModelLibraryScreenController;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
+import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
+import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
+import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
-import net.drewke.tdme.tools.shared.views.ModelViewerView;
+import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
 
 import com.jogamp.newt.event.WindowEvent;
@@ -43,6 +48,8 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	private boolean quitRequested = false;
 
 	private LevelEditorLevel level;
+	private LevelEditorModelLibraryScreenController levelEditorModelLibraryScreenController;
+	private PopUps popUps;
 
 	/**
 	 * @param args
@@ -99,6 +106,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		view = null;
 		viewInitialized = false;
 		viewNew = null;
+		popUps = new PopUps();
 	}
 
 	/**
@@ -106,6 +114,13 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 */
 	public static TDMELevelEditor getInstance() {
 		return instance;
+	}
+
+	/**
+	 * @return level editor model library screen controller
+	 */
+	public LevelEditorModelLibraryScreenController getLevelEditorModelLibraryScreenController() {
+		return levelEditorModelLibraryScreenController;
 	}
 
 	/**
@@ -134,7 +149,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * @return current view
 	 */
 	public View getView() {
-		return view;
+		return viewNew != null?viewNew:view;
 	}
 
 	/**
@@ -217,8 +232,16 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		// init off screen engine
 		Tools.oseInit(drawable);
 
+		// level editor model library screen controller
+		levelEditorModelLibraryScreenController = new LevelEditorModelLibraryScreenController(popUps);
+		levelEditorModelLibraryScreenController.init();
+		engine.getGUI().addScreen(levelEditorModelLibraryScreenController.getScreenNode().getId(), levelEditorModelLibraryScreenController.getScreenNode());
+
+		// pop ups
+		popUps.init();
+
 		// show up level editor view
-		setView(new LevelEditorView());
+		setView(new LevelEditorView(popUps));
 	}
 
 	/**
@@ -232,14 +255,14 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Switch to level editor
 	 */
 	public void switchToLevelEditor() {
-		setView(new LevelEditorView());
+		setView(new LevelEditorView(popUps));
 	}
 
 	/**
 	 * Switch to level editor
 	 */
 	public void switchToModelLibrary() {
-		setView(new ModelViewerView());
+		setView(new ModelViewerView(popUps));
 	}
 
 	/*

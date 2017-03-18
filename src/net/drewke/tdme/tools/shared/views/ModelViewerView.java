@@ -8,6 +8,7 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.Object3D;
+import net.drewke.tdme.engine.PartitionNone;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
@@ -21,15 +22,13 @@ import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
-import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
 import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.viewer.Tools;
+import net.drewke.tdme.tools.shared.tools.Tools;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -38,16 +37,16 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class ModelViewerView extends View implements GUIInputEventHandler {
+public class ModelViewerView extends View implements GUIInputEventHandler {
 
-	private Engine engine;
+	protected Engine engine;
 
-	private InfoDialogScreenController infoDialogScreenController;
-	private FileDialogScreenController fileDialogScreenController;
+	private PopUps popUps;
 	private ModelViewerScreenController modelViewerScreenController;
 
 	private LevelEditorModel model;
 	private boolean loadModelRequested;
+	private boolean initModelRequested;
 	private File modelFile;
 
 	private float maxAxisDimension;
@@ -79,10 +78,13 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 
 	/**
 	 * Public constructor
+	 * @param pop ups view
 	 */
-	public ModelViewerView() {
+	public ModelViewerView(PopUps popUps) {
+		this.popUps = popUps;
 		modelViewerScreenController = null;
 		loadModelRequested = false;
+		initModelRequested = false;
 		model = null;
 		modelFile = null;
 		keyLeft = false;
@@ -115,17 +117,10 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * @return file dialog popup controller
+	 * @return pop up views
 	 */
-	public FileDialogScreenController getFileDialogPopUpController() {
-		return fileDialogScreenController;
-	}
-
-	/**
-	 * @return info dialog popup controller
-	 */
-	public InfoDialogScreenController getInfoDialogPopUpController() {
-		return infoDialogScreenController;
+	public PopUps getPopUpsViews() {
+		return popUps;
 	}
 
 	/**
@@ -174,10 +169,107 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
+	 * @return model
+	 */
+	public LevelEditorModel getModel() {
+		return model;
+	}
+
+	/**
 	 * @return selected model
 	 */
-	public LevelEditorModel getSelectedModel() {
-		return model;
+	public void setModel(LevelEditorModel model) {
+		this.model = model;
+		initModelRequested = true;
+	}
+
+	/**
+	 * Init model
+	 */
+	protected void initModel(GLAutoDrawable drawable) {
+		if (model == null) return;
+
+		//
+		modelFile = new File(model.getFileName());
+
+		// set up model in engine
+		Tools.setupModel(model, engine, lookFromRotations, scale);
+
+		// Make model screenshot
+		Tools.oseThumbnail(drawable, model);
+
+		// add model
+		maxAxisDimension = Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel()));
+
+		// set up model statistics
+		ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(model.getModel());
+		modelViewerScreenController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
+
+		// set up oriented bounding box
+		BoundingBox aabb = Engine.getModelBoundingBox(model.getModel());
+		OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
+
+		// set up sphere
+		modelViewerScreenController.setupSphere(
+			obb.getCenter(),
+			obb.getHalfExtension().computeLength()
+		);
+
+		// set up capsule
+		{
+			Vector3 a = new Vector3();
+			Vector3 b = new Vector3();
+			float radius = 0.0f;
+			float[] halfExtensionXYZ = obb.getHalfExtension().getArray();
+
+			// determine a, b
+			if (halfExtensionXYZ[0] > halfExtensionXYZ[1] &&
+				halfExtensionXYZ[0] > halfExtensionXYZ[2]) {
+				radius = (float)Math.sqrt(halfExtensionXYZ[1] * halfExtensionXYZ[1] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
+				a.set(obb.getAxes()[0]);
+				a.scale(-(halfExtensionXYZ[0] - radius));
+				a.add(obb.getCenter());
+				b.set(obb.getAxes()[0]);
+				b.scale(+(halfExtensionXYZ[0] - radius));
+				b.add(obb.getCenter());
+			} else
+			if (halfExtensionXYZ[1] > halfExtensionXYZ[0] &&
+				halfExtensionXYZ[1] > halfExtensionXYZ[2]) {
+				radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
+				a.set(obb.getAxes()[1]);
+				a.scale(-(halfExtensionXYZ[1] - radius));
+				a.add(obb.getCenter());
+				b.set(obb.getAxes()[1]);
+				b.scale(+(halfExtensionXYZ[1] - radius));
+				b.add(obb.getCenter()); 
+			} else {
+				radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[1] * halfExtensionXYZ[1]);
+				a.set(obb.getAxes()[2]);
+				a.scale(-(halfExtensionXYZ[2] - radius));
+				a.add(obb.getCenter());
+				b.set(obb.getAxes()[2]);
+				b.scale(+(halfExtensionXYZ[2] - radius));
+				b.add(obb.getCenter()); 						
+			}
+
+			// setup capsule
+			modelViewerScreenController.setupCapsule(a, b, radius);
+		}
+
+		// set up AABB bounding box
+		modelViewerScreenController.setupBoundingBox(aabb.getMin(), aabb.getMax());
+
+		// set up oriented bounding box
+		modelViewerScreenController.setupOrientedBoundingBox(
+			obb.getCenter(),
+			obb.getAxes()[0],
+			obb.getAxes()[1],
+			obb.getAxes()[2],
+			obb.getHalfExtension()
+		);
+
+		// 
+		updateGUIElements();
 	}
 
 	/**
@@ -333,6 +425,12 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
+	 * On set model data hook
+	 */
+	public void onSetModelData() {
+	}
+
+	/**
 	 * Update current model data
 	 * @param name
 	 * @param description
@@ -341,6 +439,7 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 		if (model == null) return;
 		model.setName(name);
 		model.setDescription(description);
+		onSetModelData();
 	}
 
 	/*
@@ -414,93 +513,27 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	}
 
 	/**
+	 * On display additional screens
+	 * @param drawable
+	 */
+	public void onDisplayAdditionalScreens(GLAutoDrawable drawable) {
+	}
+
+	/**
 	 * Renders the scene 
 	 */
 	public void display(GLAutoDrawable drawable) {
+		// load model
 		if (loadModelRequested == true) {
-			model = null;
+			initModelRequested = true;
+			loadModelRequested = false;
 			engine.reset();
 			loadModel();
-			if (model != null) {
-				// set up model in engine
-				Tools.setupModel(model, engine, lookFromRotations, scale);
+		}
 
-				// Make model screenshot
-				Tools.oseThumbnail(drawable, model);
-
-				// add model
-				maxAxisDimension = Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel()));
-
-				// set up model statistics
-				ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(model.getModel());
-				modelViewerScreenController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
-
-				// set up oriented bounding box
-				BoundingBox aabb = Engine.getModelBoundingBox(model.getModel());
-				OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
-
-				// set up sphere
-				modelViewerScreenController.setupSphere(
-					obb.getCenter(),
-					obb.getHalfExtension().computeLength()
-				);
-
-				// set up capsule
-				{
-					Vector3 a = new Vector3();
-					Vector3 b = new Vector3();
-					float radius = 0.0f;
-					float[] halfExtensionXYZ = obb.getHalfExtension().getArray();
-
-					// determine a, b
-					if (halfExtensionXYZ[0] > halfExtensionXYZ[1] &&
-						halfExtensionXYZ[0] > halfExtensionXYZ[2]) {
-						radius = (float)Math.sqrt(halfExtensionXYZ[1] * halfExtensionXYZ[1] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
-						a.set(obb.getAxes()[0]);
-						a.scale(-(halfExtensionXYZ[0] - radius));
-						a.add(obb.getCenter());
-						b.set(obb.getAxes()[0]);
-						b.scale(+(halfExtensionXYZ[0] - radius));
-						b.add(obb.getCenter());
-					} else
-					if (halfExtensionXYZ[1] > halfExtensionXYZ[0] &&
-						halfExtensionXYZ[1] > halfExtensionXYZ[2]) {
-						radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
-						a.set(obb.getAxes()[1]);
-						a.scale(-(halfExtensionXYZ[1] - radius));
-						a.add(obb.getCenter());
-						b.set(obb.getAxes()[1]);
-						b.scale(+(halfExtensionXYZ[1] - radius));
-						b.add(obb.getCenter()); 
-					} else {
-						radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[1] * halfExtensionXYZ[1]);
-						a.set(obb.getAxes()[2]);
-						a.scale(-(halfExtensionXYZ[2] - radius));
-						a.add(obb.getCenter());
-						b.set(obb.getAxes()[2]);
-						b.scale(+(halfExtensionXYZ[2] - radius));
-						b.add(obb.getCenter()); 						
-					}
-
-					// setup capsule
-					modelViewerScreenController.setupCapsule(a, b, radius);
-				}
-
-				// set up AABB bounding box
-				modelViewerScreenController.setupBoundingBox(aabb.getMin(), aabb.getMax());
-
-				// set up oriented bounding box
-				modelViewerScreenController.setupOrientedBoundingBox(
-					obb.getCenter(),
-					obb.getAxes()[0],
-					obb.getAxes()[1],
-					obb.getAxes()[2],
-					obb.getHalfExtension()
-				);
-			}
-
-			//
-			updateGUIElements(drawable);
+		// init model
+		if (initModelRequested == true) {
+			initModel(drawable);
 		}
 
 		// handle keyboard input
@@ -518,11 +551,12 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 		if (keyPeriod) rotationZ.setAngle(rotationZ.getAngle() + 1f);
 		if (keyMinus) scale+= 0.05f;
 		if (keyPlus && scale > 0.05f) scale-= 0.05f;
-		if (keyR) {
+		if (keyR == true || initModelRequested == true) {
 			rotationX.setAngle(-45f);
 			rotationY.setAngle(-45f);
 			rotationZ.setAngle(0f);
 			scale = 1.0f;
+			initModelRequested = false;
 		}
 
 		// 	update transformations if key was pressed
@@ -585,13 +619,14 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 		// Render screens and handle input
 		String activeId = modelViewerScreenController.getScreenNode().getId();
 		engine.getGUI().render(modelViewerScreenController.getScreenNode().getId());
-		if (fileDialogScreenController.isActive() == true) {
-			engine.getGUI().render(fileDialogScreenController.getScreenNode().getId());
-			activeId = fileDialogScreenController.getScreenNode().getId();
+		onDisplayAdditionalScreens(drawable);
+		if (popUps.getFileDialogScreenController().isActive() == true) {
+			engine.getGUI().render(popUps.getFileDialogScreenController().getScreenNode().getId());
+			activeId = popUps.getFileDialogScreenController().getScreenNode().getId();
 		}
-		if (infoDialogScreenController.isActive() == true) {
-			engine.getGUI().render(infoDialogScreenController.getScreenNode().getId());
-			activeId = infoDialogScreenController.getScreenNode().getId();
+		if (popUps.getInfoDialogScreenController().isActive() == true) {
+			engine.getGUI().render(popUps.getInfoDialogScreenController().getScreenNode().getId());
+			activeId = popUps.getInfoDialogScreenController().getScreenNode().getId();
 		}
 		engine.getGUI().handleEvents(activeId, this);
 	}
@@ -599,7 +634,7 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	/**
 	 * Init GUI elements
 	 */
-	private void updateGUIElements(GLAutoDrawable drawable) {
+	private void updateGUIElements() {
 		if (model != null) {
 			modelViewerScreenController.setScreenCaption("Model Viewer - " + model.getModel().getName());
 			PropertyModelClass preset = model.getProperty("preset");
@@ -628,16 +663,14 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
+		// reset engine and partition
+		engine.setPartition(new PartitionNone());
+
+		//
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
 			modelViewerScreenController.init();
-			fileDialogScreenController = new FileDialogScreenController();
-			fileDialogScreenController.init();
-			infoDialogScreenController = new InfoDialogScreenController();
-			infoDialogScreenController.init();
 			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode()); 
-			engine.getGUI().addScreen(fileDialogScreenController.getScreenNode().getId(), fileDialogScreenController.getScreenNode());
-			engine.getGUI().addScreen(infoDialogScreenController.getScreenNode().getId(), infoDialogScreenController.getScreenNode());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -656,7 +689,15 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 		modelViewerScreenController.selectBoundingVolume(ModelViewerScreenController.BoundingVolumeType.NONE);
 
 		// set up gui
-		updateGUIElements(drawable);
+		updateGUIElements();
+	}
+
+	/**
+	 * On load model
+	 * @param oldModel
+	 * @oaram model
+	 */
+	public void onLoadModel(LevelEditorModel oldModel, LevelEditorModel model) {
 	}
 
 	/**
@@ -668,6 +709,8 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 
 		// scene
 		try {
+			LevelEditorModel oldModel = model;
+
 			// add model to library
 			model = loadModel(
 				modelFile.getName(),
@@ -676,12 +719,10 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 				modelFile.getName(),
 				new Vector3()
 			);
+			onLoadModel(oldModel, model);
 		} catch (Exception exception) {
-			infoDialogScreenController.show("Warning", exception.getMessage());
+			popUps.getInfoDialogScreenController().show("Warning", exception.getMessage());
 		}
-
-		//
-		loadModelRequested = false;
 	}
 
 	/**
@@ -713,7 +754,6 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 
 	/**
 	 * Load model method
-	 * @param id
 	 * @param name
 	 * @param description
 	 * @param path name
@@ -722,7 +762,7 @@ public final class ModelViewerView extends View implements GUIInputEventHandler 
 	 * @return level editor model
 	 * @throws Exception
 	 */
-	private LevelEditorModel loadModel(String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
+	protected LevelEditorModel loadModel(String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
 		if (fileName.toLowerCase().endsWith(".dae")) {
 			Model model = DAEReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
 			BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);

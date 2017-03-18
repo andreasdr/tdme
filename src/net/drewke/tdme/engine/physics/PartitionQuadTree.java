@@ -11,11 +11,11 @@ import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
 
 /**
- * PartitionQuadTree implementation
+ * Partition quad tree implementation
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class Partition {
+public final class PartitionQuadTree {
 
 	/**
 	 * Partition tree node
@@ -65,7 +65,7 @@ public final class Partition {
 	/**
 	 * Constructor
 	 */
-	protected Partition() {
+	protected PartitionQuadTree() {
 		this.key = new Key();
 		this.rigidBodyIterator = new ArrayListIteratorMultiple<RigidBody>();
 		this.boundingBox = new BoundingBox();

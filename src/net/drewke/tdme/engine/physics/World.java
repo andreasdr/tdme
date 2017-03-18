@@ -73,7 +73,7 @@ public final class World {
 	};
 	private HashMap<Key, Key> rigidBodyCollisionsLastFrame = new HashMap<Key, Key>();
 
-	private Partition partition = new Partition();
+	private PartitionQuadTree partition = new PartitionQuadTree();
 
 	//
 	private Vector3 collisionMovement = new Vector3();
@@ -125,7 +125,7 @@ public final class World {
 	 * @return rigid body
 	 */
 	public RigidBody addRigidBody(String id, boolean enabled, int typeId, Transformations transformations, BoundingVolume obv, float restitution, float friction, float mass, Matrix4x4 inertiaMatrix) {
-		RigidBody rigidBody = new RigidBody(rigidBodies.size(), id, enabled, typeId, obv, transformations, restitution, friction, mass, inertiaMatrix);
+		RigidBody rigidBody = new RigidBody(partition, rigidBodies.size(), id, enabled, typeId, obv, transformations, restitution, friction, mass, inertiaMatrix);
 		rigidBodies.add(rigidBody);
 		rigidBodiesDynamic.add(rigidBody);
 		rigidBodiesById.put(id, rigidBody);
@@ -143,7 +143,7 @@ public final class World {
 	 * @return rigid body
 	 */
 	public RigidBody addStaticRigidBody(String id, boolean enabled, int typeId, Transformations transformations, BoundingVolume obv, float friction) {
-		RigidBody rigidBody = new RigidBody(rigidBodies.size(), id, enabled, typeId, obv, transformations, 0f, friction, 0f, RigidBody.computeInertiaMatrix(obv, 0f,  0f,  0f,  0f));
+		RigidBody rigidBody = new RigidBody(partition, rigidBodies.size(), id, enabled, typeId, obv, transformations, 0f, friction, 0f, RigidBody.computeInertiaMatrix(obv, 0f,  0f,  0f,  0f));
 		rigidBodies.add(rigidBody);
 		rigidBodiesById.put(id, rigidBody);
 		if (enabled == true) partition.addRigidBody(rigidBody);

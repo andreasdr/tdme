@@ -4,7 +4,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
+import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
 
 import com.jogamp.newt.event.WindowEvent;
@@ -38,6 +40,8 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 	private View viewNew;
 
 	private boolean quitRequested = false;
+
+	private PopUps popUps;
 
 	/**
 	 * @param args
@@ -93,6 +97,7 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		view = null;
 		viewInitialized = false;
 		viewNew = null;
+		popUps = new PopUps();
 	}
 
 	/**
@@ -192,8 +197,11 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		// off screen engine init
 		Tools.oseInit(drawable);
 
+		// pop ups
+		popUps.init();
+
 		// view
-		setView(new ModelViewerView());
+		setView(new ModelViewerView(popUps));
 	}
 
 	/**
