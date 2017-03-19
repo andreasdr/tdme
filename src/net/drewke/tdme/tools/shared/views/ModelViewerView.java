@@ -513,13 +513,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * On display additional screens
-	 * @param drawable
-	 */
-	public void onDisplayAdditionalScreens(GLAutoDrawable drawable) {
-	}
-
-	/**
 	 * Renders the scene 
 	 */
 	public void display(GLAutoDrawable drawable) {
@@ -552,7 +545,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		if (keyMinus) scale+= 0.05f;
 		if (keyPlus && scale > 0.05f) scale-= 0.05f;
 		if (keyR == true || initModelRequested == true) {
-			rotationX.setAngle(-45f);
 			rotationY.setAngle(-45f);
 			rotationZ.setAngle(0f);
 			scale = 1.0f;
@@ -616,19 +608,9 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			}
 		}
 
-		// Render screens and handle input
-		String activeId = modelViewerScreenController.getScreenNode().getId();
-		engine.getGUI().render(modelViewerScreenController.getScreenNode().getId());
-		onDisplayAdditionalScreens(drawable);
-		if (popUps.getFileDialogScreenController().isActive() == true) {
-			engine.getGUI().render(popUps.getFileDialogScreenController().getScreenNode().getId());
-			activeId = popUps.getFileDialogScreenController().getScreenNode().getId();
-		}
-		if (popUps.getInfoDialogScreenController().isActive() == true) {
-			engine.getGUI().render(popUps.getInfoDialogScreenController().getScreenNode().getId());
-			activeId = popUps.getInfoDialogScreenController().getScreenNode().getId();
-		}
-		engine.getGUI().handleEvents(activeId, this);
+		// do GUI
+		engine.getGUI().render();
+		engine.getGUI().handleEvents();
 	}
 
 	/**
@@ -660,6 +642,13 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
+	 * On init additional screens
+	 * @param drawable
+	 */
+	public void onInitAdditionalScreens() {
+	}
+
+	/**
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
@@ -670,7 +659,8 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
 			modelViewerScreenController.init();
-			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode()); 
+			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode());
+			modelViewerScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -690,6 +680,13 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 
 		// set up gui
 		updateGUIElements();
+
+		//
+		engine.getGUI().resetRenderScreens();
+		engine.getGUI().addRenderScreen(modelViewerScreenController.getScreenNode().getId());
+		onInitAdditionalScreens();
+		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
 	}
 
 	/**

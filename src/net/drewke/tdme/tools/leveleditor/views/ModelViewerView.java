@@ -54,22 +54,10 @@ public class ModelViewerView extends net.drewke.tdme.tools.shared.views.ModelVie
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onDisplayAdditionalScreens(com.jogamp.opengl.GLAutoDrawable)
+	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onInitAdditionalScreens()
 	 */
-	public void onDisplayAdditionalScreens(GLAutoDrawable drawable) {
-		engine.getGUI().render(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
-	 */
-	public void handleInputEvents() {
-		// handle level editor model library screen controller events
-		engine.getGUI().handleEvents(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId(), null, false);
-
-		//
-		super.handleInputEvents();
+	public void onInitAdditionalScreens() {
+		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
 	}
 
 	/*

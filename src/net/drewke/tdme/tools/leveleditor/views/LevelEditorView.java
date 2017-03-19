@@ -301,9 +301,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
 	 */
 	public void handleInputEvents() {
-		// handle level editor model library screen controller events
-		engine.getGUI().handleEvents(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId(), null, false);
-
 		// handle keyboard events
 		for (int i = 0; i < engine.getGUI().getKeyboardEvents().size(); i++) {
 			GUIKeyboardEvent event = engine.getGUI().getKeyboardEvents().get(i);
@@ -562,20 +559,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		gridCenter.set(camLookAt);
 		updateGrid();
 
-		// gui
-		// Render screens and handle input
-		String activeId = levelEditorScreenController.getScreenNode().getId();
-		engine.getGUI().render(levelEditorScreenController.getScreenNode().getId());
-		engine.getGUI().render(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
-		if (popUps.getFileDialogScreenController().isActive() == true) {
-			engine.getGUI().render(popUps.getFileDialogScreenController().getScreenNode().getId());
-			activeId = popUps.getFileDialogScreenController().getScreenNode().getId();
-		}
-		if (popUps.getInfoDialogScreenController().isActive() == true) {
-			engine.getGUI().render(popUps.getInfoDialogScreenController().getScreenNode().getId());
-			activeId = popUps.getInfoDialogScreenController().getScreenNode().getId();
-		}
-		engine.getGUI().handleEvents(activeId, this);
+		// do GUI
+		engine.getGUI().render();
+		engine.getGUI().handleEvents();
 	}
 
 	/**
@@ -733,10 +719,18 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		try {
 			levelEditorScreenController = new LevelEditorScreenController(this);
 			levelEditorScreenController.init();
+			levelEditorScreenController.getScreenNode().setInputEventHandler(this);
 			engine.getGUI().addScreen(levelEditorScreenController.getScreenNode().getId(), levelEditorScreenController.getScreenNode()); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		//
+		engine.getGUI().resetRenderScreens();
+		engine.getGUI().addRenderScreen(levelEditorScreenController.getScreenNode().getId());
+		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
 
 		//
 		TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
@@ -772,6 +766,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		//
 		loadLevel();
+		updateGrid();
 	}
 
 	/**

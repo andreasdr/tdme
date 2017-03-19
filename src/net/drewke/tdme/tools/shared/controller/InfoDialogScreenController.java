@@ -18,9 +18,6 @@ import net.drewke.tdme.utils.MutableString;
  */
 public class InfoDialogScreenController extends ScreenController implements GUIActionListener {
 
-	//
-	private boolean active;
-
 	//  screen node
 	private GUIScreenNode screenNode;
 
@@ -36,7 +33,6 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 	 * @param model library controller
 	 */
 	public InfoDialogScreenController() {
-		this.active = false;
 		this.value = new MutableString();
 	}
 
@@ -48,13 +44,6 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 		return screenNode;
 	}
 
-	/**
-	 * @return active
-	 */
-	public boolean isActive() {
-		return active;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init()
@@ -63,6 +52,9 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "infodialog.xml");
+			screenNode.setVisible(false);
+			screenNode.setHandleInputEvents(false);
+			screenNode.setPopUp(true);
 			screenNode.addActionListener(this);
 			captionNode = (GUITextNode)screenNode.getNodeById("infodialog_caption");
 			messageNode = (GUITextNode)screenNode.getNodeById("infodialog_message");
@@ -82,17 +74,19 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 	 * Shows the pop up
 	 */
 	public void show(String caption, String message) {
+		screenNode.setVisible(true);
+		screenNode.setHandleInputEvents(true);
 		captionNode.getText().set(value.set(caption));
 		messageNode.getText().set(value.set(message));
 		screenNode.layout();
-		active = true;
 	}
 
 	/**
 	 * Closes the pop up
 	 */
 	public void close() {
-		active = false;
+		screenNode.setVisible(false);
+		screenNode.setHandleInputEvents(false);
 	}
 
 	/*

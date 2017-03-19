@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
+import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
@@ -42,10 +43,15 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	private ArrayList<GUIActionListener> actionListener;
 	private ArrayList<GUIChangeListener> changeListener;
+	private GUIInputEventHandler inputEventHandler;
 
 	private ArrayList<GUINode> childControllerNodes;
 
 	protected boolean mouseEventProcessedByFloatingNode;
+
+	protected boolean handleInputEvents;
+	protected boolean visible;
+	protected boolean popUp;
 
 	/**
 	 * Constructor
@@ -91,9 +97,13 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.invalidateFocussedNode = true;
 		this.actionListener = new ArrayList<GUIActionListener>();
 		this.changeListener = new ArrayList<GUIChangeListener>();
+		this.inputEventHandler = null;
 		this.childControllerNodes = new ArrayList<GUINode>();
 		this.screenNode = this;
 		this.parentNode = null;
+		this.handleInputEvents = true;
+		this.visible = true;
+		this.popUp = false;
 	}
 
 	/**
@@ -108,6 +118,58 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public int getScreenHeight() {
 		return screenHeight;
+	}
+
+	/**
+	 * @return is handle input events
+	 */
+	public boolean isHandleInputEvents() {
+		return handleInputEvents;
+	}
+
+	/**
+	 * Set handle input events
+	 * @param handle input events
+	 */
+	public void setHandleInputEvents(boolean handleInputEvents) {
+		this.handleInputEvents = handleInputEvents;
+	}
+
+	/**
+	 * @return is visible
+	 */
+	public boolean isVisible() {
+		return visible;
+	}
+
+	/**
+	 * Set visible
+	 * @param visible
+	 */
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	/**
+	 * @return is pop up
+	 */
+	public boolean isPopUp() {
+		return popUp;
+	}
+
+	/**
+	 * Set pop up
+	 * @param pop up
+	 */
+	public void setPopUp(boolean popUp) {
+		this.popUp = popUp;
+	}
+
+	/**
+	 * @return floating nodes
+	 */
+	public ArrayList<GUINode> getFloatingNodes() {
+		return floatingNodes;
 	}
 
 	/*
@@ -253,9 +315,6 @@ public final class GUIScreenNode extends GUIParentNode {
 		}
 		floatingNodes.clear();
 		super.render(guiRenderer, floatingNodes);
-		for (int i = 0; i < floatingNodes.size(); i++) {
-			floatingNodes.get(i).render(guiRenderer, null);
-		}
 	}
 
 	/**
@@ -435,6 +494,10 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void handleMouseEvent(GUIMouseEvent event) {
 		mouseEventProcessedByFloatingNode = false;
+		for (int i = 0; i < floatingNodes.size(); i++) {
+			GUINode floatingNode = floatingNodes.get(i);
+			floatingNode.handleMouseEvent(event);
+		}
 		super.handleMouseEvent(event);
 	}
 
@@ -484,6 +547,21 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void removeActionListener(GUIActionListener listener) {
 		actionListener.remove(listener);
+	}
+
+	/**
+	 * @return input event handler
+	 */
+	public GUIInputEventHandler getInputEventHandler() {
+		return inputEventHandler;
+	}
+
+	/**
+	 * Set input event handler 
+	 * @param input event handler
+	 */
+	public void setInputEventHandler(GUIInputEventHandler inputEventHandler) {
+		this.inputEventHandler = inputEventHandler;
 	}
 
 	/**

@@ -9,10 +9,10 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
-import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
+import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
@@ -54,6 +54,8 @@ public final class GUI implements MouseListener, KeyListener {
 	private ArrayList<GUIKeyboardEvent> keyboardEvents = new ArrayList<GUIKeyboardEvent>();
 
 	private ReentrantLock eventsMutex = new ReentrantLock();
+	
+	private ArrayList<GUIScreenNode> renderScreens = new ArrayList<GUIScreenNode>();
 
 	private int width;
 	private int height;
@@ -251,12 +253,45 @@ public final class GUI implements MouseListener, KeyListener {
 	}
 
 	/**
-	 * Render screen with given id
+	 * Reset render screens
 	 */
-	public void render(String screenId) {
+	public void resetRenderScreens() {
+		renderScreens.clear();
+	}
+
+	/**
+	 * Add render screen
+	 * @param screenId
+	 */
+	public void addRenderScreen(String screenId) {
 		//
 		GUIScreenNode screen = screens.get(screenId);
-		if (screen != null) {
+		if (screen == null) return;
+
+		//
+		renderScreens.add(screen);
+	}
+
+	/**
+	 * Render GUIs
+	 */
+	public void render() {
+		// return if having nothing to render 
+		if (renderScreens.isEmpty() == true) return;
+
+		// init rendering
+		guiRenderer.setGUI(this);
+		engine.initGUIMode();
+		guiRenderer.initRendering();
+
+		// render screens
+		for (int i = 0; i < renderScreens.size(); i++) {
+			// screen
+			GUIScreenNode screen = renderScreens.get(i);
+
+			//
+			if (screen.isVisible() == false) continue;
+
 			// update screen size and layout if reshaped
 			if (screen.getScreenWidth() != width || screen.getScreenHeight() != height) {
 				screen.setScreenSize(width, height);
@@ -264,74 +299,103 @@ public final class GUI implements MouseListener, KeyListener {
 			}
 
 			// render
-			guiRenderer.setGUI(this);
-			engine.initGUIMode();
-			guiRenderer.initRendering();
 			screen.setConditionsMet();
 			screen.tick();
 			screen.render(guiRenderer);
-			guiRenderer.doneRendering();
-			engine.doneGUIMode();
+		}
+
+		// render floating nodes
+		for (int i = 0; i < renderScreens.size(); i++) {
+			// screen
+			GUIScreenNode screen = renderScreens.get(i);
+
+			//
+			if (screen.isVisible() == false) continue;
+
+			// render floating nodes
+			ArrayList<GUINode> floatingNodes = screen.getFloatingNodes();
+			for (int j = 0; j < floatingNodes.size(); j++) {
+				floatingNodes.get(j).render(guiRenderer, null);
+			}
+		}
+
+		// done rendering
+		guiRenderer.doneRendering();
+		engine.doneGUIMode();
+	}
+
+	/**
+	 * Handle events for given node
+	 * @param node
+	 */
+	private void handleEvents(GUINode node) {
+		// handle mouse events
+		for (int i = 0; i < mouseEvents.size(); i++) {
+			GUIMouseEvent event = mouseEvents.get(i);
+			if (event.isProcessed() == true) continue;
+			node.handleMouseEvent(event);
+		}
+
+		// handle keyboard events
+		for (int i = 0; i < keyboardEvents.size(); i++) {
+			GUIKeyboardEvent event = keyboardEvents.get(i);
+			if (event.isProcessed() == true) continue;
+			node.handleKeyboardEvent(event);
 		}
 	}
 
 	/**
-	 * Handle events
-	 * @param screen id
-	 * @param input events handler
+	 * Handle screen events
 	 */
-	public void handleEvents(String screenId, GUIInputEventHandler inputEventHandler) {
-		handleEvents(screenId, inputEventHandler, true);
-	}
-	
-	/**
-	 * Handle events
-	 * @param screen id
-	 * @param input events handler
-	 * @param discard events 
-	 */
-	public void handleEvents(String screenId, GUIInputEventHandler inputEventHandler, boolean discardEvents) {
-		GUIScreenNode screen = screens.get(screenId);
-		if (screen != null) {
-			// lock
-			lockEvents();
+	public void handleEvents() {
+		// lock
+		lockEvents();
 
-			// handle mouse events
-			for (int i = 0; i < mouseEvents.size(); i++) {
-				GUIMouseEvent event = mouseEvents.get(i);
-				if (event.isProcessed() == true) continue;
-				screen.handleMouseEvent(event);
+		// handle float nodes of screen first
+		for (int i = renderScreens.size() - 1; i >= 0; i--) {
+			// screen
+			GUIScreenNode screen = renderScreens.get(i);
+			if (screen.isVisible() == false || screen.isHandleInputEvents() == false) continue;
+
+			// floating nodes
+			ArrayList<GUINode> floatingNodes = screen.getFloatingNodes();
+			for (int j = 0; j < floatingNodes.size(); j++) {
+				// floating node
+				GUINode floatingNode = floatingNodes.get(j);
+				// handle it events
+				handleEvents(floatingNode);
 			}
 
-			// handle keyboard events
-			for (int i = 0; i < keyboardEvents.size(); i++) {
-				GUIKeyboardEvent event = keyboardEvents.get(i);
-				if (event.isProcessed() == true) continue;
-				screen.handleKeyboardEvent(event);
-			}
+			// break here if pop up
+			if (screen.isPopUp() == true) break;
+		}
+
+		// handle screen input events
+		for (int i = renderScreens.size() - 1; i >= 0; i--) {
+			// screen
+			GUIScreenNode screen = renderScreens.get(i);
+			if (screen.isVisible() == false || screen.isHandleInputEvents() == false) continue;
+
+			// handle screen events
+			handleEvents(screen);
 
 			// events handler
-			if (inputEventHandler != null) inputEventHandler.handleInputEvents();
-
-			// discard events
-			if (discardEvents == true) {
-				engine.getGUI().discardEvents();
+			if (screen.getInputEventHandler() != null) {
+				screen.getInputEventHandler().handleInputEvents();
 			}
 
-			// unlock
-			unlockEvents();
+			// break here if pop up
+			if (screen.isPopUp() == true) break;
 		}
-	}
 
-	/**
-	 * Discard events
-	 * 	Note: this should be done when locked
-	 */
-	public void discardEvents() {
+		// discard events
 		mouseEvents.clear();
 		mouseEventsPool.reset();
 		keyboardEvents.clear();
 		keyboardEventsPool.reset();
+
+		// unlock
+		unlockEvents();
 	}
 
 	/*

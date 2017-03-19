@@ -482,6 +482,12 @@ public abstract class GUIParentNode extends GUINode {
 		// delegate event to sub nodes
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode subNode = subNodes.get(i);
+			// handle events of floating nodes later
+			if (subNode.flow == Flow.FLOATING) {
+				continue;
+			}
+
+			//
 			subNode.handleMouseEvent(event);
 		}
 

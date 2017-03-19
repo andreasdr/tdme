@@ -140,6 +140,7 @@ public class GUITest implements GLEventListener, WindowListener {
 				}
 			});
 			engine.getGUI().getScreen("test").layout();
+			engine.getGUI().addRenderScreen("test");
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -167,9 +168,8 @@ public class GUITest implements GLEventListener, WindowListener {
 	 */
 	public void display(GLAutoDrawable drawable) {
 		engine.display(drawable);
-		engine.getGUI().render("test");
-		engine.getGUI().handleEvents("test", null);
-		engine.getGUI().discardEvents();
+		engine.getGUI().render();
+		engine.getGUI().handleEvents();
 	}
 
 	/*

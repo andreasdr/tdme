@@ -24,9 +24,6 @@ import net.drewke.tdme.utils.MutableString;
  */
 public class FileDialogScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
 
-	//
-	private boolean active;
-
 	//  screen node
 	private GUIScreenNode screenNode;
 
@@ -51,7 +48,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 * @param model library controller
 	 */
 	public FileDialogScreenController() {
-		this.active = false;
 		try {
 			this.cwd = new File(".").getCanonicalFile();
 		} catch (IOException ioe) {
@@ -59,13 +55,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		}
 		this.value = new MutableString();
 		this.applyAction = null;
-	}
-
-	/**
-	 * @return active
-	 */
-	public boolean isActive() {
-		return active;
 	}
 
 	/*
@@ -105,6 +94,9 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "filedialog.xml");
+			screenNode.setVisible(false);
+			screenNode.setHandleInputEvents(false);
+			screenNode.setPopUp(true);
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			caption = (GUITextNode)screenNode.getNodeById("filedialog_caption");
@@ -192,7 +184,8 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		this.extensions = extensions;
 		this.fileName.getController().setValue(value.set(fileName));
 		setupFileDialogListBox();
-		this.active = true;
+		screenNode.setVisible(true);
+		screenNode.setHandleInputEvents(true);
 		this.applyAction = applyAction;
 	}
 
@@ -200,7 +193,8 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 * Abort the file dialog pop up
 	 */
 	public void close() {
-		this.active = false;
+		screenNode.setVisible(false);
+		screenNode.setHandleInputEvents(false);
 	}
 
 	/**
