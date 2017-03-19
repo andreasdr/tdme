@@ -244,7 +244,7 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 			// model
 			if (node.getController().getValue().equals("create_model") == true) {
 				// model library
-				LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
+				final LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
 				//
 				popUps.getFileDialogScreenController().show(
 						"Load from: ", 
@@ -254,7 +254,7 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 							public void performAction() {
 								try {
 									LevelEditorModel model = modelLibrary.addModel(	
-										modelLibrary.ID_ALLOCATE,
+										LevelEditorModelLibrary.ID_ALLOCATE,
 										popUps.getFileDialogScreenController().getFileName(),
 										"",
 										popUps.getFileDialogScreenController().getPathName(),
