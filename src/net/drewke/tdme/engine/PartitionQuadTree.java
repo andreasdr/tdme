@@ -71,7 +71,7 @@ public final class PartitionQuadTree extends Partition {
 	/**
 	 * Constructor
 	 */
-	protected PartitionQuadTree() {
+	public PartitionQuadTree() {
 		this.key = new Key();
 		this.entityIterator = new ArrayListIteratorMultiple<Entity>();
 		this.boundingBox = new BoundingBox();

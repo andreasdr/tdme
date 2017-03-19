@@ -9,6 +9,7 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
+import net.drewke.tdme.engine.PartitionQuadTree;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Timing;
 import net.drewke.tdme.engine.Transformations;
@@ -716,6 +717,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
+		// reset engine and partition
+		engine.reset();
+		engine.setPartition(new PartitionQuadTree());
+
+		//
 		try {
 			levelEditorScreenController = new LevelEditorScreenController(this);
 			levelEditorScreenController.init();

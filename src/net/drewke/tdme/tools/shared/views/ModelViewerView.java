@@ -9,6 +9,7 @@ import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.PartitionNone;
+import net.drewke.tdme.engine.PartitionQuadTree;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
@@ -653,6 +654,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 */
 	public void init(GLAutoDrawable drawable) {
 		// reset engine and partition
+		engine.reset();
 		engine.setPartition(new PartitionNone());
 
 		//
