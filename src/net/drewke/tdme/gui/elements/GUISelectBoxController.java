@@ -151,6 +151,9 @@ public final class GUISelectBoxController extends GUINodeController {
 		// unselect all selections
 		unselect();
 
+		// skip if no options
+		if (selectBoxOptionControllers.size() == 0) return;
+
 		// determine new selection idx
 		selectBoxOptionControllerIdx = (selectBoxOptionControllerIdx + 1) % selectBoxOptionControllers.size();
 		if (selectBoxOptionControllerIdx < 0) selectBoxOptionControllerIdx += selectBoxOptionControllers.size();
@@ -173,6 +176,9 @@ public final class GUISelectBoxController extends GUINodeController {
 
 		// unselect all selections
 		unselect();
+
+		// skip if no options
+		if (selectBoxOptionControllers.size() == 0) return;
 
 		// determine new selection idx
 		selectBoxOptionControllerIdx = (selectBoxOptionControllerIdx - 1) % selectBoxOptionControllers.size();

@@ -173,6 +173,9 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 		// unfocus
 		unfocus();
 
+		// skip if no options
+		if (selectBoxMultipleOptionControllers.size() == 0) return;
+
 		// determine new selection idx
 		selectBoxMultipleOptionControllerIdx = (selectBoxMultipleOptionControllerIdx + 1) % selectBoxMultipleOptionControllers.size();
 		if (selectBoxMultipleOptionControllerIdx < 0) selectBoxMultipleOptionControllerIdx += selectBoxMultipleOptionControllers.size();
@@ -195,6 +198,9 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 
 		// unfocus
 		unfocus();
+
+		// skip if no options
+		if (selectBoxMultipleOptionControllers.size() == 0) return;
 
 		// determine new selection idx
 		selectBoxMultipleOptionControllerIdx = (selectBoxMultipleOptionControllerIdx - 1) % selectBoxMultipleOptionControllers.size();

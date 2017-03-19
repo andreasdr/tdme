@@ -182,6 +182,9 @@ public final class GUIDropDownController extends GUINodeController {
 		// unselect all selections
 		unselect();
 
+		// skip if no options
+		if (dropDownOptionControllers.size() == 0) return;
+
 		// determine new selection idx
 		selectBoxOptionControllerIdx = (selectBoxOptionControllerIdx + 1) % dropDownOptionControllers.size();
 		if (selectBoxOptionControllerIdx < 0) selectBoxOptionControllerIdx += dropDownOptionControllers.size();
@@ -204,6 +207,9 @@ public final class GUIDropDownController extends GUINodeController {
 
 		// unselect all selections
 		unselect();
+
+		// skip if no options
+		if (dropDownOptionControllers.size() == 0) return;
 
 		// determine new selection idx
 		selectBoxOptionControllerIdx = (selectBoxOptionControllerIdx - 1) % dropDownOptionControllers.size();
