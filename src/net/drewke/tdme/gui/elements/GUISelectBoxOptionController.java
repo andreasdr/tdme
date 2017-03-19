@@ -147,7 +147,7 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 		// check if our node was clicked
 		if (disabled == false &&
 			node == this.node &&
-			node.isEventBelongingToNode(event) &&  
+			node.isEventBelongingToNode(event) &&
 			event.getButton() == 1) {
 			// set event processed
 			event.setProcessed(true);

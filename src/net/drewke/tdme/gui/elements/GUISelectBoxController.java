@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
@@ -195,6 +196,23 @@ public final class GUISelectBoxController extends GUINodeController {
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleMouseEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIMouseEvent)
 	 */
 	public void handleMouseEvent(GUINode node, GUIMouseEvent event) {
+		// disabled
+		boolean disabled = ((GUISelectBoxController)this.node.getController()).isDisabled();
+
+		// check if our node was clicked
+		if (disabled == false &&
+			node == this.node &&
+			node.isEventBelongingToNode(event) &&
+			event.getButton() == 1) {
+			// set event processed
+			event.setProcessed(true);
+
+			// check if mouse released
+			if (event.getType() == Type.MOUSE_PRESSED) {
+				// set focussed node
+				node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)node);
+			}
+		}
 	}
 
 	/*
