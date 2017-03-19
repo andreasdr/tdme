@@ -265,7 +265,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	public void setGridEnabled(boolean gridEnabled) {
 		this.gridEnabled = gridEnabled;
 		if (gridEnabled) {
-			gridCenterLast = null;
 			updateGrid();
 		} else {
 			removeGrid();
@@ -770,7 +769,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		cam.setZFar(1000f);
 		camLookAt.set(level.computeCenter());
 		gridCenter.set(camLookAt);
-		gridCenterLast = null;
 
 		//
 		loadLevel();
@@ -856,9 +854,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			engine.getLightAt(i).setQuadraticAttenuation(level.getLightAt(i).getQuadraticAttenuation());
 			engine.getLightAt(i).setEnabled(level.getLightAt(i).isEnabled());
 		}
-
-		//
-		gridCenterLast = null;
 
 		//
 		setObjectsListBox();
@@ -1275,7 +1270,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	public void centerObject() {
 		// skip if no objects selected
 		if (selectedObjects.size() == 0) {
-			camLookAt.set(0f,0f,0f);
 			return;
 		}
 
@@ -1667,7 +1661,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			// reset cam
 			camLookAt.set(level.computeCenter());
 			gridCenter.set(camLookAt);
-			gridCenterLast = null;
 
 			//
 			reloadModelLibrary = true;
