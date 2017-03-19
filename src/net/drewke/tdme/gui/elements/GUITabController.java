@@ -91,7 +91,7 @@ public final class GUITabController extends GUINodeController {
 		// handle focus, alter border depending on tabs header node focus and selection state
 		if (((GUITabsHeaderController)tabsHeaderNode.getController()).hasFocus() == true) {
 			if (selected == true) {
-				GUIColor focussedBorderColor = node.getScreenNode().getFoccussedBorderColor();
+				GUIColor focussedBorderColor = node.getScreenNode().getGUI().getFoccussedBorderColor();
 				GUINode.Border border = node.getBorder();
 				border.topColor = focussedBorderColor;
 				border.leftColor = focussedBorderColor; 
@@ -251,7 +251,7 @@ public final class GUITabController extends GUINodeController {
 		guiTabsController.setTabContentSelected(node.getId());
 		
 		//
-		node.getScreenNode().invalidateFocussedNode();
+		node.getScreenNode().getGUI().invalidateFocussedNode();
 	}
 
 }

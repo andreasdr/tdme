@@ -210,7 +210,7 @@ public final class GUISelectBoxMultipleOptionController extends GUINodeControlle
 				focus();
 
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)selectBoxMultipleNode);
+				node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)selectBoxMultipleNode);
 
 				// delegate change event
 				node.getScreenNode().delegateValueChanged((GUIElementNode)selectBoxMultipleNode);

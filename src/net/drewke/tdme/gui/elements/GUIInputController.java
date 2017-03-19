@@ -87,7 +87,7 @@ public final class GUIInputController extends GUINodeController {
 			event.getButton() == 1) {
 
 			// set focussed node
-			node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+			node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)node);
 
 			// set event processed
 			event.setProcessed(true);

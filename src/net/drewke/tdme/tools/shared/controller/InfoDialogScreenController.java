@@ -53,7 +53,6 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "infodialog.xml");
 			screenNode.setVisible(false);
-			screenNode.setHandleInputEvents(false);
 			screenNode.setPopUp(true);
 			screenNode.addActionListener(this);
 			captionNode = (GUITextNode)screenNode.getNodeById("infodialog_caption");
@@ -75,7 +74,6 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 	 */
 	public void show(String caption, String message) {
 		screenNode.setVisible(true);
-		screenNode.setHandleInputEvents(true);
 		captionNode.getText().set(value.set(caption));
 		messageNode.getText().set(value.set(message));
 		screenNode.layout();
@@ -86,7 +84,6 @@ public class InfoDialogScreenController extends ScreenController implements GUIA
 	 */
 	public void close() {
 		screenNode.setVisible(false);
-		screenNode.setHandleInputEvents(false);
 	}
 
 	/*

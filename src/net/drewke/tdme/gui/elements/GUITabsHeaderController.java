@@ -222,7 +222,7 @@ public final class GUITabsHeaderController extends GUINodeController {
 			// check if mouse released
 			if (event.getType() == Type.MOUSE_RELEASED) {
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+				node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)node);
 			}
 		}
 	}

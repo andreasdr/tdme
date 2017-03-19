@@ -184,7 +184,7 @@ public final class GUIInputInternalNode extends GUINode {
 		);
 
 		// check if to show cursor
-		if (screenNode.getFocussedNode() == this.parentNode &&
+		if (screenNode.getGUI().getFocussedNode() == this.parentNode &&
 			controller.getCursorMode() == CursorMode.SHOW) {
 			// screen dimension
 			float screenWidth = guiRenderer.getGUI().getWidth();

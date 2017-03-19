@@ -152,7 +152,7 @@ public final class GUIRadioButtonController extends GUINodeController {
 				select();
 	
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+				node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)node);
 
 				// delegate change event
 				node.getScreenNode().delegateValueChanged((GUIElementNode)node);

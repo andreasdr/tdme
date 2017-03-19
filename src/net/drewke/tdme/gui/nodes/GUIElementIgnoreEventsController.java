@@ -86,7 +86,7 @@ public class GUIElementIgnoreEventsController extends GUINodeController {
 			if (event.getType() == Type.MOUSE_PRESSED) {
 				// set focussed node if focusable
 				if (((GUIElementNode)node).isFocusable() == true) {
-					node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+					node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)node);
 				}
 			}
 		}

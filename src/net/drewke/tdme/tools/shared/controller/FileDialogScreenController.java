@@ -95,7 +95,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "filedialog.xml");
 			screenNode.setVisible(false);
-			screenNode.setHandleInputEvents(false);
 			screenNode.setPopUp(true);
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
@@ -185,7 +184,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		this.fileName.getController().setValue(value.set(fileName));
 		setupFileDialogListBox();
 		screenNode.setVisible(true);
-		screenNode.setHandleInputEvents(true);
 		this.applyAction = applyAction;
 	}
 
@@ -194,7 +192,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 */
 	public void close() {
 		screenNode.setVisible(false);
-		screenNode.setHandleInputEvents(false);
 	}
 
 	/**

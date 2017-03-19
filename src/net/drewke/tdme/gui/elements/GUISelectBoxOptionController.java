@@ -159,7 +159,7 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 				select();
 
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)selectBoxNode);
+				node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)selectBoxNode);
 
 				// delegate change event
 				node.getScreenNode().delegateValueChanged((GUIElementNode)selectBoxNode);

@@ -15,7 +15,7 @@ public final class GUIElementNode extends GUIParentNode {
 	protected static final String CONDITION_ALWAYS = "always";
 	protected static final String CONDITION_ONMOUSEOVER = "mouseover";
 	protected static final String CONDITION_CLICK = "click";
-	protected static final String CONDITION_FOCUS = "focus";
+	public static final String CONDITION_FOCUS = "focus";
 
 	protected String name;
 	protected String value;

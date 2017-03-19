@@ -93,7 +93,7 @@ public class GUIElementController extends GUINodeController {
 
 				// set focussed node if focusable
 				if (((GUIElementNode)node).isFocusable() == true) {
-					node.getScreenNode().setFoccussedNode((GUIElementNode)node);
+					node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)node);
 				}
 			} else
 			if (event.getType() == Type.MOUSE_DRAGGED) {

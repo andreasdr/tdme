@@ -234,7 +234,7 @@ public final class GUIDropDownController extends GUINodeController {
 				toggleOpenState();
 	
 				// set focussed node
-				node.getScreenNode().setFoccussedNode((GUIElementNode)this.node);
+				node.getScreenNode().getGUI().setFoccussedNode((GUIElementNode)this.node);
 			}
 		}
 	}

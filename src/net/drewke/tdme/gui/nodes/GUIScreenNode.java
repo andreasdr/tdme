@@ -2,12 +2,12 @@ package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
+import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
-import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
@@ -21,7 +21,7 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class GUIScreenNode extends GUIParentNode {
 
-	private GUIColor foccussedBorderColor = null;
+	private GUI gui;
 
 	private int nodeCounter;
 
@@ -32,15 +32,6 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	private ArrayList<GUINode> floatingNodes;
 
-	private boolean invalidateFocussedNode;
-	private ArrayList<GUIElementNode> focusableNodes;
-	private GUIElementNode focussedNode;
-
-	private GUIColor unfocussedNodeBorderLeftColor;
-	private GUIColor unfocussedNodeBorderRightColor;
-	private GUIColor unfocussedNodeBorderTopColor;
-	private GUIColor unfocussedNodeBorderBottomColor;
-
 	private ArrayList<GUIActionListener> actionListener;
 	private ArrayList<GUIChangeListener> changeListener;
 	private GUIInputEventHandler inputEventHandler;
@@ -49,7 +40,6 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	protected boolean mouseEventProcessedByFloatingNode;
 
-	protected boolean handleInputEvents;
 	protected boolean visible;
 	protected boolean popUp;
 
@@ -82,28 +72,35 @@ public final class GUIScreenNode extends GUIParentNode {
 		boolean scrollable
 		) throws GUIParserException {
 		super(null, null, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
-		this.foccussedBorderColor = new GUIColor("#8080FF");
+		this.gui = null;
 		this.nodeCounter = 0;
 		this.screenWidth = 0;
 		this.screenHeight = 0;
 		this.nodesById = new HashMap<String, GUINode>();
 		this.floatingNodes = new ArrayList<GUINode>();
-		this.focusableNodes = new ArrayList<GUIElementNode>();
-		this.focussedNode = null;
-		this.unfocussedNodeBorderLeftColor = null;
-		this.unfocussedNodeBorderRightColor = null;
-		this.unfocussedNodeBorderTopColor = null;
-		this.unfocussedNodeBorderBottomColor = null;
-		this.invalidateFocussedNode = true;
 		this.actionListener = new ArrayList<GUIActionListener>();
 		this.changeListener = new ArrayList<GUIChangeListener>();
 		this.inputEventHandler = null;
 		this.childControllerNodes = new ArrayList<GUINode>();
 		this.screenNode = this;
 		this.parentNode = null;
-		this.handleInputEvents = true;
 		this.visible = true;
 		this.popUp = false;
+	}
+
+	/**
+	 * @return GUI
+	 */
+	public GUI getGUI() {
+		return gui;
+	}
+
+	/**
+	 * Set GUI
+	 * @param gui
+	 */
+	public void setGUI(GUI gui) {
+		this.gui = gui;
 	}
 
 	/**
@@ -121,21 +118,6 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
-	 * @return is handle input events
-	 */
-	public boolean isHandleInputEvents() {
-		return handleInputEvents;
-	}
-
-	/**
-	 * Set handle input events
-	 * @param handle input events
-	 */
-	public void setHandleInputEvents(boolean handleInputEvents) {
-		this.handleInputEvents = handleInputEvents;
-	}
-
-	/**
 	 * @return is visible
 	 */
 	public boolean isVisible() {
@@ -148,6 +130,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+		if (gui != null) gui.invalidateFocussedNode();
 	}
 
 	/**
@@ -289,30 +272,10 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
-	 * @return focussed border color
-	 */
-	public GUIColor getFoccussedBorderColor() {
-		return foccussedBorderColor;
-	}
-
-	/**
-	 * Invalidate focussed node
-	 */
-	public void invalidateFocussedNode() {
-		unfocusNode();
-		focussedNode = null;
-		invalidateFocussedNode = true;
-	}
-
-	/**
 	 * Render
 	 * @param guiRenderer
 	 */
 	public void render(GUIRenderer guiRenderer) {
-		if (invalidateFocussedNode == true) {
-			invalidateFocussedNode = false;
-			focusNextNode();
-		}
 		floatingNodes.clear();
 		super.render(guiRenderer, floatingNodes);
 	}
@@ -320,8 +283,9 @@ public final class GUIScreenNode extends GUIParentNode {
 	/**
 	 * Determine focussed nodes
 	 * @param parent node
+	 * @param focusable nodes
 	 */
-	private void determineFocussedNodes(GUIParentNode parentNode) {
+	public void determineFocussedNodes(GUIParentNode parentNode, ArrayList<GUIElementNode> focusableNodes) {
 		// check if conditions were met
 		if (parentNode.conditionsMet == false) {
 			return;
@@ -343,150 +307,12 @@ public final class GUIScreenNode extends GUIParentNode {
 			// check if parent node
 			if (subNode instanceof GUIParentNode) {
 				// yep, do the recursion
-				determineFocussedNodes((GUIParentNode)subNode);
+				determineFocussedNodes((GUIParentNode)subNode, focusableNodes);
 			}
 			// ignore normal nodes
 		}
 	}
 
-	/**
-	 * Determine focussed nodes
-	 */
-	private void determineFocussedNodes() {
-		focusableNodes.clear();
-		determineFocussedNodes(this);
-	}
-
-	/**
-	 * @return focussed node
-	 */
-	public GUIElementNode getFocussedNode() {
-		return this.focussedNode;
-	}
-
-	/**
-	 * Unfocus current focussed node
-	 */
-	public void unfocusNode() {
-		// unfocus current focussed element
-		if (focussedNode != null) {
-			focussedNode.getActiveConditions().remove(GUIElementNode.CONDITION_FOCUS);
-			focussedNode.border.topColor = unfocussedNodeBorderTopColor;
-			focussedNode.border.leftColor = unfocussedNodeBorderLeftColor;
-			focussedNode.border.bottomColor = unfocussedNodeBorderBottomColor;
-			focussedNode.border.rightColor = unfocussedNodeBorderRightColor;
-			if (focussedNode.controller != null) focussedNode.controller.onFocusLost();
-		}
-	}
-
-	/**
-	 * Focus current focussed node
-	 */
-	public void focusNode() {
-		// focus new focus node
-		if (focussedNode != null) {
-			focussedNode.getActiveConditions().add(GUIElementNode.CONDITION_FOCUS);
-			unfocussedNodeBorderTopColor = focussedNode.border.topColor;
-			unfocussedNodeBorderLeftColor = focussedNode.border.leftColor;
-			unfocussedNodeBorderBottomColor = focussedNode.border.bottomColor;
-			unfocussedNodeBorderRightColor = focussedNode.border.rightColor;
-			focussedNode.border.topColor = foccussedBorderColor;
-			focussedNode.border.leftColor = foccussedBorderColor;
-			focussedNode.border.bottomColor = foccussedBorderColor;
-			focussedNode.border.rightColor = foccussedBorderColor;
-			if (focussedNode.controller != null) focussedNode.controller.onFocusGained();
-		}
-	}
-
-	/**
-	 * Set focussed node
-	 * @param foccussed node
-	 */
-	public void setFoccussedNode(GUIElementNode newFoccussedNode) {
-		// skip if already set up as focussed node
-		if (this.focussedNode == newFoccussedNode) {
-			return;
-		}
-
-		// unfocus current focussed element
-		unfocusNode();
-
-		// set up new focus node
-		this.focussedNode = newFoccussedNode;
-
-		// focus current focussed element
-		focusNode();
-
-		// determine focussable nodes
-		determineFocussedNodes();
-	}
-
-	/**
-	 * Focus next node
-	 */
-	public void focusNextNode() {
-		// determine focussable nodes
-		determineFocussedNodes();
-
-		// unfocus current focussed element
-		unfocusNode();
-
-		// check if we have focussable nodes
-		if (focusableNodes.size() > 0) {
-			// determine current focussed node idx
-			int focussedNodeIdx = -1;
-			for (int i = 0; i < focusableNodes.size(); i++) {
-				if (focussedNode == focusableNodes.get(i)) {
-					focussedNodeIdx = i;
-				}
-			}
-	
-			// choose next
-			int focussedNextNodeIdx = (focussedNodeIdx + 1) % focusableNodes.size();
-			focussedNode = focusableNodes.get(focussedNextNodeIdx);
-	
-			// focus current focussed element
-			focusNode();
-
-			// scroll to node
-			focussedNode.scrollToNodeX();
-			focussedNode.scrollToNodeY();
-		}
-	}
-
-	/**
-	 * Focus next node
-	 */
-	public void focusPreviousNode() {
-		// determine focussable nodes
-		determineFocussedNodes();
-
-		// unfocus current focussed element
-		unfocusNode();
-
-		// check if we have focussable nodes
-		if (focusableNodes.size() > 0) {
-			// determine current focussed node idx
-			int focussedNodeIdx = -1;
-			for (int i = 0; i < focusableNodes.size(); i++) {
-				if (focussedNode == focusableNodes.get(i)) {
-					focussedNodeIdx = i;
-				}
-			}
-	
-			// choose previous
-			int focussedPreviousNodeIdx = (focussedNodeIdx - 1) % focusableNodes.size();
-			if (focussedPreviousNodeIdx < 0) focussedPreviousNodeIdx+= focusableNodes.size(); 
-			focussedNode = focusableNodes.get(focussedPreviousNodeIdx);
-	
-			// focus current focussed element
-			focusNode();
-
-			// scroll to node
-			focussedNode.scrollToNodeX();
-			focussedNode.scrollToNodeY();
-		}
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -506,31 +332,6 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @see net.drewke.tdme.gui.nodes.GUINode#handleKeyboardEvent(net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUIKeyboardEvent event) {
-		// handle focussing
-		switch(event.getKeyCode()) {
-			case(GUIKeyboardEvent.KEYCODE_TAB):
-				{
-					if (event.getType() == Type.KEY_RELEASED) {
-						if (event.isShiftDown() == true) {
-							focusPreviousNode();
-						} else {
-							focusNextNode();
-						}
-					}
-					event.setProcessed(true);
-					break;
-				}
-			default:
-				{
-					break;
-				}
-		}
-
-		// delegate keyboard event to node if not yet processed
-		if (event.isProcessed() == false &&
-			focussedNode != null) {
-			focussedNode.handleKeyboardEvent(event);
-		}
 	}
 
 	/**
