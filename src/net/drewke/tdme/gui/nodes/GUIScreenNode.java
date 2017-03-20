@@ -56,6 +56,8 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param padding
 	 * @param show on
 	 * @param hide on
+	 * @param scrollable
+	 * @param pop up
 	 */
 	public GUIScreenNode( 
 		String id, 
@@ -69,7 +71,8 @@ public final class GUIScreenNode extends GUIParentNode {
 		Padding padding,
 		GUINodeConditions showOn, 
 		GUINodeConditions hideOn,
-		boolean scrollable
+		boolean scrollable,
+		boolean popUp
 		) throws GUIParserException {
 		super(null, null, id, flow, overflowX, overflowY, alignments, requestedConstraints, backgroundColor, border, padding, showOn, hideOn);
 		this.gui = null;
@@ -85,7 +88,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.screenNode = this;
 		this.parentNode = null;
 		this.visible = true;
-		this.popUp = false;
+		this.popUp = popUp;
 	}
 
 	/**

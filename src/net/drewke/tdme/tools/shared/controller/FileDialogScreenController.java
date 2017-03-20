@@ -95,7 +95,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "filedialog.xml");
 			screenNode.setVisible(false);
-			screenNode.setPopUp(true);
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			caption = (GUITextNode)screenNode.getNodeById("filedialog_caption");

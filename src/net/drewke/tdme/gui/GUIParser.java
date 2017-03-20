@@ -134,7 +134,8 @@ public final class GUIParser {
 			),
 			GUINode.createConditions(xmlRoot.getAttribute("show-on")),
 			GUINode.createConditions(xmlRoot.getAttribute("hide-on")),
-			xmlRoot.getAttribute("scrollable").trim().equalsIgnoreCase("true")
+			xmlRoot.getAttribute("scrollable").trim().equalsIgnoreCase("true"),
+			xmlRoot.getAttribute("popup").trim().equalsIgnoreCase("true")
 		);
 
 		// parse GUI nodes
