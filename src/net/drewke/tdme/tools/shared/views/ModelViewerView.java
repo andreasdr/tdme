@@ -441,6 +441,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		model.setName(name);
 		model.setDescription(description);
 		onSetModelData();
+		modelViewerScreenController.setScreenCaption("Model Viewer - " + (model != null?model.getName():"no model loaded"));
 	}
 
 	/*
