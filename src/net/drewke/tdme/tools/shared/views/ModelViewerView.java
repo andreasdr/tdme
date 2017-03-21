@@ -315,135 +315,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		model.getPivot().set(x, y, z);
 	}
 
-	/**
-	 * Apply model property preset
-	 * @param preset id
-	 */
-	public void modelPropertiesPreset(String presetId) {
-		if (model == null) return;
-
-		// clear model properties
-		model.clearProperties();
-
-		// add model properties by preset if missing
-		ArrayList<PropertyModelClass> modelPropertyPresetVector = LevelPropertyPresets.getInstance().getObjectPropertiesPresets().get(presetId);
-		if (modelPropertyPresetVector != null) {
-			for (PropertyModelClass modelPropertyPreset: modelPropertyPresetVector) {
-				model.addProperty(modelPropertyPreset.getName(), modelPropertyPreset.getValue());
-			}
-		}
-
-		// update model properties to gui
-		modelViewerScreenController.setModelProperties(
-			presetId,
-			model.getProperties(),
-			null
-		);
-	}
-
-	/**
-	 * Save a model property
-	 * @param old name
-	 * @param name
-	 * @param value
-	 * @return success
-	 */
-	public boolean modelPropertySave(String oldName, String name, String value) {
-		if (model == null) return false;
-
-		// try to update property
-		if (model.updateProperty(oldName, name, value) == true) {
-			// reload model properties
-			modelViewerScreenController.setModelProperties(
-				null,
-				model.getProperties(),
-				name
-			);
-
-			// 
-			return true;
-		}
-
-		//
-		return false;
-	}
-
-	/**
-	 * Add a model property
-	 * @return success
-	 */
-	public boolean modelPropertyAdd() {
-		if (model == null) return false;
-
-		// try to add property
-		if (model.addProperty("new.property", "new.value")) {
-			// reload model properties
-			modelViewerScreenController.setModelProperties(
-				null,
-				model.getProperties(),
-				"new.property"
-			);
-
-			//
-			return true;
-		}
-
-		//
-		return false;
-	}
-
-	/**
-	 * Remove a model property from model properties
-	 * @param name
-	 * @return success
-	 */
-	public boolean modelPropertyRemove(String name) {
-		if (model == null) return false;
-
-		// try to remove property
-		int idx = model.getPropertyIndex(name);
-		if (idx != -1 && model.removeProperty(name) == true) {
-			// get property first at index that was removed 
-			PropertyModelClass property = model.getPropertyByIndex(idx);
-			if (property == null) {
-				// if current index does not work, take current one -1
-				property = model.getPropertyByIndex(idx - 1);
-			}
-
-			// reload model properties
-			modelViewerScreenController.setModelProperties(
-				null,
-				model.getProperties(),
-				property == null?null:property.getName()
-			);
-
-			//
-			return true;
-		}
-
-		//
-		return false;
-	}
-
-	/**
-	 * On set model data hook
-	 */
-	public void onSetModelData() {
-	}
-
-	/**
-	 * Update current model data
-	 * @param name
-	 * @param description
-	 */
-	public void setModelData(String name, String description) {
-		if (model == null) return;
-		model.setName(name);
-		model.setDescription(description);
-		onSetModelData();
-		modelViewerScreenController.setScreenCaption("Model Viewer - " + (model != null?model.getName():"no model loaded"));
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
@@ -618,11 +489,11 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	/**
 	 * Init GUI elements
 	 */
-	private void updateGUIElements() {
+	public void updateGUIElements() {
 		if (model != null) {
-			modelViewerScreenController.setScreenCaption("Model Viewer - " + model.getModel().getName());
+			modelViewerScreenController.setScreenCaption("Model Viewer - " + model.getName());
 			PropertyModelClass preset = model.getProperty("preset");
-			modelViewerScreenController.setModelProperties(preset != null?preset.getValue():null, model.getProperties(), null);
+			modelViewerScreenController.setModelProperties(preset != null ? preset.getValue() : null, model.getProperties(), null);
 			modelViewerScreenController.setModelData(model.getName(), model.getDescription());
 			modelViewerScreenController.setPivot(model.getPivot());
 			modelViewerScreenController.setBoundingVolume();
@@ -667,9 +538,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// set up model properties presets
-		modelViewerScreenController.setModelPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 
 		// set up bounding volume types
 		modelViewerScreenController.setupBoundingVolumeTypes(
@@ -892,6 +760,12 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 
 		model.setupBoundingVolumeConvexMesh(file);
 		updateModelBoundingVolume(model);
+	}
+
+	/**
+	  * On set model data hook
+	  */
+	public void onSetModelData() {
 	}
 
 }

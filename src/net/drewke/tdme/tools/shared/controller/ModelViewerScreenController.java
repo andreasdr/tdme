@@ -1,7 +1,5 @@
 package net.drewke.tdme.tools.shared.controller;
 
-import java.util.Collection;
-
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.Capsule;
@@ -36,25 +34,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
+	private ModelBaseScreenController modelBaseScreenController;
+
 	private ModelViewerView view;
 	private GUIScreenNode screenNode;
 	private GUITextNode screenCaption;
 	private GUIElementNode displayBoundingVolume;
 	private GUIElementNode displayShadowing;
 	private GUIElementNode displayGround;
-	private GUIElementNode modelName;
-	private GUIElementNode modelDescription;
-	private GUIElementNode modelApply;
-	private GUIElementNode modelReload;
-	private GUIElementNode modelSave;
-	private GUIElementNode modelPropertyName;
-	private GUIElementNode modelPropertyValue;
-	private GUIElementNode modelPropertySave;
-	private GUIElementNode modelPropertyAdd;
-	private GUIElementNode modelPropertyRemove;
-	private GUIElementNode modelPropertiesList;
-	private GUIElementNode modelPropertyPresetApply;
-	private GUIElementNode modelPropertiesPresets;
 	private GUIElementNode pivotX;
 	private GUIElementNode pivotY;
 	private GUIElementNode pivotZ;
@@ -87,6 +74,12 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public ModelViewerScreenController(ModelViewerView view) {
 		this.view = view;
+		this.modelBaseScreenController = new ModelBaseScreenController(view.getPopUpsViews(), new Action() {
+			public void performAction() {
+				view.updateGUIElements();
+				view.onSetModelData();
+			}
+		});
 	}
 
 	/*
@@ -111,19 +104,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			displayBoundingVolume = (GUIElementNode)screenNode.getNodeById("display_boundingvolume");
 			displayShadowing = (GUIElementNode)screenNode.getNodeById("display_shadowing");
 			displayGround = (GUIElementNode)screenNode.getNodeById("display_ground");
-			modelName = (GUIElementNode)screenNode.getNodeById("model_name");
-			modelDescription = (GUIElementNode)screenNode.getNodeById("model_description");
-			modelApply = (GUIElementNode)screenNode.getNodeById("button_model_apply");
-			modelReload = (GUIElementNode)screenNode.getNodeById("button_model_reload");
-			modelSave = (GUIElementNode)screenNode.getNodeById("button_model_save");
-			modelPropertyName = (GUIElementNode)screenNode.getNodeById("model_property_name");
-			modelPropertyValue = (GUIElementNode)screenNode.getNodeById("model_property_value");
-			modelPropertySave = (GUIElementNode)screenNode.getNodeById("button_model_properties_save");
-			modelPropertyAdd = (GUIElementNode)screenNode.getNodeById("button_model_properties_add");
-			modelPropertyRemove = (GUIElementNode)screenNode.getNodeById("button_model_properties_remove");
-			modelPropertiesList = (GUIElementNode)screenNode.getNodeById("model_properties_listbox");
-			modelPropertyPresetApply = (GUIElementNode)screenNode.getNodeById("button_model_properties_presetapply");
-			modelPropertiesPresets = (GUIElementNode)screenNode.getNodeById("model_properties_presets");
 			pivotX = (GUIElementNode)screenNode.getNodeById("pivot_x");
 			pivotY = (GUIElementNode)screenNode.getNodeById("pivot_y");
 			pivotZ = (GUIElementNode)screenNode.getNodeById("pivot_z");
@@ -154,6 +134,9 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// init model base view
+		modelBaseScreenController.init(screenNode);
 
 		//
 		value = new MutableString();
@@ -195,6 +178,39 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
+	  * Set up general model data
+	  * @param name
+	  * @param description
+	  */
+	public void setModelData(String name, String description) {
+		modelBaseScreenController.setModelData(name, description);
+	}
+
+	/**
+	 * Unset model data
+	 */
+	public void unsetModelData() {
+		modelBaseScreenController.unsetModelData();
+	}
+
+	/**
+	 * Set up model properties
+	 * @param preset id
+	 * @param model properties
+	 * @param selected name
+	 */
+	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
+		modelBaseScreenController.setModelProperties(view.getModel(), presetId, modelProperties, selectedName);
+	}
+
+	/**
+ 	 * Unset model properties
+	 */
+	public void unsetModelProperties() {
+		modelBaseScreenController.unsetModelProperties();
+	}
+
+	/**
 	 * Set pivot tab
 	 * @param pivot
 	 */
@@ -222,34 +238,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * Set up general model data
-	 * @param name
-	 * @param description
-	 */
-	public void setModelData(String name, String description) {
-		modelName.getController().setDisabled(false);
-		modelName.getController().getValue().set(name);
-		modelDescription.getController().setDisabled(false);
-		modelDescription.getController().getValue().set(description);
-		modelApply.getController().setDisabled(false);
-		modelReload.getController().setDisabled(false);
-		modelSave.getController().setDisabled(false);
-	}
-
-	/**
-	 * Unset model data
-	 */
-	public void unsetModelData() {
-		modelName.getController().setValue(TEXT_EMPTY);
-		modelName.getController().setDisabled(true);
-		modelDescription.getController().setValue(TEXT_EMPTY);
-		modelDescription.getController().setDisabled(true);
-		modelApply.getController().setDisabled(true);
-		modelReload.getController().setDisabled(true);
-		modelSave.getController().setDisabled(true);
-	}
-
-	/**
 	 * @return display shadowing checked
 	 */
 	public boolean getDisplayShadowing() {
@@ -268,180 +256,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public boolean getDisplayBoundingVolume() {
 		return displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED);
-	}
-
-	/**
-	 * Set up model property preset ids
-	 * @param model property preset ids
-	 */
-	public void setModelPresetIds(Collection<String> modelPresetIds) {
-		// model properties presets inner
-		GUIParentNode modelPropertiesPresetsInnerNode = (GUIParentNode)(modelPropertiesPresets.getScreenNode().getNodeById(modelPropertiesPresets.getId() + "_inner"));
-
-		// clear sub nodes
-		modelPropertiesPresetsInnerNode.clearSubNodes();
-
-		// construct XML for sub nodes
-		int idx = 0;
-		String modelPropertiesPresetsInnerNodeSubNodesXML = "";
-		modelPropertiesPresetsInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + modelPropertiesPresets.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
-		for (String modelPresetId: modelPresetIds) {
-			modelPropertiesPresetsInnerNodeSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(modelPresetId) + "\" value=\"" + GUIParser.escapeQuotes(modelPresetId) + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
-			idx++;
-		}
-		modelPropertiesPresetsInnerNodeSubNodesXML+= "</scrollarea-vertical>";
-
-		// inject sub nodes
-		try {
-			GUIParser.parse(
-				modelPropertiesPresetsInnerNode,
-				modelPropertiesPresetsInnerNodeSubNodesXML
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// relayout
-		modelPropertiesPresetsInnerNode.getScreenNode().layout();
-	}
-
-	/**
-	 * Set up model properties
-	 * @param preset id
-	 * @param model properties
-	 * @param selected name
-	 */
-	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
-		//
-		modelPropertiesPresets.getController().setDisabled(false);
-		modelPropertyPresetApply.getController().setDisabled(false);
-		modelPropertiesList.getController().setDisabled(false);
-		modelPropertyAdd.getController().setDisabled(false);
-		modelPropertyRemove.getController().setDisabled(false);
-		modelPropertySave.getController().setDisabled(true);
-		modelPropertyName.getController().setDisabled(true);
-		modelPropertyValue.getController().setDisabled(true);
-
-		// set up preset
-		modelPropertiesPresets.getController().setValue(presetId != null?value.set(presetId):value.set("none"));
-
-		// model properties list box inner
-		GUIParentNode modelPropertiesListBoxInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(modelPropertiesList.getId() + "_inner"));
-		
-		// clear sub nodes
-		modelPropertiesListBoxInnerNode.clearSubNodes();
-
-		// construct XML for sub nodes
-		int idx = 1;
-		String modelPropertiesListBoxSubNodesXML = "";
-		modelPropertiesListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelPropertiesList.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
-		for (PropertyModelClass modelProperty: modelProperties) {
-			modelPropertiesListBoxSubNodesXML+= 
-				"<selectbox-option text=\"" + 
-				GUIParser.escapeQuotes(modelProperty.getName()) + 
-				": " + 
-				GUIParser.escapeQuotes(modelProperty.getValue()) + 
-				"\" value=\"" + 
-				GUIParser.escapeQuotes(modelProperty.getName()) + 
-				"\" " +
-				(selectedName != null && modelProperty.getName().equals(selectedName)?"selected=\"true\" ":"") +
-				"/>\n";
-		}
-		modelPropertiesListBoxSubNodesXML+= "</scrollarea-vertical>\n";
-
-		// inject sub nodes
-		try {
-			GUIParser.parse(
-				modelPropertiesListBoxInnerNode,
-				modelPropertiesListBoxSubNodesXML
-			);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// relayout
-		modelPropertiesListBoxInnerNode.getScreenNode().layout();
-
-		//
-		onModelPropertiesSelectionChanged();
-	}
-
-	/**
-	 * Unset model properties
-	 */
-	public void unsetModelProperties() {
-		GUIParentNode modelPropertiesListBoxInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(modelPropertiesList.getId() + "_inner"));
-		modelPropertiesListBoxInnerNode.clearSubNodes();
-		modelPropertiesPresets.getController().setValue(value.set("none"));
-		modelPropertiesPresets.getController().setDisabled(true);
-		modelPropertyPresetApply.getController().setDisabled(true);
-		modelPropertiesList.getController().setDisabled(true);
-		modelPropertyAdd.getController().setDisabled(true);
-		modelPropertyRemove.getController().setDisabled(true);
-		modelPropertySave.getController().setDisabled(true);
-		modelPropertyName.getController().setValue(TEXT_EMPTY);
-		modelPropertyName.getController().setDisabled(true);
-		modelPropertyValue.getController().setValue(TEXT_EMPTY);
-		modelPropertyValue.getController().setDisabled(true);
-	}
-
-	/**
-	 * On model property save
-	 */
-	public void onModelPropertySave() {
-		if (view.modelPropertySave(
-			modelPropertiesList.getController().getValue().toString(),
-			modelPropertyName.getController().getValue().toString(),
-			modelPropertyValue.getController().getValue().toString()) == false) {
-			//
-			showErrorPopUp("Warning", "Saving model property failed");
-		}
-	}
-
-	/**
-	 * On model property add
-	 */
-	public void onModelPropertyAdd() {
-		if (view.modelPropertyAdd() == false) {
-			showErrorPopUp("Warning", "Adding new model property failed");
-		}
-	}
-
-	/**
-	 * On model property remove
-	 */
-	public void onModelPropertyRemove() {
-		if (view.modelPropertyRemove(modelPropertiesList.getController().getValue().toString()) == false) {
-			showErrorPopUp("Warning", "Removing model property failed");
-		}
-	}
-
-	/**
-	 * On model property preset apply 
-	 */
-	public void onModelPropertyPresetApply() {
-		view.modelPropertiesPreset(modelPropertiesPresets.getController().getValue().toString());
-	}
-
-	/**
-	 * Event callback for model properties selection
-	 */
-	public void onModelPropertiesSelectionChanged() {
-		modelPropertyName.getController().setDisabled(true);
-		modelPropertyName.getController().setValue(TEXT_EMPTY);
-		modelPropertyValue.getController().setDisabled(true);
-		modelPropertyValue.getController().setValue(TEXT_EMPTY);
-		modelPropertySave.getController().setDisabled(true);
-		modelPropertyRemove.getController().setDisabled(true);
-		PropertyModelClass modelProperty = view.getModel().getProperty(modelPropertiesList.getController().getValue().toString());
-		if (modelProperty != null) {
-			modelPropertyName.getController().setValue(value.set(modelProperty.getName()));
-			modelPropertyValue.getController().setValue(value.set(modelProperty.getValue()));
-			modelPropertyName.getController().setDisabled(false);
-			modelPropertyValue.getController().setDisabled(false);
-			modelPropertySave.getController().setDisabled(false);
-			modelPropertyRemove.getController().setDisabled(false);
-		}
 	}
 
 	/**
@@ -521,25 +335,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * On model data apply
-	 */
-	public void onModelDataApply() {
-		view.setModelData(
-			modelName.getController().getValue().toString(), 
-			modelDescription.getController().getValue().toString()
-		);
-
-		// rename in library
-		/*
-		LevelEditorModel model = view.getSelectedModel();
-		if (model == null) return;
-		Element modelNameElement = screen.findElementByName("modelchoser_name_" + model.getId());
-		TextRenderer modelNameElementRenderer = modelNameElement.getRenderer(TextRenderer.class);
-		modelNameElementRenderer.setText(model.getName());
-		*/
-	}
-
-	/**
 	 * On pivot apply
 	 */
 	public void onPivotApply() {
@@ -608,7 +403,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void setupBoundingVolumeTypes(String[] boundingVolumeTypes) {
 		// bounding volume types drop downs inner
-		GUIParentNode boundingVolumeTypeDropDownInnerNode = (GUIParentNode)(modelPropertiesList.getScreenNode().getNodeById(boundingVolumeTypeDropDown.getId() + "_inner"));
+		GUIParentNode boundingVolumeTypeDropDownInnerNode = (GUIParentNode)(boundingVolumeTypeDropDown.getScreenNode().getNodeById(boundingVolumeTypeDropDown.getId() + "_inner"));
 
 		// clear sub nodes
 		boundingVolumeTypeDropDownInnerNode.clearSubNodes();
@@ -927,11 +722,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.gui.events.GUIChangeListener#onValueChanged(net.drewke.tdme.gui.nodes.GUIElementNode)
 	 */
 	public void onValueChanged(GUIElementNode node) {
-		if (node == modelPropertiesList) {
-			onModelPropertiesSelectionChanged();
-		} else {
-			// System.out.println("ModelViewerScreenController::onValueChanged(): id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
-		}
+		// delegate to model base screen controller
+		modelBaseScreenController.onValueChanged(node, view.getModel());	
 	}
 
 	/*
@@ -939,6 +731,9 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.gui.events.GUIActionListener#onActionPerformed(net.drewke.tdme.gui.events.GUIActionListener.Type, net.drewke.tdme.gui.nodes.GUIElementNode)
 	 */
 	public void onActionPerformed(Type type, GUIElementNode node) {
+		// delegate to model base screen controller
+		modelBaseScreenController.onActionPerformed(type, node, view.getModel());
+		// handle own actions
 		switch (type) {
 			case PERFORMED:
 				{
@@ -953,21 +748,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 					} else
 					if (node.getId().equals("button_model_save")) {
 						onModelSave();
-					} else
-					if (node.getId().equals("button_model_apply")) {
-						onModelDataApply();
-					} else
-					if (node.getId().equals("button_model_properties_presetapply")) {
-						onModelPropertyPresetApply();
-					} else
-					if (node.getId().equals("button_model_properties_add")) {
-						onModelPropertyAdd();
-					} else
-					if (node.getId().equals("button_model_properties_remove")) {
-						onModelPropertyRemove();
-					} else
-					if (node.getId().equals("button_model_properties_save")) {
-						onModelPropertySave();
 					} else
 					if (node.getId().equals("button_pivot_apply")) {
 						onPivotApply();

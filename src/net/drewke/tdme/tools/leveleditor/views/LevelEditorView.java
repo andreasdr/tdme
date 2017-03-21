@@ -166,6 +166,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 	/**
 	 * Public constructor
+	 * @param pop ups 
 	 */
 	public LevelEditorView(PopUps popUps) {
 		this.popUps = popUps;
