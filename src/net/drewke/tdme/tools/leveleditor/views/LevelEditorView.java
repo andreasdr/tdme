@@ -772,7 +772,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		//
 		loadLevel();
-		updateGrid();
 	}
 
 	/**
@@ -826,6 +825,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * Loads a level from internal level representation to tdme
 	 */
 	public void loadLevel() {
+		// reset engine / view
+		removeGrid();
 		engine.reset();
 		selectedObjects.clear();
 		selectedObjectsById.clear();
