@@ -15,7 +15,7 @@ import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * Model base controller
+ * Model base (screen) controller
  * @author Andreas Drewke
  * @version $Id$
  */
@@ -79,12 +79,6 @@ public class ModelBaseScreenController {
 
 		// set up model properties presets
 		setModelPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
-	}
-
-	/**
-	 * On set model data hook
-	 */
-	public void onSetModelData() {
 	}
 
 	/**
