@@ -15,11 +15,11 @@ import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.utils.MutableString;
 
 /**
- * Model base (screen) controller
+ * Model base sub screen controller
  * @author Andreas Drewke
  * @version $Id$
  */
-public class ModelBaseScreenController {
+public class ModelBaseSubScreenController {
 
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
@@ -29,8 +29,6 @@ public class ModelBaseScreenController {
 	private GUIElementNode modelName;
 	private GUIElementNode modelDescription;
 	private GUIElementNode modelApply;
-	private GUIElementNode modelReload;
-	private GUIElementNode modelSave;
 	private GUIElementNode modelPropertyName;
 	private GUIElementNode modelPropertyValue;
 	private GUIElementNode modelPropertySave;
@@ -47,7 +45,7 @@ public class ModelBaseScreenController {
 	 * Public constructor
 	 * @param view
 	 */
-	public ModelBaseScreenController(PopUps popUps, Action onSetModelDataAction) {
+	public ModelBaseSubScreenController(PopUps popUps, Action onSetModelDataAction) {
 		this.view = new ModelBaseView(this);
 		this.popUps = popUps;
 		this.onSetModelDataAction = onSetModelDataAction;
@@ -63,8 +61,6 @@ public class ModelBaseScreenController {
 			modelName = (GUIElementNode)screenNode.getNodeById("model_name");
 			modelDescription = (GUIElementNode)screenNode.getNodeById("model_description");
 			modelApply = (GUIElementNode)screenNode.getNodeById("button_model_apply");
-			modelReload = (GUIElementNode)screenNode.getNodeById("button_model_reload");
-			modelSave = (GUIElementNode)screenNode.getNodeById("button_model_save");
 			modelPropertyName = (GUIElementNode)screenNode.getNodeById("model_property_name");
 			modelPropertyValue = (GUIElementNode)screenNode.getNodeById("model_property_value");
 			modelPropertySave = (GUIElementNode)screenNode.getNodeById("button_model_properties_save");
@@ -92,8 +88,6 @@ public class ModelBaseScreenController {
 		modelDescription.getController().setDisabled(false);
 		modelDescription.getController().getValue().set(description);
 		modelApply.getController().setDisabled(false);
-		modelReload.getController().setDisabled(false);
-		modelSave.getController().setDisabled(false);
 	}
 
 	/**
@@ -105,8 +99,6 @@ public class ModelBaseScreenController {
 		modelDescription.getController().setValue(TEXT_EMPTY);
 		modelDescription.getController().setDisabled(true);
 		modelApply.getController().setDisabled(true);
-		modelReload.getController().setDisabled(true);
-		modelSave.getController().setDisabled(true);
 	}
 
 	/**

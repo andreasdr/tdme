@@ -2,7 +2,7 @@ package net.drewke.tdme.tools.shared.views;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.tools.shared.controller.ModelBaseScreenController;
+import net.drewke.tdme.tools.shared.controller.ModelBaseSubScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
@@ -14,14 +14,14 @@ import net.drewke.tdme.tools.shared.model.PropertyModelClass;
  */
 public class ModelBaseView {
 
-	private ModelBaseScreenController modelBaseScreenController;
+	private ModelBaseSubScreenController modelBaseSubScreenController;
 
 	/**
 	 * Public constructor
-	 * @param model base controller
+	 * @param model base sub screen controller
 	 */
-	public ModelBaseView(ModelBaseScreenController modelBaseScreenController) {
-		this.modelBaseScreenController = modelBaseScreenController;
+	public ModelBaseView(ModelBaseSubScreenController modelBaseSubScreenController) {
+		this.modelBaseSubScreenController = modelBaseSubScreenController;
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class ModelBaseView {
 	 */
 	public void init() {
 		// set up model properties presets
-		modelBaseScreenController.setModelPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
+		modelBaseSubScreenController.setModelPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class ModelBaseView {
 		}
 
 		// update model properties to gui
-		modelBaseScreenController.setModelProperties(
+		modelBaseSubScreenController.setModelProperties(
 			model,
 			presetId,
 			model.getProperties(),
@@ -74,7 +74,7 @@ public class ModelBaseView {
 		// try to update property
 		if (model.updateProperty(oldName, name, value) == true) {
 			// reload model properties
-			modelBaseScreenController.setModelProperties(
+			modelBaseSubScreenController.setModelProperties(
 				model,
 				null,
 				model.getProperties(),
@@ -100,7 +100,7 @@ public class ModelBaseView {
 		// try to add property
 		if (model.addProperty("new.property", "new.value")) {
 			// reload model properties
-			modelBaseScreenController.setModelProperties(
+			modelBaseSubScreenController.setModelProperties(
 				model,
 				null,
 				model.getProperties(),
@@ -135,7 +135,7 @@ public class ModelBaseView {
 			}
 
 			// reload model properties
-			modelBaseScreenController.setModelProperties(
+			modelBaseSubScreenController.setModelProperties(
 				model,
 				null,
 				model.getProperties(),

@@ -34,11 +34,13 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
-	private ModelBaseScreenController modelBaseScreenController;
+	private ModelBaseSubScreenController modelBaseSubScreenController;
 
 	private ModelViewerView view;
 	private GUIScreenNode screenNode;
 	private GUITextNode screenCaption;
+	private GUIElementNode modelReload;
+	private GUIElementNode modelSave;
 	private GUIElementNode displayBoundingVolume;
 	private GUIElementNode displayShadowing;
 	private GUIElementNode displayGround;
@@ -74,7 +76,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public ModelViewerScreenController(ModelViewerView view) {
 		this.view = view;
-		this.modelBaseScreenController = new ModelBaseScreenController(view.getPopUpsViews(), new Action() {
+		this.modelBaseSubScreenController = new ModelBaseSubScreenController(view.getPopUpsViews(), new Action() {
 			public void performAction() {
 				view.updateGUIElements();
 				view.onSetModelData();
@@ -104,6 +106,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			displayBoundingVolume = (GUIElementNode)screenNode.getNodeById("display_boundingvolume");
 			displayShadowing = (GUIElementNode)screenNode.getNodeById("display_shadowing");
 			displayGround = (GUIElementNode)screenNode.getNodeById("display_ground");
+			modelReload = (GUIElementNode)screenNode.getNodeById("button_model_reload");
+			modelSave = (GUIElementNode)screenNode.getNodeById("button_model_save");
 			pivotX = (GUIElementNode)screenNode.getNodeById("pivot_x");
 			pivotY = (GUIElementNode)screenNode.getNodeById("pivot_y");
 			pivotZ = (GUIElementNode)screenNode.getNodeById("pivot_z");
@@ -136,7 +140,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		}
 
 		// init model base view
-		modelBaseScreenController.init(screenNode);
+		modelBaseSubScreenController.init(screenNode);
 
 		//
 		value = new MutableString();
@@ -183,14 +187,18 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	  * @param description
 	  */
 	public void setModelData(String name, String description) {
-		modelBaseScreenController.setModelData(name, description);
+		modelBaseSubScreenController.setModelData(name, description);
+		modelReload.getController().setDisabled(false);
+		modelSave.getController().setDisabled(false);
 	}
 
 	/**
 	 * Unset model data
 	 */
 	public void unsetModelData() {
-		modelBaseScreenController.unsetModelData();
+		modelBaseSubScreenController.unsetModelData();
+		modelReload.getController().setDisabled(true);
+		modelSave.getController().setDisabled(true);
 	}
 
 	/**
@@ -200,14 +208,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @param selected name
 	 */
 	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
-		modelBaseScreenController.setModelProperties(view.getModel(), presetId, modelProperties, selectedName);
+		modelBaseSubScreenController.setModelProperties(view.getModel(), presetId, modelProperties, selectedName);
 	}
 
 	/**
  	 * Unset model properties
 	 */
 	public void unsetModelProperties() {
-		modelBaseScreenController.unsetModelProperties();
+		modelBaseSubScreenController.unsetModelProperties();
 	}
 
 	/**
@@ -723,7 +731,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onValueChanged(GUIElementNode node) {
 		// delegate to model base screen controller
-		modelBaseScreenController.onValueChanged(node, view.getModel());	
+		modelBaseSubScreenController.onValueChanged(node, view.getModel());
 	}
 
 	/*
@@ -732,7 +740,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onActionPerformed(Type type, GUIElementNode node) {
 		// delegate to model base screen controller
-		modelBaseScreenController.onActionPerformed(type, node, view.getModel());
+		modelBaseSubScreenController.onActionPerformed(type, node, view.getModel());
 		// handle own actions
 		switch (type) {
 			case PERFORMED:
