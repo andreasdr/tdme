@@ -7,8 +7,7 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.tools.leveleditor.controller.LevelEditorModelLibraryScreenController;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
-import net.drewke.tdme.tools.shared.controller.FileDialogScreenController;
-import net.drewke.tdme.tools.shared.controller.InfoDialogScreenController;
+import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
 import net.drewke.tdme.tools.shared.tools.Tools;
@@ -259,10 +258,17 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	}
 
 	/**
-	 * Switch to level editor
+	 * Switch to model viewer
 	 */
-	public void switchToModelLibrary() {
+	public void switchToModelViewer() {
 		setView(new ModelViewerView(popUps));
+	}
+
+	/**
+	 * Switch to trigger view
+	 */
+	public void switchToTriggerView() {
+		setView(new TriggerView(popUps));
 	}
 
 	/*

@@ -43,6 +43,13 @@ public class Properties {
 	}
 
 	/**
+	 * @return property count
+	 */
+	public int getPropertyCount() {
+		return properties.size();
+	}
+
+	/**
 	 * Get property index
 	 * @param name
 	 * @return index or -1 if not found

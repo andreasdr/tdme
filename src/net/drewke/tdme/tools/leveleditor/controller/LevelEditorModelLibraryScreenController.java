@@ -10,6 +10,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
+import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorModel;
@@ -158,20 +159,33 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	}
 
 	/**
-	 * On library action
+	 * On edit model
 	 */
-	public void onLibrary() {
+	public void onEditModel() {
 		// check if we have a model selected
 		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
 		if (model == null) return;
 
-		// switch to model library view if not yet done
-		if (TDMELevelEditor.getInstance().getView() instanceof ModelViewerView == false) {
-			TDMELevelEditor.getInstance().switchToModelLibrary();
+		switch (model.getType()) {
+			case MODEL:
+				// switch to model library view if not yet done
+				if (TDMELevelEditor.getInstance().getView() instanceof ModelViewerView == false) {
+					TDMELevelEditor.getInstance().switchToModelViewer();
+				}
+		
+				// set model
+				((ModelViewerView)TDMELevelEditor.getInstance().getView()).setModel(model);
+				break;
+			case TRIGGER:
+				// switch to model trigger view if not yet done
+				if (TDMELevelEditor.getInstance().getView() instanceof TriggerView == false) {
+					TDMELevelEditor.getInstance().switchToTriggerView();
+				}
+		
+				// set model
+				((TriggerView)TDMELevelEditor.getInstance().getView()).setModel(model);
+				break;
 		}
-
-		// set model
-		((ModelViewerView)TDMELevelEditor.getInstance().getView()).setModel(model);
 
 		// button enabled
 		buttonModelPlace.getController().setDisabled(true);
@@ -236,7 +250,7 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 		} else 
 		if (node.getId().equals("dropdown_entity_action") == true) {
 			if (node.getController().getValue().equals("edit") == true) {
-				onLibrary();
+				onEditModel();
 			} else
 			if (node.getController().getValue().equals("delete") == true) {
 				onDeleteEntity();
@@ -263,19 +277,33 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 									);
 									setModelLibrary();
 									modelLibraryListBox.getController().setValue(modelLibraryListBoxSelection.set(model.getId()));
-									onLibrary();
+									onEditModel();
 								} catch (Exception exception) {
-									popUps.getInfoDialogScreenController().show("An error occurred", exception.getMessage());
+									popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
 								}
 								popUps.getFileDialogScreenController().close();
 							}
-							
 						}
 					);
 			} else
 			// trigger
 			if (node.getController().getValue().equals("create_trigger") == true) {
-					
+				try {
+					LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().createTrigger(	
+						LevelEditorModelLibrary.ID_ALLOCATE,
+						"New trigger",
+						"",
+						1f,
+						1f,
+						1f,
+						new Vector3()
+					);
+					setModelLibrary();
+					modelLibraryListBox.getController().setValue(modelLibraryListBoxSelection.set(model.getId()));
+					onEditModel();
+				} catch (Exception exception) {
+					popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
+				}
 			} else
 			// light
 			if (node.getController().getValue().equals("create_light") == true) {
