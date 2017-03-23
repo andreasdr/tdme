@@ -622,6 +622,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 *		object data  
 	 */
 	private void updateGUIElements() {
+		// TODO: this whole code block takes ages(about 100ms+), check this bro
 		levelEditorScreenController.setScreenCaption("Level Editor - " + level.getFileName());
 		levelEditorScreenController.setLevelSize(level.getDimension().getX(), level.getDimension().getZ(), level.getDimension().getY());
 		if (selectedObjects.size() == 1) {
