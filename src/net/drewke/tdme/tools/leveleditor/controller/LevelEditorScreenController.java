@@ -227,8 +227,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void setScreenCaption(String text) {
 		screenCaption.getText().set(text);
-		// TODO: fix me to only layout relevant nodes
-		screenNode.layout();
+		screenCaption.layout();
 	}
 
 	/**
@@ -375,7 +374,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		}
 
 		// relayout
-		objectsListBoxInnerNode.getScreenNode().layout();
+		objectsListBoxInnerNode.layoutSubNodes();
 
 		// store selected object ids
 		objectsListBox.getController().setValue(selectedObjects);
@@ -568,7 +567,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		}
 
 		// relayout
-		mapPropertiesListBoxInnerNode.getScreenNode().layout();
+		mapPropertiesListBoxInnerNode.layoutSubNodes();
 
 		//
 		onMapPropertiesSelectionChanged();
@@ -637,7 +636,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		}
 
 		// relayout
-		objectPropertiesPresetsInnerNode.getScreenNode().layout();
+		objectPropertiesPresetsInnerNode.layoutSubNodes();
 	}
 
 	/**
@@ -724,7 +723,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		}
 
 		// relayout
-		objectPropertiesListBoxInnerNode.getScreenNode().layout();
+		objectPropertiesListBoxInnerNode.layoutSubNodes();
 
 		//
 		onObjectPropertiesSelectionChanged();
@@ -941,7 +940,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			}
 
 			// relayout
-			lightPresetsInnerNode.getScreenNode().layout();
+			lightPresetsInnerNode.layoutSubNodes();
 		}
 	}
 

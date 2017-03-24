@@ -161,7 +161,7 @@ public class GUILayoutNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#layoutSubNodes()
 	 */
-	protected void layoutSubNodes() {
+	public void layoutSubNodes() {
 		// layout sub nodes first pass
 		super.layoutSubNodes();
 

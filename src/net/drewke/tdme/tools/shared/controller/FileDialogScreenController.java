@@ -167,7 +167,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		}
 
 		// relayout
-		filesInnerNode.getScreenNode().layout();
+		filesInnerNode.layoutSubNodes();
 	}
 	
 	/**

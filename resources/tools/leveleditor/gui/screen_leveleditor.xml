@@ -1,7 +1,7 @@
 <screen id="leveleditor" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
-		<panel alignment="none" width="100%" height="30" padding="5" horizontal-align="center" vertical-align="center">
-			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Level Editor" width="auto" height="auto" />
+		<panel alignment="none" width="100%" height="30" padding="5" vertical-align="center">
+			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Level Editor" width="100%" horizontal-align="center" height="auto" />
 		</panel>
 		<layout width="100%" height="*" alignment="horizontal">
 			<element width="100%" height="100%" ignore-events="true">

@@ -305,7 +305,7 @@ public abstract class GUINode {
 	/**
 	 * Layout
 	 */
-	protected void layout() {
+	public void layout() {
 		// parent node constraints
 		int parentNodeContentWidth = parentNode.computedConstraints.width - parentNode.border.left - parentNode.border.right - parentNode.padding.left - parentNode.padding.right;
 		int parentNodeContentHeight = parentNode.computedConstraints.height - parentNode.border.top - parentNode.border.bottom - parentNode.padding.top - parentNode.padding.bottom;

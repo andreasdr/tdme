@@ -177,8 +177,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void setScreenCaption(String text) {
 		screenCaption.getText().set(text);
-		// TODO: fix me to only layout relevant nodes
-		screenNode.layout();
+		screenCaption.layout();
 	}
 
 	/**
@@ -434,7 +433,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		}
 
 		// relayout
-		boundingVolumeTypeDropDownInnerNode.getScreenNode().layout();
+		boundingVolumeTypeDropDownInnerNode.layoutSubNodes();
 	}
 
 	/**

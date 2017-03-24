@@ -149,7 +149,7 @@ public class ModelBaseSubScreenController {
 		}
 
 		// relayout
-		modelPropertiesPresetsInnerNode.getScreenNode().layout();
+		modelPropertiesPresetsInnerNode.layoutSubNodes();
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class ModelBaseSubScreenController {
 		}
 
 		// relayout
-		modelPropertiesListBoxInnerNode.getScreenNode().layout();
+		modelPropertiesListBoxInnerNode.layoutSubNodes();
 
 		//
 		onModelPropertiesSelectionChanged(model);

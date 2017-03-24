@@ -131,7 +131,7 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 		}
 
 		// relayout
-		modelLibraryListBoxInnerNode.getScreenNode().layout();
+		modelLibraryListBoxInnerNode.layoutSubNodes();
 
 		// reset selection
 		if (modelLibraryListBoxSelection.length() > 0) {
