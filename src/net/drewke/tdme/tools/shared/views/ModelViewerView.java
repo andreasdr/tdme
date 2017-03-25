@@ -45,7 +45,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	private boolean displayShadowing = false;
 	private boolean displayBoundingVolume = false;
 
-	private CameraRotationHandler cameraRotationHandler;
+	private CameraRotationInputHandler cameraRotationInputHandler;
 
 	/**
 	 * Public constructor
@@ -138,13 +138,13 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		modelFile = new File(model.getFileName());
 
 		// set up model in engine
-		Tools.setupModel(model, engine, cameraRotationHandler.getLookFromRotations(), cameraRotationHandler.getScale());
+		Tools.setupModel(model, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
 		// Make model screenshot
 		Tools.oseThumbnail(drawable, model);
 
 		// max axis dimension
-		cameraRotationHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel())));
+		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel())));
 
 		// set up model statistics
 		ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(model.getModel());
@@ -264,7 +264,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
 	 */
 	public void handleInputEvents() {
-		cameraRotationHandler.handleInputEvents();
+		cameraRotationInputHandler.handleInputEvents();
 	}
 
 	/**
@@ -277,7 +277,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			loadModelRequested = false;
 			engine.reset();
 			loadModel();
-			cameraRotationHandler.reset();
+			cameraRotationInputHandler.reset();
 		}
 
 		// init model
@@ -377,7 +377,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
 
 		//
-		cameraRotationHandler = new CameraRotationHandler(engine);
+		cameraRotationInputHandler = new CameraRotationInputHandler(engine);
 	}
 
 	/**

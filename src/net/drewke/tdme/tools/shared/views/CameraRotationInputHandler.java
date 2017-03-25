@@ -15,7 +15,7 @@ import net.drewke.tdme.math.Vector3;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class CameraRotationHandler implements GUIInputEventHandler {
+public class CameraRotationInputHandler implements GUIInputEventHandler {
 
 	private Engine engine;
 
@@ -42,7 +42,7 @@ public class CameraRotationHandler implements GUIInputEventHandler {
 	/**
 	 * Public constructor
 	 */
-	public CameraRotationHandler(Engine engine) {
+	public CameraRotationInputHandler(Engine engine) {
 		this.engine = engine;
 		keyLeft = false;
 		keyRight = false;
