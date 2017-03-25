@@ -59,6 +59,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		initModelRequested = false;
 		model = null;
 		modelFile = null;
+		cameraRotationInputHandler = new CameraRotationInputHandler(engine);
 	}
 
 	/**
@@ -375,9 +376,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		onInitAdditionalScreens();
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
-
-		//
-		cameraRotationInputHandler = new CameraRotationInputHandler(engine);
 	}
 
 	/**
