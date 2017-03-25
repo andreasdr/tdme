@@ -18,7 +18,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 
@@ -36,7 +36,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	private PopUps popUps;
 	private ModelViewerScreenController modelViewerScreenController;
 
-	private LevelEditorModel model;
+	private LevelEditorEntity entity;
 	private boolean loadModelRequested;
 	private boolean initModelRequested;
 	private File modelFile;
@@ -57,7 +57,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		modelViewerScreenController = null;
 		loadModelRequested = false;
 		initModelRequested = false;
-		model = null;
+		entity = null;
 		modelFile = null;
 		cameraRotationInputHandler = new CameraRotationInputHandler(engine);
 	}
@@ -115,17 +115,17 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * @return model
+	 * @return entity
 	 */
-	public LevelEditorModel getModel() {
-		return model;
+	public LevelEditorEntity getEntity() {
+		return entity;
 	}
 
 	/**
-	 * @return selected model
+	 * Set entity
 	 */
-	public void setModel(LevelEditorModel model) {
-		this.model = model;
+	public void setEntity(LevelEditorEntity entity) {
+		this.entity = entity;
 		initModelRequested = true;
 	}
 
@@ -133,26 +133,26 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * Init model
 	 */
 	protected void initModel(GLAutoDrawable drawable) {
-		if (model == null) return;
+		if (entity == null) return;
 
 		//
-		modelFile = new File(model.getFileName());
+		modelFile = new File(entity.getFileName());
 
 		// set up model in engine
-		Tools.setupModel(model, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
+		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
 		// Make model screenshot
-		Tools.oseThumbnail(drawable, model);
+		Tools.oseThumbnail(drawable, entity);
 
 		// max axis dimension
-		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel())));
+		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(entity.getModel())));
 
 		// set up model statistics
-		ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(model.getModel());
+		ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(entity.getModel());
 		modelViewerScreenController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
 
 		// set up oriented bounding box
-		BoundingBox aabb = Engine.getModelBoundingBox(model.getModel());
+		BoundingBox aabb = Engine.getModelBoundingBox(entity.getModel());
 		OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
 
 		// set up sphere
@@ -238,7 +238,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * Triggers saving a map
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
-		ModelMetaDataFileExport.export(new File(pathName, fileName).getCanonicalPath(), model);
+		ModelMetaDataFileExport.export(new File(pathName, fileName).getCanonicalPath(), entity);
 	}
 
 
@@ -256,8 +256,8 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * @param z
 	 */
 	public void pivotApply(float x, float y, float z) {
-		if (model == null) return;
-		model.getPivot().set(x, y, z);
+		if (entity == null) return;
+		entity.getPivot().set(x, y, z);
 	}
 
 	/*
@@ -288,7 +288,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		}
 
 		// apply settings from gui
-		if (model != null) {
+		if (entity != null) {
 			Entity model = engine.getEntity("model");
 			Entity ground = engine.getEntity("ground");
 			model.setDynamicShadowingEnabled(displayShadowing);
@@ -308,16 +308,16 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * Init GUI elements
 	 */
 	public void updateGUIElements() {
-		if (model != null) {
-			modelViewerScreenController.setScreenCaption("Model Viewer - " + model.getName());
-			PropertyModelClass preset = model.getProperty("preset");
-			modelViewerScreenController.setModelProperties(preset != null ? preset.getValue() : null, model.getProperties(), null);
-			modelViewerScreenController.setModelData(model.getName(), model.getDescription());
-			modelViewerScreenController.setPivot(model.getPivot());
+		if (entity != null) {
+			modelViewerScreenController.setScreenCaption("Model Viewer - " + entity.getName());
+			PropertyModelClass preset = entity.getProperty("preset");
+			modelViewerScreenController.setModelProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
+			modelViewerScreenController.setModelData(entity.getName(), entity.getDescription());
+			modelViewerScreenController.setPivot(entity.getPivot());
 			modelViewerScreenController.setBoundingVolume();
 			modelViewerScreenController.setupModelBoundingVolume();
 		} else {
-			modelViewerScreenController.setScreenCaption("Model Viewer - no model loaded");
+			modelViewerScreenController.setScreenCaption("Model Viewer - no entity loaded");
 			modelViewerScreenController.unsetModelProperties();
 			modelViewerScreenController.unsetModelData();
 			modelViewerScreenController.unsetPivot();
@@ -381,9 +381,9 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	/**
 	 * On load model
 	 * @param oldModel
-	 * @oaram model
+	 * @oaram entity
 	 */
-	public void onLoadModel(LevelEditorModel oldModel, LevelEditorModel model) {
+	public void onLoadModel(LevelEditorEntity oldModel, LevelEditorEntity model) {
 	}
 
 	/**
@@ -395,17 +395,17 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 
 		// scene
 		try {
-			LevelEditorModel oldModel = model;
+			LevelEditorEntity oldModel = entity;
 
-			// add model to library
-			model = loadModel(
+			// add entity to library
+			entity = loadModel(
 				modelFile.getName(),
 				"",
 				modelFile.getParentFile().getAbsolutePath(),
 				modelFile.getName(),
 				new Vector3()
 			);
-			onLoadModel(oldModel, model);
+			onLoadModel(oldModel, entity);
 		} catch (Exception exception) {
 			popUps.getInfoDialogScreenController().show("Warning", exception.getMessage());
 		}
@@ -439,23 +439,23 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * Load model method
+	 * Load model
 	 * @param name
 	 * @param description
 	 * @param path name
 	 * @param file name
 	 * @param pivot
-	 * @return level editor model
+	 * @return level editor entity
 	 * @throws Exception
 	 */
-	protected LevelEditorModel loadModel(String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
+	protected LevelEditorEntity loadModel(String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
 		if (fileName.toLowerCase().endsWith(".dae")) {
 			Model model = DAEReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
 			BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);
 			Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
-			LevelEditorModel levelEditorModel = new LevelEditorModel(
-				LevelEditorModel.ID_NONE,
-				LevelEditorModel.ModelType.MODEL,
+			LevelEditorEntity levelEditorEntity = new LevelEditorEntity(
+				LevelEditorEntity.ID_NONE,
+				LevelEditorEntity.ModelType.MODEL,
 				name,
 				description,
 				pathName + File.separator + fileName,
@@ -470,15 +470,15 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 				boundingBox,
 				pivot
 			);
-			return levelEditorModel;
+			return levelEditorEntity;
 		} else
 		if (fileName.toLowerCase().endsWith(".tm")) {
 			Model model = TMReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
 			BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);
 			Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
-			LevelEditorModel levelEditorModel = new LevelEditorModel(
-				LevelEditorModel.ID_NONE,
-				LevelEditorModel.ModelType.MODEL,
+			LevelEditorEntity levelEditorEntity = new LevelEditorEntity(
+				LevelEditorEntity.ID_NONE,
+				LevelEditorEntity.ModelType.MODEL,
 				name,
 				description,
 				pathName + File.separator + fileName,
@@ -493,20 +493,20 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 				boundingBox,
 				pivot
 			);
-			return levelEditorModel;
+			return levelEditorEntity;
 		} else
 		if (fileName.toLowerCase().endsWith(".tmm")) {
-			LevelEditorModel levelEditorModel = ModelMetaDataFileImport.doImport(LevelEditorModel.ID_NONE, pathName, fileName);
-			return levelEditorModel;
+			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImport(LevelEditorEntity.ID_NONE, pathName, fileName);
+			return levelEditorEntity;
 		}
 		return null;
 	}
 
 	/**
 	 * Update model bounding volume
-	 * @param model
+	 * @param entity
 	 */
-	private void updateModelBoundingVolume(LevelEditorModel model) {
+	private void updateModelBoundingVolume(LevelEditorEntity entity) {
 		// remove old bv
 		Entity modelBoundingVolumeObject = engine.getEntity("model_bv");
 		if (modelBoundingVolumeObject != null) {
@@ -514,8 +514,8 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		}
 
 		// add new bv
-		if (model.getModelBoundingVolume() == null) return;
-		modelBoundingVolumeObject = new Object3D("model_bv", model.getModelBoundingVolume());
+		if (entity.getModelBoundingVolume() == null) return;
+		modelBoundingVolumeObject = new Object3D("model_bv", entity.getModelBoundingVolume());
 		modelBoundingVolumeObject.setEnabled(displayBoundingVolume);
 		engine.addEntity(modelBoundingVolumeObject);
 	}
@@ -524,66 +524,66 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * On bounding volume none apply
 	 */
 	public void applyBoundingVolumeNone() {
-		if (model == null) return;
+		if (entity == null) return;
 
-		model.setupBoundingVolumeNone();
-		updateModelBoundingVolume(model);
+		entity.setupBoundingVolumeNone();
+		updateModelBoundingVolume(entity);
 	}
 
 	/**
 	 * On bounding volume sphere apply
 	 */
 	public void applyBoundingVolumeSphere(Vector3 center, float radius) {
-		if (model == null) return;
+		if (entity == null) return;
 
-		model.setupBoundingVolumeSphere(center, radius);
-		updateModelBoundingVolume(model);
+		entity.setupBoundingVolumeSphere(center, radius);
+		updateModelBoundingVolume(entity);
 	}
 
 	/**
 	 * On bounding volume capsule apply
 	 */
 	public void applyBoundingVolumeCapsule(Vector3 a, Vector3 b, float radius) {
-		if (model == null) return;
+		if (entity == null) return;
 
-		model.setupBoundingVolumeCapsule(a, b, radius);
-		updateModelBoundingVolume(model);
+		entity.setupBoundingVolumeCapsule(a, b, radius);
+		updateModelBoundingVolume(entity);
 	}
 
 	/**
 	 * On bounding volume AABB apply
 	 */
 	public void applyBoundingVolumeAabb(Vector3 min, Vector3 max) {
-		if (model == null) return;
+		if (entity == null) return;
 
-		model.setupBoundingVolumeAabb(min, max);
-		updateModelBoundingVolume(model);
+		entity.setupBoundingVolumeAabb(min, max);
+		updateModelBoundingVolume(entity);
 	}
 
 	/**
 	 * On bounding volume OBB apply
 	 */
 	public void applyBoundingVolumeObb(Vector3 center, Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 halfExtension) {
-		if (model == null) return;
+		if (entity == null) return;
 
-		model.setupBoundingVolumeObb(center, axis0, axis1, axis2, halfExtension);
-		updateModelBoundingVolume(model);
+		entity.setupBoundingVolumeObb(center, axis0, axis1, axis2, halfExtension);
+		updateModelBoundingVolume(entity);
 	}
 
 	/**
 	 * On bounding volume convex mesh apply
 	 */
 	public void applyBoundingVolumeConvexMesh(String file) {
-		if (model == null) return;
+		if (entity == null) return;
 
-		model.setupBoundingVolumeConvexMesh(file);
-		updateModelBoundingVolume(model);
+		entity.setupBoundingVolumeConvexMesh(file);
+		updateModelBoundingVolume(entity);
 	}
 
 	/**
-	  * On set model data hook
+	  * On set entity data hook
 	  */
-	public void onSetModelData() {
+	public void onSetEntityData() {
 	}
 
 }

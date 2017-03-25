@@ -20,7 +20,7 @@ public final class LevelEditorLevel extends Properties {
 	private String fileName;
 	private RotationOrder rotationOrder;
 	private ArrayList<LevelEditorLight> lights;
-	private LevelEditorModelLibrary modelLibrary;
+	private LevelEditorEntityLibrary entityLibrary;
 	private HashMap<String, LevelEditorObject> objectsById;
 	private ArrayList<LevelEditorObject> objects;
 	private int objectIdx;
@@ -62,7 +62,7 @@ public final class LevelEditorLevel extends Properties {
 		light.setEnabled(true);
 
 		//
-		modelLibrary = new LevelEditorModelLibrary();
+		entityLibrary = new LevelEditorEntityLibrary();
 		ArrayList<PropertyModelClass> defaultMapProperties = LevelPropertyPresets.getInstance().getMapPropertiesPreset();
 		for (PropertyModelClass mapProperty: defaultMapProperties) {
 			addProperty(mapProperty.getName(), mapProperty.getValue());
@@ -143,10 +143,10 @@ public final class LevelEditorLevel extends Properties {
 	}
 
 	/**
-	 * @return model library
+	 * @return entity library
 	 */
-	public LevelEditorModelLibrary getModelLibrary() {
-		return modelLibrary;
+	public LevelEditorEntityLibrary getEntityLibrary() {
+		return entityLibrary;
 	}
 
 	/**
@@ -185,8 +185,8 @@ public final class LevelEditorLevel extends Properties {
 		Vector3 bbMin = new Vector3();
 		Vector3 bbMax = new Vector3();
 		for (LevelEditorObject levelEditorObject: objects) {
-			BoundingVolume bv = levelEditorObject.getModel().getBoundingVolume();
-			if (bv == null) bv = levelEditorObject.getModel().getBoundingBox();
+			BoundingVolume bv = levelEditorObject.getEntity().getBoundingVolume();
+			if (bv == null) bv = levelEditorObject.getEntity().getBoundingBox();
 			BoundingVolume cbv = bv.clone();
 			cbv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
 			bbDimension.set(
@@ -276,13 +276,13 @@ public final class LevelEditorLevel extends Properties {
 	}
 
 	/**
-	 * Remove objects with given model id
-	 * @param modelId
+	 * Remove objects with given entity id
+	 * @param entity id
 	 */
-	public void removeObjectsByModelId(int modelId) {
+	public void removeObjectsByEntityId(int entityId) {
 		ArrayList<String> objectsToRemove = new ArrayList<String>();
 		for (LevelEditorObject object: objects) {
-			if (object.getModel().getId() == modelId) {
+			if (object.getEntity().getId() == entityId) {
 				objectsToRemove.add(object.getId());
 			}
 		}
@@ -292,16 +292,17 @@ public final class LevelEditorLevel extends Properties {
 	}
 
 	/**
-	 * Remove objects with given model id
-	 * @param modelId
+	 * Replace entity
+	 * @param search model id
+	 * @param replace model id 
 	 */
-	public void replaceModel(int searchModelId, int replaceModelId) {
-		LevelEditorModel replaceModel = getModelLibrary().getModel(replaceModelId);
-		if (replaceModel == null) return;
+	public void replaceEntity(int searchEntityId, int replaceEntityId) {
+		LevelEditorEntity replaceEntity = getEntityLibrary().getEntity(replaceEntityId);
+		if (replaceEntity == null) return;
 
 		for (LevelEditorObject object: objects) {
-			if (object.getModel().getId() == searchModelId) {
-				object.setModel(replaceModel);
+			if (object.getEntity().getId() == searchEntityId) {
+				object.setEntity(replaceEntity);
 			}
 		}
 	}
@@ -312,7 +313,7 @@ public final class LevelEditorLevel extends Properties {
 	 */
 	public void updatePivot(int modelId, Vector3 pivot) {
 		for (LevelEditorObject object: objects) {
-			if (object.getModel().getId() == modelId) {
+			if (object.getEntity().getId() == modelId) {
 				object.getTransformations().getPivot().set(pivot);
 				object.getTransformations().update();
 			}

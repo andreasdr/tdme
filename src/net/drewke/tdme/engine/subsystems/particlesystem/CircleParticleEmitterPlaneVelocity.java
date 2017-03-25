@@ -6,11 +6,11 @@ import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 
 /**
- * Circle particle emitter
+ * Circle particle emitter with velocity that lives in plane only 
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class CircleParticleEmitterOutgoingVelocity implements ParticleEmitter {
+public final class CircleParticleEmitterPlaneVelocity implements ParticleEmitter {
 
 	private int count;
 	private long lifeTime;
@@ -51,7 +51,7 @@ public final class CircleParticleEmitterOutgoingVelocity implements ParticleEmit
 	 * @param color start
 	 * @param color end
 	 */
-	public CircleParticleEmitterOutgoingVelocity(
+	public CircleParticleEmitterPlaneVelocity(
 			int count, long lifeTime, long lifeTimeRnd,
 			Vector3 axis0, Vector3 axis1, Vector3 center, float radius,
 			float mass, float massRnd, float velocity, float velocityRnd,

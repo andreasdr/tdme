@@ -16,7 +16,7 @@ import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.engine.primitives.Triangle;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 
 import org.json.JSONArray;
@@ -56,8 +56,9 @@ public final class ModelMetaDataFileExport {
 	/**
 	 * Exports a level to a TDME level file
 	 * @param file name
+	 * @param entity
 	 */
-	public static void export(String fileName, LevelEditorModel model) throws Exception {
+	public static void export(String fileName, LevelEditorEntity entity) throws Exception {
 		FileOutputStream fos = null;
 	    PrintStream fops = null;
 		try {
@@ -66,20 +67,20 @@ public final class ModelMetaDataFileExport {
 
 			// general data
 			jRoot.put("version", "0.11");
-			jRoot.put("type", model.getType());
-			jRoot.put("name", model.getName());
-			jRoot.put("descr", model.getDescription());
-			jRoot.put("px", model.getPivot().getX());
-			jRoot.put("py", model.getPivot().getY());
-			jRoot.put("pz", model.getPivot().getZ());
-			jRoot.put("file", new File(model.getFileName()).getName());
+			jRoot.put("type", entity.getType());
+			jRoot.put("name", entity.getName());
+			jRoot.put("descr", entity.getDescription());
+			jRoot.put("px", entity.getPivot().getX());
+			jRoot.put("py", entity.getPivot().getY());
+			jRoot.put("pz", entity.getPivot().getZ());
+			jRoot.put("file", new File(entity.getFileName()).getName());
 
-			String thumbnail = new File(model.getFileName()).getName() + ".png";
+			String thumbnail = new File(entity.getFileName()).getName() + ".png";
 			jRoot.put("thumbnail", thumbnail);
-			copyFile(new File("./tmp", model.getThumbnail()), new File(new File(fileName).getAbsoluteFile().getParent(), thumbnail));
+			copyFile(new File("./tmp", entity.getThumbnail()), new File(new File(fileName).getAbsoluteFile().getParent(), thumbnail));
 
 			// bounding volume
-			BoundingVolume bv = model.getBoundingVolume();
+			BoundingVolume bv = entity.getBoundingVolume();
 			JSONObject jBoundingVolume = new JSONObject();
 			if (bv == null) {
 				jBoundingVolume.put("type", "none");
@@ -140,7 +141,7 @@ public final class ModelMetaDataFileExport {
 			if (bv instanceof ConvexMesh) {
 				ConvexMesh mesh = (ConvexMesh)bv;
 				jBoundingVolume.put("type", "convexmesh");
-				jBoundingVolume.put("file", model.getBoundingModelMeshFile());
+				jBoundingVolume.put("file", entity.getBoundingModelMeshFile());
 				JSONArray jMeshTriangles = new JSONArray();
 				int triangleIdx = 0;
 				for (Triangle triangle: mesh.getTriangles()) {
@@ -161,7 +162,7 @@ public final class ModelMetaDataFileExport {
 
 			// model properties
 			JSONArray jModelProperties = new JSONArray();
-			for (PropertyModelClass modelProperty: model.getProperties()) {
+			for (PropertyModelClass modelProperty: entity.getProperties()) {
 				JSONObject jObjectProperty = new JSONObject();
 				jObjectProperty.put("name", modelProperty.getName());
 				jObjectProperty.put("value", modelProperty.getValue());

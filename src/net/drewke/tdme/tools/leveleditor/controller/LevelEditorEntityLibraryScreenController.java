@@ -13,8 +13,8 @@ import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
@@ -25,14 +25,14 @@ import net.drewke.tdme.utils.MutableString;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class LevelEditorModelLibraryScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
+public class LevelEditorEntityLibraryScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
 
 	private GUIScreenNode screenNode;
-	private GUIElementNode modelLibraryListBox;
-	private GUIElementNode buttonModelPlace;
+	private GUIElementNode entityLibraryListBox;
+	private GUIElementNode buttonEntityPlace;
 	private GUIElementNode buttonLevelEdit;
 
-	private MutableString modelLibraryListBoxSelection;
+	private MutableString entityLibraryListBoxSelection;
 	private MutableString dropdownEntityActionReset; 
 
 	private PopUps popUps;
@@ -40,9 +40,9 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	/**
 	 * Public constructor
 	 */
-	public LevelEditorModelLibraryScreenController(PopUps popUps) {
+	public LevelEditorEntityLibraryScreenController(PopUps popUps) {
 		this.popUps = popUps;
-		modelLibraryListBoxSelection = new MutableString();
+		entityLibraryListBoxSelection = new MutableString();
 	}
 
 	/*
@@ -59,20 +59,20 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	 */
 	public void init() {
 		try {
-			screenNode = GUIParser.parse("resources/tools/leveleditor/gui", "screen_leveleditor_modellibrary.xml");
+			screenNode = GUIParser.parse("resources/tools/leveleditor/gui", "screen_leveleditor_entitylibrary.xml");
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 
 			// 
-			modelLibraryListBox = (GUIElementNode)screenNode.getNodeById("model_library_listbox");
-			buttonModelPlace = (GUIElementNode)screenNode.getNodeById("button_model_place");
+			entityLibraryListBox = (GUIElementNode)screenNode.getNodeById("entity_library_listbox");
+			buttonEntityPlace = (GUIElementNode)screenNode.getNodeById("button_entity_place");
 			buttonLevelEdit = (GUIElementNode)screenNode.getNodeById("button_level_edit");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		//
-		buttonModelPlace.getController().setDisabled(false);
+		buttonEntityPlace.getController().setDisabled(false);
 		buttonLevelEdit.getController().setDisabled(true);
 
 		//
@@ -87,29 +87,29 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	}
 
 	/**
-	 * Add a model to level editor view
+	 * Set up complete entity library
 	 */
-	public void setModelLibrary() {
+	public void setEntityLibrary() {
 		// model library
-		LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
+		LevelEditorEntityLibrary entityLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
 
 		// store selection
-		modelLibraryListBoxSelection.set(modelLibraryListBox.getController().getValue());
+		entityLibraryListBoxSelection.set(entityLibraryListBox.getController().getValue());
 
-		// model properties list box inner
-		GUIParentNode modelLibraryListBoxInnerNode = (GUIParentNode)(modelLibraryListBox.getScreenNode().getNodeById(modelLibraryListBox.getId() + "_inner"));
+		// entity library list box inner
+		GUIParentNode entityLibraryListBoxInnerNode = (GUIParentNode)(entityLibraryListBox.getScreenNode().getNodeById(entityLibraryListBox.getId() + "_inner"));
 
 		// clear sub nodes
-		modelLibraryListBoxInnerNode.clearSubNodes();
+		entityLibraryListBoxInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 1;
-		String modelLibraryListBoxSubNodesXML = "";
-		modelLibraryListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + modelLibraryListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
-		for (int i = 0; i < modelLibrary.getModelCount(); i++) {
-			int objectId = modelLibrary.getModelAt(i).getId();
-			String objectName = modelLibrary.getModelAt(i).getName();
-			modelLibraryListBoxSubNodesXML+= 
+		String entityLibraryListBoxSubNodesXML = "";
+		entityLibraryListBoxSubNodesXML+= "<scrollarea-vertical id=\"" + entityLibraryListBox.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100%\">\n";
+		for (int i = 0; i < entityLibrary.getEntityCount(); i++) {
+			int objectId = entityLibrary.getEntityAt(i).getId();
+			String objectName = entityLibrary.getEntityAt(i).getName();
+			entityLibraryListBoxSubNodesXML+= 
 				"<selectbox-option text=\"" + 
 				GUIParser.escapeQuotes(objectName) + 
 				"\" value=\"" + 
@@ -118,55 +118,55 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 				(i == 0?"selected=\"true\" ":"") +
 				"/>\n";
 		}
-		modelLibraryListBoxSubNodesXML+= "</scrollarea-vertical>\n";
+		entityLibraryListBoxSubNodesXML+= "</scrollarea-vertical>\n";
 
 		// inject sub nodes
 		try {
 			GUIParser.parse(
-				modelLibraryListBoxInnerNode,
-				modelLibraryListBoxSubNodesXML
+				entityLibraryListBoxInnerNode,
+				entityLibraryListBoxSubNodesXML
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// relayout
-		modelLibraryListBoxInnerNode.layoutSubNodes();
+		entityLibraryListBoxInnerNode.layoutSubNodes();
 
 		// reset selection
-		if (modelLibraryListBoxSelection.length() > 0) {
-			modelLibraryListBox.getController().setValue(modelLibraryListBoxSelection);
+		if (entityLibraryListBoxSelection.length() > 0) {
+			entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection);
 		}
 
 		//
-		onModelSelectionChanged();
+		onEntitySelectionChanged();
 
 		//
-		buttonModelPlace.getController().setDisabled(modelLibrary.getModelCount() == 0);
+		buttonEntityPlace.getController().setDisabled(entityLibrary.getEntityCount() == 0);
 	}
 
 	/**
-	 * On model changed
+	 * On entity selection changed
 	 */
-	public void onModelSelectionChanged() {
+	public void onEntitySelectionChanged() {
 		View view = TDMELevelEditor.getInstance().getView();
 		if (view instanceof LevelEditorView) {
-			LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
-			if (model != null) {
-				((LevelEditorView)view).loadModelFromLibrary(model.getId());
+			LevelEditorEntity entity = TDMELevelEditor.getInstance().getEntityLibrary().getEntity(Tools.convertToIntSilent(entityLibraryListBox.getController().getValue().toString()));
+			if (entity != null) {
+				((LevelEditorView)view).loadEntityFromLibrary(entity.getId());
 			}
 		}
 	}
 
 	/**
-	 * On edit model
+	 * On edit entity
 	 */
-	public void onEditModel() {
-		// check if we have a model selected
-		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
-		if (model == null) return;
+	public void onEditEntity() {
+		// check if we have a entity selected
+		LevelEditorEntity entity = TDMELevelEditor.getInstance().getEntityLibrary().getEntity(Tools.convertToIntSilent(entityLibraryListBox.getController().getValue().toString()));
+		if (entity == null) return;
 
-		switch (model.getType()) {
+		switch (entity.getType()) {
 			case MODEL:
 				// switch to model library view if not yet done
 				if (TDMELevelEditor.getInstance().getView() instanceof ModelViewerView == false) {
@@ -174,7 +174,7 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 				}
 		
 				// set model
-				((ModelViewerView)TDMELevelEditor.getInstance().getView()).setModel(model);
+				((ModelViewerView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
 				break;
 			case TRIGGER:
 				// switch to model trigger view if not yet done
@@ -183,21 +183,21 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 				}
 		
 				// set model
-				((TriggerView)TDMELevelEditor.getInstance().getView()).setModel(model);
+				((TriggerView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
 				break;
 		}
 
 		// button enabled
-		buttonModelPlace.getController().setDisabled(true);
+		buttonEntityPlace.getController().setDisabled(true);
 		buttonLevelEdit.getController().setDisabled(false);
 	}
 
 	/**
-	 * On library action
+	 * On edit level
 	 */
-	public void onLevel() {
+	public void onEditLevel() {
 		TDMELevelEditor.getInstance().switchToLevelEditor();
-		buttonModelPlace.getController().setDisabled(false);
+		buttonEntityPlace.getController().setDisabled(false);
 		buttonLevelEdit.getController().setDisabled(true);
 	}
 
@@ -206,8 +206,8 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	 */
 	public void onPlaceEntity() {
 		// check if we have a model selected
-		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
-		if (model == null) return;
+		LevelEditorEntity entity = TDMELevelEditor.getInstance().getEntityLibrary().getEntity(Tools.convertToIntSilent(entityLibraryListBox.getController().getValue().toString()));
+		if (entity == null) return;
 
 		// place object
 		View view = TDMELevelEditor.getInstance().getView();
@@ -221,15 +221,15 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	 */
 	public void onDeleteEntity() {
 		// check if we have a model selected
-		LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().getModel(Tools.convertToIntSilent(modelLibraryListBox.getController().getValue().toString()));
-		if (model == null) return;
+		LevelEditorEntity entity = TDMELevelEditor.getInstance().getEntityLibrary().getEntity(Tools.convertToIntSilent(entityLibraryListBox.getController().getValue().toString()));
+		if (entity == null) return;
 
 		//
-		TDMELevelEditor.getInstance().getLevel().removeObjectsByModelId(model.getId());
-		TDMELevelEditor.getInstance().getLevel().getModelLibrary().removeModel(model.getId());
+		TDMELevelEditor.getInstance().getLevel().removeObjectsByEntityId(entity.getId());
+		TDMELevelEditor.getInstance().getLevel().getEntityLibrary().removeEntity(entity.getId());
 
 		// set model library
-		setModelLibrary();
+		setEntityLibrary();
 
 		//
 		View view = TDMELevelEditor.getInstance().getView();
@@ -245,12 +245,12 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	 * @see net.drewke.tdme.gui.events.GUIChangeListener#onValueChanged(net.drewke.tdme.gui.nodes.GUIElementNode)
 	 */
 	public void onValueChanged(GUIElementNode node) {
-		if (node.getId().equals("model_library_listbox") == true) {
-			onModelSelectionChanged();
+		if (node.getId().equals("entity_library_listbox") == true) {
+			onEntitySelectionChanged();
 		} else 
 		if (node.getId().equals("dropdown_entity_action") == true) {
 			if (node.getController().getValue().equals("edit") == true) {
-				onEditModel();
+				onEditEntity();
 			} else
 			if (node.getController().getValue().equals("delete") == true) {
 				onDeleteEntity();
@@ -258,7 +258,7 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 			// model
 			if (node.getController().getValue().equals("create_model") == true) {
 				// model library
-				final LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
+				final LevelEditorEntityLibrary modelLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
 				//
 				popUps.getFileDialogScreenController().show(
 						"Load from: ", 
@@ -267,17 +267,17 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 						new Action() {
 							public void performAction() {
 								try {
-									LevelEditorModel model = modelLibrary.addModel(	
-										LevelEditorModelLibrary.ID_ALLOCATE,
+									LevelEditorEntity model = modelLibrary.addModel(	
+										LevelEditorEntityLibrary.ID_ALLOCATE,
 										popUps.getFileDialogScreenController().getFileName(),
 										"",
 										popUps.getFileDialogScreenController().getPathName(),
 										popUps.getFileDialogScreenController().getFileName(),
 										new Vector3(0f, 0f, 0f)
 									);
-									setModelLibrary();
-									modelLibraryListBox.getController().setValue(modelLibraryListBoxSelection.set(model.getId()));
-									onEditModel();
+									setEntityLibrary();
+									entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(model.getId()));
+									onEditEntity();
 								} catch (Exception exception) {
 									popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
 								}
@@ -289,8 +289,8 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 			// trigger
 			if (node.getController().getValue().equals("create_trigger") == true) {
 				try {
-					LevelEditorModel model = TDMELevelEditor.getInstance().getModelLibrary().createTrigger(	
-						LevelEditorModelLibrary.ID_ALLOCATE,
+					LevelEditorEntity model = TDMELevelEditor.getInstance().getEntityLibrary().addTrigger(	
+						LevelEditorEntityLibrary.ID_ALLOCATE,
 						"New trigger",
 						"",
 						1f,
@@ -298,9 +298,9 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 						1f,
 						new Vector3()
 					);
-					setModelLibrary();
-					modelLibraryListBox.getController().setValue(modelLibraryListBoxSelection.set(model.getId()));
-					onEditModel();
+					setEntityLibrary();
+					entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(model.getId()));
+					onEditEntity();
 				} catch (Exception exception) {
 					popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
 				}
@@ -313,13 +313,13 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 			if (node.getController().getValue().equals("create_particle") == true) {
 			
 			} else {
-				System.out.println("LevelEditorModelLibraryScreenController::onValueChanged: dropdown_model_create: " + node.getController().getValue());
+				System.out.println("LevelEditorEntityLibraryScreenController::onValueChanged: dropdown_model_create: " + node.getController().getValue());
 			}
 
 			// reset
 			node.getController().setValue(dropdownEntityActionReset);
 		} else {
-			System.out.println("LevelEditorModelLibraryScreenController::onValueChanged: " + node.getId());
+			System.out.println("LevelEditorEntityLibraryScreenController::onValueChanged: " + node.getId());
 		}
 	}
 
@@ -329,11 +329,11 @@ public class LevelEditorModelLibraryScreenController extends ScreenController im
 	 */
 	public void onActionPerformed(Type type, GUIElementNode node) {
 		if (type == Type.PERFORMED) {
-			if (node.getId().equals("button_model_place") == true) {
+			if (node.getId().equals("button_entity_place") == true) {
 				onPlaceEntity();
 			} else
 			if (node.getId().equals("button_level_edit") == true) {
-				onLevel();
+				onEditLevel();
 			} else {
 				System.out.println("LevelEditorScreenController::onActionPerformed: " + node.getId());
 			}

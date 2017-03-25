@@ -20,10 +20,10 @@ import net.drewke.tdme.math.Vector3;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class LevelEditorModel extends Properties {
+public final class LevelEditorEntity extends Properties {
 
 	public enum ModelType {TRIGGER, MODEL};
-	public final static int ID_NONE = -1;
+	public final static int ID_NONE = -1; 
 
 	private int id;
 	private ModelType type;
@@ -50,7 +50,7 @@ public final class LevelEditorModel extends Properties {
 	 * @param bounding box
 	 * @param pivot 
 	 */
-	public LevelEditorModel(int id, ModelType modelType, String name, String description, String fileName, String thumbnail, Model model, String boundingModelMeshFile, Model modelBoundingVolume, BoundingVolume boundingVolume, Vector3 pivot) {
+	public LevelEditorEntity(int id, ModelType modelType, String name, String description, String fileName, String thumbnail, Model model, String boundingModelMeshFile, Model modelBoundingVolume, BoundingVolume boundingVolume, Vector3 pivot) {
 		this.id = id;
 		this.type = modelType;
 		this.name = name;
@@ -249,7 +249,7 @@ public final class LevelEditorModel extends Properties {
 
 	@Override
 	public String toString() {
-		return "LevelEditorModel [id=" + id + ", type=" + type + ", name="
+		return "LevelEditorEntity [id=" + id + ", type=" + type + ", name="
 				+ name + ", description=" + description + ", fileName="
 				+ fileName + ", thumbnail=" + thumbnail // + ", model=" + model
 				// + ", boundingModelMeshFile=" + boundingModelMeshFile

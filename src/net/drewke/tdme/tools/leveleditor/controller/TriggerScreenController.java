@@ -10,7 +10,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.controller.Action;
-import net.drewke.tdme.tools.shared.controller.ModelBaseSubScreenController;
+import net.drewke.tdme.tools.shared.controller.EntityBaseSubScreenController;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
@@ -26,7 +26,7 @@ public final class TriggerScreenController extends ScreenController implements G
 
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
-	private ModelBaseSubScreenController modelBaseSubScreenController;
+	private EntityBaseSubScreenController entityBaseSubScreenController;
 
 	private TriggerView view;
 	private GUIScreenNode screenNode;
@@ -42,10 +42,10 @@ public final class TriggerScreenController extends ScreenController implements G
 	 */
 	public TriggerScreenController(TriggerView view) {
 		this.view = view;
-		this.modelBaseSubScreenController = new ModelBaseSubScreenController(view.getPopUpsViews(), new Action() {
+		this.entityBaseSubScreenController = new EntityBaseSubScreenController(view.getPopUpsViews(), new Action() {
 			public void performAction() {
 				view.updateGUIElements();
-				TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
+				TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 			}
 		});
 	}
@@ -78,7 +78,7 @@ public final class TriggerScreenController extends ScreenController implements G
 		}
 
 		// init model base view
-		modelBaseSubScreenController.init(screenNode);
+		entityBaseSubScreenController.init(screenNode);
 	}
 
 	/*
@@ -98,36 +98,36 @@ public final class TriggerScreenController extends ScreenController implements G
 	}
 
 	/**
-	  * Set up general model data
+	  * Set up general entity data
 	  * @param name
 	  * @param description
 	  */
-	public void setModelData(String name, String description) {
-		modelBaseSubScreenController.setModelData(name, description);
+	public void setEntityData(String name, String description) {
+		entityBaseSubScreenController.setEntityData(name, description);
 	}
 
 	/**
-	 * Unset model data
+	 * Unset entity data
 	 */
-	public void unsetModelData() {
-		modelBaseSubScreenController.unsetModelData();
+	public void unsetEntityData() {
+		entityBaseSubScreenController.unsetEntityData();
 	}
 
 	/**
-	 * Set up model properties
+	 * Set up entity properties
 	 * @param preset id
-	 * @param model properties
+	 * @param entity properties
 	 * @param selected name
 	 */
-	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
-		modelBaseSubScreenController.setModelProperties(view.getModel(), presetId, modelProperties, selectedName);
+	public void setEntityProperties(String presetId, Iterable<PropertyModelClass> entityProperties, String selectedName) {
+		entityBaseSubScreenController.setEntityProperties(view.getEntity(), presetId, entityProperties, selectedName);
 	}
 
 	/**
- 	 * Unset model properties
+ 	 * Unset entity properties
 	 */
-	public void unsetModelProperties() {
-		modelBaseSubScreenController.unsetModelProperties();
+	public void unsetEntityProperties() {
+		entityBaseSubScreenController.unsetEntityProperties();
 	}
 
 	/**
@@ -192,7 +192,7 @@ public final class TriggerScreenController extends ScreenController implements G
 	 */
 	public void onValueChanged(GUIElementNode node) {
 		// delegate to model base screen controller
-		modelBaseSubScreenController.onValueChanged(node, view.getModel());
+		entityBaseSubScreenController.onValueChanged(node, view.getEntity());
 	}
 
 	/*
@@ -201,7 +201,7 @@ public final class TriggerScreenController extends ScreenController implements G
 	 */
 	public void onActionPerformed(Type type, GUIElementNode node) {
 		// delegate to model base screen controller
-		modelBaseSubScreenController.onActionPerformed(type, node, view.getModel());
+		entityBaseSubScreenController.onActionPerformed(type, node, view.getEntity());
 		// handle own actions
 		switch (type) {
 			case PERFORMED:

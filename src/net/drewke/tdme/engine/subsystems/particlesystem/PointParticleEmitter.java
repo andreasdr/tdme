@@ -6,11 +6,11 @@ import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 
 /**
- * Basic particle emitter
+ * Point particle emitter
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class BasicParticleEmitter implements ParticleEmitter {
+public final class PointParticleEmitter implements ParticleEmitter {
 
 	private int count;
 	private long lifeTime;
@@ -34,7 +34,7 @@ public final class BasicParticleEmitter implements ParticleEmitter {
 	 * @param velocity in meter / seconds
 	 * @param velocity rnd in meter / seconds
 	 */
-	public BasicParticleEmitter(
+	public PointParticleEmitter(
 		int count,
 		long lifeTime, long lifeTimeRnd, 
 		float mass, float massRnd,

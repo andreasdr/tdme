@@ -14,8 +14,8 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.controller.TriggerScreenController;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.CameraRotationInputHandler;
@@ -36,7 +36,7 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	private PopUps popUps;
 	private TriggerScreenController triggerScreenController;
 
-	private LevelEditorModel model;
+	private LevelEditorEntity entity;
 	private boolean initModelRequested;
 
 	private CameraRotationInputHandler cameraRotationInputHandler;
@@ -49,7 +49,7 @@ public class TriggerView extends View implements GUIInputEventHandler {
 		this.popUps = popUps;
 		triggerScreenController = null;
 		initModelRequested = false;
-		model = null;
+		entity = null;
 
 		// offscreen engine transformations
 		engine = Engine.getInstance();
@@ -66,34 +66,34 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * @return model
+	 * @return entity
 	 */
-	public LevelEditorModel getModel() {
-		return model;
+	public LevelEditorEntity getEntity() {
+		return entity;
 	}
 
 	/**
-	 * @return selected model
+	 * @return selected entity
 	 */
-	public void setModel(LevelEditorModel model) {
-		this.model = model;
+	public void setEntity(LevelEditorEntity entity) {
+		this.entity = entity;
 		initModelRequested = true;
 	}
 
 	/**
-	 * Init model
+	 * Init entity
 	 */
 	protected void initModel(GLAutoDrawable drawable) {
-		if (model == null) return;
+		if (entity == null) return;
 
-		// set up model in engine
-		Tools.setupModel(model, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
+		// set up entity in engine
+		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
-		// Make model screenshot
-		Tools.oseThumbnail(drawable, model);
+		// Make entity screenshot
+		Tools.oseThumbnail(drawable, entity);
 
 		// max axis dimension
-		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(model.getModel())));
+		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(entity.getModel())));
 
 		// set up engine object settings
 		Entity model = engine.getEntity("model");
@@ -121,7 +121,7 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	 * Renders the scene 
 	 */
 	public void display(GLAutoDrawable drawable) {
-		// init model
+		// init entity
 		if (initModelRequested == true) {
 			initModel(drawable);
 			cameraRotationInputHandler.reset();
@@ -137,21 +137,21 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	 * Init GUI elements
 	 */
 	public void updateGUIElements() {
-		if (model != null) {
-			triggerScreenController.setScreenCaption("Trigger - " + model.getName());
-			PropertyModelClass preset = model.getProperty("preset");
-			triggerScreenController.setModelProperties(preset != null ? preset.getValue() : null, model.getProperties(), null);
-			triggerScreenController.setModelData(model.getName(), model.getDescription());
+		if (entity != null) {
+			triggerScreenController.setScreenCaption("Trigger - " + entity.getName());
+			PropertyModelClass preset = entity.getProperty("preset");
+			triggerScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
+			triggerScreenController.setEntityData(entity.getName(), entity.getDescription());
 
 			// trigger
 			Vector3 dimension = new Vector3();
-			dimension.set(((BoundingBox)model.getBoundingVolume()).getMax());
-			dimension.sub(((BoundingBox)model.getBoundingVolume()).getMin());
+			dimension.set(((BoundingBox)entity.getBoundingVolume()).getMax());
+			dimension.sub(((BoundingBox)entity.getBoundingVolume()).getMin());
 			triggerScreenController.setTrigger(dimension.getX(), dimension.getY(), dimension.getZ());
 		} else {
 			triggerScreenController.setScreenCaption("Trigger - no trigger loaded");
-			triggerScreenController.unsetModelProperties();
-			triggerScreenController.unsetModelData();
+			triggerScreenController.unsetEntityProperties();
+			triggerScreenController.unsetEntityData();
 			triggerScreenController.unsetTrigger();
 		}
 	}
@@ -170,14 +170,14 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	 * @param depth
 	 */
 	public void triggerApply(float width, float height, float depth) {
-		if (model == null) return;
+		if (entity == null) return;
 
 		// create new trigger, replacing old with new
 		try {
-			// save reference to old model, create new model
-			LevelEditorModel oldModel = model;
-			model = TDMELevelEditor.getInstance().getModelLibrary().createTrigger(	
-				LevelEditorModelLibrary.ID_ALLOCATE,
+			// save reference to old entity, create new entity
+			LevelEditorEntity oldModel = entity;
+			entity = TDMELevelEditor.getInstance().getEntityLibrary().addTrigger(	
+				LevelEditorEntityLibrary.ID_ALLOCATE,
 				oldModel.getName(),
 				oldModel.getDescription(),
 				width,
@@ -189,15 +189,15 @@ public class TriggerView extends View implements GUIInputEventHandler {
 			// clone properties
 			for (int i = 0; i < oldModel.getPropertyCount(); i++) {
 				PropertyModelClass property = oldModel.getPropertyByIndex(i);
-				model.addProperty(property.getName(), property.getValue());
+				entity.addProperty(property.getName(), property.getValue());
 			}
 
 			// replace old with new
-			TDMELevelEditor.getInstance().getLevel().replaceModel(oldModel.getId(), model.getId());
-			TDMELevelEditor.getInstance().getModelLibrary().removeModel(oldModel.getId());
-			TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
+			TDMELevelEditor.getInstance().getLevel().replaceEntity(oldModel.getId(), entity.getId());
+			TDMELevelEditor.getInstance().getEntityLibrary().removeEntity(oldModel.getId());
+			TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 	
-			// init model
+			// init entity
 			initModelRequested = true;
 
 			//
@@ -231,7 +231,7 @@ public class TriggerView extends View implements GUIInputEventHandler {
 		//
 		engine.getGUI().resetRenderScreens();
 		engine.getGUI().addRenderScreen(triggerScreenController.getScreenNode().getId());
-		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
 	}

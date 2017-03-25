@@ -15,11 +15,11 @@ import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +42,7 @@ public final class LevelFileExport {
 	    level.setFileName(new File(fileName).getName());
 		try {
 			// generate json
-			LevelEditorModelLibrary modelLibrary = level.getModelLibrary();
+			LevelEditorEntityLibrary entityLibrary = level.getEntityLibrary();
 			JSONObject jRoot = new JSONObject();
 			jRoot.put("version", "0.6");
 			jRoot.put("ro", level.getRotationOrder().toString());
@@ -83,8 +83,8 @@ public final class LevelFileExport {
 			}
 			jRoot.put("lights", jLights);
 			JSONArray jModelLibrary = new JSONArray();
-			for (int i = 0; i < modelLibrary.getModelCount(); i++) {
-				LevelEditorModel model = modelLibrary.getModelAt(i);
+			for (int i = 0; i < entityLibrary.getEntityCount(); i++) {
+				LevelEditorEntity model = entityLibrary.getEntityAt(i);
 				JSONObject jModel = new JSONObject();
 				jModel.put("id", model.getId());
 				jModel.put("type", model.getType());
@@ -137,7 +137,7 @@ public final class LevelFileExport {
 				Rotation rotationAroundZAxis = transformations.getRotations().get(level.getRotationOrder().getAxisZIndex());
 				jObject.put("id", levelEditorObject.getId());
 				jObject.put("descr", levelEditorObject.getDescription());
-				jObject.put("mid", levelEditorObject.getModel().getId());
+				jObject.put("mid", levelEditorObject.getEntity().getId());
 				jObject.put("tx", translation.getX());
 				jObject.put("ty", translation.getY());
 				jObject.put("tz", translation.getZ());

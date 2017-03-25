@@ -1,11 +1,9 @@
 package net.drewke.tdme.tools.leveleditor.views;
 
-import java.io.File;
-
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.views.PopUps;
 
 import com.jogamp.opengl.GLAutoDrawable;
@@ -36,20 +34,20 @@ public class ModelViewerView extends net.drewke.tdme.tools.shared.views.ModelVie
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onSetModelData()
+	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onSetEntityData()
 	 */
-	public void onSetModelData() {
-		TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
+	public void onSetEntityData() {
+		TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onLoadModel(net.drewke.tdme.tools.shared.model.LevelEditorModel, net.drewke.tdme.tools.shared.model.LevelEditorModel)
+	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onLoadModel(net.drewke.tdme.tools.shared.model.LevelEditorEntity, net.drewke.tdme.tools.shared.model.LevelEditorEntity)
 	 */
-	public void onLoadModel(LevelEditorModel oldModel, LevelEditorModel model) {
-		TDMELevelEditor.getInstance().getLevel().replaceModel(oldModel.getId(), model.getId());
-		TDMELevelEditor.getInstance().getModelLibrary().removeModel(oldModel.getId());
-		TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
+	public void onLoadModel(LevelEditorEntity oldModel, LevelEditorEntity model) {
+		TDMELevelEditor.getInstance().getLevel().replaceEntity(oldModel.getId(), model.getId());
+		TDMELevelEditor.getInstance().getEntityLibrary().removeEntity(oldModel.getId());
+		TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 	}
 
 	/*
@@ -57,16 +55,16 @@ public class ModelViewerView extends net.drewke.tdme.tools.shared.views.ModelVie
 	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onInitAdditionalScreens()
 	 */
 	public void onInitAdditionalScreens() {
-		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#loadModel(java.lang.String, java.lang.String, java.lang.String, java.lang.String, net.drewke.tdme.math.Vector3)
 	 */
-	protected LevelEditorModel loadModel(String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
-		return TDMELevelEditor.getInstance().getModelLibrary().addModel(
-			LevelEditorModelLibrary.ID_ALLOCATE, 
+	protected LevelEditorEntity loadModel(String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
+		return TDMELevelEditor.getInstance().getEntityLibrary().addModel(
+			LevelEditorEntityLibrary.ID_ALLOCATE, 
 			name, 
 			description, 
 			pathName, 

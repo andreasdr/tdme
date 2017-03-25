@@ -17,8 +17,8 @@ import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -33,11 +33,11 @@ public final class ModelMetaDataFileImport {
 
 	/**
 	 * Imports a level from a TDME level file to Level Editor
-	 * @param id or LevelEditorModel.ID_NONE
+	 * @param id or LevelEditorEntity.ID_NONE
 	 * @param path name
 	 * @param file name
 	 */
-	public static LevelEditorModel doImport(int id, String pathName, String fileName) throws Exception {
+	public static LevelEditorEntity doImport(int id, String pathName, String fileName) throws Exception {
 		pathName = pathName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		JSONObject jRoot = null;
@@ -50,7 +50,7 @@ public final class ModelMetaDataFileImport {
 			if (is != null) try { is.close(); } catch (IOException ioei) {}
 		}
 
-		LevelEditorModel levelEditorModel;
+		LevelEditorEntity levelEditorEntity;
 
 		// bounding volume
 		String boundingVolumeMeshFile = null;
@@ -68,7 +68,7 @@ public final class ModelMetaDataFileImport {
 		);
 
 		// String thumbnail = jRoot.getString("thumbnail");
-		ModelType modelType = LevelEditorModel.ModelType.valueOf(jRoot.getString("type"));
+		ModelType modelType = LevelEditorEntity.ModelType.valueOf(jRoot.getString("type"));
 		String modelFile = jRoot.getString("file");
 		String modelThumbnail = jRoot.getString("thumbnail");
 		String name = jRoot.getString("name");
@@ -182,7 +182,7 @@ public final class ModelMetaDataFileImport {
 		}
 
 		// load level editor model
-		levelEditorModel = new LevelEditorModel(
+		levelEditorEntity = new LevelEditorEntity(
 			id,
 			modelType,
 			name,
@@ -200,14 +200,14 @@ public final class ModelMetaDataFileImport {
 		JSONArray jMapProperties = jRoot.getJSONArray("properties");
 		for (int i = 0; i < jMapProperties.length(); i++) {
 			JSONObject jMapProperty = jMapProperties.getJSONObject(i);
-			levelEditorModel.addProperty(
+			levelEditorEntity.addProperty(
 				jMapProperty.getString("name"),
 				jMapProperty.getString("value")
 			);
 		}
 
 		// done
-		return levelEditorModel;
+		return levelEditorEntity;
 	}
 
 }

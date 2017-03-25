@@ -12,10 +12,10 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -117,9 +117,8 @@ public final class LevelFileImport {
 			}
 		}
 
-
-		// models
-		level.getModelLibrary().clear();
+		// entities
+		level.getEntityLibrary().clear();
 		JSONArray jModels = jRoot.getJSONArray("models");
 		for (int i = 0; i < jModels.length(); i++) {
 			JSONObject jModel = jModels.getJSONObject(i);
@@ -137,9 +136,9 @@ public final class LevelFileImport {
 				modelFile = new File(pathName + gameRoot + modelFileName);
 			}
 			// add model to library
-			LevelEditorModel levelEditorModel = null;
-			if (jModel.has("type") == false || LevelEditorModel.ModelType.valueOf(jModel.getString("type")) == ModelType.MODEL) {
-				levelEditorModel = level.getModelLibrary().addModel(	
+			LevelEditorEntity levelEditorEntity = null;
+			if (jModel.has("type") == false || LevelEditorEntity.ModelType.valueOf(jModel.getString("type")) == ModelType.MODEL) {
+				levelEditorEntity = level.getEntityLibrary().addModel(	
 					jModel.getInt("id"),
 					jModel.has("name")?jModel.getString("name"):"unknown",
 					jModel.has("descr")?jModel.getString("descr"):"",
@@ -152,7 +151,7 @@ public final class LevelFileImport {
 					)
 				);
 			} else 
-			if (jModel.has("type") == true && LevelEditorModel.ModelType.valueOf(jModel.getString("type")) == ModelType.TRIGGER) {
+			if (jModel.has("type") == true && LevelEditorEntity.ModelType.valueOf(jModel.getString("type")) == ModelType.TRIGGER) {
 				JSONObject jBv = jModel.getJSONObject("bv");
 				BoundingBox boundingBox = new BoundingBox(
 					new Vector3(
@@ -166,7 +165,7 @@ public final class LevelFileImport {
 						(float)jBv.getDouble("maz")
 					)
 				);
-				levelEditorModel = level.getModelLibrary().createTrigger(	
+				levelEditorEntity = level.getEntityLibrary().addTrigger(	
 					jModel.getInt("id"),
 					jModel.has("name")?jModel.getString("name"):"unknown",
 					jModel.has("descr")?jModel.getString("descr"):"",
@@ -180,7 +179,7 @@ public final class LevelFileImport {
 					)
 				);				
 			}
-			if (levelEditorModel == null) {
+			if (levelEditorEntity == null) {
 				throw new Exception("Invalid model");
 			}
 			// parse optional model properties
@@ -188,7 +187,7 @@ public final class LevelFileImport {
 				JSONArray jModelProperties = jModel.getJSONArray("properties");
 				for (int j = 0; j < jModelProperties.length(); j++) {
 					JSONObject jModelProperty = jModelProperties.getJSONObject(j);
-					levelEditorModel.addProperty(
+					levelEditorEntity.addProperty(
 						jModelProperty.getString("name"),
 						jModelProperty.getString("value")
 					);
@@ -200,7 +199,7 @@ public final class LevelFileImport {
 		JSONArray jObjects = jRoot.getJSONArray("objects");
 		for (int i = 0; i < jObjects.length(); i++) {
 			JSONObject jObject = jObjects.getJSONObject(i);
-			LevelEditorModel model = level.getModelLibrary().getModel(jObject.getInt("mid"));
+			LevelEditorEntity model = level.getEntityLibrary().getEntity(jObject.getInt("mid"));
 			Transformations transformations = new Transformations();
 			transformations.getPivot().set(model.getPivot());
 			transformations.getTranslation().set(

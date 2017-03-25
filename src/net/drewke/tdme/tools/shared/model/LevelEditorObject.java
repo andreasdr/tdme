@@ -12,20 +12,20 @@ public final class LevelEditorObject extends Properties {
 	private String id;
 	private String description;
 	private Transformations transformations;
-	private LevelEditorModel model;
+	private LevelEditorEntity entity;
 
 	/**
 	 * Public constructor
 	 * @param id
 	 * @param transformations
-	 * @param model
+	 * @param entity
 	 */
-	public LevelEditorObject(String id, String description, Transformations transformations, LevelEditorModel model) {
+	public LevelEditorObject(String id, String description, Transformations transformations, LevelEditorEntity entity) {
 		super();
 		this.id = id;
 		this.description = description;
 		this.transformations = transformations;
-		this.model = model;
+		this.entity = entity;
 	}
 
 	/**
@@ -66,29 +66,29 @@ public final class LevelEditorObject extends Properties {
 	}
 
 	/**
-	 * @return model
+	 * @return entity
 	 */
-	public LevelEditorModel getModel() {
-		return model;
+	public LevelEditorEntity getEntity() {
+		return entity;
 	}
 
 	/**
-	 * Set up model
-	 * @param model
+	 * Set up entity
+	 * @param entity
 	 */
-	public void setModel(LevelEditorModel model) {
-		this.model = model;
+	public void setEntity(LevelEditorEntity entity) {
+		this.entity = entity;
 	}
 
 	/**
-	 * @return merged properties from model and object
+	 * @return merged properties from entity and object
 	 */
 	public Properties getTotalProperties() {
 		// total properties
 		Properties properties = new Properties();
 
-		// clone model properties
-		for (PropertyModelClass modelProperty: getModel().getProperties()) {
+		// clone entity properties
+		for (PropertyModelClass modelProperty: getEntity().getProperties()) {
 			properties.addProperty(modelProperty.getName(), modelProperty.getValue());
 		}
 
@@ -113,7 +113,7 @@ public final class LevelEditorObject extends Properties {
 	public String toString() {
 		return "LevelEditorObject [id=" + id + ", description="
 				+ description + ", transformations="
-				+ transformations + ", model=" + model + ", objectProperties="
+				+ transformations + ", entity=" + entity + ", objectProperties="
 				+ super.toString() + "]";
 	}
 

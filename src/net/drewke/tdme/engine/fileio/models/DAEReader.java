@@ -36,9 +36,10 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
 import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;
@@ -385,25 +386,26 @@ public final class DAEReader {
 						continue;
 					}
 
-					// level editor model
-					LevelEditorModel levelEditorModel = null;
+					// level editor entity
+					LevelEditorEntity levelEditorEntity = null;
 
 					// check if we have that model already
-					for (int i = 0; i < levelEditorLevel.getModelLibrary().getModelCount(); i++) {
-						LevelEditorModel levelEditorModelLibrary = levelEditorLevel.getModelLibrary().getModelAt(i);
-						if (ModelUtilities.equals(model, levelEditorModelLibrary.getModel()) == true) {
-							levelEditorModel = levelEditorModelLibrary;
+					for (int i = 0; i < levelEditorLevel.getEntityLibrary().getEntityCount(); i++) {
+						LevelEditorEntity levelEditorEntityCompare = levelEditorLevel.getEntityLibrary().getEntityAt(i);
+						if (levelEditorEntityCompare.getType() != ModelType.TRIGGER) continue;
+						if (ModelUtilities.equals(model, levelEditorEntityCompare.getModel()) == true) {
+							levelEditorEntity = levelEditorEntityCompare;
 							break;
 						}
 					}
 
 					// create level editor model, if not yet exists
-					if (levelEditorModel == null) {
+					if (levelEditorEntity == null) {
 						// save model
 						TMWriter.write(model, pathName + "/" + fileName + "-models", xmlNode.getAttribute("id") + ".tm");
 
 						// create level editor model
-						levelEditorModel = levelEditorLevel.getModelLibrary().addModel(
+						levelEditorEntity = levelEditorLevel.getEntityLibrary().addModel(
 							nodeIdx++,
 							xmlNode.getAttribute("id"),
 							xmlNode.getAttribute("id"),
@@ -427,7 +429,7 @@ public final class DAEReader {
 						xmlNode.getAttribute("id"),
 						xmlNode.getAttribute("id"),
 						levelEditorObjectTransformations,
-						levelEditorModel
+						levelEditorEntity
 					);
 
 					// add object to level

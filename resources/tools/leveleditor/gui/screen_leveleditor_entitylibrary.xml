@@ -9,8 +9,8 @@
 						<space width="*" />
 						<panel width="180" height="100%">
 							<layout alignment="vertical" width="100%" height="100%">
-								<selectbox id="model_library_listbox" name="model_library_listbox" width="100%" height="*">
-									<scrollarea-vertical id="model_library_listbox_scrollarea" width="100%" height="100%">
+								<selectbox id="entity_library_listbox" name="entity_library_listbox" width="100%" height="*">
+									<scrollarea-vertical id="entity_library_listbox_scrollarea" width="100%" height="100%">
 										<selectbox-option text="Option A" value="1" /> 
 										<selectbox-option text="Option B" value="2" />
 										<selectbox-option text="Option C" value="3" />
@@ -56,7 +56,7 @@
 								<space height="10" />
 								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
 									<space width="*" />
-									<button id="button_model_place" name="button_model_place" text="Place" width="50" />
+									<button id="button_entity_place" name="button_entity_place" text="Place" width="50" />
 									<space width="*" />
 									<button id="button_level_edit" name="button_level_edit" text="Level" width="90" />
 									<space width="*" />

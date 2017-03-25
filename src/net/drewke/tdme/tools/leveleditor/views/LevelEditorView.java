@@ -36,8 +36,8 @@ import net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.files.LevelFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
-import net.drewke.tdme.tools.shared.model.LevelEditorModelLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
@@ -110,7 +110,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 	private Engine engine;
 
-	private LevelEditorModel selectedModel;
+	private LevelEditorEntity selectedEntity;
 
 	private boolean reloadModelLibrary;
 
@@ -172,7 +172,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		this.popUps = popUps;
 		level = TDMELevelEditor.getInstance().getLevel();
 		reloadModelLibrary = false;
-		selectedModel = null;
+		selectedEntity = null;
 		keyLeft = false;
 		keyRight = false;
 		keyUp = false;
@@ -237,10 +237,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * @return selected selectedModel
+	 * @return selected entity
 	 */
-	public LevelEditorModel getSelectedModel() {
-		return selectedModel;
+	public LevelEditorEntity getSelectedEntity() {
+		return selectedEntity;
 	}
 
 	/**
@@ -291,11 +291,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Load selectedModel from library
+	 * Load selected entity from library
 	 * @param id
 	 */
-	public void loadModelFromLibrary(int id) {
-		selectedModel = TDMELevelEditor.getInstance().getModelLibrary().getModel(id);
+	public void loadEntityFromLibrary(int id) {
+		selectedEntity = TDMELevelEditor.getInstance().getEntityLibrary().getEntity(id);
 	}
 
 	/*
@@ -471,13 +471,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	public void display(GLAutoDrawable drawable) {
 		if (reloadModelLibrary == true) {
-			LevelEditorModelLibrary modelLibrary = TDMELevelEditor.getInstance().getModelLibrary();
-			for (int i = 0; i < modelLibrary.getModelCount(); i++) {
-				selectedModel = modelLibrary.getModelAt(i);
-				Tools.oseThumbnail(drawable, selectedModel);
+			LevelEditorEntityLibrary modelLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
+			for (int i = 0; i < modelLibrary.getEntityCount(); i++) {
+				selectedEntity = modelLibrary.getEntityAt(i);
+				Tools.oseThumbnail(drawable, selectedEntity);
 			}
 			reloadModelLibrary = false;
-			TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
+			TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 		}
 
 		// do camera rotation by middle mouse button
@@ -641,13 +641,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisYIndex()).getAngle(),
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisZIndex()).getAngle()
 				);
-				BoundingVolume bv = levelEditorObject.getModel().getBoundingBox().clone();
+				BoundingVolume bv = levelEditorObject.getEntity().getBoundingBox().clone();
 				bv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
 				Vector3 objectCenter = bv.getCenter();
 				levelEditorScreenController.setObjectData(
 					levelEditorObject.getId(),
 					levelEditorObject.getDescription(),
-					levelEditorObject.getModel().getName(),
+					levelEditorObject.getEntity().getName(),
 					objectCenter
 				);
 			} else {
@@ -735,12 +735,12 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		//
 		engine.getGUI().resetRenderScreens();
 		engine.getGUI().addRenderScreen(levelEditorScreenController.getScreenNode().getId());
-		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
 
 		//
-		TDMELevelEditor.getInstance().getLevelEditorModelLibraryScreenController().setModelLibrary();
+		TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 
 		// set up grid
 		levelEditorScreenController.setGrid(gridEnabled, gridY);
@@ -802,7 +802,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		PropertyModelClass colorProperty = levelEditorObject.getProperty("object.color");
 
 		// try to get object color from model properties
-		if (colorProperty == null) colorProperty = levelEditorObject.getModel().getProperty("object.color");
+		if (colorProperty == null) colorProperty = levelEditorObject.getEntity().getProperty("object.color");
 
 		// handle object color if we have any
 		ObjectColor objectColor = colorProperty != null?objectColors.get(colorProperty.getValue()):null;
@@ -836,7 +836,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		for (int i = 0; i < level.getObjectCount(); i++) {
 			LevelEditorObject entity = level.getObjectAt(i);
 			// add to 3d engine
-			Object3D object = new Object3D(entity.getId(), entity.getModel().getModel());
+			Object3D object = new Object3D(entity.getId(), entity.getEntity().getModel());
 			object.fromTransformations(entity.getTransformations());
 			object.setPickable(true);
 			setStandardObjectColorEffect(object);
@@ -957,7 +957,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * @return ground
 	 */
 	private Model createLevelEditorGroundPlateModel() {
-		// ground selectedModel
+		// ground selectedEntity
 		Model groundPlate = new Model("leveleditor.ground", "leveleditor.ground", UpVector.Y_UP, RotationOrder.XYZ);
 
 		//	material
@@ -1069,7 +1069,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 			// add to level, 3d engine
 			level.addObject(levelEditorObject);
-			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getModel().getModel());
+			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getEntity().getModel());
 			object.fromTransformations(levelEditorObject.getTransformations());
 			object.setPickable(true);
 			setStandardObjectColorEffect(object);
@@ -1106,7 +1106,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * Places selected model on given object
 	 */
 	public void placeObject(Entity selectedObject) {
-		if (selectedModel != null && selectedObject != null) {
+		if (selectedEntity != null && selectedObject != null) {
 			// get selected level entity if it is one
 			LevelEditorObject selectedLevelEditorObject = level.getObjectById(selectedObject.getId());
 
@@ -1121,7 +1121,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 			// compute center of selected model
 			Vector3 centerNewObject = 
-				selectedModel.getBoundingBox().getCenter().clone();
+				selectedEntity.getBoundingBox().getCenter().clone();
 
 			// put new object on middle of selected object
 			levelEditorObjectTransformations.getTranslation().add(centerNewObject.clone().add(centerSelectedObject));
@@ -1130,20 +1130,20 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			if (selectedLevelEditorObject == null) {
 				levelEditorObjectTransformations.getTranslation().setY(
 					gridY +
-					-selectedModel.getBoundingBox().getMin().getY()
+					-selectedEntity.getBoundingBox().getMin().getY()
 				);
 			} else {
 				// create transformed level editor object bounding box
-				BoundingVolume bv = selectedLevelEditorObject.getModel().getBoundingBox().clone();
+				BoundingVolume bv = selectedLevelEditorObject.getEntity().getBoundingBox().clone();
 				bv.fromBoundingVolumeWithTransformations(
-					selectedLevelEditorObject.getModel().getBoundingBox(),
+					selectedLevelEditorObject.getEntity().getBoundingBox(),
 					selectedLevelEditorObject.getTransformations()
 				);
 
 				//
 				levelEditorObjectTransformations.getTranslation().setY(
 					bv.computeDimensionOnAxis(new Vector3(0f,1f,0f)) / 2 + bv.getCenter().getY() +
-					-selectedModel.getBoundingBox().getMin().getY()
+					-selectedEntity.getBoundingBox().getMin().getY()
 				);
 			}
 
@@ -1151,7 +1151,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			levelEditorObjectTransformations.getScale().set(new Vector3(1f,1f,1f));
 
 			// standard rotations
-			levelEditorObjectTransformations.getPivot().set(selectedModel.getPivot());
+			levelEditorObjectTransformations.getPivot().set(selectedEntity.getPivot());
 			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, new Vector3(1f,0f,0f)));
 			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, new Vector3(0f,1f,0f)));
 			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, new Vector3(0f,0f,1f)));
@@ -1160,7 +1160,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			// check if entity already exists
 			for (int i = 0; i < level.getObjectCount(); i++) {
 				LevelEditorObject levelEditorObject = level.getObjectAt(i);
-				if (levelEditorObject.getModel() == selectedModel &&
+				if (levelEditorObject.getEntity() == selectedEntity &&
 					levelEditorObject.getTransformations().getTranslation().equals(levelEditorObjectTransformations.getTranslation())) {
 					// we already have a object with selected model on this translation
 					return;
@@ -1169,17 +1169,17 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 			// create new level editor object
 			LevelEditorObject levelEditorObject = new LevelEditorObject(
-				selectedModel.getName() + "_" + level.allocateObjectId(),
+				selectedEntity.getName() + "_" + level.allocateObjectId(),
 				"",
 				levelEditorObjectTransformations,
-				selectedModel
+				selectedEntity
 			);
 
 			//	add to level
 			level.addObject(levelEditorObject);
 
 			// add to 3d engine
-			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getModel().getModel());
+			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getEntity().getModel());
 			object.fromTransformations(levelEditorObjectTransformations);
 			object.setPickable(true);
 			engine.addEntity(object);
@@ -1637,7 +1637,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * Triggers loading a map
 	 */
 	public void loadMap(String path, String file) {
-		selectedModel = null;
+		selectedEntity = null;
 		try {
 			// export level from DAE if requested
 			if (file.toLowerCase().endsWith(".dae") == true) {
@@ -1726,7 +1726,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		for (Entity pasteObject: pasteObjects) {
 			// get selected level entity if it is one
 			LevelEditorObject selectedLevelEditorObject = level.getObjectById(pasteObject.getId());
-			LevelEditorModel pasteModel = selectedLevelEditorObject.getModel();
+			LevelEditorEntity pasteModel = selectedLevelEditorObject.getEntity();
 
 			// create level entity, copy transformations from original
 			Transformations levelEditorObjectTransformations = new Transformations();
@@ -1744,7 +1744,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			// check if entity already exists
 			for (int i = 0; i < level.getObjectCount(); i++) {
 				LevelEditorObject levelEditorObject = level.getObjectAt(i);
-				if (levelEditorObject.getModel() == pasteModel &&
+				if (levelEditorObject.getEntity() == pasteModel &&
 					levelEditorObject.getTransformations().getTranslation().equals(levelEditorObjectTransformations.getTranslation())) {
 					// we already have a object with selected model on this translation
 					return;
@@ -1768,7 +1768,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			level.addObject(levelEditorObject);
 
 			// add to 3d engine
-			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getModel().getModel());
+			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getEntity().getModel());
 			object.fromTransformations(levelEditorObjectTransformations);
 			object.setPickable(true);
 			engine.addEntity(object);

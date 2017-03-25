@@ -14,7 +14,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
@@ -34,7 +34,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
-	private ModelBaseSubScreenController modelBaseSubScreenController;
+	private EntityBaseSubScreenController entityBaseSubScreenController;
 
 	private ModelViewerView view;
 	private GUIScreenNode screenNode;
@@ -76,10 +76,10 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public ModelViewerScreenController(ModelViewerView view) {
 		this.view = view;
-		this.modelBaseSubScreenController = new ModelBaseSubScreenController(view.getPopUpsViews(), new Action() {
+		this.entityBaseSubScreenController = new EntityBaseSubScreenController(view.getPopUpsViews(), new Action() {
 			public void performAction() {
 				view.updateGUIElements();
-				view.onSetModelData();
+				view.onSetEntityData();
 			}
 		});
 	}
@@ -99,7 +99,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	public void init() {
 		// load screen node
 		try {
-			screenNode = GUIParser.parse("resources/tools/shared/gui", "screen_modelviewer.xml");
+			screenNode = GUIParser.parse("resources/tools/viewer/gui", "screen_modelviewer.xml");
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
@@ -140,7 +140,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		}
 
 		// init model base view
-		modelBaseSubScreenController.init(screenNode);
+		entityBaseSubScreenController.init(screenNode);
 
 		//
 		value = new MutableString();
@@ -186,7 +186,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	  * @param description
 	  */
 	public void setModelData(String name, String description) {
-		modelBaseSubScreenController.setModelData(name, description);
+		entityBaseSubScreenController.setEntityData(name, description);
 		modelReload.getController().setDisabled(false);
 		modelSave.getController().setDisabled(false);
 	}
@@ -195,7 +195,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Unset model data
 	 */
 	public void unsetModelData() {
-		modelBaseSubScreenController.unsetModelData();
+		entityBaseSubScreenController.unsetEntityData();
 		modelReload.getController().setDisabled(true);
 		modelSave.getController().setDisabled(true);
 	}
@@ -207,14 +207,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @param selected name
 	 */
 	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
-		modelBaseSubScreenController.setModelProperties(view.getModel(), presetId, modelProperties, selectedName);
+		entityBaseSubScreenController.setEntityProperties(view.getEntity(), presetId, modelProperties, selectedName);
 	}
 
 	/**
  	 * Unset model properties
 	 */
 	public void unsetModelProperties() {
-		modelBaseSubScreenController.unsetModelProperties();
+		entityBaseSubScreenController.unsetEntityProperties();
 	}
 
 	/**
@@ -376,7 +376,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * Set up model bounding volume
 	 */
 	public void setupModelBoundingVolume() {
-		LevelEditorModel model = view.getModel();
+		LevelEditorEntity model = view.getEntity();
 		if (model == null) {
 			view.selectBoundingVolumeType(0);
 			return;
@@ -730,7 +730,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onValueChanged(GUIElementNode node) {
 		// delegate to model base screen controller
-		modelBaseSubScreenController.onValueChanged(node, view.getModel());
+		entityBaseSubScreenController.onValueChanged(node, view.getEntity());
 	}
 
 	/*
@@ -739,7 +739,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onActionPerformed(Type type, GUIElementNode node) {
 		// delegate to model base screen controller
-		modelBaseSubScreenController.onActionPerformed(type, node, view.getModel());
+		entityBaseSubScreenController.onActionPerformed(type, node, view.getEntity());
 		// handle own actions
 		switch (type) {
 			case PERFORMED:

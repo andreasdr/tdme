@@ -26,7 +26,7 @@ import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
-import net.drewke.tdme.tools.shared.model.LevelEditorModel;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -172,7 +172,7 @@ public final class Tools {
 	 * @param drawable
 	 * @param model
 	 */
-	public static void oseThumbnail(GLAutoDrawable drawable, LevelEditorModel model) {
+	public static void oseThumbnail(GLAutoDrawable drawable, LevelEditorEntity model) {
 		Tools.setupModel(model, osEngine, oseLookFromRotations, oseScale);
 
 		// make thumbnail
@@ -301,7 +301,7 @@ public final class Tools {
 	 * @param look from rotations
 	 * @param scale
 	 */
-	public static void setupModel(LevelEditorModel model, Engine engine, Transformations lookFromRotations, float scale) {
+	public static void setupModel(LevelEditorEntity model, Engine engine, Transformations lookFromRotations, float scale) {
 		if (model == null) return;
 
 		// add model to engine
