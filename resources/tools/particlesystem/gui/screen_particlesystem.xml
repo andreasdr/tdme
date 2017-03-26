@@ -1,0 +1,186 @@
+<screen id="modelviewer" background-color="#00000000">
+	<layout alignment="vertical" width="100%" height="100%">
+		<panel alignment="none" width="100%" height="30" padding="5" vertical-align="center">
+			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Particle System" width="100%" horizontal-align="center" height="auto" />
+		</panel>
+		<element width="100%" height="*" border="1" border-color="#000000" focusable="true" ignore-events="true" />
+		<panel width="100%" height="200">
+			<tabs alignment="vertical" width="100%" height="100%">
+				<tabs-header>
+					<tab id="tab_properties_display" text="Display" />
+					<tab id="tab_properties_particlesystem" text="Particle System" />
+					<tab id="tab_properties" text="Properties" />
+					<tab id="tab_properties_emitter" text="Emitter" />
+					<tab id="tab_properties_type" text="Type" />
+				</tabs-header>
+				<tabs-content>
+					<tab-content tab-id="tab_properties_display" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<checkbox id="display_ground" name="display_ground" value="1" />
+								<space width="5" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Ground" width="120" height="auto"/>
+								<space width="20" />
+								<checkbox id="display_shadowing" name="display_shadowing" value="1" />
+								<space width="5" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Shadowing" width="120" height="auto"/>
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<checkbox id="display_boundingvolume" name="display_boundingvolume" value="1" />
+								<space width="5" />
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Bounding Volume" width="auto" height="auto"/>
+							</layout>
+							<space height="20" />
+							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
+								<button id="button_display_apply" name="button_display_apply" text="Apply" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_particlesystem" vertical-align="center">
+						<layout width="auto" height="auto" alignment="vertical">
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="200" height="auto"/>
+								<space width="5" />
+								<input id="entity_name" name="entity_name" width="200" height="auto" text="Name" />
+							</layout>
+							<space height="5" />
+							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+								<text font="resources/gui/fonts/Foo_20.fnt" text="Description" width="200" height="auto"/>
+								<space width="5" />
+								<input id="entity_description" name="entity_description" width="200" height="auto" text="Description" />
+							</layout>
+							<space height="20" />
+							<layout width="100%" height="auto" alignment="horizontal">
+								<space width="*" />
+								<button id="button_entity_apply" name="button_model_apply" text="Apply" />
+								<space width="*" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties" vertical-align="center">
+						<layout width="auto" height="auto" alignment="horizontal">
+							<layout width="auto" height="auto" alignment="vertical">
+								<layout width="auto" height="auto" alignment="horizontal">
+									<dropdown id="entity_properties_presets" name="entity_properties_presets" width="510" height="auto" text="Test">
+										<dropdown-option text="Test 1" value="1" />										
+									</dropdown>
+									<space width="10" />
+									<button id="button_entity_properties_presetapply" name="button_entity_properties_presetapply" text="Apply" width="80" />
+								</layout>
+								<space height="10" />
+								<selectbox id="entity_properties_listbox" name="entity_properties_listbox" height="70">
+								</selectbox>
+								<space height="10" />
+								<layout width="100%" height="auto" alignment="horizontal" vertical-align="center">
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="45" height="auto"/>
+									<space width="*" />
+									<input id="entity_property_name" name="entity_property_name" width="240" height="auto" text="Name" />
+									<space width="*" />
+									<text font="resources/gui/fonts/Foo_20.fnt" text="Value" width="45" height="auto"/>
+									<space width="*" />
+									<input id="entity_property_value" name="entity_property_value" width="240" height="auto" text="Value" />
+								</layout>
+							</layout>
+							<space width="20" />
+							<layout width="auto" height="auto" alignment="vertical">
+								<button id="button_entity_properties_add" name="button_entity_properties_add" text="Add" width="80" />
+								<space height="5" />
+								<button id="button_entity_properties_remove" name="button_entity_properties_remove" text="Remove" width="80" />
+								<space height="5" />
+								<button id="button_entity_properties_save" name="button_entity_properties_save" text="Save" width="80" />
+							</layout>
+						</layout>
+					</tab-content>
+					<tab-content tab-id="tab_properties_emitter" vertical-align="center">
+						<scrollarea-vertical width="100%" height="100%">
+							<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+								<space height="20" />
+								<layout width="auto" height="auto" alignment="horizontal">
+									<dropdown id="presets_emitter" name="presets_emitter" width="530" height="auto" text="Test">
+										<dropdown-option text="Test 1" value="1" />
+									</dropdown>
+									<space width="10" />
+									<button id="button_emitter_presetapply" name="button_emitter_presetapply" text="Apply" width="80" />
+								</layout>
+								<space height="20" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Count" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_count" name="ppe_count" width="150" height="auto" text="Count" />
+										<space width="320" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Life time" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_lifetime" name="ppe_lifetime" width="150" height="auto" text="Life time" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Life time rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_lifetimernd" name="ppe_lifetimernd" width="150" height="auto" text="Life time rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_count_mass" name="ppe_count_mass" width="150" height="auto" text="Mass" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_count_massrnd" name="ppe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Position" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_position" name="ppe_position" width="150" height="auto" text="Position" />
+										<space width="320" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Velocity" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_velocity" name="ppe_velocity" width="150" height="auto" text="Velocity" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Velocity rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_velocityrnd" name="ppe_velocityrnd" width="150" height="auto" text="Velocity rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Color start" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_colorstart" name="ppe_colorstart" width="150" height="auto" text="Color start" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Color end" width="145" height="auto"/>
+										<space width="5" />
+										<input id="ppe_colorend" name="ppe_colorend" width="150" height="auto" text="Color end" />
+									</layout>
+								</layout>
+								<space height="20" />
+								<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">
+									<button id="button_ppe_emitter_apply" name="button_ppe_emitter_apply" text="Apply" />
+								</layout>
+								<space height="20" />
+							</layout>
+						</scrollarea-vertical>
+					</tab-content>
+					<tab-content tab-id="tab_properties_type" vertical-align="center"> 
+					</tab-content>
+				</tabs-content>
+			</tabs>
+		</panel>
+	</layout>
+</screen>
