@@ -93,6 +93,7 @@
 						</layout>
 					</tab-content>
 					<tab-content tab-id="tab_properties_emitter" vertical-align="center">
+						<!--
 						<scrollarea-vertical width="100%" height="100%">
 							<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
 								<space height="20" />
@@ -172,6 +173,114 @@
 								<space height="20" />
 								<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">
 									<button id="button_ppe_emitter_apply" name="button_ppe_emitter_apply" text="Apply" />
+								</layout>
+								<space height="20" />
+							</layout>
+						</scrollarea-vertical>
+						 -->
+						<scrollarea-vertical width="100%" height="100%">
+							<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+								<space height="20" />
+								<layout width="auto" height="auto" alignment="horizontal">
+									<dropdown id="presets_emitter" name="presets_emitter" width="530" height="auto" text="Test">
+										<dropdown-option text="Test 1" value="1" />
+									</dropdown>
+									<space width="10" />
+									<button id="button_emitter_presetapply" name="button_emitter_presetapply" text="Apply" width="80" />
+								</layout>
+								<space height="20" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Count" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_count" name="bbpe_count" width="150" height="auto" text="Count" />
+										<space width="320" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Life time" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_lifetime" name="bbpe_lifetime" width="150" height="auto" text="Life time" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Life time rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_lifetimernd" name="bbpe_lifetimernd" width="150" height="auto" text="Life time rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_count_mass" name="bbpe_count_mass" width="150" height="auto" text="Mass" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_count_massrnd" name="bbpe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Velocity" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_velocity" name="bbpe_velocity" width="150" height="auto" text="Velocity" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Velocity rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_velocityrnd" name="bbpe_velocityrnd" width="150" height="auto" text="Velocity rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Color start" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_colorstart" name="bbpe_colorstart" width="150" height="auto" text="Color start" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Color end" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_colorend" name="bbpe_colorend" width="150" height="auto" text="Color end" />
+									</layout>
+								</layout>
+								<space height="20" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_obb_center" name="bbpe_obb_center" width="150" height="auto" text="Center" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Half extension" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_obb_halfextension" name="bbpe_obb_halfextension" width="150" height="auto" text="Half extension" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_obb_axis0" name="bbpe_obb_axis0" width="150" height="auto" text="Axis 0" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_obb_axis1" name="bbpe_obb_axis1" width="150" height="auto" text="Axis 1" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 2" width="145" height="auto"/>
+										<space width="5" />
+										<input id="bbpe_obb_axis2" name="bbpe_obb_axis2" width="150" height="auto" text="Axis 2" />
+										<space width="320" />
+									</layout>
+								</layout>
+								<space height="20" />
+								<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">
+									<button id="button_bbpe_emitter_apply" name="button_bbpe_emitter_apply" text="Apply" />
 								</layout>
 								<space height="20" />
 							</layout>
