@@ -35,9 +35,9 @@ import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.files.LevelFileImport;
-import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
@@ -908,9 +908,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 					reAddedCells++;
 				} else {
 					_object = new Object3D(objectId, levelEditorGround);
-					_object.getRotations().add(new Rotation(0f, new Vector3(1f,0f,0f)));
-					_object.getRotations().add(new Rotation(0f, new Vector3(0f,1f,0f)));
-					_object.getRotations().add(new Rotation(0f, new Vector3(0f,0f,1f)));
+					_object.getRotations().add(new Rotation(0f, level.getRotationOrder().getAxis0()));
+					_object.getRotations().add(new Rotation(0f, level.getRotationOrder().getAxis1()));
+					_object.getRotations().add(new Rotation(0f, level.getRotationOrder().getAxis2()));
 					_object.getTranslation().set(
 						centerX + (float)gridX * groundPlateWidth,
 						gridY-0.05f,
@@ -1152,9 +1152,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 			// standard rotations
 			levelEditorObjectTransformations.getPivot().set(selectedEntity.getPivot());
-			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, new Vector3(1f,0f,0f)));
-			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, new Vector3(0f,1f,0f)));
-			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, new Vector3(0f,0f,1f)));
+			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, level.getRotationOrder().getAxis0()));
+			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, level.getRotationOrder().getAxis1()));
+			levelEditorObjectTransformations.getRotations().add(new Rotation(0f, level.getRotationOrder().getAxis2()));
 			levelEditorObjectTransformations.update();
 
 			// check if entity already exists
