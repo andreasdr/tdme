@@ -112,7 +112,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 	private LevelEditorEntity selectedEntity;
 
-	private boolean reloadModelLibrary;
+	private boolean reloadEntityLibrary;
 
 	private HashMap<String, ObjectColor> objectColors;
 
@@ -171,7 +171,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	public LevelEditorView(PopUps popUps) {
 		this.popUps = popUps;
 		level = TDMELevelEditor.getInstance().getLevel();
-		reloadModelLibrary = false;
+		reloadEntityLibrary = false;
 		selectedEntity = null;
 		keyLeft = false;
 		keyRight = false;
@@ -470,13 +470,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * Renders the scene 
 	 */
 	public void display(GLAutoDrawable drawable) {
-		if (reloadModelLibrary == true) {
-			LevelEditorEntityLibrary modelLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
-			for (int i = 0; i < modelLibrary.getEntityCount(); i++) {
-				selectedEntity = modelLibrary.getEntityAt(i);
+		if (reloadEntityLibrary == true) {
+			LevelEditorEntityLibrary entityLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
+			for (int i = 0; i < entityLibrary.getEntityCount(); i++) {
+				selectedEntity = entityLibrary.getEntityAt(i);
 				Tools.oseThumbnail(drawable, selectedEntity);
 			}
-			reloadModelLibrary = false;
+			reloadEntityLibrary = false;
 			TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 		}
 
@@ -1666,7 +1666,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			gridCenter.set(camLookAt);
 
 			//
-			reloadModelLibrary = true;
+			reloadEntityLibrary = true;
 			updateGUIElements();
 		} catch (Exception exception) {
 			exception.printStackTrace();
