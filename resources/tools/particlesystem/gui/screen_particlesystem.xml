@@ -177,7 +177,7 @@
 								<space height="20" />
 							</layout>
 						</scrollarea-vertical>
-						 -->
+						-->
 					 	<!-- BoundingBoxParticleEmitter
 						<scrollarea-vertical width="100%" height="100%">
 							<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
@@ -387,7 +387,7 @@
 							</layout>
 						</scrollarea-vertical>
 						-->
-						<!-- CircleParticleEmitterPlaneVelocity -->
+						<!-- CircleParticleEmitterPlaneVelocity
 						<scrollarea-vertical width="100%" height="100%">
 							<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
 								<space height="20" />
@@ -486,6 +486,95 @@
 								<space height="20" />
 							</layout>
 						</scrollarea-vertical>
+						-->
+						<!-- SphereParticleEmitter
+						<scrollarea-vertical width="100%" height="100%">
+							<layout alignment="vertical" width="100%" height="auto" horizontal-align="center">
+								<space height="20" />
+								<layout width="auto" height="auto" alignment="horizontal">
+									<dropdown id="presets_emitter" name="presets_emitter" width="530" height="auto" text="Test">
+										<dropdown-option text="Test 1" value="1" />
+									</dropdown>
+									<space width="10" />
+									<button id="button_emitter_presetapply" name="button_emitter_presetapply" text="Apply" width="80" />
+								</layout>
+								<space height="20" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Count" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_count" name="spe_count" width="150" height="auto" text="Count" />
+										<space width="320" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Life time" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_lifetime" name="spe_lifetime" width="150" height="auto" text="Life time" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Life time rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_lifetimernd" name="spe_lifetimernd" width="150" height="auto" text="Life time rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_count_mass" name="spe_count_mass" width="150" height="auto" text="Mass" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_count_massrnd" name="spe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Velocity" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_velocity" name="spe_velocity" width="150" height="auto" text="Velocity" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Velocity rnd" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_velocityrnd" name="spe_velocityrnd" width="150" height="auto" text="Velocity rnd" />
+									</layout>
+								</layout>
+								<space height="5" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Color start" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_colorstart" name="spe_colorstart" width="150" height="auto" text="Color start" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Color end" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_colorend" name="spe_colorend" width="150" height="auto" text="Color end" />
+									</layout>
+								</layout>
+								<space height="20" />
+								<layout alignment="horizontal" width="auto" height="auto">
+									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_center" name="spe_center" width="150" height="auto" text="Center" />
+										<space width="20" />
+										<text font="resources/gui/fonts/Foo_20.fnt" text="Radius" width="145" height="auto"/>
+										<space width="5" />
+										<input id="spe_radius" name="spe_radius" width="150" height="auto" text="Radius" />
+									</layout>
+								</layout>
+								<space height="20" />
+								<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">
+									<button id="button_spe_emitter_apply" name="button_spe_emitter_apply" text="Apply" />
+								</layout>
+								<space height="20" />
+							</layout>
+						</scrollarea-vertical>
+						-->
 					</tab-content>
 					<tab-content tab-id="tab_properties_type" vertical-align="center"> 
 					</tab-content>
