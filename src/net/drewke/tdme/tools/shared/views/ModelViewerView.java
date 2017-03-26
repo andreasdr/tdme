@@ -311,15 +311,15 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		if (entity != null) {
 			modelViewerScreenController.setScreenCaption("Model Viewer - " + entity.getName());
 			PropertyModelClass preset = entity.getProperty("preset");
-			modelViewerScreenController.setModelProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
-			modelViewerScreenController.setModelData(entity.getName(), entity.getDescription());
+			modelViewerScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
+			modelViewerScreenController.setEntityData(entity.getName(), entity.getDescription());
 			modelViewerScreenController.setPivot(entity.getPivot());
 			modelViewerScreenController.setBoundingVolume();
 			modelViewerScreenController.setupModelBoundingVolume();
 		} else {
 			modelViewerScreenController.setScreenCaption("Model Viewer - no entity loaded");
-			modelViewerScreenController.unsetModelProperties();
-			modelViewerScreenController.unsetModelData();
+			modelViewerScreenController.unsetEntityProperties();
+			modelViewerScreenController.unsetEntityData();
 			modelViewerScreenController.unsetPivot();
 			modelViewerScreenController.unsetBoundingVolume();
 		}

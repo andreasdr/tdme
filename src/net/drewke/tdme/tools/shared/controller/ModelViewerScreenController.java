@@ -181,39 +181,39 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
-	  * Set up general model data
+	  * Set up general entity data
 	  * @param name
 	  * @param description
 	  */
-	public void setModelData(String name, String description) {
+	public void setEntityData(String name, String description) {
 		entityBaseSubScreenController.setEntityData(name, description);
 		modelReload.getController().setDisabled(false);
 		modelSave.getController().setDisabled(false);
 	}
 
 	/**
-	 * Unset model data
+	 * Unset entity data
 	 */
-	public void unsetModelData() {
+	public void unsetEntityData() {
 		entityBaseSubScreenController.unsetEntityData();
 		modelReload.getController().setDisabled(true);
 		modelSave.getController().setDisabled(true);
 	}
 
 	/**
-	 * Set up model properties
+	 * Set up entity properties
 	 * @param preset id
-	 * @param model properties
+	 * @param entity properties
 	 * @param selected name
 	 */
-	public void setModelProperties(String presetId, Iterable<PropertyModelClass> modelProperties, String selectedName) {
-		entityBaseSubScreenController.setEntityProperties(view.getEntity(), presetId, modelProperties, selectedName);
+	public void setEntityProperties(String presetId, Iterable<PropertyModelClass> entityProperties, String selectedName) {
+		entityBaseSubScreenController.setEntityProperties(view.getEntity(), presetId, entityProperties, selectedName);
 	}
 
 	/**
- 	 * Unset model properties
+ 	 * Unset entity properties
 	 */
-	public void unsetModelProperties() {
+	public void unsetEntityProperties() {
 		entityBaseSubScreenController.unsetEntityProperties();
 	}
 
