@@ -94,7 +94,7 @@ public final class TriggerScreenController extends ScreenController implements G
 	 */
 	public void setScreenCaption(String text) {
 		screenCaption.getText().set(text);
-		screenCaption.layout();
+		screenNode.layout(screenCaption);
 	}
 
 	/**

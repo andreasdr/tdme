@@ -131,7 +131,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 		}
 
 		// relayout
-		entityLibraryListBoxInnerNode.layoutSubNodes();
+		screenNode.layoutSubNodes(entityLibraryListBoxInnerNode);
 
 		// reset selection
 		if (entityLibraryListBoxSelection.length() > 0) {

@@ -161,8 +161,13 @@ public class GUILayoutNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#layoutSubNodes()
 	 */
-	public void layoutSubNodes() {
+	protected void layoutSubNodes() {
 		// layout sub nodes first pass
+		// I should rewrite this a bit
+		// auto width, height values depend on computed constraints width, height of sub nodes, which will be set up when layouting
+		// these values miss in first pass, thats why we need to have 2 passes here, should improve that 
+		super.layoutSubNodes();
+		// layout sub nodes second pass
 		super.layoutSubNodes();
 
 		// layout sub nodes, taking stars into account
@@ -214,7 +219,7 @@ public class GUILayoutNode extends GUIParentNode {
 							}
 							finalNodesHeight+= guiSubNode.computedConstraints.height;
 
-							// layout sub node, sub nodes, second pass
+							// layout sub node sub nodes
 							if (guiSubNode instanceof GUIParentNode) {
 								((GUIParentNode)guiSubNode).layoutSubNodes();
 							}
@@ -296,7 +301,7 @@ public class GUILayoutNode extends GUIParentNode {
 							}
 							finalNodesWidth+= guiSubNode.computedConstraints.width;
 
-							// layout sub node sub nodes, second pass
+							// layout sub node sub nodes
 							if (guiSubNode instanceof GUIParentNode) {
 								((GUIParentNode)guiSubNode).layoutSubNodes();
 							}

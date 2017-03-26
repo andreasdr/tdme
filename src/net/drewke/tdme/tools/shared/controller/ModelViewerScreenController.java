@@ -177,7 +177,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void setScreenCaption(String text) {
 		screenCaption.getText().set(text);
-		screenCaption.layout();
+		screenNode.layout(screenCaption);
 	}
 
 	/**
@@ -433,7 +433,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		}
 
 		// relayout
-		boundingVolumeTypeDropDownInnerNode.layoutSubNodes();
+		screenNode.layoutSubNodes(boundingVolumeTypeDropDownInnerNode);
 	}
 
 	/**

@@ -185,7 +185,7 @@ public abstract class GUIParentNode extends GUINode {
 	/**
 	 * Layout
 	 */
-	public void layout() {
+	protected void layout() {
 		super.layout();
 		layoutSubNodes();
 	}
@@ -193,7 +193,7 @@ public abstract class GUIParentNode extends GUINode {
 	/**
 	 * Layout sub nodes
 	 */
-	public void layoutSubNodes() {
+	protected void layoutSubNodes() {
 		for (int i = 0; i < subNodes.size(); i++) {
 			subNodes.get(i).layout();
 		}

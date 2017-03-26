@@ -103,7 +103,7 @@ public class GUITest implements GLEventListener, WindowListener {
 									"<dropdown-option text=\"Option 9\" value=\"9\" />" +
 									"<dropdown-option text=\"Option 10\" value=\"10\" />"
 								);
-								parentNode.layoutSubNodes();
+								parentNode.getScreenNode().layoutSubNodes(parentNode);
 							}
 
 							{
@@ -123,7 +123,7 @@ public class GUITest implements GLEventListener, WindowListener {
 									"<selectbox-option text=\"Option 9\" value=\"9\" />" +
 									"<selectbox-option text=\"Option 10\" value=\"10\" />"
 								);
-								parentNode.layoutSubNodes();
+								parentNode.getScreenNode().layoutSubNodes(parentNode);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();

@@ -150,7 +150,7 @@ public class EntityBaseSubScreenController {
 		}
 
 		// relayout
-		entityPropertiesPresetsInnerNode.layoutSubNodes();
+		entityPropertiesPresetsInnerNode.getScreenNode().layoutSubNodes(entityPropertiesPresetsInnerNode);
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class EntityBaseSubScreenController {
 		}
 
 		// relayout
-		entityPropertiesListBoxInnerNode.layoutSubNodes();
+		entityPropertiesListBoxInnerNode.getScreenNode().layoutSubNodes(entityPropertiesListBoxInnerNode);
 
 		//
 		onEntityPropertiesSelectionChanged(model);

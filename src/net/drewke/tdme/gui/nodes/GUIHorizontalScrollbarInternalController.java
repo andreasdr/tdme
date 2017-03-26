@@ -204,8 +204,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#handleKeyboardEvent(net.drewke.tdme.gui.nodes.GUINode, net.drewke.tdme.gui.events.GUIKeyboardEvent)
 	 */
 	public void handleKeyboardEvent(GUINode node, GUIKeyboardEvent event) {
-		// TODO Auto-generated method stub
-		
+		// no op
 	}
 
 	/*
@@ -213,7 +212,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#tick()
 	 */
 	public void tick() {
-		// TODO Auto-generated method stub
+		// no op
 	}
 
 	/*

@@ -183,7 +183,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUIParentNode#layoutSubNodes()
 	 */
-	public void layoutSubNodes() {
+	protected void layoutSubNodes() {
 		//
 		super.layoutSubNodes();
 
@@ -214,7 +214,7 @@ public final class GUIElementNode extends GUIParentNode {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUIParentNode#layout()
 	 */
-	public void layout() {
+	protected void layout() {
 		// workaround for a bug if element node and its sub nodes has a fixed pixel height and 
 		// sub nodes nodes do not fit into element node
 		// this is only done if DOWNSIZE_CHILDREN overflow is selected
