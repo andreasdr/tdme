@@ -88,8 +88,8 @@ public final class LevelEditorObject extends Properties {
 		Properties properties = new Properties();
 
 		// clone entity properties
-		for (PropertyModelClass modelProperty: getEntity().getProperties()) {
-			properties.addProperty(modelProperty.getName(), modelProperty.getValue());
+		for (PropertyModelClass entityProperty: getEntity().getProperties()) {
+			properties.addProperty(entityProperty.getName(), entityProperty.getValue());
 		}
 
 		// add object properties
