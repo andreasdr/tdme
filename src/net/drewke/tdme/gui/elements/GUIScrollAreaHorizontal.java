@@ -57,6 +57,9 @@ public final class GUIScrollAreaHorizontal extends GUIElement {
 		attributes.put("vertical-align", "top");
 		attributes.put("alignment", "vertical");
 		attributes.put("background-color", "transparent");
+		attributes.put("border", "0");
+		attributes.put("border-color", "transparent");
+		attributes.put("padding", "0");
 		return attributes;
 	}
 
