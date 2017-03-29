@@ -93,7 +93,7 @@ public class TriggerView extends View implements GUIInputEventHandler {
 		Tools.oseThumbnail(drawable, entity);
 
 		// max axis dimension
-		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(entity.getModel())));
+		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(entity.getModel().getBoundingBox()));
 
 		// set up engine object settings
 		Entity model = engine.getEntity("model");

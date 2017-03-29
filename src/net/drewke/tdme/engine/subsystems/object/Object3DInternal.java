@@ -38,8 +38,12 @@ public class Object3DInternal extends Object3DBase {
 		dynamicShadowing = false;
 		effectColorMul = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
 		effectColorAdd = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
-		boundingBox = Engine.getModelBoundingBox(model);
-		boundingBoxTransformed = new BoundingBox(boundingBox);
+		boundingBox = (BoundingBox)model.getBoundingBox().clone();
+		// scale a bit up to make picking work better
+		boundingBox.getMin().scale(1.1f);
+		boundingBox.getMax().scale(1.1f);
+		boundingBox.update();
+		boundingBoxTransformed = (BoundingBox)boundingBox.clone();
 		boundingBoxTransformed.fromBoundingVolumeWithTransformations(boundingBox, this);
 	}
 

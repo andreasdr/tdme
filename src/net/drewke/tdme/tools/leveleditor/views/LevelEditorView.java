@@ -958,7 +958,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	private Model createLevelEditorGroundPlateModel() {
 		// ground selectedEntity
-		Model groundPlate = new Model("leveleditor.ground", "leveleditor.ground", UpVector.Y_UP, RotationOrder.XYZ);
+		Model groundPlate = new Model("leveleditor.ground", "leveleditor.ground", UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		//	material
 		Material groundPlateMaterial = new Material("ground");

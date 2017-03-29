@@ -1,7 +1,9 @@
 package net.drewke.tdme.engine.model;
 
+import net.drewke.tdme.engine.ModelUtilities;
+import net.drewke.tdme.engine.Object3DModel;
+import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.math.Matrix4x4;
-import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -36,14 +38,17 @@ public final class Model {
 
 	private Matrix4x4 importTransformationsMatrix;
 
+	private BoundingBox boundingBox;
+
 	/**
 	 * Public constructor
 	 * @param id
 	 * @param name
 	 * @param up vector
 	 * @param rotation order
+	 * @param bounding box
 	 */
-	public Model(String id, String name, UpVector upVector, RotationOrder rotationOrder) {
+	public Model(String id, String name, UpVector upVector, RotationOrder rotationOrder, BoundingBox boundingBox) {
 		this.id = id;
 		this.name = name;
 		this.upVector = upVector;
@@ -54,6 +59,7 @@ public final class Model {
 		fps = FPS_DEFAULT;
 		animationSetups = new HashMap<String, AnimationSetup>();
 		importTransformationsMatrix = new Matrix4x4().identity();
+		this.boundingBox = boundingBox;
 	}
 
 	/**
@@ -207,6 +213,16 @@ public final class Model {
 	}
 
 	/**
+	 * @return bounding box
+	 */
+	public BoundingBox getBoundingBox() {
+		if (boundingBox == null) {
+			boundingBox = ModelUtilities.createBoundingBox(new Object3DModel(this));
+		}
+		return boundingBox;
+	}
+
+	/**
 	 * Computes a transformations matrix for a given frame and group id
 	 * @param frame
 	 * @param group id
@@ -284,4 +300,4 @@ public final class Model {
 				", subGroups=" + subGroups + "]";
 	}
 
-}
+} 

@@ -61,7 +61,6 @@ public final class Engine {
 	private static TextureManager textureManager = null;
 	private static VBOManager vboManager = null;
 	private static MeshManager meshManager = null;
-	private static HashMap<String, BoundingBox> boundingBoxCache = null;
 	private static GUIRenderer guiRenderer = null;
 
 	public enum AnimationProcessingTarget {GPU, CPU, CPU_NORENDERING};
@@ -120,8 +119,6 @@ public final class Engine {
 	public static Engine getInstance() {
 		if (instance == null) {
 			instance = new Engine();
-			// initialize static members
-			boundingBoxCache = new HashMap<String, BoundingBox>();
 		}
 		return instance;
 	}
@@ -400,27 +397,6 @@ public final class Engine {
 	}
 
 	/**
-	 * Gets a models bounding box
-	 * @param model
-	 * @return bounding box
-	 */
-	public static BoundingBox getModelBoundingBox(Model model) {
-		BoundingBox boundingBox = boundingBoxCache.get(model.getId());
-		if (boundingBox == null) {
-			boundingBox = ModelUtilities.createBoundingBox(new Object3DModel(model));
-			// add some more tolerance for object picking
-			float[] bbMin = boundingBox.getMin().getArray();
-			float[] bbMax = boundingBox.getMax().getArray();
-			boundingBox.getMin().set(new Vector3(bbMin[0] - 0.01f, bbMin[1] - 0.01f, bbMin[2] - 0.01f));
-			boundingBox.getMax().set(new Vector3(bbMax[0] + 0.01f, bbMax[1] + 0.01f, bbMax[2] + 0.01f));
-			boundingBox.update();
-			// put into cache
-			boundingBoxCache.put(model.getId(), boundingBox);
-		}
-		return boundingBox;
-	}
-
-	/**
 	 * @return scene / background color
 	 */
 	public Color4 getSceneColor() {
@@ -491,7 +467,6 @@ public final class Engine {
 			removeEntity(entitiesToRemove.get(i));
 		}
 		partition.reset();
-		boundingBoxCache.clear();
 		object3DVBORenderer.reset();
 		CollisionDetection.reset();
 	}

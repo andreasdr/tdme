@@ -96,7 +96,7 @@ public final class DAEReader {
 		}
 
 		// 	create model
-		Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder);
+		Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder, null);
 
 		// import matrix
 		setupModelImportRotationMatrix(xmlRoot, model);
@@ -240,7 +240,8 @@ public final class DAEReader {
 						pathName + File.separator + fileName + '-' + xmlNode.getAttribute("id"), 
 						fileName + '-' + xmlNode.getAttribute("id"),
 						upVector,
-						rotationOrder
+						rotationOrder,
+						null
 					);
 
 					// import matrix

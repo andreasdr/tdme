@@ -61,7 +61,7 @@ public final class LevelEditorEntity extends Properties {
 		this.boundingModelMeshFile = boundingModelMeshFile;
 		this.modelBoundingVolume = modelBoundingVolume;
 		this.boundingVolume = boundingVolume;
-		this.boundingBox = Engine.getModelBoundingBox(model);
+		this.boundingBox = model.getBoundingBox();
 		this.pivot = pivot;
 	}
 

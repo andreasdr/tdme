@@ -44,8 +44,12 @@ public class TMWriter {
 
 			// meta data
 			writeString(os, model.getName());
+			
+			// up vector, rotation order, bounding box, ...
 			writeString(os, model.getUpVector().toString());
 			writeString(os, model.getRotationOrder().toString());
+			writeFloatArray(os, model.getBoundingBox().getMin().getArray());
+			writeFloatArray(os, model.getBoundingBox().getMax().getArray());
 			writeFloat(os, model.getFPS());
 			writeFloatArray(os, model.getImportTransformationsMatrix().getArray());
 

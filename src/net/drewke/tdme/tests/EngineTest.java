@@ -155,7 +155,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 	private Model createWallModel() {
 		// wall model
-		Model wall = new Model("wall", "wall", UpVector.Y_UP, RotationOrder.XYZ);
+		Model wall = new Model("wall", "wall", UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		// wall material
 		Material wallMaterial = new Material("wall");

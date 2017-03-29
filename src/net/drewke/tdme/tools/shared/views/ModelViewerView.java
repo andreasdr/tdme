@@ -145,14 +145,14 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		Tools.oseThumbnail(drawable, entity);
 
 		// max axis dimension
-		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(Engine.getModelBoundingBox(entity.getModel())));
+		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(entity.getModel().getBoundingBox()));
 
 		// set up model statistics
 		ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(entity.getModel());
 		modelViewerScreenController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
 
 		// set up oriented bounding box
-		BoundingBox aabb = Engine.getModelBoundingBox(entity.getModel());
+		BoundingBox aabb = entity.getModel().getBoundingBox();
 		OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
 
 		// set up sphere

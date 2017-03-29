@@ -227,7 +227,7 @@ public final class Tools {
 	 */
 	public static Model createGroundModel(float width, float depth, float y) {
 		// ground model
-		Model ground = new Model("ground", "ground", UpVector.Y_UP, RotationOrder.XYZ);
+		Model ground = new Model("ground", "ground", UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		//	material
 		Material groundMaterial = new Material("ground");

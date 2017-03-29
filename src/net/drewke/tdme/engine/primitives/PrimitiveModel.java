@@ -36,7 +36,7 @@ public final class PrimitiveModel {
 	 */
 	public static Model createBoundingBoxModel(BoundingBox boundingBox, String id) {
 		// ground model
-		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		// material
 		Material material = new Material("tdme.primitive.material");
@@ -125,7 +125,7 @@ public final class PrimitiveModel {
 	 */
 	public static Model createOrientedBoundingBoxModel(OrientedBoundingBox orientedBoundingBox, String id) {
 		// ground model
-		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		// material
 		Material material = new Material("tdme.primitive.material");
@@ -222,7 +222,7 @@ public final class PrimitiveModel {
 		Vector3 center = sphere.center;
 
 		// ground model
-		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		// material
 		Material material = new Material("tdme.primitive.material");
@@ -340,7 +340,7 @@ public final class PrimitiveModel {
 		rotationQuaternion.rotate(angle, rotationAxis);
 
 		// ground model
-		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ);
+		Model model = new Model(id, id, UpVector.Y_UP, RotationOrder.XYZ, null);
 
 		// material
 		Material material = new Material("tdme.primitive.material");

@@ -38,7 +38,7 @@ public final class WFObjReader {
 	 */
 	public static Model read(String pathName, String fileName) throws IOException, ModelFileIOException {
 		// create object
-		Model model = new Model(pathName + File.separator + fileName, fileName, UpVector.Y_UP, RotationOrder.XYZ);	
+		Model model = new Model(pathName + File.separator + fileName, fileName, UpVector.Y_UP, RotationOrder.XYZ, null);	
 
 		ArrayList<Vector3> vertices = new ArrayList<Vector3>();
 		ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();

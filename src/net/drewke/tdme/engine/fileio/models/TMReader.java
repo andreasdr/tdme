@@ -17,6 +17,7 @@ import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.utils.HashMap;
@@ -57,13 +58,15 @@ public class TMReader {
 			// meta data
 			String name = readString(is);
 
-			// up vector, rotation order
+			// up vector, rotation order, bounding box
 			UpVector upVector = UpVector.valueOf(readString(is));
 			RotationOrder rotationOrder = RotationOrder.valueOf(readString(is));
+			BoundingBox boundingBox = new BoundingBox(new Vector3(readFloatArray(is)), new Vector3(readFloatArray(is)));
 
 			// 	create object
-			Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder);
+			Model model = new Model(pathName + File.separator + fileName, fileName, upVector, rotationOrder, boundingBox);
 
+			// set additional data
 			model.setFPS(readFloat(is));
 			model.getImportTransformationsMatrix().set(readFloatArray(is));
 
