@@ -76,9 +76,7 @@ public abstract class GUIParentNode extends GUINode {
 		for (int i = 0; i < subNodes.size(); i++) {
 			GUINode node = subNodes.get(i);
 			screenNode.removeNode(node);
-			if (node instanceof GUIParentNode) {
-				((GUIParentNode)node).clearSubNodes();
-			}
+			node.dispose();
 		}
 		subNodes.clear();
 	}
