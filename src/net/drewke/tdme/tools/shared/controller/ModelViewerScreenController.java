@@ -412,9 +412,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		// bounding volume types drop downs inner
 		GUIParentNode boundingVolumeTypeDropDownInnerNode = (GUIParentNode)(boundingVolumeTypeDropDown.getScreenNode().getNodeById(boundingVolumeTypeDropDown.getId() + "_inner"));
 
-		// clear sub nodes
-		boundingVolumeTypeDropDownInnerNode.clearSubNodes();
-
 		// construct XML for sub nodes
 		int idx = 0;
 		String boundingVolumeTypeDropDownSubNodesXML = "";
@@ -424,16 +421,13 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				boundingVolumeTypeDropDownInnerNode,
-				boundingVolumeTypeDropDownSubNodesXML
+			boundingVolumeTypeDropDownInnerNode.replaceSubNodes(
+				boundingVolumeTypeDropDownSubNodesXML,
+				true
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		screenNode.layoutSubNodes(boundingVolumeTypeDropDownInnerNode);
 	}
 
 	/**

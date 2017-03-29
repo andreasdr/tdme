@@ -342,9 +342,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 		// model properties list box inner
 		GUIParentNode objectsListBoxInnerNode = (GUIParentNode)(objectsListBox.getScreenNode().getNodeById(objectsListBox.getId() + "_inner"));
-		
-		// clear sub nodes
-		objectsListBoxInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 1;
@@ -365,16 +362,13 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				objectsListBoxInnerNode,
-				objectsListBoxSubNodesXML
+			objectsListBoxInnerNode.replaceSubNodes(
+				objectsListBoxSubNodesXML,
+				false
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		screenNode.layoutSubNodes(objectsListBoxInnerNode);
 
 		// store selected object ids
 		objectsListBox.getController().setValue(selectedObjects);
@@ -535,9 +529,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		// map properties list box inner
 		GUIParentNode mapPropertiesListBoxInnerNode = (GUIParentNode)(mapPropertiesListBox.getScreenNode().getNodeById(mapPropertiesListBox.getId() + "_inner"));
 
-		// clear sub nodes
-		mapPropertiesListBoxInnerNode.clearSubNodes();
-
 		// construct XML for sub nodes
 		int idx = 1;
 		String mapPropertiesListBoxSubNodesXML = "";
@@ -558,16 +549,13 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				mapPropertiesListBoxInnerNode,
-				mapPropertiesListBoxSubNodesXML
+			mapPropertiesListBoxInnerNode.replaceSubNodes(
+				mapPropertiesListBoxSubNodesXML,
+				false
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		screenNode.layoutSubNodes(mapPropertiesListBoxInnerNode);
 
 		//
 		onMapPropertiesSelectionChanged();
@@ -612,9 +600,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		// model properties presets inner
 		GUIParentNode objectPropertiesPresetsInnerNode = (GUIParentNode)(objectPropertiesPresets.getScreenNode().getNodeById(objectPropertiesPresets.getId() + "_inner"));
 
-		// clear sub nodes
-		objectPropertiesPresetsInnerNode.clearSubNodes();
-
 		// construct XML for sub nodes
 		int idx = 0;
 		String objectPropertiesPresetsInnerNodeSubNodesXML = "";
@@ -627,16 +612,13 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				objectPropertiesPresetsInnerNode,
-				objectPropertiesPresetsInnerNodeSubNodesXML
+			objectPropertiesPresetsInnerNode.replaceSubNodes(
+				objectPropertiesPresetsInnerNodeSubNodesXML,
+				true
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		screenNode.layoutSubNodes(objectPropertiesPresetsInnerNode);
 	}
 
 	/**
@@ -690,9 +672,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 		// object properties list box inner
 		GUIParentNode objectPropertiesListBoxInnerNode = (GUIParentNode)(objectPropertiesListBox.getScreenNode().getNodeById(objectPropertiesListBox.getId() + "_inner"));
-		
-		// clear sub nodes
-		objectPropertiesListBoxInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 1;
@@ -714,16 +693,13 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				objectPropertiesListBoxInnerNode,
-				objectPropertiesListBoxSubNodesXML
+			objectPropertiesListBoxInnerNode.replaceSubNodes(
+				objectPropertiesListBoxSubNodesXML,
+				false
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		screenNode.layoutSubNodes(objectPropertiesListBoxInnerNode);
 
 		//
 		onObjectPropertiesSelectionChanged();
@@ -916,9 +892,6 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			// model properties presets inner
 			GUIParentNode lightPresetsInnerNode = (GUIParentNode)(lightsPresets[i].getScreenNode().getNodeById(lightsPresets[i].getId() + "_inner"));
 
-			// clear sub nodes
-			lightPresetsInnerNode.clearSubNodes();
-
 			// construct XML for sub nodes
 			int idx = 0;
 			String lightPresetsInnerNodeSubNodesXML = "";
@@ -931,16 +904,13 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 			// inject sub nodes
 			try {
-				GUIParser.parse(
-					lightPresetsInnerNode,
-					lightPresetsInnerNodeSubNodesXML
+				lightPresetsInnerNode.replaceSubNodes(
+					lightPresetsInnerNodeSubNodesXML,
+					true
 				);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			// relayout
-			screenNode.layoutSubNodes(lightPresetsInnerNode);
 		}
 	}
 

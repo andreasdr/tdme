@@ -89,9 +89,7 @@ public class GUITest implements GLEventListener, WindowListener {
 						try {
 							{
 								GUIParentNode parentNode = (GUIParentNode)(node.getScreenNode().getNodeById("sadd_inner"));
-								parentNode.clearSubNodes();
-								GUIParser.parse(
-									parentNode, 
+								parentNode.replaceSubNodes(
 									"<dropdown-option text=\"Option 1\" value=\"1\" />" +
 									"<dropdown-option text=\"Option 2\" value=\"2\" />" +
 									"<dropdown-option text=\"Option 3\" value=\"3\" />" +
@@ -101,17 +99,15 @@ public class GUITest implements GLEventListener, WindowListener {
 									"<dropdown-option text=\"Option 7\" value=\"7\" />" +
 									"<dropdown-option text=\"Option 8\" value=\"8\" selected=\"true\" />" +
 									"<dropdown-option text=\"Option 9\" value=\"9\" />" +
-									"<dropdown-option text=\"Option 10\" value=\"10\" />"
+									"<dropdown-option text=\"Option 10\" value=\"10\" />",
+									true
 								);
-								parentNode.getScreenNode().layoutSubNodes(parentNode);
 							}
 
 							{
 								//
 								GUIParentNode parentNode = (GUIParentNode)(node.getScreenNode().getNodeById("sasb_inner"));
-								parentNode.clearSubNodes();
-								GUIParser.parse(
-									parentNode, 
+								parentNode.replaceSubNodes( 
 									"<selectbox-option text=\"Option 1\" value=\"1\" />" +
 									"<selectbox-option text=\"Option 2\" value=\"2\" />" +
 									"<selectbox-option text=\"Option 3\" value=\"3\" />" +
@@ -121,9 +117,9 @@ public class GUITest implements GLEventListener, WindowListener {
 									"<selectbox-option text=\"Option 7\" value=\"7\" />" +
 									"<selectbox-option text=\"Option 8\" value=\"8\" />" +
 									"<selectbox-option text=\"Option 9\" value=\"9\" />" +
-									"<selectbox-option text=\"Option 10\" value=\"10\" />"
+									"<selectbox-option text=\"Option 10\" value=\"10\" />",
+									true
 								);
-								parentNode.getScreenNode().layoutSubNodes(parentNode);
 							}
 						} catch (Exception e) {
 							e.printStackTrace();

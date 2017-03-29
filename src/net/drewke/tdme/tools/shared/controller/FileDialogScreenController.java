@@ -143,9 +143,6 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		// files inner
 		GUIParentNode filesInnerNode = (GUIParentNode)(files.getScreenNode().getNodeById(files.getId() + "_inner"));
 
-		// clear sub nodes
-		filesInnerNode.clearSubNodes();
-
 		// construct XML for sub nodes
 		int idx = 1;
 		String filesInnerNodeSubNodesXML = "";
@@ -158,16 +155,13 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				filesInnerNode,
-				filesInnerNodeSubNodesXML
+			filesInnerNode.replaceSubNodes(
+				filesInnerNodeSubNodesXML,
+				true
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		filesInnerNode.getScreenNode().layoutSubNodes(filesInnerNode);
 	}
 	
 	/**

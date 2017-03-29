@@ -306,6 +306,12 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	protected boolean removeNode(GUINode node) {
 		nodesById.remove(node.id);
+		if (node instanceof GUIParentNode) {
+			GUIParentNode parentNode = (GUIParentNode)node;
+			for (int i = 0; i < parentNode.subNodes.size(); i++) {
+				removeNode(parentNode.subNodes.get(i));
+			}
+		}
 		return true;
 	}
 

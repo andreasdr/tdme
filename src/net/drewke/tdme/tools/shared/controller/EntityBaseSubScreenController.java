@@ -126,9 +126,6 @@ public class EntityBaseSubScreenController {
 		// model properties presets inner
 		GUIParentNode entityPropertiesPresetsInnerNode = (GUIParentNode)(entityPropertiesPresets.getScreenNode().getNodeById(entityPropertiesPresets.getId() + "_inner"));
 
-		// clear sub nodes
-		entityPropertiesPresetsInnerNode.clearSubNodes();
-
 		// construct XML for sub nodes
 		int idx = 0;
 		String entityPropertiesPresetsInnerNodeSubNodesXML = "";
@@ -141,16 +138,13 @@ public class EntityBaseSubScreenController {
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				entityPropertiesPresetsInnerNode,
-				entityPropertiesPresetsInnerNodeSubNodesXML
+			entityPropertiesPresetsInnerNode.replaceSubNodes(
+				entityPropertiesPresetsInnerNodeSubNodesXML,
+				true
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		entityPropertiesPresetsInnerNode.getScreenNode().layoutSubNodes(entityPropertiesPresetsInnerNode);
 	}
 
 	/**
@@ -176,9 +170,6 @@ public class EntityBaseSubScreenController {
 
 		// model properties list box inner
 		GUIParentNode entityPropertiesListBoxInnerNode = (GUIParentNode)(entityPropertiesList.getScreenNode().getNodeById(entityPropertiesList.getId() + "_inner"));
-		
-		// clear sub nodes
-		entityPropertiesListBoxInnerNode.clearSubNodes();
 
 		// construct XML for sub nodes
 		int idx = 1;
@@ -200,16 +191,13 @@ public class EntityBaseSubScreenController {
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				entityPropertiesListBoxInnerNode,
-				entityPropertiesListBoxSubNodesXML
+			entityPropertiesListBoxInnerNode.replaceSubNodes(
+				entityPropertiesListBoxSubNodesXML,
+				false
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		entityPropertiesListBoxInnerNode.getScreenNode().layoutSubNodes(entityPropertiesListBoxInnerNode);
 
 		//
 		onEntityPropertiesSelectionChanged(model);

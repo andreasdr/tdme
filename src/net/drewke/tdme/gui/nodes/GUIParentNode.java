@@ -2,6 +2,7 @@ package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
+import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
@@ -79,6 +80,47 @@ public abstract class GUIParentNode extends GUINode {
 			node.dispose();
 		}
 		subNodes.clear();
+	}
+
+	/**
+	 * Replace sub nodes with given XML
+	 * @param xml
+	 * @param reset scroll offsets
+	 */
+	public void replaceSubNodes(String xml, boolean resetScrollOffsets) throws Exception {
+		// reset scroll offsets?
+		if (resetScrollOffsets == true) {
+			childrenRenderOffsetX = 0f;
+			childrenRenderOffsetY = 0f;
+		}
+
+		// remove sub nodes and dispose them
+		for (int i = 0; i < subNodes.size(); i++) {
+			GUINode node = subNodes.get(i);
+			screenNode.removeNode(node);
+			node.dispose();
+		}
+		subNodes.clear();
+
+		// parse into this sub node
+		GUIParser.parse(this, xml);
+
+		// layout
+		screenNode.layoutSubNodes(this);
+
+		// clip to children render offset X to min, max
+		float elementWidth = computedConstraints.width;
+		float contentWidth = getContentWidth();
+		float scrollableWidth = contentWidth - elementWidth;
+		if (childrenRenderOffsetX < 0) childrenRenderOffsetX = 0;
+		if (childrenRenderOffsetX > scrollableWidth) childrenRenderOffsetX = scrollableWidth;
+
+		// clip to children render offset Y to min, max
+		float elementHeight = computedConstraints.height;
+		float contentHeight = getContentHeight();
+		float scrollableHeight = contentHeight - elementHeight;
+		if (childrenRenderOffsetY < 0) childrenRenderOffsetY = 0;
+		if (childrenRenderOffsetY > scrollableHeight) childrenRenderOffsetY = scrollableHeight;
 	}
 
 	/**

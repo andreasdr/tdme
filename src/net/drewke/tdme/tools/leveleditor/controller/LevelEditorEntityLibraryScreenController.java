@@ -99,9 +99,6 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 		// entity library list box inner
 		GUIParentNode entityLibraryListBoxInnerNode = (GUIParentNode)(entityLibraryListBox.getScreenNode().getNodeById(entityLibraryListBox.getId() + "_inner"));
 
-		// clear sub nodes
-		entityLibraryListBoxInnerNode.clearSubNodes();
-
 		// construct XML for sub nodes
 		int idx = 1;
 		String entityLibraryListBoxSubNodesXML = "";
@@ -122,16 +119,13 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 
 		// inject sub nodes
 		try {
-			GUIParser.parse(
-				entityLibraryListBoxInnerNode,
-				entityLibraryListBoxSubNodesXML
+			entityLibraryListBoxInnerNode.replaceSubNodes(
+				entityLibraryListBoxSubNodesXML,
+				false
 			);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// relayout
-		screenNode.layoutSubNodes(entityLibraryListBoxInnerNode);
 
 		// reset selection
 		if (entityLibraryListBoxSelection.length() > 0) {
