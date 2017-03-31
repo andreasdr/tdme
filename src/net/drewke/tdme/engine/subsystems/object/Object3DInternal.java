@@ -9,6 +9,7 @@ import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.manager.TextureManager;
+import net.drewke.tdme.math.MathTools;
 
 /**
  * TDME Object 3D
@@ -40,8 +41,8 @@ public class Object3DInternal extends Object3DBase {
 		effectColorAdd = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
 		boundingBox = (BoundingBox)model.getBoundingBox().clone();
 		// scale a bit up to make picking work better
-		boundingBox.getMin().scale(1.1f);
-		boundingBox.getMax().scale(1.1f);
+		boundingBox.getMin().sub(0.1f);
+		boundingBox.getMax().add(0.1f);
 		boundingBox.update();
 		boundingBoxTransformed = (BoundingBox)boundingBox.clone();
 		boundingBoxTransformed.fromBoundingVolumeWithTransformations(boundingBox, this);

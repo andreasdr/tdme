@@ -7,6 +7,7 @@ import java.util.HashMap;
 import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
+import net.drewke.tdme.engine.EntityPickingFilter;
 import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.PartitionQuadTree;
@@ -24,6 +25,7 @@ import net.drewke.tdme.engine.model.Model.UpVector;
 import net.drewke.tdme.engine.model.ModelHelper;
 import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
@@ -164,6 +166,8 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 	private PopUps popUps;
 
+	private EntityPickingFilter entityPickingFilterNoGrid;
+
 	/**
 	 * Public constructor
 	 * @param pop ups 
@@ -213,6 +217,13 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		engine = Engine.getInstance();
 		camLookFrom = engine.getCamera().getLookFrom();
 		camLookAt = engine.getCamera().getLookAt();
+
+		//
+		entityPickingFilterNoGrid = new EntityPickingFilter() {
+			public boolean filterEntity(Entity entity) {
+				return entity.getId().startsWith("leveleditor.ground@") == false;
+			}
+		};
 	}
 
 	/**
@@ -397,8 +408,12 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 					}
 				}
 
-				// check if ground plate was clicked
-				Entity selectedObject = engine.getObjectByMousePosition(event.getX(), event.getY());
+				// check if object was clicked first
+				Entity selectedObject = engine.getObjectByMousePosition(event.getX(), event.getY(), entityPickingFilterNoGrid);
+				// if not, check if ground plate was clicked
+				if (selectedObject == null) {
+					selectedObject = engine.getObjectByMousePosition(event.getX(), event.getY());
+				}
 
 				// select cell if any was selected
 				if (selectedObject != null) {
@@ -958,7 +973,16 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 */
 	private Model createLevelEditorGroundPlateModel() {
 		// ground selectedEntity
-		Model groundPlate = new Model("leveleditor.ground", "leveleditor.ground", UpVector.Y_UP, RotationOrder.XYZ, null);
+		Model groundPlate = new Model(
+			"leveleditor.ground", 
+			"leveleditor.ground", 
+			UpVector.Y_UP, 
+			RotationOrder.XYZ, 
+			(BoundingBox)BoundingBox.createBoundingVolume(
+				new Vector3(0f,-0.01f,0f),
+				new Vector3(1f,+0.01f,1f)
+			)
+		);
 
 		//	material
 		Material groundPlateMaterial = new Material("ground");

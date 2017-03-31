@@ -35,6 +35,7 @@ import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
@@ -233,12 +234,47 @@ public final class DAEReader {
 				}
 
 				// visual scene root nodes
+				LevelEditorEntityLibrary entityLibrary = levelEditorLevel.getEntityLibrary();
 				int nodeIdx = 0;
 				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
+					// derive model name from node id
+					String modelName = xmlNode.getAttribute("id");
+
+					// replace blender _|-NUMBER, not sure if this is a good idea for all cases, we will see
+					modelName = modelName.replaceAll("[\\-\\_]{1}+[0-9]+$", "");
+					// replace number at the end still, not sure if this is a good idea for all cases, we will see
+					modelName = modelName.replaceAll("[0-9]+$", "");
+
+					// check if name is available, if not extend with numbers :DDD
+					boolean haveName = entityLibrary.getEntityCount() == 0;
+					if (haveName == false) {
+						for (int i = 0; i < 10000; i++) {
+							String modelNameTry = modelName + (i == 0?"":String.valueOf(i));
+							for (int entityIdx = 0; entityIdx < entityLibrary.getEntityCount(); entityIdx++) {
+								LevelEditorEntity entity = entityLibrary.getEntityAt(entityIdx);
+								if (entity.getName().equals(modelNameTry) == false) {
+									haveName = true;
+									modelName = modelNameTry; 
+									break;
+								}
+							}
+							if (haveName == true) {
+								break;
+							}
+						}
+					}
+
+					// do we have a name now?
+					if (haveName == false) {
+						// nope, cant imagine this will happen 
+						System.out.println("DAEReader::readLevel(): Skipping model '" + modelName + "' as no name could be created for it.");
+						continue;
+					}
+
 					// 	create model
 					Model model = new Model(
-						pathName + File.separator + fileName + '-' + xmlNode.getAttribute("id"), 
-						fileName + '-' + xmlNode.getAttribute("id"),
+						pathName + File.separator + fileName + '-' + modelName, 
+						fileName + '-' + modelName,
 						upVector,
 						rotationOrder,
 						null
@@ -393,7 +429,7 @@ public final class DAEReader {
 					// check if we have that model already
 					for (int i = 0; i < levelEditorLevel.getEntityLibrary().getEntityCount(); i++) {
 						LevelEditorEntity levelEditorEntityCompare = levelEditorLevel.getEntityLibrary().getEntityAt(i);
-						if (levelEditorEntityCompare.getType() != ModelType.TRIGGER) continue;
+						if (levelEditorEntityCompare.getType() != ModelType.MODEL) continue;
 						if (ModelUtilities.equals(model, levelEditorEntityCompare.getModel()) == true) {
 							levelEditorEntity = levelEditorEntityCompare;
 							break;
@@ -403,15 +439,15 @@ public final class DAEReader {
 					// create level editor model, if not yet exists
 					if (levelEditorEntity == null) {
 						// save model
-						TMWriter.write(model, pathName + "/" + fileName + "-models", xmlNode.getAttribute("id") + ".tm");
+						TMWriter.write(model, pathName + "/" + fileName + "-models", modelName + ".tm");
 
 						// create level editor model
-						levelEditorEntity = levelEditorLevel.getEntityLibrary().addModel(
+						levelEditorEntity = entityLibrary.addModel(
 							nodeIdx++,
-							xmlNode.getAttribute("id"),
-							xmlNode.getAttribute("id"),
+							modelName,
+							modelName,
 							pathName + "/" + fileName + "-models",
-							xmlNode.getAttribute("id") + ".tm",
+							modelName + ".tm",
 							new Vector3()
 						);
 					}

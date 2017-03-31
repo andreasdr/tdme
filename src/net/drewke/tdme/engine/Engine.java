@@ -945,8 +945,19 @@ public final class Engine {
 	 * Retrieves object by mouse position
 	 * @param mouse x
 	 * @param mouse y
+	 * @param filter
 	 */
 	public Entity getObjectByMousePosition(int mouseX, int mouseY) {
+		return getObjectByMousePosition(mouseX, mouseY, null);
+	}
+
+	/**
+	 * Retrieves object by mouse position
+	 * @param mouse x
+	 * @param mouse y
+	 * @param filter
+	 */
+	public Entity getObjectByMousePosition(int mouseX, int mouseY, EntityPickingFilter filter) {
 		// get world coordinate
 		computeWorldCoordinateByMousePosition(mouseX, mouseY, tmpVector3a);
 
@@ -956,6 +967,7 @@ public final class Engine {
 		// iterate visible objects
 		for (int i = 0; i < visibleObjects.size(); i++) {
 			Object3D entity = visibleObjects.get(i);
+			if (filter != null && filter.filterEntity(entity) == false) continue;
 			if (entity.isPickable() == true &&
 				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a) == true) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
