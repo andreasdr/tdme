@@ -2,6 +2,7 @@ package net.drewke.tdme.gui.nodes;
 
 import java.util.Arrays;
 
+import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.gui.GUIParserException;
 
 /**
@@ -9,7 +10,7 @@ import net.drewke.tdme.gui.GUIParserException;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUIColor {
+public final class GUIColor extends Color4 {
 
 	// predefined colors
 	public final static GUIColor WHITE = new GUIColor(new float[] {1f, 1f, 1f, 1f});
@@ -40,22 +41,34 @@ public final class GUIColor {
 		"BLUE",
 		"TRANSPARENT"
 	};
-	
-	private float[] data;
 
 	/**
 	 * Public constructor
 	 */
 	public GUIColor() {
-		data = new float[] {0f,0f,0f,1f};
+		super();
+		set(0f,0f,0f,1f);
 	}
 
 	/**
 	 * Public constructor
-	 * @param data
 	 */
-	public GUIColor(float[] data) {
-		this.data = data;
+	public GUIColor(Color4 color) {
+		super(color);
+	}
+
+	/**
+	 * Public constructor
+	 */
+	public GUIColor(float r, float g, float b, float a) {
+		super(r, g, b, a);
+	}
+
+	/**
+	 * Public constructor
+	 */
+	public GUIColor(float[] color) {
+		super(color);
 	}
 
 	/**
@@ -95,13 +108,6 @@ public final class GUIColor {
         if (colorString.length() > 7) {
         	data[3] = Integer.valueOf(colorString.substring(7, 9), 16) / 255f;
         }
-	}
-
-	/**
-	 * @return data
-	 */
-	public float[] getData() {
-		return data;
 	}
 
 	/*

@@ -699,7 +699,7 @@ public abstract class GUINode {
 			float height = computedConstraints.height - border.top - border.bottom;
 
 			// background color
-			float[] bgColorData = backgroundColor.getData();
+			float[] bgColorData = backgroundColor.getArray();
 
 			// render background
 			guiRenderer.bindTexture(0);
@@ -737,7 +737,7 @@ public abstract class GUINode {
 				float height = border.top;
 	
 				// background color
-				float[] borderColorData = border.topColor.getData();
+				float[] borderColorData = border.topColor.getArray();
 	
 				// render panel background
 				guiRenderer.addQuad(
@@ -768,7 +768,7 @@ public abstract class GUINode {
 				float height = border.bottom;
 	
 				// background color
-				float[] borderColorData = border.bottomColor.getData();
+				float[] borderColorData = border.bottomColor.getArray();
 	
 				// render panel background
 				guiRenderer.addQuad(
@@ -799,7 +799,7 @@ public abstract class GUINode {
 				float height = computedConstraints.height;
 	
 				// background color
-				float[] borderColorData = border.leftColor.getData();
+				float[] borderColorData = border.leftColor.getArray();
 	
 				// render panel background
 				guiRenderer.addQuad(
@@ -830,7 +830,7 @@ public abstract class GUINode {
 				float height = computedConstraints.height;
 	
 				// background color
-				float[] borderColorData = border.rightColor.getData();
+				float[] borderColorData = border.rightColor.getArray();
 	
 				// render panel background
 				guiRenderer.addQuad(

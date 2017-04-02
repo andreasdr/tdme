@@ -104,7 +104,7 @@ public final class GUIFont {
 			float textureCharHeight = this.height;
 
 			// background color
-			float[] fontColor = GUIColor.WHITE.getData();
+			float[] fontColor = GUIColor.WHITE.getArray();
 
 			// render panel background
 			guiRenderer.addQuad(

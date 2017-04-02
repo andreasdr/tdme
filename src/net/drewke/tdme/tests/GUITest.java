@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.effects.GUIColorEffect;
+import net.drewke.tdme.gui.effects.GUIEffect;
 import net.drewke.tdme.gui.elements.GUITabController;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
@@ -135,7 +137,18 @@ public class GUITest implements GLEventListener, WindowListener {
 					System.out.println(node.getName() + ":onValueChanged: " + node.getController().getValue());
 				}
 			});
+
+			// layout
 			engine.getGUI().getScreen("test").layout();
+
+			// add fade in effect
+			GUIColorEffect effect = new GUIColorEffect();
+			effect.getColorMulStart().set(0f,0f,0f,1f);
+			effect.getColorMulEnd().set(1f,1f,1f,1f);
+			effect.setTimeTotal(2f);
+			effect.start();
+			engine.getGUI().getScreen("test").addEffect(effect);
+			// add to render queue
 			engine.getGUI().addRenderScreen("test");
 		} catch (Exception exception) {
 			exception.printStackTrace();

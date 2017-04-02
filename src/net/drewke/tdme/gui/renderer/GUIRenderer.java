@@ -4,10 +4,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.Arrays;
 
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.engine.fileio.textures.Texture;
+import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.subsystems.manager.VBOManager;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.gui.GUI;
@@ -76,8 +75,14 @@ public final class GUIRenderer {
 	private float[] effectColorMul = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
 	private float[] effectColorAdd = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
 
-	// effect color multiplication final
+	// effect colors
+	private float[] guiEffectColorMul = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
+	private float[] guiEffectColorAdd = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
+
+	// effect color final
 	private float[] effectColorMulFinal = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
+	private float[] effectColorAddFinal = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
+
 	/**
 	 * Constructor
 	 * @param renderer
@@ -183,11 +188,25 @@ public final class GUIRenderer {
 	}
 
 	/**
+	 * Init screen
+	 */
+	public void initScreen() {
+	}
+
+	/**
+	 * Done screen
+	 */
+	public void doneScreen() {
+		System.arraycopy(GUIColor.WHITE.getArray(), 0, guiEffectColorMul, 0, 4);
+		System.arraycopy(GUIColor.BLACK.getArray(), 0, guiEffectColorAdd, 0, 4);
+	}
+
+	/**
 	 * Set effect color mul
 	 * @param color
 	 */
 	public void setFontColor(GUIColor color) {
-		System.arraycopy(color.getData(), 0, fontColor, 0, 4);
+		System.arraycopy(color.getArray(), 0, fontColor, 0, 4);
 	}
 
 	/**
@@ -195,7 +214,7 @@ public final class GUIRenderer {
 	 * @param color
 	 */
 	public void setEffectColorMul(GUIColor color) {
-		System.arraycopy(color.getData(), 0, effectColorMul, 0, 4);
+		System.arraycopy(color.getArray(), 0, effectColorMul, 0, 4);
 	}
 
 	/**
@@ -203,7 +222,23 @@ public final class GUIRenderer {
 	 * @param color
 	 */
 	public void setEffectColorAdd(GUIColor color) {
-		System.arraycopy(color.getData(), 0, effectColorAdd, 0, 4);
+		System.arraycopy(color.getArray(), 0, effectColorAdd, 0, 4);
+	}
+
+	/**
+	 * Set gui effect color mul
+	 * @param color
+	 */
+	public void setGUIEffectColorMul(GUIColor color) {
+		System.arraycopy(color.getArray(), 0, guiEffectColorMul, 0, 4);
+	}
+
+	/**
+	 * Set gui effect color add
+	 * @param color
+	 */
+	public void setGUIEffectColorAdd(GUIColor color) {
+		System.arraycopy(color.getArray(), 0, guiEffectColorAdd, 0, 4);
 	}
 
 	/**
@@ -565,12 +600,19 @@ public final class GUIRenderer {
 		);
 
 		// effect
-		effectColorMulFinal[0] = effectColorMul[0] * fontColor[0];
-		effectColorMulFinal[1] = effectColorMul[1] * fontColor[1];
-		effectColorMulFinal[2] = effectColorMul[2] * fontColor[2];
-		effectColorMulFinal[3] = effectColorMul[3] * fontColor[3];
+		//	mul
+		effectColorMulFinal[0] = guiEffectColorMul[0] * effectColorMul[0] * fontColor[0];
+		effectColorMulFinal[1] = guiEffectColorMul[1] * effectColorMul[1] * fontColor[1];
+		effectColorMulFinal[2] = guiEffectColorMul[2] * effectColorMul[2] * fontColor[2];
+		effectColorMulFinal[3] = guiEffectColorMul[3] * effectColorMul[3] * fontColor[3];
+		// 	add
+		effectColorAddFinal[0] = guiEffectColorAdd[0] + effectColorAdd[0];
+		effectColorAddFinal[1] = guiEffectColorAdd[1] + effectColorAdd[1];
+		effectColorAddFinal[2] = guiEffectColorAdd[2] + effectColorAdd[2];
+		effectColorAddFinal[3] = 0f;
+		// 	effect colors
 		renderer.setEffectColorMul(effectColorMulFinal);
-		renderer.setEffectColorAdd(effectColorAdd);
+		renderer.setEffectColorAdd(effectColorAddFinal);
 		renderer.onUpdateEffect();
 
 		// draw
@@ -581,10 +623,11 @@ public final class GUIRenderer {
 		fbVertices.clear();
 		fbColors.clear();
 		fbTextureCoordinates.clear();
-		System.arraycopy(GUIColor.WHITE.getData(), 0, fontColor, 0, 4);
-		System.arraycopy(GUIColor.WHITE.getData(), 0, effectColorMul, 0, 4);
-		System.arraycopy(GUIColor.BLACK.getData(), 0, effectColorAdd, 0, 4);
-		effectColorAdd[3] = 0;
+		System.arraycopy(GUIColor.WHITE.getArray(), 0, fontColor, 0, 4);
+		System.arraycopy(GUIColor.WHITE.getArray(), 0, effectColorMul, 0, 4);
+		System.arraycopy(GUIColor.BLACK.getArray(), 0, effectColorAdd, 0, 4);
+		effectColorAdd[3] = 0f;
+		guiEffectColorAdd[3] = 0f;
 	}
 
 }

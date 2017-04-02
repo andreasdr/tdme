@@ -74,6 +74,9 @@ public final class Timing {
 	 * @return delta time
 	 */
 	public long getDeltaTime() {
+		if (currentFrameAtTime == UNDEFINED || lastFrameAtTime == UNDEFINED) {
+			return 0l;
+		}
 		return currentFrameAtTime - lastFrameAtTime;
 	}
 

@@ -10,9 +10,9 @@ import net.drewke.tdme.math.Vector3;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class Color4 {
+public class Color4 {
 
-	private float[] data;
+	protected float[] data;
 
 	/**
 	 * Public constructor

@@ -115,13 +115,13 @@ public class GUIVerticalScrollbarInternalNode extends GUINode {
 		float[] barColorArray = null;
 		switch (controller.getState()) {
 			case NONE:
-				barColorArray = barColorNone.getData();
+				barColorArray = barColorNone.getArray();
 				break;
 			case MOUSEOVER:
-				barColorArray = barColorMouseOver.getData();
+				barColorArray = barColorMouseOver.getArray();
 				break;
 			case DRAGGING:
-				barColorArray = barColorDragging.getData();
+				barColorArray = barColorDragging.getArray();
 				break;
 		}
 

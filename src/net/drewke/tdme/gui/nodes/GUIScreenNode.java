@@ -2,8 +2,11 @@ package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
+import com.sun.scenario.effect.Effect;
+
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.GUIParserException;
+import net.drewke.tdme.gui.effects.GUIEffect;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
@@ -42,6 +45,8 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	protected boolean visible;
 	protected boolean popUp;
+
+	private ArrayList<GUIEffect> effects;
 
 	/**
 	 * Constructor
@@ -89,6 +94,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.parentNode = null;
 		this.visible = true;
 		this.popUp = popUp;
+		this.effects = new ArrayList<GUIEffect>();
 	}
 
 	/**
@@ -320,8 +326,16 @@ public final class GUIScreenNode extends GUIParentNode {
 	 * @param guiRenderer
 	 */
 	public void render(GUIRenderer guiRenderer) {
+		guiRenderer.initScreen();
+		for (int i = 0; i < effects.size(); i++) {
+			GUIEffect effect = effects.get(i);
+			if (effect.isActive() == true) {
+				effect.update(guiRenderer);
+			}
+		}
 		floatingNodes.clear();
 		super.render(guiRenderer, floatingNodes);
+		guiRenderer.doneScreen();
 	}
 
 	/**
@@ -512,6 +526,22 @@ public final class GUIScreenNode extends GUIParentNode {
 				guiElementNodeController.setValue(newValue);
 			}
 		}
+	}
+
+	/**
+	 * Add effect that will be removed if finished
+	 * @param effect
+	 */
+	public void addEffect(GUIEffect effect) {
+		effects.add(effect);
+	}
+
+	/**
+	 * Remove effect
+	 * @param effect
+	 */
+	public void removeEffect(GUIEffect effect) {
+		effects.remove(effect);
 	}
 
 }

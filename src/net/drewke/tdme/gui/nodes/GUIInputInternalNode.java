@@ -197,7 +197,7 @@ public final class GUIInputInternalNode extends GUINode {
 			float height = computedConstraints.height - border.top - border.bottom - padding.top - padding.bottom;
 
 			// background color
-			float[] colorData = (disable == false?color:colorDisabled).getData();
+			float[] colorData = (disable == false?color:colorDisabled).getArray();
 
 			// render cursor
 			guiRenderer.bindTexture(0);
