@@ -3,6 +3,7 @@ package net.drewke.tdme.gui.nodes;
 import java.util.Arrays;
 
 import net.drewke.tdme.engine.model.Color4;
+import net.drewke.tdme.engine.model.Color4Base;
 import net.drewke.tdme.gui.GUIParserException;
 
 /**
@@ -10,7 +11,7 @@ import net.drewke.tdme.gui.GUIParserException;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class GUIColor extends Color4 {
+public final class GUIColor extends Color4Base {
 
 	// predefined colors
 	public final static GUIColor WHITE = new GUIColor(new float[] {1f, 1f, 1f, 1f});
