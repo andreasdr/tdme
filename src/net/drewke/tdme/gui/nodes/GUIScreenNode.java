@@ -356,9 +356,7 @@ public final class GUIScreenNode extends GUIParentNode {
 
 		// apply effects
 		for (GUIEffect effect: effects.getValuesIterator()) {
-			if (effect.isActive() == true) {
-				effect.apply(guiRenderer);
-			}
+			effect.apply(guiRenderer);
 		}
 
 		// render floating nodes
