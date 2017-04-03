@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.effects.GUIColorEffect;
-import net.drewke.tdme.gui.effects.GUIEffect;
+import net.drewke.tdme.gui.effects.GUIPositionEffect;
 import net.drewke.tdme.gui.elements.GUITabController;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
@@ -142,12 +142,21 @@ public class GUITest implements GLEventListener, WindowListener {
 			engine.getGUI().getScreen("test").layout();
 
 			// add fade in effect
-			GUIColorEffect effect = new GUIColorEffect();
-			effect.getColorMulStart().set(0f,0f,0f,1f);
-			effect.getColorMulEnd().set(1f,1f,1f,1f);
-			effect.setTimeTotal(3f);
-			effect.start();
-			engine.getGUI().getScreen("test").addEffect("fadein", effect);
+			GUIColorEffect effectFadeIn = new GUIColorEffect();
+			effectFadeIn.getColorMulStart().set(0f,0f,0f,1f);
+			effectFadeIn.getColorMulEnd().set(1f,1f,1f,1f);
+			effectFadeIn.setTimeTotal(3f);
+			effectFadeIn.start();
+			engine.getGUI().getScreen("test").addEffect("fadein", effectFadeIn);
+
+			// add scroll in effect
+			GUIPositionEffect effectScrollIn = new GUIPositionEffect();
+			effectScrollIn.setPositionXStart(-640f);
+			effectScrollIn.setPositionXEnd(0f);
+			effectScrollIn.setTimeTotal(3f);
+			effectScrollIn.start();
+			engine.getGUI().getScreen("test").addEffect("scrollin", effectScrollIn);
+
 			// add to render queue
 			engine.getGUI().addRenderScreen("test");
 		} catch (Exception exception) {

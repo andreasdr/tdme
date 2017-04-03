@@ -56,15 +56,6 @@ public class GUIColorEffect extends GUIEffect {
 		return colorMulEnd;
 	}
 
-	/**
-	 * Start
-	 */
-	public void start() {
-		super.start();
-		colorMul.set(colorMulStart);
-		colorAdd.set(colorAddStart);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.effects.GUIEffect#update(net.drewke.tdme.gui.renderer.GUIRenderer)

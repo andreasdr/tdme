@@ -18,7 +18,14 @@ import net.drewke.tdme.gui.nodes.GUIColor;
  */
 public final class GUIRenderer {
 
+	// quad count
 	private final static int QUAD_COUNT = 16384; 
+
+	// full screen corner coordinates
+	private final static float SCREEN_LEFT = -1f;
+	private final static float SCREEN_TOP = +1;
+	private final static float SCREEN_RIGHT = +1;
+	private final static float SCREEN_BOTTOM = -1f;
 
 	//
 	protected GUI gui;
@@ -81,6 +88,10 @@ public final class GUIRenderer {
 	// effect color final
 	private float[] effectColorMulFinal = new float[] {1.0f, 1.0f, 1.0f, 1.0f};
 	private float[] effectColorAddFinal = new float[] {0.0f, 0.0f, 0.0f, 0.0f};
+
+	// effect offset x,y
+	private float guiEffectOffsetX = 0f;
+	private float guiEffectOffsetY = 0f;
 
 	/**
 	 * Constructor
@@ -150,10 +161,10 @@ public final class GUIRenderer {
 	 */
 	public void initRendering() {
 		// render to full screen
-		setRenderAreaLeft(-1f);
-		setRenderAreaTop(+1);
-		setRenderAreaRight(+1);
-		setRenderAreaBottom(-1f);
+		setRenderAreaLeft(SCREEN_LEFT);
+		setRenderAreaTop(SCREEN_TOP);
+		setRenderAreaRight(SCREEN_RIGHT);
+		setRenderAreaBottom(SCREEN_BOTTOM);
 
 		// init gui
 		Engine.getGUIShader().useProgram();
@@ -198,6 +209,8 @@ public final class GUIRenderer {
 	public void doneScreen() {
 		System.arraycopy(GUIColor.WHITE.getArray(), 0, guiEffectColorMul, 0, 4);
 		System.arraycopy(GUIColor.BLACK.getArray(), 0, guiEffectColorAdd, 0, 4);
+		guiEffectOffsetX = 0f;
+		guiEffectOffsetY = 0f;
 	}
 
 	/**
@@ -225,7 +238,7 @@ public final class GUIRenderer {
 	}
 
 	/**
-	 * Set gui effect color mul
+	 * Set GUI effect color mul
 	 * @param color
 	 */
 	public void setGUIEffectColorMul(GUIColor color) {
@@ -233,11 +246,27 @@ public final class GUIRenderer {
 	}
 
 	/**
-	 * Set gui effect color add
+	 * Set GUI effect color add
 	 * @param color
 	 */
 	public void setGUIEffectColorAdd(GUIColor color) {
 		System.arraycopy(color.getArray(), 0, guiEffectColorAdd, 0, 4);
+	}
+
+	/**
+	 * Set GUI effect offset X
+	 * @param gui effect offset X
+	 */
+	public void setGUIEffectOffsetX(float guiEffectOffsetX) {
+		this.guiEffectOffsetX = guiEffectOffsetX;
+	}
+
+	/**
+	 * Set GUI effect offset Y
+	 * @param GUI effect offset Y
+	 */
+	public void setGUIEffectOffsetY(float guiEffectOffsetY) {
+		this.guiEffectOffsetY = guiEffectOffsetY;
 	}
 
 	/**
@@ -436,6 +465,28 @@ public final class GUIRenderer {
 		y2+= renderOffsetY;
 		y3+= renderOffsetY;
 		y4+= renderOffsetY;
+
+		// gui offset x
+		x1-= guiEffectOffsetX;
+		x2-= guiEffectOffsetX;
+		x3-= guiEffectOffsetX;
+		x4-= guiEffectOffsetX;
+		y1+= guiEffectOffsetY;
+		y2+= guiEffectOffsetY;
+		y3+= guiEffectOffsetY;
+		y4+= guiEffectOffsetY;
+
+		// local render area
+		float renderAreaTop = this.renderAreaTop;
+		float renderAreaBottom = this.renderAreaBottom;
+		float renderAreaRight = this.renderAreaRight;
+		float renderAreaLeft = this.renderAreaLeft;
+
+		// take gui effect offsets into account
+		renderAreaTop = Math.min(renderAreaTop + guiEffectOffsetY, SCREEN_TOP);
+		renderAreaBottom = Math.max(renderAreaBottom + guiEffectOffsetY, SCREEN_BOTTOM);
+		renderAreaRight = Math.min(renderAreaRight - guiEffectOffsetX, SCREEN_RIGHT);
+		renderAreaLeft = Math.max(renderAreaLeft - guiEffectOffsetX, SCREEN_LEFT);
 
 		// Note: 
 		//	top = +1, bottom = -1 
