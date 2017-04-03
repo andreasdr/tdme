@@ -145,7 +145,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			GUIColorEffect effect = new GUIColorEffect();
 			effect.getColorMulStart().set(0f,0f,0f,1f);
 			effect.getColorMulEnd().set(1f,1f,1f,1f);
-			effect.setTimeTotal(2f);
+			effect.setTimeTotal(3f);
 			effect.start();
 			engine.getGUI().getScreen("test").addEffect("fadein", effect);
 			// add to render queue

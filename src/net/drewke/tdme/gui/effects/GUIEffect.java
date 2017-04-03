@@ -80,6 +80,9 @@ public abstract class GUIEffect {
 	 * @param gui renderer
 	 */
 	public void update(GUIRenderer guiRenderer) {
+		// exit if not active
+		if (active == false) return;
+
 		// time passed
 		timePassed = (float)(Engine.getInstance().getTiming().getDeltaTime()) / 1000f;
 		timeLeft-= timePassed;
@@ -91,9 +94,8 @@ public abstract class GUIEffect {
 				// not sure if performing action in this application control flow is a good idea, will see
 				action.performAction();
 			}
-		}
-		// apply if active
-		if (active == true) {
+		} else {
+			// apply if active
 			apply(guiRenderer);
 		}
 	}

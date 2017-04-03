@@ -78,18 +78,24 @@ public class GUIColorEffect extends GUIEffect {
 	 * @see net.drewke.tdme.gui.effects.GUIEffect#apply()
 	 */
 	public void apply(GUIRenderer guiRenderer) {
-		colorMul.add(
-			(colorMulEnd.getRed() - colorMulStart.getRed()) / timeTotal * timePassed,
-			(colorMulEnd.getGreen() - colorMulStart.getGreen()) / timeTotal * timePassed,
-			(colorMulEnd.getBlue() - colorMulStart.getBlue()) / timeTotal * timePassed,
-			(colorMulEnd.getAlpha() - colorMulStart.getAlpha()) / timeTotal * timePassed
+		// exit if not active
+		if (active == false) return;
+
+		// color mul
+		colorMul.set(
+			colorMulStart.getRed() + ((colorMulEnd.getRed() - colorMulStart.getRed()) / timeTotal * (timeTotal - timeLeft)),
+			colorMulStart.getGreen() + ((colorMulEnd.getGreen() - colorMulStart.getGreen()) / timeTotal * (timeTotal - timeLeft)),
+			colorMulStart.getBlue() + ((colorMulEnd.getBlue() - colorMulStart.getBlue()) / timeTotal * (timeTotal - timeLeft)),
+			colorMulStart.getAlpha() + ((colorMulEnd.getAlpha() - colorMulStart.getAlpha()) / timeTotal * (timeTotal - timeLeft))
 		);
 		guiRenderer.setGUIEffectColorMul(colorMul);
-		colorAdd.add(
-			(colorAddEnd.getRed() - colorAddStart.getRed()) / timeTotal * timePassed,
-			(colorAddEnd.getGreen() - colorAddStart.getGreen()) / timeTotal * timePassed,
-			(colorAddEnd.getBlue() - colorAddStart.getBlue()) / timeTotal * timePassed,
-			(colorAddEnd.getAlpha() - colorAddStart.getAlpha()) / timeTotal * timePassed
+
+		// color add
+		colorAdd.set(
+			colorAddStart.getRed() + ((colorAddEnd.getRed() - colorAddStart.getRed()) / timeTotal * (timeTotal - timeLeft)),
+			colorAddStart.getGreen() + ((colorAddEnd.getGreen() - colorAddStart.getGreen()) / timeTotal * (timeTotal - timeLeft)),
+			colorAddStart.getBlue() + ((colorAddEnd.getBlue() - colorAddStart.getBlue()) / timeTotal * (timeTotal - timeLeft)),
+			colorAddStart.getAlpha() + ((colorAddEnd.getAlpha() - colorAddStart.getAlpha()) / timeTotal * (timeTotal - timeLeft))
 		);
 		guiRenderer.setGUIEffectColorAdd(colorAdd);
 	}

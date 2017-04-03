@@ -6,7 +6,6 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.subsystems.manager.VBOManager;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.gui.GUI;
@@ -571,7 +570,14 @@ public final class GUIRenderer {
 	 */
 	public void render() {
 		// skip if no vertex data exists
-		if (quadCount == 0) return;
+		if (quadCount == 0) {
+			// reset effect + font colors
+			System.arraycopy(GUIColor.WHITE.getArray(), 0, fontColor, 0, 4);
+			System.arraycopy(GUIColor.WHITE.getArray(), 0, effectColorMul, 0, 4);
+			System.arraycopy(GUIColor.BLACK.getArray(), 0, effectColorAdd, 0, 4);
+			//
+			return;
+		}
 
 		//
 		fbVertices.flip();

@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
+import net.drewke.tdme.gui.effects.GUIEffect;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -514,14 +515,11 @@ public final class GUI implements MouseListener, KeyListener {
 			// screen
 			GUIScreenNode screen = renderScreens.get(i);
 
-			//
+			// skip if not visible
 			if (screen.isVisible() == false) continue;
 
 			// render floating nodes
-			ArrayList<GUINode> floatingNodes = screen.getFloatingNodes();
-			for (int j = 0; j < floatingNodes.size(); j++) {
-				floatingNodes.get(j).render(guiRenderer, null);
-			}
+			screen.renderFloatingNodes(guiRenderer);
 		}
 
 		// done rendering

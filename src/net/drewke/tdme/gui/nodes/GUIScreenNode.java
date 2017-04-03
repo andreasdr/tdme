@@ -322,18 +322,51 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
-	 * Render
-	 * @param guiRenderer
+	 * Render screen
+	 * @param gui renderer
 	 */
 	public void render(GUIRenderer guiRenderer) {
+		// init screen
 		guiRenderer.initScreen();
+
+		// update and apply effects
 		for (GUIEffect effect: effects.getValuesIterator()) {
 			if (effect.isActive() == true) {
 				effect.update(guiRenderer);
 			}
 		}
+
+		// clear floating nodes
 		floatingNodes.clear();
+
+		// render
 		super.render(guiRenderer, floatingNodes);
+
+		// done screen
+		guiRenderer.doneScreen();
+	}
+
+	/**
+	 * Render floating nodes
+	 * @param gui renderer
+	 */
+	public void renderFloatingNodes(GUIRenderer guiRenderer) {
+		// init screen
+		guiRenderer.initScreen();
+
+		// apply effects
+		for (GUIEffect effect: effects.getValuesIterator()) {
+			if (effect.isActive() == true) {
+				effect.apply(guiRenderer);
+			}
+		}
+
+		// render floating nodes
+		for (int i = 0; i < floatingNodes.size(); i++) {
+			floatingNodes.get(i).render(guiRenderer, null);
+		}
+
+		// done screen
 		guiRenderer.doneScreen();
 	}
 
