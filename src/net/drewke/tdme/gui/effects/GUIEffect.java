@@ -1,6 +1,7 @@
 package net.drewke.tdme.gui.effects;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.gui.events.Action;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
 /**
@@ -15,6 +16,8 @@ public abstract class GUIEffect {
 	protected float timeTotal;
 	protected float timeLeft;
 	protected float timePassed;
+
+	protected Action action;
 
 	/**
 	 * Public constructor
@@ -49,6 +52,21 @@ public abstract class GUIEffect {
 	}
 
 	/**
+	 * @return action to be performed on effect end
+	 */
+	public Action getAction() {
+		return action;
+	}
+
+	/**
+	 * Set action to be performed on effect end
+	 * @param action
+	 */
+	public void setAction(Action action) {
+		this.action = action;
+	}
+
+	/**
 	 * Start this effect
 	 */
 	public void start() {
@@ -69,6 +87,10 @@ public abstract class GUIEffect {
 		if (timeLeft < 0.0f) {
 			timeLeft = 0.0f;
 			active = false;
+			if (action != null) {
+				// not sure if performing action in this application control flow is a good idea, will see
+				action.performAction();
+			}
 		}
 		// apply if active
 		if (active == true) {

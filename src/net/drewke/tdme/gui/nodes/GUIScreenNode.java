@@ -46,7 +46,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	protected boolean visible;
 	protected boolean popUp;
 
-	private ArrayList<GUIEffect> effects;
+	private HashMap<String, GUIEffect> effects;
 
 	/**
 	 * Constructor
@@ -94,7 +94,7 @@ public final class GUIScreenNode extends GUIParentNode {
 		this.parentNode = null;
 		this.visible = true;
 		this.popUp = popUp;
-		this.effects = new ArrayList<GUIEffect>();
+		this.effects = new HashMap<String, GUIEffect>();
 	}
 
 	/**
@@ -327,8 +327,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void render(GUIRenderer guiRenderer) {
 		guiRenderer.initScreen();
-		for (int i = 0; i < effects.size(); i++) {
-			GUIEffect effect = effects.get(i);
+		for (GUIEffect effect: effects.getValuesIterator()) {
 			if (effect.isActive() == true) {
 				effect.update(guiRenderer);
 			}
@@ -531,17 +530,28 @@ public final class GUIScreenNode extends GUIParentNode {
 	/**
 	 * Add effect that will be removed if finished
 	 * @param effect
+	 * @return success
 	 */
-	public void addEffect(GUIEffect effect) {
-		effects.add(effect);
+	public boolean addEffect(String id, GUIEffect effect) {
+		// check if effect with given id already exists
+		if (effects.get(id) != null) {
+			return false;
+		}
+	
+		// add effect
+		effects.put(id, effect);
+
+		// return positively
+		return true;
 	}
 
 	/**
 	 * Remove effect
 	 * @param effect
+	 * @return success
 	 */
-	public void removeEffect(GUIEffect effect) {
-		effects.remove(effect);
+	public boolean removeEffect(String id) {
+		return effects.remove(id) != null;
 	}
 
 }

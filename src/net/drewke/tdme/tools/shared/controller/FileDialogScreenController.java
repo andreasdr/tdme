@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.Action;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
@@ -12,9 +13,6 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.os.FileSystem;
-import net.drewke.tdme.tools.shared.views.ModelViewerView;
-import net.drewke.tdme.tools.shared.views.View;
-import net.drewke.tdme.tools.viewer.TDMEViewer;
 import net.drewke.tdme.utils.MutableString;
 
 /**

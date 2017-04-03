@@ -1,15 +1,14 @@
 package net.drewke.tdme.tools.leveleditor.controller;
 
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.Action;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
-import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
-import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.EntityBaseSubScreenController;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;

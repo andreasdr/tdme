@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.gui.GUIParser;
+import net.drewke.tdme.gui.events.Action;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
@@ -17,7 +18,6 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
-import net.drewke.tdme.tools.shared.controller.Action;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
