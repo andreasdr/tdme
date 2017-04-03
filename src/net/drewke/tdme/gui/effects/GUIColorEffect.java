@@ -22,6 +22,13 @@ public class GUIColorEffect extends GUIEffect {
 	private GUIColor colorMul = new GUIColor();
 
 	/**
+	 * Public constructor
+	 */
+	public GUIColorEffect() {
+		super();
+	}
+
+	/**
 	 * @return color add start
 	 */
 	public GUIColor getColorAddStart() {
@@ -64,22 +71,27 @@ public class GUIColorEffect extends GUIEffect {
 	 */
 	public void update(GUIRenderer guiRenderer) {
 		super.update(guiRenderer);
-		if (active == true) {
-			colorMul.add(
-				(colorMulEnd.getRed() - colorMulStart.getRed()) / timeTotal * timePassed,
-				(colorMulEnd.getGreen() - colorMulStart.getGreen()) / timeTotal * timePassed,
-				(colorMulEnd.getBlue() - colorMulStart.getBlue()) / timeTotal * timePassed,
-				(colorMulEnd.getAlpha() - colorMulStart.getAlpha()) / timeTotal * timePassed
-			);
-			guiRenderer.setGUIEffectColorMul(colorMul);
-			colorAdd.add(
-				(colorAddEnd.getRed() - colorAddStart.getRed()) / timeTotal * timePassed,
-				(colorAddEnd.getGreen() - colorAddStart.getGreen()) / timeTotal * timePassed,
-				(colorAddEnd.getBlue() - colorAddStart.getBlue()) / timeTotal * timePassed,
-				(colorAddEnd.getAlpha() - colorAddStart.getAlpha()) / timeTotal * timePassed
-			);
-			guiRenderer.setGUIEffectColorAdd(colorAdd);
-		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.gui.effects.GUIEffect#apply()
+	 */
+	public void apply(GUIRenderer guiRenderer) {
+		colorMul.add(
+			(colorMulEnd.getRed() - colorMulStart.getRed()) / timeTotal * timePassed,
+			(colorMulEnd.getGreen() - colorMulStart.getGreen()) / timeTotal * timePassed,
+			(colorMulEnd.getBlue() - colorMulStart.getBlue()) / timeTotal * timePassed,
+			(colorMulEnd.getAlpha() - colorMulStart.getAlpha()) / timeTotal * timePassed
+		);
+		guiRenderer.setGUIEffectColorMul(colorMul);
+		colorAdd.add(
+			(colorAddEnd.getRed() - colorAddStart.getRed()) / timeTotal * timePassed,
+			(colorAddEnd.getGreen() - colorAddStart.getGreen()) / timeTotal * timePassed,
+			(colorAddEnd.getBlue() - colorAddStart.getBlue()) / timeTotal * timePassed,
+			(colorAddEnd.getAlpha() - colorAddStart.getAlpha()) / timeTotal * timePassed
+		);
+		guiRenderer.setGUIEffectColorAdd(colorAdd);
 	}
 
 }

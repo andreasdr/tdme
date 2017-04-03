@@ -17,6 +17,16 @@ public abstract class GUIEffect {
 	protected float timePassed;
 
 	/**
+	 * Public constructor
+	 */
+	public GUIEffect() {
+		active = false;
+		timeTotal = 0f;
+		timeLeft = timeTotal;
+		timePassed = 0f;
+	}
+
+	/**
 	 * @return active
 	 */
 	public boolean isActive() {
@@ -39,20 +49,12 @@ public abstract class GUIEffect {
 	}
 
 	/**
-	 * Reset this effect, set it to inactive
-	 */
-	public void reset() {
-		timeLeft = timeTotal;
-		active = false;
-	}
-
-	/**
 	 * Start this effect
 	 */
 	public void start() {
+		active = true;
 		timeLeft = timeTotal;
 		timePassed = 0f;
-		active = true;
 	}
 
 	/**
@@ -60,12 +62,24 @@ public abstract class GUIEffect {
 	 * @param gui renderer
 	 */
 	public void update(GUIRenderer guiRenderer) {
+		// time passed
 		timePassed = (float)(Engine.getInstance().getTiming().getDeltaTime()) / 1000f;
 		timeLeft-= timePassed;
+		// time over
 		if (timeLeft < 0.0f) {
 			timeLeft = 0.0f;
 			active = false;
 		}
+		// apply if active
+		if (active == true) {
+			apply(guiRenderer);
+		}
 	}
+
+	/**
+	 * Apply effect
+	 * @param GUI renderer
+	 */
+	abstract public void apply(GUIRenderer guiRenderer);
 
 }
