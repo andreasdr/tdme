@@ -9,7 +9,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
-import net.drewke.tdme.gui.effects.GUIEffect;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -536,6 +535,9 @@ public final class GUI implements MouseListener, KeyListener {
 		for (int i = 0; i < mouseEvents.size(); i++) {
 			GUIMouseEvent event = mouseEvents.get(i);
 			if (event.isProcessed() == true) continue;
+			// take GUI position effect into account 
+			event.setX(event.getX() + node.getScreenNode().getGUIEffectOffsetX());
+			event.setY(event.getY() + node.getScreenNode().getGUIEffectOffsetY());
 			node.handleMouseEvent(event);
 		}
 
@@ -583,7 +585,7 @@ public final class GUI implements MouseListener, KeyListener {
 		// lock
 		lockEvents();
 
-		// handle float nodes of screen first
+		// handle floating nodes of screens first
 		for (int i = renderScreens.size() - 1; i >= 0; i--) {
 			// screen
 			GUIScreenNode screen = renderScreens.get(i);

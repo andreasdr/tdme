@@ -151,7 +151,7 @@ public class GUITest implements GLEventListener, WindowListener {
 
 			// add scroll in effect
 			GUIPositionEffect effectScrollIn = new GUIPositionEffect();
-			effectScrollIn.setPositionXStart(-640f);
+			effectScrollIn.setPositionXStart(-800f);
 			effectScrollIn.setPositionXEnd(0f);
 			effectScrollIn.setTimeTotal(3f);
 			effectScrollIn.start();

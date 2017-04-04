@@ -94,9 +94,6 @@ public abstract class GUIEffect {
 				// not sure if performing action in this application control flow is a good idea, will see
 				action.performAction();
 			}
-		} else {
-			// apply if active
-			apply(guiRenderer);
 		}
 	}
 

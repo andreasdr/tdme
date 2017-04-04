@@ -48,6 +48,10 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	private HashMap<String, GUIEffect> effects;
 
+	// GUI effect offset x,y
+	private int guiEffectOffsetX = 0;
+	private int guiEffectOffsetY = 0;
+
 	/**
 	 * Constructor
 	 * @param parent node
@@ -162,6 +166,36 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public ArrayList<GUINode> getFloatingNodes() {
 		return floatingNodes;
+	}
+
+	/**
+	 * @return GUI effect offset X
+	 */
+	public int getGUIEffectOffsetX() {
+		return guiEffectOffsetX;
+	}
+
+	/**
+	 * Set GUI effect offset X
+	 * @param gui effect offset X
+	 */
+	public void setGUIEffectOffsetX(int guiEffectOffsetX) {
+		this.guiEffectOffsetX = guiEffectOffsetX;
+	}
+
+	/**
+	 * @return GUI effect offset Y 
+	 */
+	public int getGUIEffectOffsetY() {
+		return guiEffectOffsetY;
+	}
+
+	/**
+	 * Set GUI effect offset Y
+	 * @param gui effect offset Y
+	 */
+	public void setGUIEffectOffsetY(int guiEffectOffsetY) {
+		this.guiEffectOffsetY = guiEffectOffsetY;
 	}
 
 	/*
@@ -327,12 +361,13 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void render(GUIRenderer guiRenderer) {
 		// init screen
-		guiRenderer.initScreen();
+		guiRenderer.initScreen(this);
 
 		// update and apply effects
 		for (GUIEffect effect: effects.getValuesIterator()) {
 			if (effect.isActive() == true) {
 				effect.update(guiRenderer);
+				effect.apply(guiRenderer);
 			}
 		}
 
@@ -352,7 +387,7 @@ public final class GUIScreenNode extends GUIParentNode {
 	 */
 	public void renderFloatingNodes(GUIRenderer guiRenderer) {
 		// init screen
-		guiRenderer.initScreen();
+		guiRenderer.initScreen(this);
 
 		// apply effects
 		for (GUIEffect effect: effects.getValuesIterator()) {
@@ -400,7 +435,6 @@ public final class GUIScreenNode extends GUIParentNode {
 			// ignore normal nodes
 		}
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -560,6 +594,7 @@ public final class GUIScreenNode extends GUIParentNode {
 
 	/**
 	 * Add effect that will be removed if finished
+	 * @param id
 	 * @param effect
 	 * @return success
 	 */
@@ -577,8 +612,17 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
+	 * Get effect
+	 * @param id
+	 * @return effect or null
+	 */
+	public GUIEffect getEffect(String id) {
+		return effects.get(id);
+	}
+
+	/**
 	 * Remove effect
-	 * @param effect
+	 * @param id
 	 * @return success
 	 */
 	public boolean removeEffect(String id) {

@@ -10,6 +10,7 @@ import net.drewke.tdme.engine.subsystems.manager.VBOManager;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.nodes.GUIColor;
+import net.drewke.tdme.gui.nodes.GUIScreenNode;
 
 /**
  * GUI
@@ -50,6 +51,8 @@ public final class GUIRenderer {
 	// render offset
 	private float renderOffsetX = 0f;
 	private float renderOffsetY = 0f;
+
+	private GUIScreenNode screenNode;
 
 	// quad data
 	private float[] quadVertices = 
@@ -199,18 +202,23 @@ public final class GUIRenderer {
 
 	/**
 	 * Init screen
+	 * @param screen node
 	 */
-	public void initScreen() {
+	public void initScreen(GUIScreenNode screenNode) {
+		this.screenNode = screenNode;
+		guiEffectOffsetX = 0f;
+		guiEffectOffsetY = 0f;
+		screenNode.setGUIEffectOffsetX(0);
+		screenNode.setGUIEffectOffsetY(0);
 	}
 
 	/**
 	 * Done screen
 	 */
 	public void doneScreen() {
+		this.screenNode = null;
 		System.arraycopy(GUIColor.WHITE.getArray(), 0, guiEffectColorMul, 0, 4);
 		System.arraycopy(GUIColor.BLACK.getArray(), 0, guiEffectColorAdd, 0, 4);
-		guiEffectOffsetX = 0f;
-		guiEffectOffsetY = 0f;
 	}
 
 	/**
@@ -254,11 +262,26 @@ public final class GUIRenderer {
 	}
 
 	/**
+	 * @return GUI effect offset X
+	 */
+	public float getGuiEffectOffsetX() {
+		return guiEffectOffsetX;
+	}
+
+	/**
 	 * Set GUI effect offset X
 	 * @param gui effect offset X
 	 */
 	public void setGUIEffectOffsetX(float guiEffectOffsetX) {
 		this.guiEffectOffsetX = guiEffectOffsetX;
+		screenNode.setGUIEffectOffsetX((int)(guiEffectOffsetX * screenNode.getScreenWidth() / 2f));
+	}
+
+	/**
+	 * @return GUI effect offset Y
+	 */
+	public float getGuiEffectOffsetY() {
+		return guiEffectOffsetY;
 	}
 
 	/**
@@ -267,6 +290,7 @@ public final class GUIRenderer {
 	 */
 	public void setGUIEffectOffsetY(float guiEffectOffsetY) {
 		this.guiEffectOffsetY = guiEffectOffsetY;
+		screenNode.setGUIEffectOffsetY((int)(guiEffectOffsetY * screenNode.getScreenHeight() / 2f));
 	}
 
 	/**
