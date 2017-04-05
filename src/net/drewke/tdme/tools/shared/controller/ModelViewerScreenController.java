@@ -37,7 +37,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	private EntityBaseSubScreenController entityBaseSubScreenController;
 
-	private ModelViewerView view;
+	private final ModelViewerView view;
+
 	private GUIScreenNode screenNode;
 	private GUITextNode screenCaption;
 	private GUIElementNode modelReload;
@@ -77,10 +78,11 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public ModelViewerScreenController(ModelViewerView view) {
 		this.view = view;
+		final ModelViewerView finalView = view;
 		this.entityBaseSubScreenController = new EntityBaseSubScreenController(view.getPopUpsViews(), new Action() {
 			public void performAction() {
-				view.updateGUIElements();
-				view.onSetEntityData();
+				finalView.updateGUIElements();
+				finalView.onSetEntityData();
 			}
 		});
 	}

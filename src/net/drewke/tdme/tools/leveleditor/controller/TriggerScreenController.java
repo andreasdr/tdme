@@ -28,6 +28,7 @@ public final class TriggerScreenController extends ScreenController implements G
 	private EntityBaseSubScreenController entityBaseSubScreenController;
 
 	private TriggerView view;
+
 	private GUIScreenNode screenNode;
 	private GUITextNode screenCaption;
 	private GUIElementNode triggerWidth;
@@ -41,9 +42,10 @@ public final class TriggerScreenController extends ScreenController implements G
 	 */
 	public TriggerScreenController(TriggerView view) {
 		this.view = view;
+		final TriggerView finalView = view;
 		this.entityBaseSubScreenController = new EntityBaseSubScreenController(view.getPopUpsViews(), new Action() {
 			public void performAction() {
-				view.updateGUIElements();
+				finalView .updateGUIElements();
 				TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 			}
 		});
