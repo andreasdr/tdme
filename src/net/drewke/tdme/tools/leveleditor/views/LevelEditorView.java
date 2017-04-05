@@ -35,6 +35,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.controller.LevelEditorScreenController;
+import net.drewke.tdme.tools.leveleditor.logic.Level;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.files.LevelFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
@@ -847,31 +848,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		selectedObjects.clear();
 		selectedObjectsById.clear();
 
-		// load level objects
-		for (int i = 0; i < level.getObjectCount(); i++) {
-			LevelEditorObject entity = level.getObjectAt(i);
-			// add to 3d engine
-			Object3D object = new Object3D(entity.getId(), entity.getEntity().getModel());
-			object.fromTransformations(entity.getTransformations());
-			object.setPickable(true);
-			setStandardObjectColorEffect(object);
-			engine.addEntity(object);
-		}
-
-		// load lights
-		for (int i = 0; i < level.getLightCount(); i++) {
-			engine.getLightAt(i).getAmbient().set(level.getLightAt(i).getAmbient());
-			engine.getLightAt(i).getDiffuse().set(level.getLightAt(i).getDiffuse());
-			engine.getLightAt(i).getSpecular().set(level.getLightAt(i).getSpecular());
-			engine.getLightAt(i).getPosition().set(level.getLightAt(i).getPosition());
-			engine.getLightAt(i).getSpotDirection().set(level.getLightAt(i).getSpotDirection());
-			engine.getLightAt(i).setSpotExponent(level.getLightAt(i).getSpotExponent());
-			engine.getLightAt(i).setSpotCutOff(level.getLightAt(i).getSpotCutOff());
-			engine.getLightAt(i).setConstantAttenuation(level.getLightAt(i).getConstantAttenuation());
-			engine.getLightAt(i).setLinearAttenuation(level.getLightAt(i).getLinearAttenuation());
-			engine.getLightAt(i).setQuadraticAttenuation(level.getLightAt(i).getQuadraticAttenuation());
-			engine.getLightAt(i).setEnabled(level.getLightAt(i).isEnabled());
-		}
+		// set up level in engine
+		Level.setLight(engine, level, null);
+		Level.addLevel(engine, level, true, null);
 
 		//
 		setObjectsListBox();

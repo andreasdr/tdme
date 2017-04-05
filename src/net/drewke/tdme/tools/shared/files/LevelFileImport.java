@@ -36,6 +36,18 @@ public final class LevelFileImport {
 	 * @param level
 	 */
 	public static void doImport(String modelRoot, String gameRoot, String pathName, String fileName, LevelEditorLevel level) throws Exception {
+		doImport(modelRoot, gameRoot, pathName, fileName, level, null);
+	}
+
+	/**
+	 * Imports a level from a TDME level file to Level Editor
+	 * @param model root
+	 * @param path name
+	 * @param file name
+	 * @param level
+	 * @param object id prefix
+	 */
+	public static void doImport(String modelRoot, String gameRoot, String pathName, String fileName, LevelEditorLevel level, String objectIdPrefix) throws Exception {
 		modelRoot = modelRoot.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		gameRoot = gameRoot.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		pathName = pathName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
@@ -228,7 +240,7 @@ public final class LevelFileImport {
 			);
 			transformations.update();
 			LevelEditorObject levelEditorObject = new LevelEditorObject(
-				jObject.getString("id"),
+				objectIdPrefix != null?objectIdPrefix + jObject.getString("id"):jObject.getString("id"),
 				jObject.has("descr")?jObject.getString("descr"):"",
 				transformations,
 				model
