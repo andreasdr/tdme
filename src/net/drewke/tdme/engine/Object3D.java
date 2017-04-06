@@ -60,6 +60,7 @@ public final class Object3D extends Object3DInternal implements Entity {
 	 * @see net.drewke.tdme.engine.subsystems.object.Object3DInternal#setEnabled(boolean)
 	 */
 	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		if (enabled == true) {
 			if (engine != null) engine.partition.addEntity(this);
 		} else {

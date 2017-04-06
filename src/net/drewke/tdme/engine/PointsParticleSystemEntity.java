@@ -64,4 +64,17 @@ public final class PointsParticleSystemEntity extends PointsParticleSystemEntity
 		if (engine != null) engine.partition.updateEntity(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.PointsParticleSystemEntityInternal#setEnabled(boolean)
+	 */
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		if (enabled == true) {
+			if (engine != null) engine.partition.addEntity(this);
+		} else {
+			if (engine != null) engine.partition.removeEntity(this);
+		}
+	}
+
 }
