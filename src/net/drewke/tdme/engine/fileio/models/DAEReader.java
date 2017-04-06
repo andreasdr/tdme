@@ -40,7 +40,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;
@@ -235,6 +235,7 @@ public final class DAEReader {
 
 				// visual scene root nodes
 				LevelEditorEntityLibrary entityLibrary = levelEditorLevel.getEntityLibrary();
+				LevelEditorEntity emptyEntity = null;
 				int nodeIdx = 0;
 				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
 					// derive model name from node id
@@ -249,16 +250,18 @@ public final class DAEReader {
 					boolean haveName = entityLibrary.getEntityCount() == 0;
 					if (haveName == false) {
 						for (int i = 0; i < 10000; i++) {
+							haveName = true;
 							String modelNameTry = modelName + (i == 0?"":String.valueOf(i));
+							System.out.println(modelName + ":" + modelNameTry);
 							for (int entityIdx = 0; entityIdx < entityLibrary.getEntityCount(); entityIdx++) {
 								LevelEditorEntity entity = entityLibrary.getEntityAt(entityIdx);
-								if (entity.getName().equals(modelNameTry) == false) {
-									haveName = true;
-									modelName = modelNameTry; 
+								if (entity.getName().equals(modelNameTry) == true) {
+									haveName = false;
 									break;
 								}
 							}
 							if (haveName == true) {
+								modelName = modelNameTry;
 								break;
 							}
 						}
@@ -417,39 +420,56 @@ public final class DAEReader {
 					ModelHelper.prepareForIndexedRendering(model);
 
 					// check if empty model
+					EntityType entityType = EntityType.MODEL; 
 					ModelStatistics modelStatistics = ModelUtilities.computeModelStatistics(model);
 					if (modelStatistics.getOpaqueFaceCount() == 0 && modelStatistics.getTransparentFaceCount() == 0) {
-						System.out.println("DAEReader::readLevel(): Skipping model '" + model.getName() + "' as is has no faces.");
-						continue;
+						entityType = EntityType.EMPTY;
 					}
 
 					// level editor entity
 					LevelEditorEntity levelEditorEntity = null;
 
-					// check if we have that model already
-					for (int i = 0; i < levelEditorLevel.getEntityLibrary().getEntityCount(); i++) {
-						LevelEditorEntity levelEditorEntityCompare = levelEditorLevel.getEntityLibrary().getEntityAt(i);
-						if (levelEditorEntityCompare.getType() != ModelType.MODEL) continue;
-						if (ModelUtilities.equals(model, levelEditorEntityCompare.getModel()) == true) {
-							levelEditorEntity = levelEditorEntityCompare;
-							break;
+					// model
+					if (entityType == EntityType.MODEL) {
+						// check if we have that model already
+						for (int i = 0; i < levelEditorLevel.getEntityLibrary().getEntityCount(); i++) {
+							LevelEditorEntity levelEditorEntityCompare = levelEditorLevel.getEntityLibrary().getEntityAt(i);
+							if (levelEditorEntityCompare.getType() != EntityType.MODEL) continue;
+							if (ModelUtilities.equals(model, levelEditorEntityCompare.getModel()) == true) {
+								levelEditorEntity = levelEditorEntityCompare;
+								break;
+							}
 						}
-					}
 
-					// create level editor model, if not yet exists
-					if (levelEditorEntity == null) {
-						// save model
-						TMWriter.write(model, pathName + "/" + fileName + "-models", modelName + ".tm");
-
-						// create level editor model
-						levelEditorEntity = entityLibrary.addModel(
-							nodeIdx++,
-							modelName,
-							modelName,
-							pathName + "/" + fileName + "-models",
-							modelName + ".tm",
-							new Vector3()
-						);
+						// create level editor model, if not yet exists
+						if (levelEditorEntity == null) {
+							// save model
+							TMWriter.write(model, pathName + "/" + fileName + "-models", modelName + ".tm");
+	
+							// create level editor entity
+							levelEditorEntity = entityLibrary.addModel(
+								nodeIdx++,
+								modelName,
+								modelName,
+								pathName + "/" + fileName + "-models",
+								modelName + ".tm",
+								new Vector3()
+							);
+						}
+					} else
+					// entity
+					if (entityType == EntityType.EMPTY) {
+						if (emptyEntity == null) {
+							emptyEntity = entityLibrary.addEmpty(
+								nodeIdx++, 
+								"Default Empty", 
+								""
+							);
+						}
+						levelEditorEntity = emptyEntity;
+					} else {
+						System.out.println("DAEReader::readLevel(): unknown entity type. Skipping");
+						continue;
 					}
 
 					// level editor object transformations

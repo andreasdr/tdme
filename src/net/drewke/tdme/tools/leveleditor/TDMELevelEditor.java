@@ -5,11 +5,12 @@ import java.util.logging.Logger;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.tools.leveleditor.controller.LevelEditorEntityLibraryScreenController;
+import net.drewke.tdme.tools.leveleditor.views.EmptyView;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
-import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
@@ -269,6 +270,13 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 */
 	public void switchToTriggerView() {
 		setView(new TriggerView(popUps));
+	}
+
+	/**
+	 * Switch to empty view
+	 */
+	public void switchToEmptyView() {
+		setView(new EmptyView(popUps));
 	}
 
 	/*

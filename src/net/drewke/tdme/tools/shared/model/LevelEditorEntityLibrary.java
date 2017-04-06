@@ -13,7 +13,7 @@ import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 
 /**
  * Model Editor Entity Library
@@ -35,18 +35,18 @@ public final class LevelEditorEntityLibrary {
 		protected int referenceCounter;
 	}
 
+	private static HashMap<String, ModelCacheEntity> entityCache = new HashMap<String, LevelEditorEntityLibrary.ModelCacheEntity>();
+
 	public final static int ID_ALLOCATE = -1;
 
-	HashMap<String, ModelCacheEntity> entityCache;
-	HashMap<Integer, LevelEditorEntity> entitiesById;
-	ArrayList<LevelEditorEntity> entities;
-	int entityIdx;
+	private HashMap<Integer, LevelEditorEntity> entitiesById;
+	private ArrayList<LevelEditorEntity> entities;
+	private int entityIdx;
 
 	/**
 	 * Public constructor
 	 */
 	public LevelEditorEntityLibrary() {
-		this.entityCache = new HashMap<String, LevelEditorEntityLibrary.ModelCacheEntity>();
 		this.entitiesById = new HashMap<Integer, LevelEditorEntity>();
 		this.entities = new ArrayList<LevelEditorEntity>();
 		this.entityIdx = 0;
@@ -56,7 +56,7 @@ public final class LevelEditorEntityLibrary {
 	 * Clears this model library
 	 */
 	public void clear() {
-		this.entityCache.clear();
+		// remove models from model cache too
 		this.entitiesById.clear();
 		this.entities.clear();
 		this.entityIdx = 0;		
@@ -91,7 +91,7 @@ public final class LevelEditorEntityLibrary {
 		if (cacheEntity != null) {
 			levelEditorEntity = new LevelEditorEntity(
 				id == ID_ALLOCATE?allocateEntityId():id,
-				LevelEditorEntity.ModelType.MODEL,
+				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
 				pathName + File.separator + fileName,
@@ -115,7 +115,7 @@ public final class LevelEditorEntityLibrary {
 				Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 				levelEditorEntity = new LevelEditorEntity(
 					id == ID_ALLOCATE?allocateEntityId():id,
-					LevelEditorEntity.ModelType.MODEL,
+					LevelEditorEntity.EntityType.MODEL,
 					name,
 					description,
 					pathName + File.separator + fileName,
@@ -137,7 +137,7 @@ public final class LevelEditorEntityLibrary {
 				Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 				levelEditorEntity = new LevelEditorEntity(
 					id == ID_ALLOCATE?allocateEntityId():id,
-					LevelEditorEntity.ModelType.MODEL,
+					LevelEditorEntity.EntityType.MODEL,
 					name,
 					description,
 					pathName + File.separator + fileName,
@@ -192,11 +192,10 @@ public final class LevelEditorEntityLibrary {
 	 * @param width
 	 * @param height
 	 * @param depth
-	 * @param pivot
 	 * @return level editor entity
 	 * @throws Exception
 	 */
-	public LevelEditorEntity addTrigger(int id, String name, String description, float width, float height, float depth, Vector3 pivot) throws Exception {
+	public LevelEditorEntity addTrigger(int id, String name, String description, float width, float height, float depth) throws Exception {
 		String cacheId = "leveleditor.trigger." + width + "mx" + height + "mx" + depth + "m";
 		ModelCacheEntity cacheEntity = entityCache.get(cacheId);
 		LevelEditorEntity levelEditorEntity = null;
@@ -205,7 +204,7 @@ public final class LevelEditorEntityLibrary {
 		if (cacheEntity != null) {
 			levelEditorEntity = new LevelEditorEntity(
 				id == ID_ALLOCATE?allocateEntityId():id,
-				ModelType.TRIGGER,
+				EntityType.TRIGGER,
 				name,
 				description,
 				cacheId,
@@ -218,7 +217,7 @@ public final class LevelEditorEntityLibrary {
 				null,
 				PrimitiveModel.createModel(cacheEntity.boundingVolume, cacheEntity.model.getId() + "_bv"),
 				cacheEntity.boundingVolume,
-				pivot
+				new Vector3()
 			);
 			id = levelEditorEntity.getId();
 			cacheEntity.referenceCounter++;
@@ -231,7 +230,7 @@ public final class LevelEditorEntityLibrary {
 			Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 			levelEditorEntity = new LevelEditorEntity(
 				id == ID_ALLOCATE?allocateEntityId():id,
-				ModelType.TRIGGER,
+				EntityType.TRIGGER,
 				name,
 				description,
 				cacheId,
@@ -244,7 +243,7 @@ public final class LevelEditorEntityLibrary {
 				null,
 				modelBoundingVolume,
 				boundingBox,
-				pivot
+				new Vector3()
 			);
 			id = levelEditorEntity.getId();
 			// add to cache
@@ -252,6 +251,80 @@ public final class LevelEditorEntityLibrary {
 			cacheEntity.model = model;
 			cacheEntity.modelBoundingVolume = modelBoundingVolume;
 			cacheEntity.boundingVolume = boundingBox;
+			cacheEntity.referenceCounter = 1;
+			entityCache.put(cacheId, cacheEntity);
+		}
+
+		// add model
+		if (entitiesById.get(new Integer(id)) != null) {
+			throw new Exception("Model id already in use");
+		}
+		addModel(levelEditorEntity);
+		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
+
+		//
+		return levelEditorEntity;
+	}
+
+	/**
+	 * Add a empty
+	 * @param name
+	 * @param description
+	 * @return level editor entity
+	 * @throws Exception
+	 */
+	public LevelEditorEntity addEmpty(int id, String name, String description) throws Exception {
+		String cacheId = "leveleditor.empty";
+		ModelCacheEntity cacheEntity = entityCache.get(cacheId);
+		LevelEditorEntity levelEditorEntity = null;
+
+		// check if we already have loaded this model
+		if (cacheEntity != null) {
+			levelEditorEntity = new LevelEditorEntity(
+				id == ID_ALLOCATE?allocateEntityId():id,
+				EntityType.EMPTY,
+				name,
+				description,
+				cacheId,
+				cacheEntity.model.getId().
+					replace("\\", "_").
+					replace("/", "_").
+					replace(":", "_") +
+					".png",
+				cacheEntity.model,
+				null,
+				PrimitiveModel.createModel(cacheEntity.boundingVolume, cacheEntity.model.getId() + "_bv"),
+				cacheEntity.boundingVolume,
+				new Vector3()
+			);
+			id = levelEditorEntity.getId();
+			cacheEntity.referenceCounter++;
+		} else {
+			Model model = DAEReader.read("resources/tools/leveleditor/models", "arrow.dae");
+			Model modelBoundingVolume = PrimitiveModel.createModel(model.getBoundingBox(), model.getId() + "_bv");;
+			levelEditorEntity = new LevelEditorEntity(
+				id == ID_ALLOCATE?allocateEntityId():id,
+				EntityType.EMPTY,
+				name,
+				description,
+				cacheId,
+				model.getId().
+					replace("\\", "_").
+					replace("/", "_").
+					replace(":", "_") +
+					".png",
+				model,
+				null,
+				modelBoundingVolume,
+				model.getBoundingBox(),
+				new Vector3()
+			);
+			id = levelEditorEntity.getId();
+			// add to cache
+			cacheEntity = new ModelCacheEntity();
+			cacheEntity.model = model;
+			cacheEntity.modelBoundingVolume = modelBoundingVolume;
+			cacheEntity.boundingVolume = model.getBoundingBox();
 			cacheEntity.referenceCounter = 1;
 			entityCache.put(cacheId, cacheEntity);
 		}

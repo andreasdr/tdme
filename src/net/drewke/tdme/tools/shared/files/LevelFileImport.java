@@ -15,7 +15,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -134,22 +134,22 @@ public final class LevelFileImport {
 		JSONArray jModels = jRoot.getJSONArray("models");
 		for (int i = 0; i < jModels.length(); i++) {
 			JSONObject jModel = jModels.getJSONObject(i);
-			String modelFileName = jModel.getString("file");
-			File modelFile = new File(modelFileName);
-			// check if file exists on this computer
-			if (modelFile.exists() == false) {
-				// nope, try to get file via structure knowledge of game
-				modelFileName = modelFileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
-				if (modelRoot != null) {
-					int modelRootIdx = modelFileName.lastIndexOf(modelRoot);
-					if (modelRootIdx == -1) modelRootIdx = modelFileName.lastIndexOf("resources\\models\\");
-					if (modelRootIdx != -1) modelFileName = modelFileName.substring(modelRootIdx);
-				}
-				modelFile = new File(pathName + gameRoot + modelFileName);
-			}
 			// add model to library
 			LevelEditorEntity levelEditorEntity = null;
-			if (jModel.has("type") == false || LevelEditorEntity.ModelType.valueOf(jModel.getString("type")) == ModelType.MODEL) {
+			if (jModel.has("type") == false || LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.MODEL) {
+				String modelFileName = jModel.getString("file");
+				File modelFile = new File(modelFileName);
+				// check if file exists on this computer
+				if (modelFile.exists() == false) {
+					// nope, try to get file via structure knowledge of game
+					modelFileName = modelFileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
+					if (modelRoot != null) {
+						int modelRootIdx = modelFileName.lastIndexOf(modelRoot);
+						if (modelRootIdx == -1) modelRootIdx = modelFileName.lastIndexOf("resources\\models\\");
+						if (modelRootIdx != -1) modelFileName = modelFileName.substring(modelRootIdx);
+					}
+					modelFile = new File(pathName + gameRoot + modelFileName);
+				}
 				levelEditorEntity = level.getEntityLibrary().addModel(	
 					jModel.getInt("id"),
 					jModel.has("name")?jModel.getString("name"):"unknown",
@@ -163,7 +163,7 @@ public final class LevelFileImport {
 					)
 				);
 			} else 
-			if (jModel.has("type") == true && LevelEditorEntity.ModelType.valueOf(jModel.getString("type")) == ModelType.TRIGGER) {
+			if (jModel.has("type") == true && LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.TRIGGER) {
 				JSONObject jBv = jModel.getJSONObject("bv");
 				BoundingBox boundingBox = new BoundingBox(
 					new Vector3(
@@ -183,13 +183,15 @@ public final class LevelFileImport {
 					jModel.has("descr")?jModel.getString("descr"):"",
 					boundingBox.getMax().getX() - boundingBox.getMin().getX(),
 					boundingBox.getMax().getY() - boundingBox.getMin().getY(),
-					boundingBox.getMax().getZ() - boundingBox.getMin().getZ(),
-					new Vector3(
-						jModel.has("px")?(float)jModel.getDouble("px"):0.0f,
-						jModel.has("py")?(float)jModel.getDouble("py"):0.0f,
-						jModel.has("pz")?(float)jModel.getDouble("pz"):0.0f
-					)
-				);				
+					boundingBox.getMax().getZ() - boundingBox.getMin().getZ()
+				);		
+			} else
+			if (jModel.has("type") == true && LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.EMPTY) {
+				levelEditorEntity = level.getEntityLibrary().addEmpty(	
+					jModel.getInt("id"),
+					jModel.has("name")?jModel.getString("name"):"unknown",
+					jModel.has("descr")?jModel.getString("descr"):""
+				);		
 			}
 			if (levelEditorEntity == null) {
 				throw new Exception("Invalid model");

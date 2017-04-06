@@ -455,7 +455,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 			LevelEditorEntity levelEditorEntity = new LevelEditorEntity(
 				LevelEditorEntity.ID_NONE,
-				LevelEditorEntity.ModelType.MODEL,
+				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
 				pathName + File.separator + fileName,
@@ -478,7 +478,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 			LevelEditorEntity levelEditorEntity = new LevelEditorEntity(
 				LevelEditorEntity.ID_NONE,
-				LevelEditorEntity.ModelType.MODEL,
+				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
 				pathName + File.separator + fileName,

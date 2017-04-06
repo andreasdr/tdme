@@ -19,7 +19,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.ModelType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,11 +90,13 @@ public final class LevelFileExport {
 				jModel.put("type", model.getType());
 				jModel.put("name", model.getName());
 				jModel.put("descr", model.getDescription());
-				jModel.put("px", model.getPivot().getX());
-				jModel.put("py", model.getPivot().getY());
-				jModel.put("pz", model.getPivot().getZ());
-				jModel.put("file", model.getFileName());
-				if (model.getType() == ModelType.TRIGGER) {
+				if (model.getType() == EntityType.MODEL) {
+					jModel.put("file", model.getFileName());
+					jModel.put("px", model.getPivot().getX());
+					jModel.put("py", model.getPivot().getY());
+					jModel.put("pz", model.getPivot().getZ());
+				} else
+				if (model.getType() == EntityType.TRIGGER) {
 					JSONObject jBoundingVolume = new JSONObject();
 					BoundingBox aabb = model.getBoundingBox();
 					jBoundingVolume.put("type", "aabb");
@@ -105,6 +107,9 @@ public final class LevelFileExport {
                    	jBoundingVolume.put("may", aabb.getMax().getY());
                    	jBoundingVolume.put("maz", aabb.getMax().getZ());
                    	jModel.put("bv", jBoundingVolume);
+				} else
+				if (model.getType() == EntityType.EMPTY) {
+					// no op for now
 				}
 				JSONArray jModelProperties = new JSONArray();
 				for (PropertyModelClass modelProperty: model.getProperties()) {

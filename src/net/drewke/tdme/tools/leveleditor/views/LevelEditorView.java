@@ -31,6 +31,7 @@ import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
+import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
@@ -44,6 +45,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
@@ -850,7 +852,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		// set up level in engine
 		Level.setLight(engine, level, null);
-		Level.addLevel(engine, level, true, null);
+		Level.addLevel(engine, level, true, true, true, null);
 
 		//
 		setObjectsListBox();
@@ -1350,7 +1352,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			Entity selectedObject = selectedObjects.get(0);
 			LevelEditorObject currentEntity = level.getObjectById(selectedObject.getId());
 			if (currentEntity == null) return;
-	
 			currentEntity.getTransformations().getScale().set(x,y,z);
 			currentEntity.getTransformations().update();
 			selectedObject.fromTransformations(currentEntity.getTransformations());
@@ -1360,7 +1361,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			for (Entity selectedObject: selectedObjects) {
 				LevelEditorObject currentEntity = level.getObjectById(selectedObject.getId());
 				if (currentEntity == null) continue;
-
 				currentEntity.getTransformations().getScale().scale(new Vector3(x,y,z));
 				currentEntity.getTransformations().update();
 				selectedObject.fromTransformations(currentEntity.getTransformations());

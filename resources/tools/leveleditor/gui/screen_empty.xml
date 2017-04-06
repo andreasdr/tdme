@@ -1,4 +1,4 @@
-<screen id="screen_trigger" background-color="#00000000">
+<screen id="screen_empty" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
 		<panel alignment="none" width="100%" height="30" padding="5" vertical-align="center">
 			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Level Editor" width="100%" horizontal-align="center" height="auto" />
@@ -7,12 +7,11 @@
 		<panel width="100%" height="200">
 			<tabs alignment="vertical" width="100%" height="100%">
 				<tabs-header>
-					<tab id="tab_properties_trigger" text="Trigger" />
-					<tab id="tab_properties_model_properties" text="Properties" />
-					<tab id="tab_properties_dimension" text="Dimension" />
+					<tab id="tab_properties_empty" text="Trigger" />
+					<tab id="tab_properties_entity_properties" text="Properties" />
 				</tabs-header>
 				<tabs-content>
-					<tab-content tab-id="tab_properties_trigger" vertical-align="center">
+					<tab-content tab-id="tab_properties_empty" vertical-align="center">
 						<layout width="auto" height="auto" alignment="vertical">
 							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 								<text font="resources/gui/fonts/Foo_20.fnt" text="Name" width="200" height="auto"/>
@@ -31,7 +30,7 @@
 							</layout>
 						</layout>
 					</tab-content>
-					<tab-content tab-id="tab_properties_model_properties" vertical-align="center">
+					<tab-content tab-id="tab_properties_entity_properties" vertical-align="center">
 						<layout width="auto" height="auto" alignment="horizontal">
 							<layout width="auto" height="auto" alignment="vertical">
 								<layout width="auto" height="auto" alignment="horizontal">
@@ -62,31 +61,6 @@
 								<button id="button_entity_properties_remove" name="button_entity_properties_remove" text="Remove" width="80" />
 								<space height="5" />
 								<button id="button_entity_properties_save" name="button_entity_properties_save" text="Save" width="80" />
-							</layout>
-						</layout>
-					</tab-content>
-					<tab-content tab-id="tab_properties_dimension">
-						<layout width="auto" height="auto" alignment="vertical">
-							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_20.fnt" text="Width" width="50" height="auto" />
-								<space width="5" />
-								<input id="trigger_width" name="trigger_width" width="150" height="auto" text="" />
-							</layout>
-							<space height="5" />
-							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_20.fnt" text="Height" width="50" height="auto" />
-								<space width="5" />
-								<input id="trigger_height" name="trigger_width" width="150" height="auto" text="" />
-							</layout>
-							<space height="5" />
-							<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
-								<text font="resources/gui/fonts/Foo_20.fnt" text="Depth" width="50" height="auto" />
-								<space width="5" />
-								<input id="trigger_depth" name="trigger_depth" width="150" height="auto" text="" />
-							</layout>
-							<space height="20" />
-							<layout width="100%" height="auto" alignment="none" horizontal-align="center">
-								<button id="button_trigger_apply" name="button_trigger_apply" text="Apply" />
 							</layout>
 						</layout>
 					</tab-content>

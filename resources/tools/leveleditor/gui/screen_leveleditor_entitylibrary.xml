@@ -1,4 +1,4 @@
-<screen id="leveleditor_modellibrary" background-color="#00000000">
+<screen id="screen_entitylibrary" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
 		<layout alignment="none" width="100%" height="30" padding="5" horizontal-align="center" vertical-align="center">
 		</layout>
@@ -48,8 +48,11 @@
 										<dropdown-option text="Delete" value="delete" />
 										<dropdown-option text="Create model" value="create_model" />
 										<dropdown-option text="Create trigger" value="create_trigger" />
+										<dropdown-option text="Create empty" value="create_empty" />
+										<!-- 
 										<dropdown-option text="Create light" value="create_light" />
 										<dropdown-option text="Create particle" value="create_particle" />
+										 -->
 									</dropdown>
 									<space width="*" />
 								</layout>

@@ -1,21 +1,14 @@
 package net.drewke.tdme.tools.leveleditor.views;
 
-import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.PartitionNone;
-import net.drewke.tdme.engine.Rotation;
-import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
-import net.drewke.tdme.gui.events.GUIKeyboardEvent;
-import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
-import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
-import net.drewke.tdme.tools.leveleditor.controller.TriggerScreenController;
+import net.drewke.tdme.tools.leveleditor.controller.EmptyScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.CameraRotationInputHandler;
@@ -25,16 +18,16 @@ import net.drewke.tdme.tools.shared.views.View;
 import com.jogamp.opengl.GLAutoDrawable;
 
 /**
- * TDME Model Viewer View
+ * Empty View
  * @author Andreas Drewke
  * @version $Id$
  */
-public class TriggerView extends View implements GUIInputEventHandler {
+public class EmptyView extends View implements GUIInputEventHandler {
 
 	protected Engine engine;
 
 	private PopUps popUps;
-	private TriggerScreenController triggerScreenController;
+	private EmptyScreenController emptyScreenController;
 
 	private LevelEditorEntity entity;
 	private boolean initModelRequested;
@@ -45,9 +38,9 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	 * Public constructor
 	 * @param pop ups view
 	 */
-	public TriggerView(PopUps popUps) {
+	public EmptyView(PopUps popUps) {
 		this.popUps = popUps;
-		triggerScreenController = null;
+		emptyScreenController = null;
 		initModelRequested = false;
 		entity = null;
 
@@ -138,21 +131,19 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	 */
 	public void updateGUIElements() {
 		if (entity != null) {
-			triggerScreenController.setScreenCaption("Trigger - " + entity.getName());
+			emptyScreenController.setScreenCaption("Empty - " + entity.getName());
 			PropertyModelClass preset = entity.getProperty("preset");
-			triggerScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
-			triggerScreenController.setEntityData(entity.getName(), entity.getDescription());
+			emptyScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
+			emptyScreenController.setEntityData(entity.getName(), entity.getDescription());
 
 			// trigger
 			Vector3 dimension = new Vector3();
 			dimension.set(((BoundingBox)entity.getBoundingVolume()).getMax());
 			dimension.sub(((BoundingBox)entity.getBoundingVolume()).getMin());
-			triggerScreenController.setTrigger(dimension.getX(), dimension.getY(), dimension.getZ());
 		} else {
-			triggerScreenController.setScreenCaption("Trigger - no trigger loaded");
-			triggerScreenController.unsetEntityProperties();
-			triggerScreenController.unsetEntityData();
-			triggerScreenController.unsetTrigger();
+			emptyScreenController.setScreenCaption("Empty - no trigger loaded");
+			emptyScreenController.unsetEntityProperties();
+			emptyScreenController.unsetEntityData();
 		}
 	}
 
@@ -161,49 +152,6 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	 */
 	public void dispose(GLAutoDrawable drawable) {
 		Engine.getInstance().reset();
-	}
-
-	/**
-	 * Trigger apply
-	 * @param width
-	 * @param height
-	 * @param depth
-	 */
-	public void triggerApply(float width, float height, float depth) {
-		if (entity == null) return;
-
-		// create new trigger, replacing old with new
-		try {
-			// save reference to old entity, create new entity
-			LevelEditorEntity oldModel = entity;
-			entity = TDMELevelEditor.getInstance().getEntityLibrary().addTrigger(	
-				LevelEditorEntityLibrary.ID_ALLOCATE,
-				oldModel.getName(),
-				oldModel.getDescription(),
-				width,
-				height,
-				depth
-			);
-
-			// clone properties
-			for (int i = 0; i < oldModel.getPropertyCount(); i++) {
-				PropertyModelClass property = oldModel.getPropertyByIndex(i);
-				entity.addProperty(property.getName(), property.getValue());
-			}
-
-			// replace old with new
-			TDMELevelEditor.getInstance().getLevel().replaceEntity(oldModel.getId(), entity.getId());
-			TDMELevelEditor.getInstance().getEntityLibrary().removeEntity(oldModel.getId());
-			TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
-	
-			// init entity
-			initModelRequested = true;
-
-			//
-			updateGUIElements();
-		} catch (Exception exception) {
-			popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
-		}
 	}
 
 	/**
@@ -216,10 +164,10 @@ public class TriggerView extends View implements GUIInputEventHandler {
 
 		//
 		try {
-			triggerScreenController = new TriggerScreenController(this);
-			triggerScreenController.init();
-			engine.getGUI().addScreen(triggerScreenController.getScreenNode().getId(), triggerScreenController.getScreenNode());
-			triggerScreenController.getScreenNode().setInputEventHandler(this);
+			emptyScreenController = new EmptyScreenController(this);
+			emptyScreenController.init();
+			engine.getGUI().addScreen(emptyScreenController.getScreenNode().getId(), emptyScreenController.getScreenNode());
+			emptyScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -229,7 +177,7 @@ public class TriggerView extends View implements GUIInputEventHandler {
 
 		//
 		engine.getGUI().resetRenderScreens();
-		engine.getGUI().addRenderScreen(triggerScreenController.getScreenNode().getId());
+		engine.getGUI().addRenderScreen(emptyScreenController.getScreenNode().getId());
 		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());

@@ -9,6 +9,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
+import net.drewke.tdme.tools.leveleditor.views.EmptyView;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
@@ -179,6 +180,15 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 				// set model
 				((TriggerView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
 				break;
+			case EMPTY:
+				// switch to model trigger view if not yet done
+				if (TDMELevelEditor.getInstance().getView() instanceof EmptyView == false) {
+					TDMELevelEditor.getInstance().switchToEmptyView();
+				}
+		
+				// set model
+				((EmptyView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
+				break;
 		}
 
 		// button enabled
@@ -289,8 +299,22 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 						"",
 						1f,
 						1f,
-						1f,
-						new Vector3()
+						1f
+					);
+					setEntityLibrary();
+					entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(model.getId()));
+					onEditEntity();
+				} catch (Exception exception) {
+					popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
+				}
+			} else
+			// empty
+			if (node.getController().getValue().equals("create_empty") == true) {
+				try {
+					LevelEditorEntity model = TDMELevelEditor.getInstance().getEntityLibrary().addEmpty(	
+						LevelEditorEntityLibrary.ID_ALLOCATE,
+						"New empty",
+						""
 					);
 					setEntityLibrary();
 					entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(model.getId()));

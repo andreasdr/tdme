@@ -22,11 +22,11 @@ import net.drewke.tdme.math.Vector3;
  */
 public final class LevelEditorEntity extends Properties {
 
-	public enum ModelType {TRIGGER, MODEL};
+	public enum EntityType {TRIGGER, MODEL, EMPTY};
 	public final static int ID_NONE = -1; 
 
 	private int id;
-	private ModelType type;
+	private EntityType type;
 	private String name;
 	private String description;
 	private String fileName;
@@ -41,7 +41,7 @@ public final class LevelEditorEntity extends Properties {
 	/**
 	 * Creates a level editor model
 	 * @param id
-	 * @param model type
+	 * @param entity type
 	 * @param file name
 	 * @param thumbnail
 	 * @param model
@@ -50,9 +50,9 @@ public final class LevelEditorEntity extends Properties {
 	 * @param bounding box
 	 * @param pivot 
 	 */
-	public LevelEditorEntity(int id, ModelType modelType, String name, String description, String fileName, String thumbnail, Model model, String boundingModelMeshFile, Model modelBoundingVolume, BoundingVolume boundingVolume, Vector3 pivot) {
+	public LevelEditorEntity(int id, EntityType entityType, String name, String description, String fileName, String thumbnail, Model model, String boundingModelMeshFile, Model modelBoundingVolume, BoundingVolume boundingVolume, Vector3 pivot) {
 		this.id = id;
-		this.type = modelType;
+		this.type = entityType;
 		this.name = name;
 		this.description = description;
 		this.fileName = fileName;
@@ -73,9 +73,9 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
-	 * @return model type
+	 * @return entity type
 	 */
-	public ModelType getType() {
+	public EntityType getType() {
 		return type;
 	}
 
