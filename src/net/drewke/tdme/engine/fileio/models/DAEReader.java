@@ -252,7 +252,6 @@ public final class DAEReader {
 						for (int i = 0; i < 10000; i++) {
 							haveName = true;
 							String modelNameTry = modelName + (i == 0?"":String.valueOf(i));
-							System.out.println(modelName + ":" + modelNameTry);
 							for (int entityIdx = 0; entityIdx < entityLibrary.getEntityCount(); entityIdx++) {
 								LevelEditorEntity entity = entityLibrary.getEntityAt(entityIdx);
 								if (entity.getName().equals(modelNameTry) == true) {
