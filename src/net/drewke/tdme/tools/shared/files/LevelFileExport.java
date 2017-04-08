@@ -98,7 +98,7 @@ public final class LevelFileExport {
 				} else
 				if (model.getType() == EntityType.TRIGGER) {
 					JSONObject jBoundingVolume = new JSONObject();
-					BoundingBox aabb = model.getBoundingBox();
+					BoundingBox aabb = model.getModel().getBoundingBox();
 					jBoundingVolume.put("type", "aabb");
                    	jBoundingVolume.put("mix", aabb.getMin().getX());
                     jBoundingVolume.put("miy", aabb.getMin().getY());

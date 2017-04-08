@@ -138,8 +138,8 @@ public class EmptyView extends View implements GUIInputEventHandler {
 
 			// trigger
 			Vector3 dimension = new Vector3();
-			dimension.set(((BoundingBox)entity.getBoundingVolume()).getMax());
-			dimension.sub(((BoundingBox)entity.getBoundingVolume()).getMin());
+			dimension.set(entity.getModel().getBoundingBox().getMax());
+			dimension.sub(entity.getModel().getBoundingBox().getMin());
 		} else {
 			emptyScreenController.setScreenCaption("Empty - no trigger loaded");
 			emptyScreenController.unsetEntityProperties();

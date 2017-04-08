@@ -1,18 +1,9 @@
 package net.drewke.tdme.tools.shared.model;
 
-import java.io.File;
+import java.util.ArrayList;
 
-import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.engine.Object3DModel;
-import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
-import net.drewke.tdme.engine.primitives.BoundingVolume;
-import net.drewke.tdme.engine.primitives.Capsule;
-import net.drewke.tdme.engine.primitives.ConvexMesh;
-import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
-import net.drewke.tdme.engine.primitives.PrimitiveModel;
-import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
 
 /**
@@ -32,10 +23,7 @@ public final class LevelEditorEntity extends Properties {
 	private String fileName;
 	private String thumbnail;
 	private Model model;
-	private String boundingModelMeshFile;
-	private Model modelBoundingVolume;
-	private BoundingVolume boundingVolume;
-	private BoundingBox boundingBox;
+	private ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes;
 	private Vector3 pivot;
 
 	/**
@@ -50,7 +38,7 @@ public final class LevelEditorEntity extends Properties {
 	 * @param bounding box
 	 * @param pivot 
 	 */
-	public LevelEditorEntity(int id, EntityType entityType, String name, String description, String fileName, String thumbnail, Model model, String boundingModelMeshFile, Model modelBoundingVolume, BoundingVolume boundingVolume, Vector3 pivot) {
+	public LevelEditorEntity(int id, EntityType entityType, String name, String description, String fileName, String thumbnail, Model model, Vector3 pivot) {
 		this.id = id;
 		this.type = entityType;
 		this.name = name;
@@ -58,10 +46,7 @@ public final class LevelEditorEntity extends Properties {
 		this.fileName = fileName;
 		this.thumbnail = thumbnail;
 		this.model = model;
-		this.boundingModelMeshFile = boundingModelMeshFile;
-		this.modelBoundingVolume = modelBoundingVolume;
-		this.boundingVolume = boundingVolume;
-		this.boundingBox = model.getBoundingBox();
+		this.boundingVolumes = new ArrayList<LevelEditorEntityBoundingVolume>();
 		this.pivot = pivot;
 	}
 
@@ -131,32 +116,49 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
-	 * @return bounding model mesh file
+	 * @return bounding volumes
 	 */
-	public String getBoundingModelMeshFile() {
-		return boundingModelMeshFile;
+	protected ArrayList<LevelEditorEntityBoundingVolume> getBoundingVolumes() {
+		return boundingVolumes;
 	}
 
 	/**
-	 * Set up bounding volume mesh file
-	 * @param boundingModelMeshFile
+	 * Set bounding volumes
+	 * @param bounding volumes
 	 */
-	public void setBoundingModelMeshFile(String boundingModelMeshFile) {
-		this.boundingModelMeshFile = boundingModelMeshFile;
+	protected void setBoundingVolumes(ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes) {
+		this.boundingVolumes = boundingVolumes;
 	}
 
 	/**
-	 * @return bounding volume model
+	 * @return bounding volume count
 	 */
-	public Model getModelBoundingVolume() {
-		return modelBoundingVolume;
+	public int getBoundingVolumeCount() {
+		return boundingVolumes.size();
 	}
 
 	/**
-	 * @return bounding box
+	 * Get bounding volume at
+	 * @param idx
+	 * @return level editor object bounding volume
 	 */
-	public BoundingVolume getBoundingVolume() {
-		return boundingVolume;
+	public LevelEditorEntityBoundingVolume getBoundingVolumeAt(int idx) {
+		return boundingVolumes.get(idx);
+	}
+
+	/**
+	 * Add bounding volume
+	 * @param idx
+	 * @param level editor entity bounding volume
+	 * @return level editor bounding volume
+	 */
+	public boolean addBoundingVolume(int idx, LevelEditorEntityBoundingVolume levelEditorEntityBoundingVolume) {
+		if (idx < 0) return false;
+		if (idx > boundingVolumes.size()) return false;
+		if (idx == boundingVolumes.size()) {
+			boundingVolumes.add(levelEditorEntityBoundingVolume);
+		}
+		return false;
 	}
 
 	/**
@@ -166,87 +168,6 @@ public final class LevelEditorEntity extends Properties {
 		return pivot;
 	}
 
-	/**
-	 * Setup bounding volume none
-	 */
-	public void setupBoundingVolumeNone() {
-		boundingVolume = null;
-		modelBoundingVolume = null;
-	}
-
-	/**
-	 * Setup bounding volume sphere
-	 * @param center
-	 * @param radius
-	 */
-	public void setupBoundingVolumeSphere(Vector3 center, float radius) {
-		boundingVolume = new Sphere(center, radius);
-		modelBoundingVolume = PrimitiveModel.createModel(boundingVolume, model.getId() + "_model_bv_" + System.currentTimeMillis());
-	}
-
-	/**
-	 * Setup bounding volume capsule
-	 * @param a
-	 * @param b
-	 * @param radius
-	 */
-	public void setupBoundingVolumeCapsule(Vector3 a, Vector3 b, float radius) {
-		boundingVolume = new Capsule(a, b, radius);
-		modelBoundingVolume = PrimitiveModel.createModel(boundingVolume, model.getId() + "_model_bv" + System.currentTimeMillis());
-	}
-
-	/**
-	 * Setup bounding volume oriented bounding box
-	 * @param center
-	 * @param axis 0
-	 * @param axis 1
-	 * @param axis 2
-	 * @param half extension
-	 */
-	public void setupBoundingVolumeObb(Vector3 center, Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 halfExtension) {
-		boundingVolume = new OrientedBoundingBox(center, axis0, axis1, axis2, halfExtension);
-		modelBoundingVolume = PrimitiveModel.createModel(boundingVolume, model.getId() + "_model_bv" + System.currentTimeMillis());
-	}
-
-	/**
-	 * Setup bounding volume bounding box
-	 * @param min
-	 * @param max
-	 */
-	public void setupBoundingVolumeAabb(Vector3 min, Vector3 max) {
-		boundingVolume = new BoundingBox(min, max);
-		modelBoundingVolume = PrimitiveModel.createModel(boundingVolume, model.getId() + "_model_bv" + System.currentTimeMillis());
-	}
-
-	/**
-	 * Setup bounding volume sphere
-	 * @param file
-	 */
-	public void setupBoundingVolumeConvexMesh(String file) {
-		boundingModelMeshFile = file;
-		try {
-			Model convexMeshModel = DAEReader.read(new File(fileName).getAbsoluteFile().getCanonicalFile().getParentFile().getPath(), file);
-
-			// take original as bounding volume
-			boundingVolume = new ConvexMesh(new Object3DModel(convexMeshModel));
-
-			// prepare convex mesh model to be displayed
-			convexMeshModel.setId(convexMeshModel.getId() + "_model_bv" + System.currentTimeMillis());
-			convexMeshModel.getImportTransformationsMatrix().scale(1.01f);
-			PrimitiveModel.setupConvexMeshModel(convexMeshModel);
-			modelBoundingVolume = convexMeshModel;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * @return bounding box
-	 */
-	public BoundingBox getBoundingBox() {
-		return boundingBox;
-	}
-
 	@Override
 	public String toString() {
 		return "LevelEditorEntity [id=" + id + ", type=" + type + ", name="
@@ -254,8 +175,7 @@ public final class LevelEditorEntity extends Properties {
 				+ fileName + ", thumbnail=" + thumbnail // + ", model=" + model
 				// + ", boundingModelMeshFile=" + boundingModelMeshFile
 				// + ", modelBoundingVolume=" + modelBoundingVolume
-				+ ", boundingVolume=" + boundingVolume + ", boundingBox="
-				+ boundingBox + ", pivot=" + pivot + "]";
+				+ ", boundingVolumes=" + boundingVolumes + ", pivot=" + pivot + "]";
 	}
 
 	

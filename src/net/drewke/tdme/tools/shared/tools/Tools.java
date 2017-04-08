@@ -27,6 +27,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -323,8 +324,10 @@ public final class Tools {
 		engine.addEntity(groundObject);
 
 		// add bounding volume if we have any
-		if (model.getBoundingVolume() != null) { 
-			Object3D modelBoundingVolumeObject = new Object3D("model_bv", model.getModelBoundingVolume());
+		for (int i = 0; i < model.getBoundingVolumeCount(); i++) { 
+			LevelEditorEntityBoundingVolume boundingVolume = model.getBoundingVolumeAt(i);
+			if (boundingVolume.getModel() == null) continue;
+			Object3D modelBoundingVolumeObject = new Object3D("model_bv." + i, boundingVolume.getModel());
 			modelBoundingVolumeObject.setEnabled(false);
 			engine.addEntity(modelBoundingVolumeObject);
 		}

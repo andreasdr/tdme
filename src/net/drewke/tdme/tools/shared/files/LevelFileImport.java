@@ -55,7 +55,7 @@ public final class LevelFileImport {
 		JSONObject jRoot = null;
 		InputStream is = null;
 		try {
-			jRoot = new JSONObject(new JSONTokener(Tools.readStringFromFile(FileSystem.getInstance().getInputStream(pathName, fileName))));
+			jRoot = new JSONObject(new JSONTokener(FileSystem.getInstance().getContent(pathName, fileName)));
 		} catch (IOException ioe) {
 			throw ioe;
 		} finally {

@@ -19,8 +19,10 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -43,7 +45,7 @@ public final class ModelMetaDataFileImport {
 		JSONObject jRoot = null;
 		InputStream is = null;
 		try {
-			jRoot = new JSONObject(new JSONTokener(Tools.readStringFromFile(FileSystem.getInstance().getInputStream(pathName, fileName))));
+			jRoot = new JSONObject(new JSONTokener(FileSystem.getInstance().getContent(pathName, fileName)));
 		} catch (IOException ioe) {
 			throw ioe;
 		} finally {
@@ -51,11 +53,6 @@ public final class ModelMetaDataFileImport {
 		}
 
 		LevelEditorEntity levelEditorEntity;
-
-		// bounding volume
-		String boundingVolumeMeshFile = null;
-		Model modelBoundingVolume = null;
-		BoundingVolume boundingVolume = null;
 
 		// check for version
 		float version = Float.parseFloat(jRoot.getString("version"));
@@ -74,13 +71,73 @@ public final class ModelMetaDataFileImport {
 		String name = jRoot.getString("name");
 		String description = jRoot.getString("descr");
 
-		JSONObject jBv = jRoot.getJSONObject("bv");
+		// load model
+		Model model = null;
+		if (modelFile.toLowerCase().endsWith(".dae")) {
+			model = DAEReader.read(pathName, modelFile);
+		} else
+		if (modelFile.toLowerCase().endsWith(".tm")) {
+			model = TMReader.read(pathName, modelFile);
+		} else {
+			throw new Exception("Unsupported mode file: " + modelFile);
+		}
+
+		// load level editor model
+		levelEditorEntity = new LevelEditorEntity(
+			id,
+			modelType,
+			name,
+			description,
+			new File(pathName, modelFile).getCanonicalPath(),
+			modelThumbnail,
+			model,
+			pivot
+		);
+
+		// parse properties
+		JSONArray jProperties = jRoot.getJSONArray("properties");
+		for (int i = 0; i < jProperties.length(); i++) {
+			JSONObject jProperty = jProperties.getJSONObject(i);
+			levelEditorEntity.addProperty(
+				jProperty.getString("name"),
+				jProperty.getString("value")
+			);
+		}
+
+		// old: optional bounding volume
+		if (jRoot.has("bv") == true) {
+			levelEditorEntity.addBoundingVolume(0, parseBoundingVolume(0, levelEditorEntity, jRoot.getJSONObject("bv")));
+		} else
+		// new: optional bounding volumeS
+		if (jRoot.has("bvs") == true) {
+			JSONArray jBoundingVolumes = jRoot.getJSONArray("bvs");
+			for (int i = 0; i < jBoundingVolumes.length(); i++) {
+				JSONObject jBv = jBoundingVolumes.getJSONObject(i);
+				levelEditorEntity.addBoundingVolume(i, parseBoundingVolume(i, levelEditorEntity, jBv));
+			}
+		}
+
+		// done
+		return levelEditorEntity;
+	}
+
+	/**
+	 * Parse bounding volume
+	 * @param idx
+	 * @param level editor entity
+	 * @param JSON bounding volume node
+	 * @return level editor entity bounding volume
+	 * @throws JSONException
+	 */
+	private static LevelEditorEntityBoundingVolume parseBoundingVolume(int idx, LevelEditorEntity levelEditorEntity, JSONObject jBv) throws JSONException {
+		LevelEditorEntityBoundingVolume entityBoundingVolume = new LevelEditorEntityBoundingVolume(levelEditorEntity.getModel().getId() + ".bv." + idx, levelEditorEntity); 
+		BoundingVolume bv;
 		String bvTypeString = jBv.getString("type");
 		if (bvTypeString.equalsIgnoreCase("none") == true) {
-			boundingVolume = null;
+			entityBoundingVolume.setupNone();
 		} else
 		if (bvTypeString.equalsIgnoreCase("sphere") == true) {
-			boundingVolume = new Sphere(
+			entityBoundingVolume.setupSphere(
 				new Vector3(
 					(float)jBv.getDouble("cx"),
 					(float)jBv.getDouble("cy"),
@@ -90,7 +147,7 @@ public final class ModelMetaDataFileImport {
 			);
 		} else
 		if (bvTypeString.equalsIgnoreCase("capsule") == true) {
-			boundingVolume = new Capsule(
+			entityBoundingVolume.setupCapsule(
 				new Vector3(
 					(float)jBv.getDouble("ax"),
 					(float)jBv.getDouble("ay"),
@@ -105,7 +162,7 @@ public final class ModelMetaDataFileImport {
 			);
 		} else
 		if (bvTypeString.equalsIgnoreCase("aabb") == true) {
-			boundingVolume = new BoundingBox(
+			entityBoundingVolume.setupAabb(
 				new Vector3(
 					(float)jBv.getDouble("mix"),
 					(float)jBv.getDouble("miy"),
@@ -119,7 +176,7 @@ public final class ModelMetaDataFileImport {
 			);
 		} else
 		if (bvTypeString.equalsIgnoreCase("obb") == true) {
-			boundingVolume = new OrientedBoundingBox(
+			entityBoundingVolume.setupObb(
 				new Vector3(
 					(float)jBv.getDouble("cx"),
 					(float)jBv.getDouble("cy"),
@@ -149,65 +206,14 @@ public final class ModelMetaDataFileImport {
 		} else
 		if (bvTypeString.equalsIgnoreCase("convexmesh") == true) {
 			try {
-				boundingVolumeMeshFile = jBv.getString("file");
-				Model convexMeshModel = DAEReader.read(pathName, boundingVolumeMeshFile);
-
-				// take original as bounding volume
-				boundingVolume = new ConvexMesh(new Object3DModel(convexMeshModel));
-
-				// prepare convex mesh model to be displayed
-				convexMeshModel.setId(convexMeshModel.getId() + "_model_bv" + System.currentTimeMillis());
-				convexMeshModel.getImportTransformationsMatrix().scale(1.01f);
-				PrimitiveModel.setupConvexMeshModel(convexMeshModel);
-				modelBoundingVolume = convexMeshModel;
+				entityBoundingVolume.setupConvexMesh(jBv.getString("file"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 
-		// load model
-		Model model = null;
-		if (modelFile.toLowerCase().endsWith(".dae")) {
-			model = DAEReader.read(pathName, modelFile);
-		} else
-		if (modelFile.toLowerCase().endsWith(".tm")) {
-			model = TMReader.read(pathName, modelFile);
-		} else {
-			throw new Exception("Unsupported mode file: " + modelFile);
-		}
-
-		// create bounding volume model
-		if (boundingVolume != null && modelBoundingVolume == null) {
-			modelBoundingVolume = PrimitiveModel.createModel(boundingVolume, model.getId() + "_model_bv");
-		}
-
-		// load level editor model
-		levelEditorEntity = new LevelEditorEntity(
-			id,
-			modelType,
-			name,
-			description,
-			new File(pathName, modelFile).getCanonicalPath(),
-			modelThumbnail,
-			model,
-			boundingVolumeMeshFile,
-			modelBoundingVolume,
-			boundingVolume,
-			pivot
-		);
-
-		// parse properties
-		JSONArray jMapProperties = jRoot.getJSONArray("properties");
-		for (int i = 0; i < jMapProperties.length(); i++) {
-			JSONObject jMapProperty = jMapProperties.getJSONObject(i);
-			levelEditorEntity.addProperty(
-				jMapProperty.getString("name"),
-				jMapProperty.getString("value")
-			);
-		}
-
 		// done
-		return levelEditorEntity;
+		return entityBoundingVolume;
 	}
 
 }

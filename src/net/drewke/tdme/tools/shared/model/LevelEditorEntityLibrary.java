@@ -22,21 +22,6 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
  */
 public final class LevelEditorEntityLibrary {
 
-	/**
-	 * Model Cache Entity
-	 * @author Andreas Drewke
-	 * @version $Id$
-	 */
-	public class ModelCacheEntity {
-		protected Model model;
-		protected Model modelBoundingVolume;
-		String boundingModelMeshFile;
-		protected BoundingVolume boundingVolume;
-		protected int referenceCounter;
-	}
-
-	private static HashMap<String, ModelCacheEntity> entityCache = new HashMap<String, LevelEditorEntityLibrary.ModelCacheEntity>();
-
 	public final static int ID_ALLOCATE = -1;
 
 	private HashMap<Integer, LevelEditorEntity> entitiesById;
@@ -83,95 +68,51 @@ public final class LevelEditorEntityLibrary {
 	 */
 	public LevelEditorEntity addModel(int id, String name, String description, String pathName, String fileName, Vector3 pivot) throws Exception {
 		File modelFile = new File(pathName + File.separator + fileName);
-		String cacheId = modelFile.getCanonicalPath();
-		ModelCacheEntity cacheEntity = entityCache.get(cacheId);
 		LevelEditorEntity levelEditorEntity = null;
 
-		// check if we already have loaded this model
-		if (cacheEntity != null) {
+		// parse models
+		if (modelFile.getName().toLowerCase().endsWith(".dae")) {
+			Model model = DAEReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
 			levelEditorEntity = new LevelEditorEntity(
 				id == ID_ALLOCATE?allocateEntityId():id,
 				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
 				pathName + File.separator + fileName,
-				cacheEntity.model.getId().
+				model.getId().
 					replace("\\", "_").
 					replace("/", "_").
 					replace(":", "_") +
 					".png",
-				cacheEntity.model,
-				cacheEntity.boundingModelMeshFile,
-				PrimitiveModel.createModel(cacheEntity.boundingVolume, cacheEntity.model.getId() + "_bv"),
-				cacheEntity.boundingVolume,
-				pivot
+				model,
+				new Vector3(0f,0f,0f)
 			);
-			id = levelEditorEntity.getId();
-			cacheEntity.referenceCounter++;
+		} else
+		if (modelFile.getName().toLowerCase().endsWith(".tm")) {
+			Model model = TMReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
+			levelEditorEntity = new LevelEditorEntity(
+				id == ID_ALLOCATE?allocateEntityId():id,
+				LevelEditorEntity.EntityType.MODEL,
+				name,
+				description,
+				pathName + File.separator + fileName,
+				model.getId().
+					replace("\\", "_").
+					replace("/", "_").
+					replace(":", "_") +
+					".png",
+				model,
+				new Vector3(0f,0f,0f)
+			);
+		} else
+		if (modelFile.getName().toLowerCase().endsWith(".tmm")) {
+			levelEditorEntity = ModelMetaDataFileImport.doImport(
+				id == ID_ALLOCATE?allocateEntityId():id,
+				pathName, 
+				fileName
+			);
 		} else {
-			if (modelFile.getName().toLowerCase().endsWith(".dae")) {
-				Model model = DAEReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
-				BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);
-				Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
-				levelEditorEntity = new LevelEditorEntity(
-					id == ID_ALLOCATE?allocateEntityId():id,
-					LevelEditorEntity.EntityType.MODEL,
-					name,
-					description,
-					pathName + File.separator + fileName,
-					model.getId().
-						replace("\\", "_").
-						replace("/", "_").
-						replace(":", "_") +
-						".png",
-					model,
-					null,
-					modelBoundingVolume,
-					boundingBox,
-					pivot
-				);
-			} else
-			if (modelFile.getName().toLowerCase().endsWith(".tm")) {
-				Model model = TMReader.read(modelFile.getParentFile().getCanonicalPath(), modelFile.getName());
-				BoundingBox boundingBox = ModelUtilities.createBoundingBox(model);
-				Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
-				levelEditorEntity = new LevelEditorEntity(
-					id == ID_ALLOCATE?allocateEntityId():id,
-					LevelEditorEntity.EntityType.MODEL,
-					name,
-					description,
-					pathName + File.separator + fileName,
-					model.getId().
-						replace("\\", "_").
-						replace("/", "_").
-						replace(":", "_") +
-						".png",
-					model,
-					null,
-					modelBoundingVolume,
-					boundingBox,
-					pivot
-				);
-			} else
-			if (modelFile.getName().toLowerCase().endsWith(".tmm")) {
-				levelEditorEntity = ModelMetaDataFileImport.doImport(
-					id == ID_ALLOCATE?allocateEntityId():id,
-					pathName, 
-					fileName
-				);
-			} else {
-				throw new Exception("Unknown model file format");
-			}
-
-			id = levelEditorEntity.getId();
-			// add to cache
-			cacheEntity = new ModelCacheEntity();
-			cacheEntity.model = levelEditorEntity.getModel();
-			cacheEntity.modelBoundingVolume = levelEditorEntity.getModelBoundingVolume();
-			cacheEntity.boundingVolume = levelEditorEntity.getBoundingVolume();
-			cacheEntity.boundingModelMeshFile = levelEditorEntity.getBoundingModelMeshFile();
-			cacheEntity.referenceCounter = 1;
-			entityCache.put(cacheId, cacheEntity);
+			throw new Exception("Unknown model file format");
 		}
 
 		// add model
@@ -197,63 +138,28 @@ public final class LevelEditorEntityLibrary {
 	 */
 	public LevelEditorEntity addTrigger(int id, String name, String description, float width, float height, float depth) throws Exception {
 		String cacheId = "leveleditor.trigger." + width + "mx" + height + "mx" + depth + "m";
-		ModelCacheEntity cacheEntity = entityCache.get(cacheId);
 		LevelEditorEntity levelEditorEntity = null;
-
-		// check if we already have loaded this model
-		if (cacheEntity != null) {
-			levelEditorEntity = new LevelEditorEntity(
-				id == ID_ALLOCATE?allocateEntityId():id,
-				EntityType.TRIGGER,
-				name,
-				description,
-				cacheId,
-				cacheEntity.model.getId().
-					replace("\\", "_").
-					replace("/", "_").
-					replace(":", "_") +
-					".png",
-				cacheEntity.model,
-				null,
-				PrimitiveModel.createModel(cacheEntity.boundingVolume, cacheEntity.model.getId() + "_bv"),
-				cacheEntity.boundingVolume,
-				new Vector3()
-			);
-			id = levelEditorEntity.getId();
-			cacheEntity.referenceCounter++;
-		} else {
-			BoundingBox boundingBox = new BoundingBox(
-				new Vector3(-width / 2f, 0f, -depth / 2f),
-				new Vector3(+width / 2f, height, +depth / 2f)
-			);
-			Model model = PrimitiveModel.createModel(boundingBox, cacheId + "_bv");
-			Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
-			levelEditorEntity = new LevelEditorEntity(
-				id == ID_ALLOCATE?allocateEntityId():id,
-				EntityType.TRIGGER,
-				name,
-				description,
-				cacheId,
-				model.getId().
-					replace("\\", "_").
-					replace("/", "_").
-					replace(":", "_") +
-					".png",
-				model,
-				null,
-				modelBoundingVolume,
-				boundingBox,
-				new Vector3()
-			);
-			id = levelEditorEntity.getId();
-			// add to cache
-			cacheEntity = new ModelCacheEntity();
-			cacheEntity.model = model;
-			cacheEntity.modelBoundingVolume = modelBoundingVolume;
-			cacheEntity.boundingVolume = boundingBox;
-			cacheEntity.referenceCounter = 1;
-			entityCache.put(cacheId, cacheEntity);
-		}
+		BoundingBox boundingBox = new BoundingBox(
+			new Vector3(-width / 2f, 0f, -depth / 2f),
+			new Vector3(+width / 2f, height, +depth / 2f)
+		);
+		Model model = PrimitiveModel.createModel(boundingBox, cacheId + "_bv");
+		Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
+		levelEditorEntity = new LevelEditorEntity(
+			id == ID_ALLOCATE?allocateEntityId():id,
+			EntityType.TRIGGER,
+			name,
+			description,
+			cacheId,
+			model.getId().
+				replace("\\", "_").
+				replace("/", "_").
+				replace(":", "_") +
+				".png",
+			model,
+			new Vector3()
+		);
+		id = levelEditorEntity.getId();
 
 		// add model
 		if (entitiesById.get(new Integer(id)) != null) {
@@ -275,59 +181,26 @@ public final class LevelEditorEntityLibrary {
 	 */
 	public LevelEditorEntity addEmpty(int id, String name, String description) throws Exception {
 		String cacheId = "leveleditor.empty";
-		ModelCacheEntity cacheEntity = entityCache.get(cacheId);
 		LevelEditorEntity levelEditorEntity = null;
 
-		// check if we already have loaded this model
-		if (cacheEntity != null) {
-			levelEditorEntity = new LevelEditorEntity(
-				id == ID_ALLOCATE?allocateEntityId():id,
-				EntityType.EMPTY,
-				name,
-				description,
-				cacheId,
-				cacheEntity.model.getId().
-					replace("\\", "_").
-					replace("/", "_").
-					replace(":", "_") +
-					".png",
-				cacheEntity.model,
-				null,
-				PrimitiveModel.createModel(cacheEntity.boundingVolume, cacheEntity.model.getId() + "_bv"),
-				cacheEntity.boundingVolume,
-				new Vector3()
-			);
-			id = levelEditorEntity.getId();
-			cacheEntity.referenceCounter++;
-		} else {
-			Model model = DAEReader.read("resources/tools/leveleditor/models", "arrow.dae");
-			Model modelBoundingVolume = PrimitiveModel.createModel(model.getBoundingBox(), model.getId() + "_bv");;
-			levelEditorEntity = new LevelEditorEntity(
-				id == ID_ALLOCATE?allocateEntityId():id,
-				EntityType.EMPTY,
-				name,
-				description,
-				cacheId,
-				model.getId().
-					replace("\\", "_").
-					replace("/", "_").
-					replace(":", "_") +
-					".png",
-				model,
-				null,
-				modelBoundingVolume,
-				model.getBoundingBox(),
-				new Vector3()
-			);
-			id = levelEditorEntity.getId();
-			// add to cache
-			cacheEntity = new ModelCacheEntity();
-			cacheEntity.model = model;
-			cacheEntity.modelBoundingVolume = modelBoundingVolume;
-			cacheEntity.boundingVolume = model.getBoundingBox();
-			cacheEntity.referenceCounter = 1;
-			entityCache.put(cacheId, cacheEntity);
-		}
+		// create entity
+		Model model = DAEReader.read("resources/tools/leveleditor/models", "arrow.dae");
+		Model modelBoundingVolume = PrimitiveModel.createModel(model.getBoundingBox(), model.getId() + "_bv");;
+		levelEditorEntity = new LevelEditorEntity(
+			id == ID_ALLOCATE?allocateEntityId():id,
+			EntityType.EMPTY,
+			name,
+			description,
+			cacheId,
+			model.getId().
+				replace("\\", "_").
+				replace("/", "_").
+				replace(":", "_") +
+				".png",
+			model,
+			new Vector3()
+		);
+		id = levelEditorEntity.getId();
 
 		// add model
 		if (entitiesById.get(new Integer(id)) != null) {
@@ -375,19 +248,6 @@ public final class LevelEditorEntityLibrary {
 		LevelEditorEntity _model = entitiesById.remove(new Integer(id));
 		if (_model != null) {
 			entities.remove(_model);
-			// get associated cache entity
-			String cacheId = _model.getFileName();
-			ModelCacheEntity cacheEntity = entityCache.get(cacheId);
-			// we should have one
-			if (cacheEntity != null) {
-				cacheEntity.referenceCounter--;
-				// removed last model with this cache entity
-				if (cacheEntity.referenceCounter == 0) {
-					entityCache.remove(cacheId);
-				}
-			} else {
-				System.out.println("Warning: No cache entity: " + cacheId);
-			}
 		}
 	}
 

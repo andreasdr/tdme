@@ -145,7 +145,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			GUIColorEffect effectFadeIn = new GUIColorEffect();
 			effectFadeIn.getColorMulStart().set(0f,0f,0f,1f);
 			effectFadeIn.getColorMulEnd().set(1f,1f,1f,1f);
-			effectFadeIn.setTimeTotal(3f);
+			effectFadeIn.setTimeTotal(1f);
 			effectFadeIn.start();
 			engine.getGUI().getScreen("test").addEffect("fadein", effectFadeIn);
 
@@ -153,7 +153,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			GUIPositionEffect effectScrollIn = new GUIPositionEffect();
 			effectScrollIn.setPositionXStart(-800f);
 			effectScrollIn.setPositionXEnd(0f);
-			effectScrollIn.setTimeTotal(3f);
+			effectScrollIn.setTimeTotal(1f);
 			effectScrollIn.start();
 			engine.getGUI().getScreen("test").addEffect("scrollin", effectScrollIn);
 

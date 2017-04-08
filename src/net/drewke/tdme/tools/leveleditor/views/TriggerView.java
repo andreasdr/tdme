@@ -145,8 +145,8 @@ public class TriggerView extends View implements GUIInputEventHandler {
 
 			// trigger
 			Vector3 dimension = new Vector3();
-			dimension.set(((BoundingBox)entity.getBoundingVolume()).getMax());
-			dimension.sub(((BoundingBox)entity.getBoundingVolume()).getMin());
+			dimension.set(entity.getModel().getBoundingBox().getMax());
+			dimension.sub(entity.getModel().getBoundingBox().getMin());
 			triggerScreenController.setTrigger(dimension.getX(), dimension.getY(), dimension.getZ());
 		} else {
 			triggerScreenController.setScreenCaption("Trigger - no trigger loaded");

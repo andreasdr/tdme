@@ -659,7 +659,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisYIndex()).getAngle(),
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisZIndex()).getAngle()
 				);
-				BoundingVolume bv = levelEditorObject.getEntity().getBoundingBox().clone();
+				BoundingVolume bv = levelEditorObject.getEntity().getModel().getBoundingBox().clone();
 				bv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
 				Vector3 objectCenter = bv.getCenter();
 				levelEditorScreenController.setObjectData(
@@ -1126,7 +1126,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 			// compute center of selected model
 			Vector3 centerNewObject = 
-				selectedEntity.getBoundingBox().getCenter().clone();
+				selectedEntity.getModel().getBoundingBox().getCenter().clone();
 
 			// put new object on middle of selected object
 			levelEditorObjectTransformations.getTranslation().add(centerNewObject.clone().add(centerSelectedObject));
@@ -1135,20 +1135,20 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			if (selectedLevelEditorObject == null) {
 				levelEditorObjectTransformations.getTranslation().setY(
 					gridY +
-					-selectedEntity.getBoundingBox().getMin().getY()
+					-selectedEntity.getModel().getBoundingBox().getMin().getY()
 				);
 			} else {
 				// create transformed level editor object bounding box
-				BoundingVolume bv = selectedLevelEditorObject.getEntity().getBoundingBox().clone();
+				BoundingVolume bv = selectedLevelEditorObject.getEntity().getModel().getBoundingBox().clone();
 				bv.fromBoundingVolumeWithTransformations(
-					selectedLevelEditorObject.getEntity().getBoundingBox(),
+					selectedLevelEditorObject.getEntity().getModel().getBoundingBox(),
 					selectedLevelEditorObject.getTransformations()
 				);
 
 				//
 				levelEditorObjectTransformations.getTranslation().setY(
 					bv.computeDimensionOnAxis(new Vector3(0f,1f,0f)) / 2 + bv.getCenter().getY() +
-					-selectedEntity.getBoundingBox().getMin().getY()
+					-selectedEntity.getModel().getBoundingBox().getMin().getY()
 				);
 			}
 

@@ -187,8 +187,7 @@ public final class LevelEditorLevel extends Properties {
 		Vector3 bbMin = new Vector3();
 		Vector3 bbMax = new Vector3();
 		for (LevelEditorObject levelEditorObject: objects) {
-			BoundingVolume bv = levelEditorObject.getEntity().getBoundingVolume();
-			if (bv == null) bv = levelEditorObject.getEntity().getBoundingBox();
+			BoundingBox bv = levelEditorObject.getEntity().getModel().getBoundingBox();
 			BoundingVolume cbv = bv.clone();
 			cbv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
 			bbDimension.set(
