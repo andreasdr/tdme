@@ -852,7 +852,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		// set up level in engine
 		Level.setLight(engine, level, null);
-		Level.addLevel(engine, level, true, true, true, null);
+		Level.addLevel(engine, level, true, true, false, true, null);
 
 		//
 		setObjectsListBox();

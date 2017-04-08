@@ -49,11 +49,12 @@ public class Level {
 	 * @param engine
 	 * @param level
 	 * @param add empties
-	 * @param add trigger 
+	 * @param add trigger
+	 * @param dynamic shadowing 
 	 * @param pickable
 	 * @param translation
 	 */
-	public static void addLevel(Engine engine, LevelEditorLevel level, boolean addEmpties, boolean addTrigger, boolean pickable, Vector3 translation) {
+	public static void addLevel(Engine engine, LevelEditorLevel level, boolean addEmpties, boolean addTrigger, boolean dynamicShadowing, boolean pickable, Vector3 translation) {
 		// load level objects
 		for (int i = 0; i < level.getObjectCount(); i++) {
 			LevelEditorObject object = level.getObjectAt(i);
@@ -70,6 +71,7 @@ public class Level {
 			}
 			// pickable
 			entity.setPickable(pickable);
+			entity.setDynamicShadowingEnabled(dynamicShadowing);
 			// do not scale empties
 			if (object.getEntity().getType() == EntityType.EMPTY) {
 				entity.getScale().set(
