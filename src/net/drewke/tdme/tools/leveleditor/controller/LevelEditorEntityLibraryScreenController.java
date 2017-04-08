@@ -15,6 +15,7 @@ import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
@@ -262,7 +263,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 			// model
 			if (node.getController().getValue().equals("create_model") == true) {
 				// model library
-				final LevelEditorEntityLibrary modelLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
+				final LevelEditorEntityLibrary entityLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
 				//
 				popUps.getFileDialogScreenController().show(
 						"Load from: ", 
@@ -271,7 +272,8 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 						new Action() {
 							public void performAction() {
 								try {
-									LevelEditorEntity model = modelLibrary.addModel(	
+									// add model
+									LevelEditorEntity entity = entityLibrary.addModel(	
 										LevelEditorEntityLibrary.ID_ALLOCATE,
 										popUps.getFileDialogScreenController().getFileName(),
 										"",
@@ -279,8 +281,9 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 										popUps.getFileDialogScreenController().getFileName(),
 										new Vector3(0f, 0f, 0f)
 									);
+									entity.setDefaultBoundingVolumes();
 									setEntityLibrary();
-									entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(model.getId()));
+									entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(entity.getId()));
 									onEditEntity();
 								} catch (Exception exception) {
 									popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());

@@ -485,6 +485,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 				model,
 				pivot
 			);
+			levelEditorEntity.setDefaultBoundingVolumes();
 			return levelEditorEntity;
 		} else
 		if (fileName.toLowerCase().endsWith(".tm")) {
@@ -504,10 +505,12 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 				model,
 				pivot
 			);
+			levelEditorEntity.setDefaultBoundingVolumes();
 			return levelEditorEntity;
 		} else
 		if (fileName.toLowerCase().endsWith(".tmm")) {
 			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImport(LevelEditorEntity.ID_NONE, pathName, fileName);
+			levelEditorEntity.setDefaultBoundingVolumes();
 			return levelEditorEntity;
 		}
 		return null;

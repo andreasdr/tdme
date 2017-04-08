@@ -130,7 +130,7 @@ public final class ModelMetaDataFileImport {
 	 * @throws JSONException
 	 */
 	private static LevelEditorEntityBoundingVolume parseBoundingVolume(int idx, LevelEditorEntity levelEditorEntity, JSONObject jBv) throws JSONException {
-		LevelEditorEntityBoundingVolume entityBoundingVolume = new LevelEditorEntityBoundingVolume(levelEditorEntity.getModel().getId() + ".bv." + idx, levelEditorEntity); 
+		LevelEditorEntityBoundingVolume entityBoundingVolume = new LevelEditorEntityBoundingVolume(idx, levelEditorEntity); 
 		BoundingVolume bv;
 		String bvTypeString = jBv.getString("type");
 		if (bvTypeString.equalsIgnoreCase("none") == true) {

@@ -162,6 +162,25 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
+	 * Set default (up to 8) bounding volumes, to be used with LevelEditor
+	 */
+	public void setDefaultBoundingVolumes() {
+		// add default bounding volume
+		if (boundingVolumes.isEmpty() == true) {
+			LevelEditorEntityBoundingVolume bv = new LevelEditorEntityBoundingVolume(0, this);
+			bv.setupAabb(
+				model.getBoundingBox().getMin().clone(),
+				model.getBoundingBox().getMax().clone()
+			);
+		}
+		// add up to 8 bvs
+		for (int i = boundingVolumes.size(); i < 8; i++) {
+			LevelEditorEntityBoundingVolume bv = new LevelEditorEntityBoundingVolume(i, this);
+			addBoundingVolume(i, bv);
+		}
+	}
+
+	/**
 	 * @return pivot
 	 */
 	public Vector3 getPivot() {

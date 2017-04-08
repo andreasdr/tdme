@@ -1,5 +1,6 @@
 package net.drewke.tdme.tools.leveleditor;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,6 +12,8 @@ import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
@@ -102,6 +105,12 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		this.animator = animator;
 		TDMELevelEditor.instance = this;
 		level = new LevelEditorLevel();
+		// init level default map properties
+		ArrayList<PropertyModelClass> defaultMapProperties = LevelPropertyPresets.getInstance().getMapPropertiesPreset();
+		for (PropertyModelClass mapProperty: defaultMapProperties) {
+			level.addProperty(mapProperty.getName(), mapProperty.getValue());
+		}
+		//
 		engine = Engine.getInstance();
 		view = null;
 		viewInitialized = false;

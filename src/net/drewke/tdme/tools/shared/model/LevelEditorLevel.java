@@ -63,12 +63,6 @@ public final class LevelEditorLevel extends Properties {
 
 		//
 		entityLibrary = new LevelEditorEntityLibrary();
-		/* TODO: MOVE ME INTO LEVELEDITOR INIT
-		ArrayList<PropertyModelClass> defaultMapProperties = LevelPropertyPresets.getInstance().getMapPropertiesPreset();
-		for (PropertyModelClass mapProperty: defaultMapProperties) {
-			addProperty(mapProperty.getName(), mapProperty.getValue());
-		}
-		*/
 		objectsById = new HashMap<String, LevelEditorObject>();
 		objects = new ArrayList<LevelEditorObject>();
 		objectIdx = 0;

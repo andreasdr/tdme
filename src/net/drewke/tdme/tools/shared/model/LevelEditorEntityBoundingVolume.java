@@ -15,9 +15,14 @@ import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
 
+/**
+ * Level Editor Entity Bouning Volume
+ * @author Andreas Drewke
+ * @version $Id$
+ */
 public class LevelEditorEntityBoundingVolume {
 
-	private String id;
+	private int id;
 	private LevelEditorEntity levelEditorEntity;
 	private String modelMeshFile;
 	private Model model;
@@ -28,7 +33,7 @@ public class LevelEditorEntityBoundingVolume {
 	 * @param id
 	 * @param level editor entity
 	 */
-	public LevelEditorEntityBoundingVolume(String id, LevelEditorEntity levelEditorEntity) {
+	public LevelEditorEntityBoundingVolume(int id, LevelEditorEntity levelEditorEntity) {
 		this.id = id;
 		this.levelEditorEntity = levelEditorEntity;
 		modelMeshFile = null;
@@ -39,7 +44,7 @@ public class LevelEditorEntityBoundingVolume {
 	/**
 	 * @return id
 	 */
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 

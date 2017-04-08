@@ -85,6 +85,7 @@ public final class ModelMetaDataFileExport {
 			for (int i = 0; i < entity.getBoundingVolumeCount(); i++) {
 				LevelEditorEntityBoundingVolume entityBoundingVolume = entity.getBoundingVolumeAt(i);
 				BoundingVolume bv = entityBoundingVolume.getBoundingVolume();
+				if (bv == null) continue;
 				JSONObject jBoundingVolume = new JSONObject();
 				if (bv == null) {
 					jBoundingVolume.put("type", "none");
