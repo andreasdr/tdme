@@ -43,6 +43,17 @@ public final class LevelPropertyPresets {
 	}
 
 	/**
+	 * Set default level properties  
+	 * @param level
+	 */
+	public void setDefaultLevelProperties(LevelEditorLevel level) {
+		// init level default map properties
+		for (PropertyModelClass mapProperty: getMapPropertiesPreset()) {
+			level.addProperty(mapProperty.getName(), mapProperty.getValue());
+		}
+	}
+
+	/**
 	 * Constructor
 	 * @throws ParserConfigurationException 
 	 * @throws SAXException 

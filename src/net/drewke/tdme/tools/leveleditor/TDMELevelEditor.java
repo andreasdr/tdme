@@ -105,12 +105,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		this.animator = animator;
 		TDMELevelEditor.instance = this;
 		level = new LevelEditorLevel();
-		// init level default map properties
-		ArrayList<PropertyModelClass> defaultMapProperties = LevelPropertyPresets.getInstance().getMapPropertiesPreset();
-		for (PropertyModelClass mapProperty: defaultMapProperties) {
-			level.addProperty(mapProperty.getName(), mapProperty.getValue());
-		}
-		//
+		LevelPropertyPresets.getInstance().setDefaultLevelProperties(level);
 		engine = Engine.getInstance();
 		view = null;
 		viewInitialized = false;

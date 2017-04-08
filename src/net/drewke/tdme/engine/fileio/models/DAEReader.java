@@ -39,6 +39,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
+import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.utils.HashMap;
@@ -178,8 +179,9 @@ public final class DAEReader {
 		}
 		tmFilesFolder.mkdir();
 
-		//
+		// create level
 		LevelEditorLevel levelEditorLevel = new LevelEditorLevel();
+		LevelPropertyPresets.getInstance().setDefaultLevelProperties(levelEditorLevel);
 
 		// load dae xml document
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
