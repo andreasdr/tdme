@@ -440,11 +440,11 @@ public final class Tools {
 	}
 
 	/**
-	 * Get game root relative path
+	 * Get path
 	 * @param file name
 	 * @return path
 	 */
-	public static String getGameRootRelativePath(String fileName) {
+	public static String getPath(String fileName) {
 		return new File(fileName).getParent();
 	}
 

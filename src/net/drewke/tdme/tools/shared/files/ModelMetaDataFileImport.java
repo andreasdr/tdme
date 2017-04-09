@@ -77,10 +77,10 @@ public final class ModelMetaDataFileImport {
 		String modelGameRoot = Tools.getGameRootPath(pathName);
 		String modelRelativeFileName = Tools.getRelativeResourcesFileName(modelGameRoot, modelFile);
 		if (modelFile.toLowerCase().endsWith(".dae")) {
-			model = DAEReader.read(modelGameRoot + "/" + Tools.getGameRootRelativePath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
+			model = DAEReader.read(modelGameRoot + "/" + Tools.getPath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
 		} else
 		if (modelFile.toLowerCase().endsWith(".tm")) {
-			model = TMReader.read(modelGameRoot + "/" + Tools.getGameRootRelativePath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
+			model = TMReader.read(modelGameRoot + "/" + Tools.getPath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
 		} else {
 			throw new Exception("Unsupported mode file: " + modelFile);
 		}
