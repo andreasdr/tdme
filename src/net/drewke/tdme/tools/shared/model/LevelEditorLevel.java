@@ -16,6 +16,7 @@ import net.drewke.tdme.math.Vector3;
  */
 public final class LevelEditorLevel extends Properties {
 
+	private String gameRoot;
 	private String pathName;
 	private String fileName;
 	private RotationOrder rotationOrder;
@@ -32,6 +33,7 @@ public final class LevelEditorLevel extends Properties {
 	 * @param default map properties or null
 	 */
 	public LevelEditorLevel() {
+		gameRoot = "";
 		pathName = ".";
 		fileName = "untitled.tl";
 		rotationOrder = RotationOrder.XYZ;
@@ -62,12 +64,27 @@ public final class LevelEditorLevel extends Properties {
 		light.setEnabled(true);
 
 		//
-		entityLibrary = new LevelEditorEntityLibrary();
+		entityLibrary = new LevelEditorEntityLibrary(this);
 		objectsById = new HashMap<String, LevelEditorObject>();
 		objects = new ArrayList<LevelEditorObject>();
 		objectIdx = 0;
 		dimension = new Vector3();
 		boundingBox = new BoundingBox();
+	}
+
+	/**
+	 * @return game root
+	 */
+	public String getGameRoot() {
+		return gameRoot;
+	}
+
+	/**
+	 * Set game root
+	 * @param gameRoot
+	 */
+	public void setGameRoot(String gameRoot) {
+		this.gameRoot = gameRoot;
 	}
 
 	/**

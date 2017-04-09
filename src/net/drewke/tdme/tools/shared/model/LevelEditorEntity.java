@@ -102,6 +102,14 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
+	 * Set file name
+	 * @param fileName
+	 */
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	/**
 	 * @return thumbnail
 	 */
 	public String getThumbnail() {

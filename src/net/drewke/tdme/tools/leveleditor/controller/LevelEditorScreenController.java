@@ -1329,6 +1329,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
+		System.out.println(caption + ":" + message);
 		view.getPopUps().getInfoDialogScreenController().show(caption, message);
 	}
 

@@ -1,5 +1,6 @@
 package net.drewke.tdme.tools.shared.tools;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
@@ -395,6 +396,32 @@ public final class Tools {
 
 		// up vector
 		cam.getUpVector().set(upVector);
+	}
+
+	/**
+	 * Get relative resources file name
+	 * @param game root
+	 * @param file name
+	 * @return relative resources file name
+	 */
+	public static String getRelativeResourcesFileName(String gameRoot, String fileName) {
+		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
+		int filesRootIdx = gameRoot.length() > 0?fileName.lastIndexOf(gameRoot):-1;
+		if (filesRootIdx == -1) filesRootIdx = fileName.lastIndexOf("/resources/");
+		if (filesRootIdx != -1) fileName = fileName.substring(filesRootIdx + 1);
+		return fileName;
+	}
+
+	/**
+	 * Get game root path
+	 * @param file name
+	 * @return game root path
+	 */
+	public static String getGameRootPath(String fileName) {
+		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
+		int filesRootIdx = fileName.lastIndexOf("/resources/");
+		if (filesRootIdx != -1) fileName = fileName.substring(0, filesRootIdx);
+		return fileName;
 	}
 
 }

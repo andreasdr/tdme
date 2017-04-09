@@ -97,8 +97,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	private final static String[] OBJECTCOLOR_NAMES = {"blue", "yellow", "magenta", "cyan", "none"};
-	private final static String MODEL_ROOT = "/resources/models/";
-	private final static String GAME_ROOT = "/../../../";
 
 	private final static int MOUSE_BUTTON_NONE = 0;
 	private final static int MOUSE_BUTTON_LEFT = 1;
@@ -1651,8 +1649,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 			// do import
 			LevelFileImport.doImport(
-				MODEL_ROOT,
-				GAME_ROOT,
 				path,
 				file,
 				level

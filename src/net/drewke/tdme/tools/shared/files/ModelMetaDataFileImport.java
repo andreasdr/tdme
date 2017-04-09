@@ -20,6 +20,7 @@ import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
+import net.drewke.tdme.tools.shared.tools.Tools;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,12 +36,12 @@ public final class ModelMetaDataFileImport {
 
 	/**
 	 * Imports a level from a TDME level file to Level Editor
+	 * @param game root
 	 * @param id or LevelEditorEntity.ID_NONE
 	 * @param path name
 	 * @param file name
 	 */
 	public static LevelEditorEntity doImport(int id, String pathName, String fileName) throws Exception {
-		pathName = pathName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		JSONObject jRoot = null;
 		InputStream is = null;
@@ -88,7 +89,7 @@ public final class ModelMetaDataFileImport {
 			modelType,
 			name,
 			description,
-			new File(pathName, modelFile).getCanonicalPath(),
+			new File(pathName, fileName).getCanonicalPath(),
 			modelThumbnail,
 			model,
 			pivot

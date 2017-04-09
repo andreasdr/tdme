@@ -35,6 +35,7 @@ import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
+import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
@@ -456,9 +457,18 @@ public final class DAEReader {
 								modelName + ".tm",
 								new Vector3()
 							);
+
+							//
+							ModelMetaDataFileExport.export(
+								pathName + "/" + fileName + "-models" + "/" + modelName + ".tmm", 
+								levelEditorEntity
+							);
+
+							// set tmm file
+							levelEditorEntity.setFileName(pathName + "/" + fileName + "-models" + "/" + modelName + ".tmm");
 						}
 					} else
-					// entity
+					// empty
 					if (entityType == EntityType.EMPTY) {
 						if (emptyEntity == null) {
 							emptyEntity = entityLibrary.addEmpty(

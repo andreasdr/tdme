@@ -182,10 +182,14 @@ public final class ModelMetaDataFileExport {
 	        fops = new PrintStream(fos);
 	        fops.print(jRoot.toString(2));  
 		} catch (JSONException je) {
+			throw je;
 		} catch (IOException ioe) {
+			throw ioe;
 		} finally {
 			if (fops != null) fops.close();
-			if (fos != null) try { fos.close(); } catch (IOException ioe) {}
+			if (fos != null) try { fos.close(); } catch (IOException ioe) {
+				throw ioe;
+			}
 		}
 	}
 

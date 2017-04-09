@@ -16,6 +16,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
+import net.drewke.tdme.tools.shared.tools.Tools;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,26 +31,23 @@ public final class LevelFileImport {
 
 	/**
 	 * Imports a level from a TDME level file to Level Editor
-	 * @param model root
+	 * @param game root
 	 * @param path name
 	 * @param file name
 	 * @param level
 	 */
-	public static void doImport(String modelRoot, String gameRoot, String pathName, String fileName, LevelEditorLevel level) throws Exception {
-		doImport(modelRoot, gameRoot, pathName, fileName, level, null);
+	public static void doImport(String pathName, String fileName, LevelEditorLevel level) throws Exception {
+		doImport(pathName, fileName, level, null);
 	}
 
 	/**
 	 * Imports a level from a TDME level file to Level Editor
-	 * @param model root
 	 * @param path name
 	 * @param file name
 	 * @param level
 	 * @param object id prefix
 	 */
-	public static void doImport(String modelRoot, String gameRoot, String pathName, String fileName, LevelEditorLevel level, String objectIdPrefix) throws Exception {
-		modelRoot = modelRoot.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
-		gameRoot = gameRoot.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
+	public static void doImport(String pathName, String fileName, LevelEditorLevel level, String objectIdPrefix) throws Exception {
 		pathName = pathName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
 		JSONObject jRoot = null;
@@ -61,6 +59,9 @@ public final class LevelFileImport {
 		} finally {
 			if (is != null) try { is.close(); } catch (IOException ioei) {}
 		}
+
+		// game root path
+		level.setGameRoot(Tools.getGameRootPath(pathName));
 
 		// check for version
 		float version = Float.parseFloat(jRoot.getString("version"));
@@ -142,13 +143,8 @@ public final class LevelFileImport {
 				// check if file exists on this computer
 				if (modelFile.exists() == false) {
 					// nope, try to get file via structure knowledge of game
-					modelFileName = modelFileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
-					if (modelRoot != null) {
-						int modelRootIdx = modelFileName.lastIndexOf(modelRoot);
-						if (modelRootIdx == -1) modelRootIdx = modelFileName.lastIndexOf("resources\\models\\");
-						if (modelRootIdx != -1) modelFileName = modelFileName.substring(modelRootIdx);
-					}
-					modelFile = new File(pathName + gameRoot + modelFileName);
+					modelFileName = Tools.getRelativeResourcesFileName(level.getGameRoot(), modelFileName);
+					modelFile = new File(level.getGameRoot() + "/" + modelFileName);
 				}
 				levelEditorEntity = level.getEntityLibrary().addModel(	
 					jModel.getInt("id"),

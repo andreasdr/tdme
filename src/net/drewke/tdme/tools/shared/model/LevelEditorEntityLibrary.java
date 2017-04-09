@@ -24,6 +24,7 @@ public final class LevelEditorEntityLibrary {
 
 	public final static int ID_ALLOCATE = -1;
 
+	private LevelEditorLevel level;
 	private HashMap<Integer, LevelEditorEntity> entitiesById;
 	private ArrayList<LevelEditorEntity> entities;
 	private int entityIdx;
@@ -31,7 +32,8 @@ public final class LevelEditorEntityLibrary {
 	/**
 	 * Public constructor
 	 */
-	public LevelEditorEntityLibrary() {
+	public LevelEditorEntityLibrary(LevelEditorLevel level) {
+		this.level = level;
 		this.entitiesById = new HashMap<Integer, LevelEditorEntity>();
 		this.entities = new ArrayList<LevelEditorEntity>();
 		this.entityIdx = 0;
@@ -112,12 +114,12 @@ public final class LevelEditorEntityLibrary {
 				fileName
 			);
 		} else {
-			throw new Exception("Unknown model file format");
+			throw new Exception(pathName + "/" + fileName + ": Unknown model file format");
 		}
 
 		// add model
 		if (entitiesById.get(new Integer(id)) != null) {
-			throw new Exception("Model id already in use");
+			throw new Exception(pathName + "/" + fileName + ": Model id already in use");
 		}
 		addModel(levelEditorEntity);
 		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;

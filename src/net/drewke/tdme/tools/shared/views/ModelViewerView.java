@@ -14,6 +14,7 @@ import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
@@ -509,7 +510,11 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			return levelEditorEntity;
 		} else
 		if (fileName.toLowerCase().endsWith(".tmm")) {
-			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImport(LevelEditorEntity.ID_NONE, pathName, fileName);
+			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImport(
+				LevelEditorEntity.ID_NONE, 
+				pathName, 
+				fileName
+			);
 			levelEditorEntity.setDefaultBoundingVolumes();
 			return levelEditorEntity;
 		}
