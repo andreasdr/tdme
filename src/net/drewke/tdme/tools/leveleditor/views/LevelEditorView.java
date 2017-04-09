@@ -1654,6 +1654,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				level
 			);
 
+			// set default bounding volumes
+			for (int i = 0; i < level.getEntityLibrary().getEntityCount(); i++) {
+				level.getEntityLibrary().getEntityAt(i).setDefaultBoundingVolumes();
+			}
+
 			// set up map properties
 			levelEditorScreenController.setMapProperties(level.getProperties(), null);
 			levelEditorScreenController.unsetObjectProperties();

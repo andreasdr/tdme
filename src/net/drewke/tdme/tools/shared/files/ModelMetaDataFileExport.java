@@ -49,8 +49,8 @@ public final class ModelMetaDataFileExport {
 				os.write(buffer, 0, length);
 			}
 		} finally {
-			try { is.close(); } catch (IOException ioe) {}
-			try { os.close(); } catch (IOException ioe) {}
+			if (is != null) try { is.close(); } catch (IOException ioe) {}
+			if (os != null) try { os.close(); } catch (IOException ioe) {}
 		}
 	}
 
@@ -76,9 +76,14 @@ public final class ModelMetaDataFileExport {
 			jRoot.put("pz", entity.getPivot().getZ());
 			jRoot.put("file", new File(entity.getFileName()).getName());
 
-			String thumbnail = new File(entity.getFileName()).getName() + ".png";
-			jRoot.put("thumbnail", thumbnail);
-			copyFile(new File("./tmp", entity.getThumbnail()), new File(new File(fileName).getAbsoluteFile().getParent(), thumbnail));
+			// try to copy thumbnail
+			try {
+				String thumbnail = new File(entity.getFileName()).getName() + ".png";
+				jRoot.put("thumbnail", thumbnail);
+				copyFile(new File("./tmp", entity.getThumbnail()), new File(new File(fileName).getAbsoluteFile().getParent(), thumbnail));
+			} catch (IOException ioe) {
+				System.out.println("ModelMetaDataFileExport::export(): Could not copy thumbnail for '" + fileName + "'");
+			}
 
 			// bounding volume
 			JSONArray jBoundingVolumes = new JSONArray();
