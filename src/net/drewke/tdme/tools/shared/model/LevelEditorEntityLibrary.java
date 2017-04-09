@@ -80,6 +80,7 @@ public final class LevelEditorEntityLibrary {
 				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
+				null,
 				pathName + File.separator + fileName,
 				model.getId().
 					replace("\\", "_").
@@ -97,6 +98,7 @@ public final class LevelEditorEntityLibrary {
 				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
+				null,
 				pathName + File.separator + fileName,
 				model.getId().
 					replace("\\", "_").
@@ -152,6 +154,7 @@ public final class LevelEditorEntityLibrary {
 			EntityType.TRIGGER,
 			name,
 			description,
+			null,
 			cacheId,
 			model.getId().
 				replace("\\", "_").
@@ -193,6 +196,7 @@ public final class LevelEditorEntityLibrary {
 			EntityType.EMPTY,
 			name,
 			description,
+			null,
 			cacheId,
 			model.getId().
 				replace("\\", "_").

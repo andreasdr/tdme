@@ -463,9 +463,6 @@ public final class DAEReader {
 								pathName + "/" + fileName + "-models" + "/" + modelName + ".tmm", 
 								levelEditorEntity
 							);
-
-							// set tmm file
-							levelEditorEntity.setFileName(pathName + "/" + fileName + "-models" + "/" + modelName + ".tmm");
 						}
 					} else
 					// empty

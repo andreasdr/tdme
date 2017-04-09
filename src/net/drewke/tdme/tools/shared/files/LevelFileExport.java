@@ -82,23 +82,23 @@ public final class LevelFileExport {
 				jLights.put(jLight);
 			}
 			jRoot.put("lights", jLights);
-			JSONArray jModelLibrary = new JSONArray();
+			JSONArray jEntityLibrary = new JSONArray();
 			for (int i = 0; i < entityLibrary.getEntityCount(); i++) {
-				LevelEditorEntity model = entityLibrary.getEntityAt(i);
+				LevelEditorEntity entity = entityLibrary.getEntityAt(i);
 				JSONObject jModel = new JSONObject();
-				jModel.put("id", model.getId());
-				jModel.put("type", model.getType());
-				jModel.put("name", model.getName());
-				jModel.put("descr", model.getDescription());
-				if (model.getType() == EntityType.MODEL) {
-					jModel.put("file", model.getFileName());
-					jModel.put("px", model.getPivot().getX());
-					jModel.put("py", model.getPivot().getY());
-					jModel.put("pz", model.getPivot().getZ());
+				jModel.put("id", entity.getId());
+				jModel.put("type", entity.getType());
+				jModel.put("name", entity.getName());
+				jModel.put("descr", entity.getDescription());
+				if (entity.getType() == EntityType.MODEL) {
+					jModel.put("file", entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
+					jModel.put("px", entity.getPivot().getX());
+					jModel.put("py", entity.getPivot().getY());
+					jModel.put("pz", entity.getPivot().getZ());
 				} else
-				if (model.getType() == EntityType.TRIGGER) {
+				if (entity.getType() == EntityType.TRIGGER) {
 					JSONObject jBoundingVolume = new JSONObject();
-					BoundingBox aabb = model.getModel().getBoundingBox();
+					BoundingBox aabb = entity.getModel().getBoundingBox();
 					jBoundingVolume.put("type", "aabb");
                    	jBoundingVolume.put("mix", aabb.getMin().getX());
                     jBoundingVolume.put("miy", aabb.getMin().getY());
@@ -108,18 +108,18 @@ public final class LevelFileExport {
                    	jBoundingVolume.put("maz", aabb.getMax().getZ());
                    	jModel.put("bv", jBoundingVolume);
 				} else
-				if (model.getType() == EntityType.EMPTY) {
+				if (entity.getType() == EntityType.EMPTY) {
 					// no op for now
 				}
 				JSONArray jModelProperties = new JSONArray();
-				for (PropertyModelClass modelProperty: model.getProperties()) {
+				for (PropertyModelClass modelProperty: entity.getProperties()) {
 					JSONObject jObjectProperty = new JSONObject();
 					jObjectProperty.put("name", modelProperty.getName());
 					jObjectProperty.put("value", modelProperty.getValue());
 					jModelProperties.put(jObjectProperty);					
 				}
 				jModel.put("properties", jModelProperties);
-				jModelLibrary.put(jModel);
+				jEntityLibrary.put(jModel);
 			}
 			JSONArray jMapProperties = new JSONArray();
 			for (PropertyModelClass mapProperty: level.getProperties()) {
@@ -129,7 +129,7 @@ public final class LevelFileExport {
 				jMapProperties.put(jMapProperty);
 			}
 			jRoot.put("properties", jMapProperties);
-			jRoot.put("models", jModelLibrary);
+			jRoot.put("models", jEntityLibrary);
 			JSONArray jObjects = new JSONArray();
 			for (int i = 0; i < level.getObjectCount(); i++) {
 				LevelEditorObject levelEditorObject = level.getObjectAt(i);

@@ -67,18 +67,20 @@ public final class ModelMetaDataFileImport {
 
 		// String thumbnail = jRoot.getString("thumbnail");
 		EntityType modelType = LevelEditorEntity.EntityType.valueOf(jRoot.getString("type"));
-		String modelFile = jRoot.getString("file");
+		String modelFile = new File(pathName, jRoot.getString("file")).getCanonicalPath();
 		String modelThumbnail = jRoot.getString("thumbnail");
 		String name = jRoot.getString("name");
 		String description = jRoot.getString("descr");
 
 		// load model
 		Model model = null;
+		String modelGameRoot = Tools.getGameRootPath(pathName);
+		String modelRelativeFileName = Tools.getRelativeResourcesFileName(modelGameRoot, modelFile);
 		if (modelFile.toLowerCase().endsWith(".dae")) {
-			model = DAEReader.read(pathName, modelFile);
+			model = DAEReader.read(modelGameRoot + "/" + Tools.getGameRootRelativePath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
 		} else
 		if (modelFile.toLowerCase().endsWith(".tm")) {
-			model = TMReader.read(pathName, modelFile);
+			model = TMReader.read(modelGameRoot + "/" + Tools.getGameRootRelativePath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
 		} else {
 			throw new Exception("Unsupported mode file: " + modelFile);
 		}
@@ -89,7 +91,8 @@ public final class ModelMetaDataFileImport {
 			modelType,
 			name,
 			description,
-			new File(pathName, fileName).getCanonicalPath(),
+			pathName + "/" + fileName,
+			new File(modelGameRoot, modelRelativeFileName).getCanonicalPath(),
 			modelThumbnail,
 			model,
 			pivot

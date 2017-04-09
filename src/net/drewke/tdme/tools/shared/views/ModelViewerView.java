@@ -477,6 +477,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
+				null,
 				pathName + File.separator + fileName,
 				model.getId().
 					replace("\\", "_").
@@ -497,6 +498,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 				LevelEditorEntity.EntityType.MODEL,
 				name,
 				description,
+				null,
 				pathName + File.separator + fileName,
 				model.getId().
 					replace("\\", "_").

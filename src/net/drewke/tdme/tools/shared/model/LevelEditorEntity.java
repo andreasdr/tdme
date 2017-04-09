@@ -20,6 +20,7 @@ public final class LevelEditorEntity extends Properties {
 	private EntityType type;
 	private String name;
 	private String description;
+	private String entityFileName;
 	private String fileName;
 	private String thumbnail;
 	private Model model;
@@ -30,19 +31,20 @@ public final class LevelEditorEntity extends Properties {
 	 * Creates a level editor model
 	 * @param id
 	 * @param entity type
+	 * @param name
+	 * @param description
+	 * @param entity file name
 	 * @param file name
 	 * @param thumbnail
 	 * @param model
-	 * @param bounding model mesh file
-	 * @param model bounding volume
-	 * @param bounding box
-	 * @param pivot 
+	 * @param pivot
 	 */
-	public LevelEditorEntity(int id, EntityType entityType, String name, String description, String fileName, String thumbnail, Model model, Vector3 pivot) {
+	public LevelEditorEntity(int id, EntityType entityType, String name, String description, String entityFileName, String fileName, String thumbnail, Model model, Vector3 pivot) {
 		this.id = id;
 		this.type = entityType;
 		this.name = name;
 		this.description = description;
+		this.entityFileName = entityFileName;
 		this.fileName = fileName;
 		this.thumbnail = thumbnail;
 		this.model = model;
@@ -95,18 +97,25 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
+	 * @return entity file name
+	 */
+	public String getEntityFileName() {
+		return entityFileName;
+	}
+
+	/**
+	 * Set entity file name
+	 * @param entity file name
+	 */
+	public void setEntityFileName(String entityFileName) {
+		this.entityFileName = entityFileName;
+	}
+
+	/**
 	 * @return file name
 	 */
 	public String getFileName() {
 		return fileName;
-	}
-
-	/**
-	 * Set file name
-	 * @param fileName
-	 */
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
 	}
 
 	/**

@@ -19,6 +19,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.tools.shared.tools.Tools;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +64,10 @@ public final class ModelMetaDataFileExport {
 		FileOutputStream fos = null;
 	    PrintStream fops = null;
 		try {
+			// set entity file name
+			String entityFileName = new File(fileName).getCanonicalPath();
+			entity.setEntityFileName(entityFileName);
+
 			// generate json
 			JSONObject jRoot = new JSONObject();
 
@@ -74,7 +79,7 @@ public final class ModelMetaDataFileExport {
 			jRoot.put("px", entity.getPivot().getX());
 			jRoot.put("py", entity.getPivot().getY());
 			jRoot.put("pz", entity.getPivot().getZ());
-			jRoot.put("file", new File(entity.getFileName()).getName());
+			jRoot.put("file", entity.getFileName());
 
 			// try to copy thumbnail
 			try {
@@ -183,7 +188,7 @@ public final class ModelMetaDataFileExport {
 			jRoot.put("properties", jModelProperties);
 
 			// save to file
-			fos = new FileOutputStream(new File(fileName)); 
+			fos = new FileOutputStream(new File(entity.getEntityFileName())); 
 	        fops = new PrintStream(fos);
 	        fops.print(jRoot.toString(2));  
 		} catch (JSONException je) {
