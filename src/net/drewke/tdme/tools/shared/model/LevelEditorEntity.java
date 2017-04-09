@@ -174,6 +174,7 @@ public final class LevelEditorEntity extends Properties {
 	 */
 	public void setDefaultBoundingVolumes() {
 		// add default bounding volume
+		/*
 		if (boundingVolumes.isEmpty() == true) {
 			LevelEditorEntityBoundingVolume bv = new LevelEditorEntityBoundingVolume(0, this);
 			bv.setupAabb(
@@ -181,6 +182,7 @@ public final class LevelEditorEntity extends Properties {
 				model.getBoundingBox().getMax().clone()
 			);
 		}
+		*/
 		// add up to 8 bvs
 		for (int i = boundingVolumes.size(); i < 8; i++) {
 			LevelEditorEntityBoundingVolume bv = new LevelEditorEntityBoundingVolume(i, this);
