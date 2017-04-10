@@ -445,7 +445,8 @@ public final class Tools {
 	 * @return path
 	 */
 	public static String getPath(String fileName) {
-		return new File(fileName).getParent();
+		String path = new File(fileName).getParent();
+		return path == null?"":path;
 	}
 
 	/**

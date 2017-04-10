@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import net.drewke.tdme.engine.fileio.models.TMWriter;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.Capsule;
@@ -71,6 +72,9 @@ public final class ModelMetaDataFileExport {
 			// generate json
 			JSONObject jRoot = new JSONObject();
 
+			// convert to tm
+			TMWriter.write(entity.getModel(), Tools.getPath(entity.getFileName()), Tools.getFileName(entity.getFileName()) + ".tm");
+
 			// general data
 			jRoot.put("version", "0.11");
 			jRoot.put("type", entity.getType());
@@ -79,13 +83,13 @@ public final class ModelMetaDataFileExport {
 			jRoot.put("px", entity.getPivot().getX());
 			jRoot.put("py", entity.getPivot().getY());
 			jRoot.put("pz", entity.getPivot().getZ());
-			jRoot.put("file", entity.getFileName());
+			jRoot.put("file", entity.getFileName() + ".tm");
 
 			// try to copy thumbnail
 			try {
-				String thumbnail = new File(entity.getFileName()).getName() + ".png";
+				String thumbnail = Tools.getFileName(entity.getFileName()) + ".png";
 				jRoot.put("thumbnail", thumbnail);
-				copyFile(new File("./tmp", entity.getThumbnail()), new File(new File(fileName).getAbsoluteFile().getParent(), thumbnail));
+				copyFile(new File("./tmp", entity.getThumbnail()), new File(Tools.getPath(fileName), thumbnail));
 			} catch (IOException ioe) {
 				System.out.println("ModelMetaDataFileExport::export(): Could not copy thumbnail for '" + fileName + "'");
 			}

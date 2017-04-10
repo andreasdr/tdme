@@ -22,7 +22,7 @@ import net.drewke.tdme.math.Vector3;
  */
 public class LevelEditorEntityBoundingVolume {
 
-	private int id;
+	private int id; 
 	private LevelEditorEntity levelEditorEntity;
 	private String modelMeshFile;
 	private Model model;
@@ -154,6 +154,16 @@ public class LevelEditorEntityBoundingVolume {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "LevelEditorEntityBoundingVolume [id=" + id + ", modelMeshFile="
+				+ modelMeshFile + ", model=" + (model != null?model.getId():null) + ", boundingVolume="
+				+ boundingVolume + "]";
 	}
 
 }
