@@ -163,7 +163,7 @@ public final class World {
 	 * Update world
 	 * @param delta time
 	 */
-	public void update(float dt) {
+	public void update(float deltaTime) {
 		// lazy initiate constraints solver
 		if (constraintsSolver == null) {
 			constraintsSolver = new ConstraintsSolver(rigidBodies);
@@ -375,8 +375,8 @@ public final class World {
 		rigidBodyCollisionsKeyPoolCurrentFrame.reset();
 
 		// do the solving
-		constraintsSolver.compute(dt);
-		constraintsSolver.updateAllBodies(dt);
+		constraintsSolver.compute(deltaTime);
+		constraintsSolver.updateAllBodies(deltaTime);
 		constraintsSolver.reset();
 
 		// update transformations for rigid body 

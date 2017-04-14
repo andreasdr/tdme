@@ -469,8 +469,9 @@ public final class RigidBody {
 
 	/**
 	 * Updates this rigid body / integrates it
+	 * @param delta time
 	 */
-	protected void update(float dt) {
+	protected void update(float deltaTime) {
 		if (isSleeping == true) return;
 
 		// check if to put object into sleep
@@ -493,7 +494,7 @@ public final class RigidBody {
 
 		// linear
 		movement.set(position);
-		position.add(tmpVector3.set(linearVelocity).scale(dt));
+		position.add(tmpVector3.set(linearVelocity).scale(deltaTime));
 		movement.sub(position);
 		movement.scale(-1f);
 
@@ -503,7 +504,7 @@ public final class RigidBody {
 			angularVelocityXYZ[0],
 			-angularVelocityXYZ[1],
 			angularVelocityXYZ[2],
-			0.0f).scale(0.5f * dt);
+			0.0f).scale(0.5f * deltaTime);
 		tmpQuaternion1.set(orientation);
 		tmpQuaternion1.multiply(tmpQuaternion2);
 		orientation.add(tmpQuaternion1);

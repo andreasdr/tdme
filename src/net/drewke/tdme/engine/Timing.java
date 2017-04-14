@@ -34,7 +34,7 @@ public final class Timing {
 	protected void updateTiming() {
 		lastFrameAtTime = currentFrameAtTime;
 		currentFrameAtTime = System.currentTimeMillis();
-		currentFPS = -1;
+		currentFPS = 0;
 		if (lastFrameAtTime != UNDEFINED) {
 			currentFPS = 1000f / ((currentFrameAtTime - lastFrameAtTime));
 		}

@@ -8,6 +8,7 @@ import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 
 /**
  * Level
@@ -198,6 +199,7 @@ public final class LevelEditorLevel extends Properties {
 		Vector3 bbMin = new Vector3();
 		Vector3 bbMax = new Vector3();
 		for (LevelEditorObject levelEditorObject: objects) {
+			if (levelEditorObject.getEntity().getType() != EntityType.MODEL) continue;
 			BoundingBox bv = levelEditorObject.getEntity().getModel().getBoundingBox();
 			BoundingVolume cbv = bv.clone();
 			cbv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
@@ -249,6 +251,7 @@ public final class LevelEditorLevel extends Properties {
 		Vector3 center = new Vector3();
 		int objectCount = 0;
 		for (LevelEditorObject levelEditorObject: objects) {
+			if (levelEditorObject.getEntity().getType() != EntityType.MODEL) continue;
 			center.add(levelEditorObject.getTransformations().getTranslation());
 			objectCount++;
 		}

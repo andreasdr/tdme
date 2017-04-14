@@ -678,9 +678,9 @@ public final class ConstraintsSolver {
 
 	/**
 	 * Updates all bodies 
-	 * @param dt
+	 * @param delta time
 	 */
-	protected void updateAllBodies(float dt) {
+	protected void updateAllBodies(float deltaTime) {
 		for (int i = 0; i < rigidBodies.size(); i++) {
 			RigidBody body = rigidBodies.get(i);
 
@@ -701,8 +701,8 @@ public final class ConstraintsSolver {
 			}
 
 			//
-			force.set(body.force).scale(body.inverseMass * dt);
-			body.worldInverseInertia.multiply(body.torque, torque).scale(dt);
+			force.set(body.force).scale(body.inverseMass * deltaTime);
+			body.worldInverseInertia.multiply(body.torque, torque).scale(deltaTime);
 
 			// add forces, old velocities
 			newLinearVelocity.add(force);
@@ -716,7 +716,7 @@ public final class ConstraintsSolver {
 
 
 			// update rigid body
-			body.update(dt);
+			body.update(deltaTime);
 		}
 	}
 	

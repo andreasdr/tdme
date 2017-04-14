@@ -148,7 +148,6 @@ public final class LevelEditorEntityLibrary {
 			new Vector3(+width / 2f, height, +depth / 2f)
 		);
 		Model model = PrimitiveModel.createModel(boundingBox, cacheId + "_bv");
-		Model modelBoundingVolume = PrimitiveModel.createModel(boundingBox, model.getId() + "_bv");
 		levelEditorEntity = new LevelEditorEntity(
 			id == ID_ALLOCATE?allocateEntityId():id,
 			EntityType.TRIGGER,
@@ -164,6 +163,8 @@ public final class LevelEditorEntityLibrary {
 			model,
 			new Vector3()
 		);
+		levelEditorEntity.addBoundingVolume(0, new LevelEditorEntityBoundingVolume(0, levelEditorEntity));
+		levelEditorEntity.getBoundingVolumeAt(0).setupAabb(boundingBox.getMin(), boundingBox.getMax());
 		id = levelEditorEntity.getId();
 
 		// add model
