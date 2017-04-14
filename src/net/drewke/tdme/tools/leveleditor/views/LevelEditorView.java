@@ -971,7 +971,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		groundPlate.getMaterials().put("ground", groundPlateMaterial);
 
 		//	group
-		Group groundGroup = new Group(groundPlate, "ground", "ground");
+		Group groundGroup = new Group(groundPlate, null, "ground", "ground");
 
 		//	faces entity
 		//		ground

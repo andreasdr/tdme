@@ -16,6 +16,7 @@ import net.drewke.tdme.utils.HashMap;
 public final class Group {
 
 	private Model model;
+	private Group parentGroup;
 	private String id;
 	private String name;
 	private boolean isJoint;
@@ -32,11 +33,14 @@ public final class Group {
 
 	/**
 	 * Public constructor
+	 * @param model
+	 * @param parent group 
 	 * @param id
 	 * @param name
 	 */
-	public Group(Model model, String id, String name) {
+	public Group(Model model, Group parentGroup, String id, String name) {
 		this.model = model;
+		this.parentGroup = parentGroup;
 		this.id = id;
 		this.name = name;
 		this.transformationsMatrix = new Matrix4x4().identity();
@@ -56,6 +60,13 @@ public final class Group {
 	 */
 	public Model getModel() {
 		return model;
+	}
+
+	/**
+	 * @return parent group
+	 */
+	public Group getParentGroup() {
+		return parentGroup;
 	}
 
 	/**

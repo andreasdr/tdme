@@ -237,7 +237,7 @@ public final class Tools {
 		ground.getMaterials().put("ground", groundMaterial);
 
 		//	group
-		Group groundGroup = new Group(ground, "ground", "ground");
+		Group groundGroup = new Group(ground, null, "ground", "ground");
 
 		//	faces entity
 		//		ground

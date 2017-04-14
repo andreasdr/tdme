@@ -46,7 +46,7 @@ public final class PrimitiveModel {
 		model.getMaterials().put(material.getId(), material);
 
 		// group
-		Group group = new Group(model, "group", "group");
+		Group group = new Group(model, null, "group", "group");
 
 		// faces entity
 		FacesEntity groupFacesEntity = new FacesEntity(group, "faces entity");
@@ -135,7 +135,7 @@ public final class PrimitiveModel {
 		model.getMaterials().put(material.getId(), material);
 
 		// group
-		Group group = new Group(model, "group", "group");
+		Group group = new Group(model, null, "group", "group");
 
 		// faces entity
 		FacesEntity groupFacesEntity = new FacesEntity(group, "faces entity");
@@ -232,7 +232,7 @@ public final class PrimitiveModel {
 		model.getMaterials().put(material.getId(), material);
 
 		// group
-		Group group = new Group(model, "group", "group");
+		Group group = new Group(model, null, "group", "group");
 
 		// faces entity
 		FacesEntity groupFacesEntity = new FacesEntity(group, "faces entity");
@@ -350,7 +350,7 @@ public final class PrimitiveModel {
 		model.getMaterials().put(material.getId(), material);
 
 		// group
-		Group group = new Group(model, "group", "group");
+		Group group = new Group(model, null, "group", "group");
 
 		// faces entity
 		FacesEntity groupFacesEntity = new FacesEntity(group, "faces entity");

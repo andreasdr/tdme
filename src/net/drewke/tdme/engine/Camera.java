@@ -13,13 +13,14 @@ import net.drewke.tdme.math.Vector3;
 public final class Camera {
 
 	private final static Vector3 defaultUp = new Vector3(0.0f, 1.0f, 0.0f);
-	public final static float FOVY = 45f;
 
 	private GLRenderer renderer;
 
 	private int width;
 	private int height;
 	private float aspect;
+
+	private float fovY;
 
 	private float zNear;
 	private float zFar;
@@ -48,6 +49,7 @@ public final class Camera {
 		width = 0;
 		height = 0;
 		aspect = 1;
+		fovY = 45f;
 		zNear = 10f;
 		zFar = 4000f;
 		upVector = new Vector3(0f,1f,0f);
@@ -61,6 +63,21 @@ public final class Camera {
 		tmpSide = new Vector3();
 		tmpUp = new Vector3();
 		frustum = new Frustum(renderer);
+	}
+
+	/**
+	 * @return field of view Y
+	 */
+	public float getFovY() {
+		return fovY;
+	}
+
+	/**
+	 * Set field of view Y
+	 * @param field of view y
+	 */
+	public void setFovY(float fovY) {
+		this.fovY = fovY;
 	}
 
 	/**
@@ -250,7 +267,7 @@ public final class Camera {
 		}
 
 		// setup projection and model view
-		renderer.getProjectionMatrix().set(computeProjectionMatrix(FOVY, aspect, zNear, zFar));
+		renderer.getProjectionMatrix().set(computeProjectionMatrix(fovY, aspect, zNear, zFar));
 		renderer.onUpdateProjectionMatrix();
 		renderer.getModelViewMatrix().set(computeModelViewMatrix(lookFrom, lookAt, upVector));
 		renderer.onUpdateModelViewMatrix();

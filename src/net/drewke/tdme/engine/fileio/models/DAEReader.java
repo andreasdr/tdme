@@ -143,7 +143,7 @@ public final class DAEReader {
 
 				// visual scene root nodes
 				for(Element xmlNode: getChildrenByTagName(xmlLibraryVisualScene, "node")) {
-					Group group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, xmlNode, fps);
+					Group group = readVisualSceneNode(authoringTool, pathName, model, null, xmlRoot, xmlNode, fps);
 					if (group != null) {
 						model.getSubGroups().put(group.getId(), group);
 						model.getGroups().put(group.getId(), group);
@@ -405,7 +405,7 @@ public final class DAEReader {
 					model.setFPS(fps);
 
 					// read sub groups
-					Group group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, xmlNode, fps);
+					Group group = readVisualSceneNode(authoringTool, pathName, model, null, xmlRoot, xmlNode, fps);
 					if (group != null) {
 						group.getTransformationsMatrix().identity();
 						model.getSubGroups().put(group.getId(), group);
@@ -652,18 +652,19 @@ public final class DAEReader {
 	 * @param authoring tool
 	 * @param path name
 	 * @param model
+	 * @param parent group
 	 * @param xml node
 	 * @param xml root
 	 * @param frames per second
 	 * @throws Exception
 	 * @return group
 	 */
-	private static Group readVisualSceneNode(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
+	private static Group readVisualSceneNode(AuthoringTool authoringTool, String pathName, Model model, Group parentGroup, Element xmlRoot, Element xmlNode, float fps) throws Exception {
 		List<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
 		if (xmlInstanceControllers.isEmpty() == false) {
-			return readVisualSceneInstanceController(authoringTool, pathName, model, xmlRoot, xmlNode);
+			return readVisualSceneInstanceController(authoringTool, pathName, model, parentGroup, xmlRoot, xmlNode);
 		} else {
-			return readNode(authoringTool, pathName, model, xmlRoot, xmlNode, fps);
+			return readNode(authoringTool, pathName, model, parentGroup, xmlRoot, xmlNode, fps);
 		}
 	}
 
@@ -672,13 +673,14 @@ public final class DAEReader {
 	 * @param authoring tool
 	 * @param path name
 	 * @param model
+	 * @param parent group
 	 * @param xml node
 	 * @param xml root
 	 * @param frames per seconds
 	 * @throws Exception
 	 * @return group
 	 */
-	private static Group readNode(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, Element xmlNode, float fps) throws Exception {
+	private static Group readNode(AuthoringTool authoringTool, String pathName, Model model, Group parentGroup, Element xmlRoot, Element xmlNode, float fps) throws Exception {
 		String xmlNodeId = xmlNode.getAttribute("id");
 		String xmlNodeName = xmlNode.getAttribute("name");
 		if (xmlNodeId.length() == 0) xmlNodeId = xmlNodeName;
@@ -710,6 +712,7 @@ public final class DAEReader {
 		// tdme model definitions
 		Group group = new Group(
 			model,
+			parentGroup,
 			xmlNodeId,
 			xmlNodeName
 		);
@@ -791,6 +794,7 @@ public final class DAEReader {
 							t = new StringTokenizer(valueString, " \n\r");
 		
 							// first frame is not a animation matrix
+							// its called "Initial Bind Pose"?
 							Matrix4x4 keyFrame0Matrix = new Matrix4x4(
 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
@@ -864,7 +868,7 @@ public final class DAEReader {
 
 		// parse sub groups
 		for(Element _xmlNode: getChildrenByTagName(xmlNode, "node")) {
-			Group _group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, _xmlNode, fps);
+			Group _group = readVisualSceneNode(authoringTool, pathName, model, group, xmlRoot, _xmlNode, fps);
 			if (_group != null) {
 				group.getSubGroups().put(_group.getId(), _group);
 				model.getGroups().put(_group.getId(), _group);
@@ -911,7 +915,7 @@ public final class DAEReader {
 			if (xmlLibraryNode.getAttribute("id").equals(xmlInstanceNodeId)) {
 				// parse sub groups
 				for(Element _xmlNode: getChildrenByTagName(xmlLibraryNode, "node")) {
-					Group _group = readVisualSceneNode(authoringTool, pathName, model, xmlRoot, _xmlNode, fps);
+					Group _group = readVisualSceneNode(authoringTool, pathName, model, parentGroup, xmlRoot, _xmlNode, fps);
 					if (_group != null) {
 						group.getSubGroups().put(_group.getId(), _group);
 						model.getGroups().put(_group.getId(), _group);
@@ -947,12 +951,13 @@ public final class DAEReader {
 	 * @param authoring tool
 	 * @param path name
 	 * @param model
+	 * @param parent group
 	 * @param xml root
 	 * @param xml node
 	 * @return Group
 	 * @throws Exception
 	 */
-	private static Group readVisualSceneInstanceController(AuthoringTool authoringTool, String pathName, Model model, Element xmlRoot, Element xmlNode) throws Exception {
+	private static Group readVisualSceneInstanceController(AuthoringTool authoringTool, String pathName, Model model, Group parentGroup, Element xmlRoot, Element xmlNode) throws Exception {
 		StringTokenizer t;
 
 		String xmlNodeId = xmlNode.getAttribute("id");
@@ -1018,6 +1023,7 @@ public final class DAEReader {
 		// tdme model definitions
 		Group group = new Group(
 			model,
+			parentGroup,
 			xmlNodeId,
 			xmlNodeName
 		);
@@ -1063,26 +1069,26 @@ public final class DAEReader {
 			throw new ModelFileIOException("inverse bind matrices source not found for instance controller " + xmlNodeId);
 		}
 
-		// parse joints inverse bind matrix
+		// Create joints bind matrices
 		for (Element xmlSkinSource: getChildrenByTagName(xmlSkin, "source")) {
 			if (xmlSkinSource.getAttribute("id").equals(xmlJointsInverseBindMatricesSource)) {
 				t = new StringTokenizer(getChildrenByTagName(xmlSkinSource, "float_array").get(0).getTextContent(), " \n\r");
 				Joint[] _joints = skinning.getJoints();
 				for (int i = 0; i < _joints.length; i++) {
-					_joints[i].getBindMatrix().set(
-						bindShapeMatrix.clone().multiply(
-							// inverse bind matrix
-							new Matrix4x4(
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken())
-							).transpose()
-						)
+					_joints[i].getBindMatrix().multiply(bindShapeMatrix);
+					_joints[i].getBindMatrix().multiply(
+						// The vertices are defined in model space 
+						// The transformation to the local space of the joint is called the inverse bind matrix
+						new Matrix4x4(
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken()),
+							Float.parseFloat(t.nextToken()),Float.parseFloat(t.nextToken())
+						).transpose()
 					);
 				}
 			}

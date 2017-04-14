@@ -78,7 +78,7 @@ public class TMReader {
 			}
 
 			// sub groups
-			readSubGroups(is, model, model.getSubGroups());
+			readSubGroups(is, model, null, model.getSubGroups());
 
 			//
 			return model;
@@ -416,10 +416,10 @@ public class TMReader {
 	 * @throws ModelFileIOException
 	 * @return group
 	 */
-	private static void readSubGroups(InputStream is, Model model, HashMap<String, Group> subGroups) throws IOException, ModelFileIOException {
+	private static void readSubGroups(InputStream is, Model model, Group parentGroup, HashMap<String, Group> subGroups) throws IOException, ModelFileIOException {
 		int subGroupCount = readInt(is);
 		for (int i = 0; i < subGroupCount; i++) {
-			Group subGroup = readGroup(is, model);
+			Group subGroup = readGroup(is, model, parentGroup);
 			subGroups.put(subGroup.getId(), subGroup);
 			model.getGroups().put(subGroup.getId(), subGroup);
 		}
@@ -429,13 +429,15 @@ public class TMReader {
 	 * Write group to output stream
 	 * @param input stream
 	 * @param model
+	 * @param parent group
 	 * @throws IOException
 	 * @throws ModelFileIOException
 	 * @return group
 	 */
-	private static Group readGroup(InputStream is, Model model) throws IOException, ModelFileIOException {
+	private static Group readGroup(InputStream is, Model model, Group parentGroup) throws IOException, ModelFileIOException {
 		Group group = new Group(
 			model,
+			parentGroup,
 			readString(is),
 			readString(is)
 			
@@ -451,7 +453,7 @@ public class TMReader {
 		readSkinning(is, group);
 		readFacesEntities(is, group);
 		group.determineFeatures();
-		readSubGroups(is, model, group.getSubGroups());
+		readSubGroups(is, model, parentGroup, group.getSubGroups());
 		return group;
 	}
 

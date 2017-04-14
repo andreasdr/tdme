@@ -163,7 +163,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 
 		//	group
-		Group wallGroup = new Group(wall, "wall", "wall");
+		Group wallGroup = new Group(wall, null, "wall", "wall");
 
 		//	faces entity
 		//		far plane

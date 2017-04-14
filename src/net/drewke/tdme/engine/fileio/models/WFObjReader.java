@@ -246,6 +246,7 @@ public final class WFObjReader {
 					groupFacesEntityFaces = new ArrayList<Face>();
 					group = new Group(
 						model,
+						null,
 						name,
 						name
 					);
