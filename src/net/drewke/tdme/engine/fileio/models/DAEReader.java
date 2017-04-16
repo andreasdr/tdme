@@ -36,13 +36,12 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
-import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;
@@ -756,12 +755,11 @@ public final class DAEReader {
 					if (xmlSamplerInput.getAttribute("semantic").equals("INPUT")) {
 						xmlSamplerInputSource = xmlSamplerInput.getAttribute("source").substring(1);
 					}
-
 				}
 
 				// check for sampler source
 				if (xmlSamplerOutputSource == null) {
-					throw new ModelFileIOException("Could not fid xml sampler output source for animation for " + xmlNodeId);
+					throw new ModelFileIOException("Could not find xml sampler output source for animation for " + xmlNodeId);
 				}
 
 				// load animation input matrices
