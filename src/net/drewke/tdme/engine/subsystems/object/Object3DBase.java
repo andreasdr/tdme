@@ -326,12 +326,16 @@ public class Object3DBase extends Transformations {
 			// put and associate transformation matrices with group
 			transformationsMatrices.get(group.getId()).set(transformationsMatrix);
 
-			// calculate sub groups
+			// calculate for sub groups
 			HashMap<String,Group> subGroups = group.getSubGroups(); 
 			if (subGroups.size() > 0) {
+				// put to matrices stack
+				transformationsMatricesStack[depth].set(transformationsMatrix);
+
+				// compute sub groups transformations
 				computeTransformationsMatrices(
 					subGroups,
-					transformationsMatricesStack[depth].set(transformationsMatrix),
+					transformationsMatricesStack[depth],
 					animationState,
 					depth + 1
 				);
