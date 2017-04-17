@@ -43,7 +43,9 @@ TDMELevelEditor
             - copy and paste
 
     - What is WIP
-        - multiple bounding volumes per model
+        - set up particle systems as entities
+        - set up arbitrary lights as entities
+        - multiple bounding volumes per model entity
         - some other bug fixes that need to be resolved
 
     - Technology
