@@ -132,6 +132,7 @@ TDME
     - Links
         - <youtube link here>
         - TDME Android, https://github.com/andreasdr/tdme-android
+        - Nifty-GUI, https://github.com/nifty-gui/nifty-gui
 
     - References
         - "game physics - a practical introduction" / Kenwright
