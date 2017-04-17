@@ -1,5 +1,7 @@
 package net.drewke.tdme.engine.model;
 
+import java.util.Arrays;
+
 import net.drewke.tdme.math.Matrix4x4;
 
 /**
@@ -43,7 +45,7 @@ public final class Animation {
 	 * @return string representation
 	 */
 	public String toString() {
-		return "AnimationSetup [frames=" + frames + ", transformationsMatrices=" + transformationsMatrices + "]";
+		return "Animation [frames=" + frames + ", transformationsMatrices=" + Arrays.toString(transformationsMatrices) + "]";
 	}
 
 }
