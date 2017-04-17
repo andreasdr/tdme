@@ -10,9 +10,11 @@ TDME
                 - WaveFront OBJ
                 - DAE parsing with skinned meshes and animations
                     - group names/ids must not have whitespace characters
-                    - animations
-                        - requires baked matrices
-                - requires triangulated meshes for now
+                    - requires baked matrices
+                - TDME Model file format
+                    - this is a much more efficient model file format for TDME
+                    - can be read and written
+                - DAE and WaveFront OBJ files require triangulated meshes for now
             - object transformations
                 - scaling
                 - rotations
@@ -26,12 +28,12 @@ TDME
                 - color addition
                 - color multiplication
             - lighting via shaders
-            	- supports phong lighting
-            	- supports phong shading on GL3, GL2
-            	- supports gouraud shading on GLES2
-            	- supports diffuse mapping on GL3, GL2, GLES2
-            	- supports specular shininess mapping on GL3
-            	- supports normal mapping on GL3
+                - supports phong lighting
+                - supports phong shading on GL3, GL2
+                - supports gouraud shading on GLES2
+                - supports diffuse mapping on GL3, GL2, GLES2
+                - supports specular shininess mapping on GL3
+                - supports normal mapping on GL3
             - dynamic shadows via shaders
             - particle system which
               - is object based
@@ -52,12 +54,6 @@ TDME
             - screenshot ability
             - multiple renderer
               - GL2, GL3(core) and GLES2
-        - 3d audio
-            - decoder
-              - ogg vorbis decoder
-            - audio entities
-              - streams
-              - sounds
         - physics
             - discrete collision detection
                 - sphere
@@ -68,12 +64,45 @@ TDME
                 - convex mesh
             - rigid body simulator
               - broadphase collision detection
-              	- uses oct tree like partitioning from 16mx16mx16m up to 4mx4mx4m
-              	- additionally sphere <> sphere test
+                  - uses oct tree like partitioning from 16mx16mx16m up to 4mx4mx4m
+                  - additionally sphere <> sphere test
               - narrowphase collision detection
               - collision filtering by type
               - sleeping technology
-
+        - 3d audio
+            - decoder
+              - ogg vorbis decoder
+            - audio entities
+              - streams
+              - sounds
+        - GUI system
+            - borrows some ideas from Nifty-GUI regarding XML and layouting
+            - borrows some ideas from AngularJS like
+                - all nodes are in the GUI node tree and can be made visible or unvisible depending on conditions
+            - adds some improvements like
+                - support auto keyword with nodes width and height attributes
+            - supported primitive nodes from which compounds are built of
+                - element
+                - image
+                - input
+                - layout
+                - panel
+                - scrollbars
+                - space
+                - text
+            - supported compound elements
+                - button
+                - checkbox
+                - dropdown
+                - imput
+                - radio button
+                - scrollarea both
+                - scrollarea horizontal
+                - scrollarea vertical
+                - selectbox
+                - selectbox multiple
+                - tabs
+            - supports position and color based effects
     - What does it (maybe still) lack
         - animation blending
         - physics
@@ -83,14 +112,12 @@ TDME
         - documentation
 
     - What is WIP
-        - GUI system
-        - own more efficient model file format
         - rigid body simulator(needs to be updated to newer "ReactPhysics3D 0.5")
 
     - Technology
         - designed for simple multi threading
-        	- 3d engine uses one thread for now
-        	- physics or game mechanics can run in a separate thread(s)
+            - 3d engine uses one thread for now
+            - physics or game mechanics can run in a separate thread(s)
         - uses JOGL, JOAL, JOrbis-0.0.17
         - platforms
             - Windows
@@ -99,12 +126,12 @@ TDME
             - Android
 
     - Tools
-		- TDME Model Viewer, see README-Viewer.md
-		- TDME Level Editor, see README-LevelEditor.md
+        - TDME Model Viewer, see README-Viewer.md
+        - TDME Level Editor, see README-LevelEditor.md
 
     - Links
         - <youtube link here>
-		- TDME Android, https://github.com/andreasdr/tdme-android
+        - TDME Android, https://github.com/andreasdr/tdme-android
 
     - References
         - "game physics - a practical introduction" / Kenwright

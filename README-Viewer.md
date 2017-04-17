@@ -6,32 +6,33 @@ TDMEViewer
 
     - What is already working
         - model loading
-        	- DAE, Wavefront OBJ, TMM meta data files
+            - DAE, Wavefront OBJ, TM, TMM meta data files
         - model meta data file saving 
-        	- TMM
+            - TMM
+                - stores its model as TM file additionally
         - render with generated ground, shadowing, bounding volume
         - rotate, zoom
         - setting up model properties
-        	- key, value map for what ever reason
-    	- setting up the model pivot
-    	- setting up a single bounding volume (for now)
-    		- none
-    		- sphere
-    		- capsule
-    		- bounding box
-    		- oriented bounding box
-    		- convex mesh
-    	- see statistics
-    		- opaque faces
-    		- transparent faces
-    		- material count
+            - key, value map for what ever reason
+        - setting up the model pivot
+        - setting up up to 8  bounding volumes (WIP)
+            - none
+            - sphere
+            - capsule
+            - bounding box
+            - oriented bounding box
+            - convex mesh
+        - see statistics
+            - opaque faces
+            - transparent faces
+            - material count
 
     - What is WIP
-        - Use TDME-GUI instead of Nifty-GUI
+        - multiple bounding volumes per model
+        - some other bug fixes that need to be resolved
 
     - Technology
-    	- uses Nifty-GUI for GUI
-        - uses TDME for rendering
+        - uses TDME for rendering and GUI
         - platforms
             - Windows
             - Linux
@@ -39,7 +40,7 @@ TDMEViewer
             - Android
 
     - Links
-		- Nifty-GUI, http://void256.github.io/nifty-gui/
+        - No links yet
 
     - Credits
         - Dominik Hepp
