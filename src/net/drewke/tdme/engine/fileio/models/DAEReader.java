@@ -1114,13 +1114,13 @@ public final class DAEReader {
 
 		// check for vertex weight parameter 
 		if (xmlJointOffset == -1) {
-			throw new ModelFileIOException("xml vertext weight joint offset missing for node " + xmlNodeId);
+			throw new ModelFileIOException("xml vertex weight joint offset missing for node " + xmlNodeId);
 		}
 		if (xmlWeightOffset == -1) {
-			throw new ModelFileIOException("xml vertext weight weight offset missing for node " + xmlNodeId);
+			throw new ModelFileIOException("xml vertex weight weight offset missing for node " + xmlNodeId);
 		}
 		if (xmlWeightsSource == null) {
-			throw new ModelFileIOException("xml vertext weight weight source missing for node " + xmlNodeId);
+			throw new ModelFileIOException("xml vertex weight weight source missing for node " + xmlNodeId);
 		}
 
 		// parse weights
