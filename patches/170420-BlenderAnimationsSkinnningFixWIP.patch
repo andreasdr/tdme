@@ -1,0 +1,273 @@
+diff --git a/src/net/drewke/tdme/engine/fileio/models/DAEReader.java b/src/net/drewke/tdme/engine/fileio/models/DAEReader.java
+index c972a2d..4acdb73 100644
+--- a/src/net/drewke/tdme/engine/fileio/models/DAEReader.java
++++ b/src/net/drewke/tdme/engine/fileio/models/DAEReader.java
+@@ -769,6 +769,7 @@ public final class DAEReader {
+ 					if (xmlAnimationSource.getAttribute("id").equals(xmlSamplerInputSource)) {
+ 						Element xmlFloatArray = getChildrenByTagName(xmlAnimationSource, "float_array").get(0);
+ 						int frames = Integer.parseInt(xmlFloatArray.getAttribute("count"));
++						System.out.println(xmlNodeId + ": time: " + frames);
+ 						String valueString = xmlFloatArray.getTextContent();
+ 						int keyFrameIdx = 0;
+ 						keyFrameTimes = new float[frames];
+@@ -785,7 +786,8 @@ public final class DAEReader {
+ 				for(Element xmlAnimationSource: getChildrenByTagName(xmlAnimation, "source")) {
+ 					if (xmlAnimationSource.getAttribute("id").equals(xmlSamplerOutputSource)) {
+ 						Element xmlFloatArray = getChildrenByTagName(xmlAnimationSource, "float_array").get(0);
+-						int keyFrames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16 - 1;
++						int keyFrames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16; //- 1;
++						System.out.println(xmlNodeId + ": matrices: " + (Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16));
+ 						// some models have animations without frames
+ 						if (keyFrames > 0) {
+ 							String valueString = xmlFloatArray.getTextContent();
+@@ -793,6 +795,7 @@ public final class DAEReader {
+ 		
+ 							// first frame is not a animation matrix
+ 							// its called "Initial Bind Pose"?
++							/*
+ 							Matrix4x4 keyFrame0Matrix = new Matrix4x4(
+ 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
+ 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+@@ -803,6 +806,7 @@ public final class DAEReader {
+ 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
+ 								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
+ 							).transpose().invert();
++							*/
+ 		
+ 							// parse key frame
+ 							int keyFrameIdx = 0;
+@@ -818,7 +822,7 @@ public final class DAEReader {
+ 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
+ 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
+ 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
+-								).transpose().multiply(keyFrame0Matrix);
++								).transpose();//.multiply(keyFrame0Matrix);
+ 								keyFrameIdx++;
+ 							}
+ 						}
+diff --git a/src/net/drewke/tdme/engine/model/Group.java b/src/net/drewke/tdme/engine/model/Group.java
+index 00fe469..4afa8c6 100644
+--- a/src/net/drewke/tdme/engine/model/Group.java
++++ b/src/net/drewke/tdme/engine/model/Group.java
+@@ -251,6 +251,8 @@ public final class Group {
+ 	 */
+ 	public Skinning createSkinning() {
+ 		skinning = new Skinning();
++		// TODO: for now we only support one skinning per model, only saw models yet with a single skinning still
++		model.setSkinning(skinning);
+ 		return skinning;
+ 	}
+ 
+diff --git a/src/net/drewke/tdme/engine/model/Model.java b/src/net/drewke/tdme/engine/model/Model.java
+index a8715ea..fe25c81 100644
+--- a/src/net/drewke/tdme/engine/model/Model.java
++++ b/src/net/drewke/tdme/engine/model/Model.java
+@@ -32,6 +32,7 @@ public final class Model {
+ 	private HashMap<String, Material> materials;
+ 	private HashMap<String, Group> groups;
+ 	private HashMap<String, Group> subGroups;
++	private Skinning skinning;
+ 
+ 	private float fps;
+ 	private HashMap<String, AnimationSetup> animationSetups;
+@@ -56,6 +57,7 @@ public final class Model {
+ 		materials = new HashMap<String, Material>();
+ 		groups = new HashMap<String, Group>();
+ 		subGroups = new HashMap<String, Group>();
++		skinning = null;
+ 		fps = FPS_DEFAULT;
+ 		animationSetups = new HashMap<String, AnimationSetup>();
+ 		importTransformationsMatrix = new Matrix4x4().identity();
+@@ -141,6 +143,21 @@ public final class Model {
+ 	}
+ 
+ 	/**
++	 * @return skinning
++	 */
++	public Skinning getSkinning() {
++		return skinning;
++	}
++
++	/**
++	 * Set skinning
++	 * @param skinning
++	 */
++	protected void setSkinning(Skinning skinning) {
++		this.skinning = skinning;
++	}
++
++	/**
+ 	 * @return frames per seconds
+ 	 */
+ 	public float getFPS() {
+diff --git a/src/net/drewke/tdme/engine/model/Skinning.java b/src/net/drewke/tdme/engine/model/Skinning.java
+index 7261f1a..ae949a9 100644
+--- a/src/net/drewke/tdme/engine/model/Skinning.java
++++ b/src/net/drewke/tdme/engine/model/Skinning.java
+@@ -3,6 +3,8 @@ package net.drewke.tdme.engine.model;
+ import java.util.ArrayList;
+ import java.util.Arrays;
+ 
++import net.drewke.tdme.utils.HashMap;
++
+ /**
+  * Skinning definition for groups
+  * @author andreas.drewke
+@@ -19,6 +21,9 @@ public final class Skinning {
+ 	// for each vertex we have a set of joints with a corresponding weight
+ 	private JointWeight[][] verticesJointsWeights;
+ 
++	// joints by name
++	private HashMap<String, Joint> jointsByName;
++
+ 	/**
+ 	 * Public constructor
+ 	 */
+@@ -26,6 +31,7 @@ public final class Skinning {
+ 		weights = new float[0];
+ 		joints = new Joint[0];
+ 		verticesJointsWeights = new JointWeight[0][0];
++		jointsByName = new HashMap<String, Joint>();
+ 	}
+ 
+ 	/**
+@@ -75,6 +81,10 @@ public final class Skinning {
+ 	 */
+ 	public void setJoints(ArrayList<Joint> joints) {
+ 		this.joints = joints.toArray(new Joint[joints.size()]);
++		for (int i = 0; i < joints.size(); i++) {
++			Joint joint = joints.get(i);
++			jointsByName.put(joint.getGroupId(), joint);
++		}
+ 	}
+ 
+ 	/**
+@@ -107,6 +117,15 @@ public final class Skinning {
+ 	}
+ 
+ 	/**
++	 * Get joint by name
++	 * @param name
++	 * @return joint by name
++	 */
++	public Joint getJointByName(String name) {
++		return jointsByName.get(name);
++	}
++
++	/**
+ 	 * @return string representation
+ 	 */
+ 	public String toString() {
+diff --git a/src/net/drewke/tdme/engine/subsystems/object/Object3DBase.java b/src/net/drewke/tdme/engine/subsystems/object/Object3DBase.java
+index 28983d5..cc754e0 100644
+--- a/src/net/drewke/tdme/engine/subsystems/object/Object3DBase.java
++++ b/src/net/drewke/tdme/engine/subsystems/object/Object3DBase.java
+@@ -10,7 +10,9 @@ import net.drewke.tdme.engine.model.AnimationSetup;
+ import net.drewke.tdme.engine.model.Face;
+ import net.drewke.tdme.engine.model.FacesEntity;
+ import net.drewke.tdme.engine.model.Group;
++import net.drewke.tdme.engine.model.Joint;
+ import net.drewke.tdme.engine.model.Model;
++import net.drewke.tdme.engine.model.Skinning;
+ import net.drewke.tdme.engine.primitives.Triangle;
+ import net.drewke.tdme.engine.subsystems.manager.MeshManager;
+ import net.drewke.tdme.math.Matrix4x4;
+@@ -269,6 +271,7 @@ public class Object3DBase extends Transformations {
+ 			Matrix4x4 transformationsMatrix = null;
+ 
+ 			// compute animation matrix if animation setups exist
++			// 	1. transformation matrix = animation matrix
+ 			Animation animation = group.getAnimation();
+ 			if (animation != null && animationState.finished == false) {
+ 				Matrix4x4[] animationMatrices = animation.getTransformationsMatrices();
+@@ -309,28 +312,39 @@ public class Object3DBase extends Transformations {
+ 				}
+ 			}
+ 
++			// 2. transformation matrix = animation matrix * node transformation matrix
+ 			// do we have no animation matrix?
+ 			if (transformationsMatrix == null) {
+ 				// no animation matrix, set up local transformation matrix up as group matrix
+ 				transformationsMatrix = tmpMatrix1.set(group.getTransformationsMatrix());
+ 			} else {
+ 				// we have animation matrix, so multiply it with group transformation matrix
+-				transformationsMatrix.multiply(group.getTransformationsMatrix());
++				// transformationsMatrix.multiply(group.getTransformationsMatrix());
+ 			}
+ 
+-			// apply parent transformation matrix 
+-			if (parentTransformationsMatrix != null) {
+-				transformationsMatrix.multiply(parentTransformationsMatrix);
++			// global transform = parent transformation matrix * transformation matrix
++			Matrix4x4 globalTransformation = new Matrix4x4(transformationsMatrix).multiply(parentTransformationsMatrix);
++
++			Joint skinningJoint = null;
++			if (model.getSkinning() != null) {
++				// System.out.println(group.getId() + ":" + model.getSkinning().getJointByName(group.getId()));
++				skinningJoint = model.getSkinning().getJointByName(group.getId());
++			} else {
++				// System.out.println(group.getId() + ": no skinning");
+ 			}
+ 
++			// compute file
+ 			// put and associate transformation matrices with group
+-			transformationsMatrices.get(group.getId()).set(transformationsMatrix);
++			transformationsMatrices.get(group.getId()).
++				set(skinningJoint != null?skinningJoint.getBindMatrix():new Matrix4x4().identity()).
++				multiply(globalTransformation).
++				multiply(new Matrix4x4().identity().invert());
+ 
+ 			// calculate for sub groups
+ 			HashMap<String,Group> subGroups = group.getSubGroups(); 
+ 			if (subGroups.size() > 0) {
+ 				// put to matrices stack
+-				transformationsMatricesStack[depth].set(transformationsMatrix);
++				transformationsMatricesStack[depth].set(globalTransformation);
+ 
+ 				// compute sub groups transformations
+ 				computeTransformationsMatrices(
+diff --git a/src/net/drewke/tdme/engine/subsystems/object/Object3DGroupMesh.java b/src/net/drewke/tdme/engine/subsystems/object/Object3DGroupMesh.java
+index 3947f35..0fb1068 100644
+--- a/src/net/drewke/tdme/engine/subsystems/object/Object3DGroupMesh.java
++++ b/src/net/drewke/tdme/engine/subsystems/object/Object3DGroupMesh.java
+@@ -314,9 +314,12 @@ public final class Object3DGroupMesh {
+ 					for (int vertexJointWeightIdx = 0; vertexJointWeightIdx < jointsWeights[vertexIndex].length; vertexJointWeightIdx++) {
+ 						float weight = cSkinningJointWeight[vertexIndex][vertexJointWeightIdx];
+ 	
+-						// 
+-						cTransformationsMatrix.set(cSkinningJointBindMatrices[vertexIndex][vertexJointWeightIdx]);
+-						cTransformationsMatrix.multiply(cSkinningJointTransformationsMatrices[vertexIndex][vertexJointWeightIdx]);
++						// old:
++						// cTransformationsMatrix.set(cSkinningJointBindMatrices[vertexIndex][vertexJointWeightIdx]);
++						// cTransformationsMatrix.multiply(cSkinningJointTransformationsMatrices[vertexIndex][vertexJointWeightIdx]);
++
++						// new:
++						cTransformationsMatrix.set(cSkinningJointTransformationsMatrices[vertexIndex][vertexJointWeightIdx]);
+ 	
+ 						// vertex
+ 						transformedVertex.add(cTransformationsMatrix.multiply(vertex, tmpVector3).scale(weight));
+@@ -391,7 +394,11 @@ public final class Object3DGroupMesh {
+ 	protected void setupSkinningTransformationsMatrices(ArrayList<Matrix4x4> gSkinningJointTransformationsMatrices) {
+ 		gFbSkinningJointsTransformationsMatrices.clear();
+ 		for (int jointIdx = 0; jointIdx < skinningJoints; jointIdx++) {
+-			gFbSkinningTransformationMatrix.set(gSkinningJointBindMatrices.get(jointIdx));
++			// old:
++			// gFbSkinningTransformationMatrix.set(gSkinningJointBindMatrices.get(jointIdx));
++			// gFbSkinningTransformationMatrix.multiply(gSkinningJointTransformationsMatrices.get(jointIdx));
++
++			// new:
+ 			gFbSkinningTransformationMatrix.multiply(gSkinningJointTransformationsMatrices.get(jointIdx));
+ 			gFbSkinningJointsTransformationsMatrices.put(
+ 				gFbSkinningTransformationMatrix.getArray()
+diff --git a/src/net/drewke/tdme/tools/shared/views/ModelViewerView.java b/src/net/drewke/tdme/tools/shared/views/ModelViewerView.java
+index e6337d8..7cae262 100644
+--- a/src/net/drewke/tdme/tools/shared/views/ModelViewerView.java
++++ b/src/net/drewke/tdme/tools/shared/views/ModelViewerView.java
+@@ -426,6 +426,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
+ 			);
+ 			onLoadModel(oldModel, entity);
+ 		} catch (Exception exception) {
++			exception.printStackTrace();
+ 			popUps.getInfoDialogScreenController().show("Warning", exception.getMessage());
+ 		}
+ 	}
