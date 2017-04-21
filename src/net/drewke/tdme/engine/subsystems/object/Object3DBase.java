@@ -313,9 +313,6 @@ public class Object3DBase extends Transformations {
 			if (transformationsMatrix == null) {
 				// no animation matrix, set up local transformation matrix up as group matrix
 				transformationsMatrix = tmpMatrix1.set(group.getTransformationsMatrix());
-			} else {
-				// we have animation matrix, so multiply it with group transformation matrix
-				transformationsMatrix.multiply(group.getTransformationsMatrix());
 			}
 
 			// apply parent transformation matrix 

@@ -785,25 +785,12 @@ public final class DAEReader {
 				for(Element xmlAnimationSource: getChildrenByTagName(xmlAnimation, "source")) {
 					if (xmlAnimationSource.getAttribute("id").equals(xmlSamplerOutputSource)) {
 						Element xmlFloatArray = getChildrenByTagName(xmlAnimationSource, "float_array").get(0);
-						int keyFrames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16 - 1;
+						int keyFrames = Integer.parseInt(xmlFloatArray.getAttribute("count")) / 16;
 						// some models have animations without frames
 						if (keyFrames > 0) {
 							String valueString = xmlFloatArray.getTextContent();
 							t = new StringTokenizer(valueString, " \n\r");
-		
-							// first frame is not a animation matrix
-							// its called "Initial Bind Pose"?
-							Matrix4x4 keyFrame0Matrix = new Matrix4x4(
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
-								Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
-							).transpose().invert();
-		
+				
 							// parse key frame
 							int keyFrameIdx = 0;
 							keyFrameMatrices = new Matrix4x4[keyFrames];
@@ -818,7 +805,7 @@ public final class DAEReader {
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()),
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken()), 
 									Float.parseFloat(t.nextToken()), Float.parseFloat(t.nextToken())
-								).transpose().multiply(keyFrame0Matrix);
+								).transpose();
 								keyFrameIdx++;
 							}
 						}
@@ -827,7 +814,7 @@ public final class DAEReader {
 
 				// create linear animation by key frame times and key frames
 				if (keyFrameTimes != null && keyFrameMatrices != null) {
-					int frames = (int)Math.ceil(keyFrameTimes[keyFrameTimes.length - 1] * fps) + 1;
+					int frames = (int)Math.ceil(keyFrameTimes[keyFrameTimes.length - 1] * fps);
 
 					// create default animation
 					ModelHelper.createDefaultAnimation(model, frames);
