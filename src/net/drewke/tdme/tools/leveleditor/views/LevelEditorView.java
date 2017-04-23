@@ -150,6 +150,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	private boolean keyD;
 	private boolean keyW;
 	private boolean keyS;
+	private boolean keyC;
+	private boolean keyV;
+	private boolean keyX;
+	private boolean keyDelete;
 	private boolean keyPlus;
 	private boolean keyMinus;
 	private boolean keyR;
@@ -163,7 +167,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	private LevelEditorLevel level;
 	private ArrayList<Entity> selectedObjects = null;
 	private HashMap<String, Entity> selectedObjectsById = null;
-	private ArrayList<Entity> pasteObjects = null;
+	private ArrayList<LevelEditorObject> pasteObjects = null;
 
 	private PopUps popUps;
 
@@ -205,7 +209,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		objectColors.put("none", new ObjectColor(1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f));
 		selectedObjects = new ArrayList<Entity>();
 		selectedObjectsById = new HashMap<String, Entity>();
-		pasteObjects = new ArrayList<Entity>();
+		pasteObjects = new ArrayList<LevelEditorObject>();
 
 		camScale = 1.0f;
 		camLookRotationX.update();
@@ -315,6 +319,12 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	 * @see net.drewke.tdme.gui.events.GUIInputEventHandler#handleInputEvents()
 	 */
 	public void handleInputEvents() {
+		boolean keyDeleteBefore = keyDelete;
+		boolean keyControlBefore = keyControl;
+		boolean keyCBefore = keyC;
+		boolean keyVBefore = keyV;
+		boolean keyXBefore = keyX;
+
 		// handle keyboard events
 		for (int i = 0; i < engine.getGUI().getKeyboardEvents().size(); i++) {
 			GUIKeyboardEvent event = engine.getGUI().getKeyboardEvents().get(i);
@@ -331,7 +341,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_LEFT) keyLeft = isKeyDown;
 			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_RIGHT) keyRight = isKeyDown;
 			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_UP) keyUp = isKeyDown;
-			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_DOWN) keyDown = isKeyDown;
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_DOWN) keyDown = isKeyDown; 
+			if (event.getKeyCode() == GUIKeyboardEvent.KEYCODE_BACKSPACE) keyDelete = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'x') keyX = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'c') keyC = isKeyDown;
+			if (Character.toLowerCase(event.getKeyChar()) == 'v') keyV = isKeyDown;
 			if (Character.toLowerCase(event.getKeyChar()) == 'a') keyA = isKeyDown;
 			if (Character.toLowerCase(event.getKeyChar()) == 'd') keyD = isKeyDown;
 			if (Character.toLowerCase(event.getKeyChar()) == 'w') keyW = isKeyDown;
@@ -479,6 +493,30 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				if (camScale < camScaleMin) camScale = camScaleMin;
 				if (camScale > camScaleMax) camScale = camScaleMax;
 			}
+		}
+
+		// delete objects
+		if (keyDeleteBefore == true && keyDelete == false) {
+			removeObject();
+		}
+
+		// cut objects
+		if ((keyControlBefore == true || keyControl == true) && 
+			keyXBefore == true && keyX == false) {
+			copyObjects();
+			removeObject();
+		}
+
+		// copy objects
+		if ((keyControlBefore == true || keyControl == true) && 
+			keyCBefore == true && keyC == false) {
+			copyObjects();
+		}
+
+		// paste objects
+		if ((keyControlBefore == true || keyControl == true) && 
+			keyVBefore == true && keyV == false) {
+			pasteObjects();
 		}
 	}
 
@@ -1205,12 +1243,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			}
 		}
 		for (Entity objectToRemove: objectsToRemove) {
-			pasteObjects.remove(objectToRemove);
 			selectedObjects.remove(objectToRemove);
-			// add to objects listbox
-			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		}
 		level.computeDimension();
+		// update objects listbox
+		levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		updateGUIElements();
 	}
 
@@ -1694,7 +1731,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		pasteObjects.clear();
 		for (Entity selectedObject: selectedObjects) {
 			if (selectedObject != null && selectedObject.getId().startsWith("leveleditor.") == false) {
-				pasteObjects.add(selectedObject);
+				LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
+				if (levelEditorObject == null) continue;
+				pasteObjects.add(levelEditorObject);
 			}
 		}
 	}
@@ -1707,8 +1746,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		float pasteObjectsMinX = Float.MAX_VALUE;
 		float pasteObjectsMinZ = Float.MAX_VALUE;
 		float pasteObjectsMinY = Float.MIN_VALUE;
-		for (Entity object: pasteObjects) {
-			float[] objectBBMinXYZ = object.getBoundingBoxTransformed().getMin().getArray();
+		for (LevelEditorObject object: pasteObjects) {
+			BoundingVolume obv = object.getEntity().getModel().getBoundingBox();
+			BoundingVolume cbv = obv.clone();
+			cbv.fromBoundingVolumeWithTransformations(obv, object.getTransformations());
+			float[] objectBBMinXYZ = ((BoundingBox)cbv).getMin().getArray();
 			if (objectBBMinXYZ[0] < pasteObjectsMinX) pasteObjectsMinX = objectBBMinXYZ[0];
 			if (objectBBMinXYZ[1] < pasteObjectsMinY) pasteObjectsMinY = objectBBMinXYZ[1];
 			if (objectBBMinXYZ[2] < pasteObjectsMinZ) pasteObjectsMinZ = objectBBMinXYZ[2];
@@ -1719,27 +1761,31 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		float selectedObjectsMinZ = Float.MAX_VALUE;
 		float selectedObjectsMaxY = Float.MIN_VALUE;
 		for (Entity object: selectedObjects) {
-			float[] objectBBMinXYZ = object.getBoundingBoxTransformed().getMin().getArray();
-			float[] objectBBMaxXYZ = object.getBoundingBoxTransformed().getMax().getArray();
+			LevelEditorObject levelEditorObject = level.getObjectById(object.getId());
+			if (levelEditorObject == null) continue;
+			BoundingVolume obv = levelEditorObject.getEntity().getModel().getBoundingBox();
+			BoundingVolume cbv = obv.clone();
+			cbv.fromBoundingVolumeWithTransformations(obv, levelEditorObject.getTransformations());
+			float[] objectBBMinXYZ = ((BoundingBox)cbv).getMin().getArray();
+			float[] objectBBMaxXYZ = ((BoundingBox)cbv).getMax().getArray();
 			if (objectBBMinXYZ[0] < selectedObjectsMinX) selectedObjectsMinX = objectBBMinXYZ[0];
 			if (objectBBMaxXYZ[1] > selectedObjectsMaxY) selectedObjectsMaxY = objectBBMaxXYZ[1];
 			if (objectBBMinXYZ[2] < selectedObjectsMinZ) selectedObjectsMinZ = objectBBMinXYZ[2];
 		}
 
 		// paste objects
-		for (Entity pasteObject: pasteObjects) {
+		for (LevelEditorObject pasteObject: pasteObjects) {
 			// get selected level entity if it is one
-			LevelEditorObject selectedLevelEditorObject = level.getObjectById(pasteObject.getId());
-			LevelEditorEntity pasteModel = selectedLevelEditorObject.getEntity();
+			LevelEditorEntity pasteModel = pasteObject.getEntity();
 
 			// create level entity, copy transformations from original
 			Transformations levelEditorObjectTransformations = new Transformations();
-			levelEditorObjectTransformations.fromTransformations(selectedLevelEditorObject.getTransformations());
+			levelEditorObjectTransformations.fromTransformations(pasteObject.getTransformations());
 
 			// compute new translation
-			float objectDiffX = selectedLevelEditorObject.getTransformations().getTranslation().getX() - pasteObjectsMinX;
-			float objectDiffY = selectedLevelEditorObject.getTransformations().getTranslation().getY() - pasteObjectsMinY;
-			float objectDiffZ = selectedLevelEditorObject.getTransformations().getTranslation().getZ() - pasteObjectsMinZ;
+			float objectDiffX = pasteObject.getTransformations().getTranslation().getX() - pasteObjectsMinX;
+			float objectDiffY = pasteObject.getTransformations().getTranslation().getY() - pasteObjectsMinY;
+			float objectDiffZ = pasteObject.getTransformations().getTranslation().getZ() - pasteObjectsMinZ;
 			levelEditorObjectTransformations.getTranslation().setX(selectedObjectsMinX + objectDiffX);
 			levelEditorObjectTransformations.getTranslation().setY(selectedObjectsMaxY + objectDiffY);
 			levelEditorObjectTransformations.getTranslation().setZ(selectedObjectsMinZ + objectDiffZ);
@@ -1764,7 +1810,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			);
 
 			// copy properties
-			for (PropertyModelClass property: selectedLevelEditorObject.getProperties()) {
+			for (PropertyModelClass property: pasteObject.getProperties()) {
 				levelEditorObject.addProperty(property.getName(), property.getValue());
 			}
 
@@ -1776,10 +1822,10 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			object.fromTransformations(levelEditorObjectTransformations);
 			object.setPickable(true);
 			engine.addEntity(object);
-
-			// add to objects listbox
-			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 		}
+
+		// add to objects listbox
+		levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());
 	}
 
 	/**
