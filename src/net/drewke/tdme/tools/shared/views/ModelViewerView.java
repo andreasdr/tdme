@@ -11,10 +11,12 @@ import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
+import net.drewke.tdme.engine.primitives.Capsule;
+import net.drewke.tdme.engine.primitives.ConvexMesh;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
+import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
@@ -31,6 +33,18 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @version $Id$
  */
 public class ModelViewerView extends View implements GUIInputEventHandler {
+
+	private final int MODEL_BOUNDINGVOLUME_COUNT = 8;
+	private final static String[] MODEL_BOUNDINGVOLUME_IDS = {
+		"model_bv.0",
+		"model_bv.1",
+		"model_bv.2",
+		"model_bv.3",
+		"model_bv.4",
+		"model_bv.5",
+		"model_bv.6",
+		"model_bv.7",
+	};
 
 	protected Engine engine;
 
@@ -152,76 +166,144 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		ModelUtilities.ModelStatistics stats = ModelUtilities.computeModelStatistics(entity.getModel());
 		modelViewerScreenController.setStatistics(stats.getOpaqueFaceCount(), stats.getTransparentFaceCount(), stats.getMaterialCount());
 
+		// 
+		updateGUIElements();
+	}
+
+	/**
+	 * Reset bounding volume
+	 * @param idx
+	 */
+	public void resetBoundingVolume(int idx) {
 		// set up oriented bounding box
 		BoundingBox aabb = entity.getModel().getBoundingBox();
 		OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
 
-		// iterate entity bounding volumes
-		for (int i = 0; i < 8; i++) {
-			// set up sphere
-			modelViewerScreenController.setupSphere(
-				i,
-				obb.getCenter(),
-				obb.getHalfExtension().computeLength()
-			);
-	
-			// set up capsule
-			{
-				Vector3 a = new Vector3();
-				Vector3 b = new Vector3();
-				float radius = 0.0f;
-				float[] halfExtensionXYZ = obb.getHalfExtension().getArray();
-	
-				// determine a, b
-				if (halfExtensionXYZ[0] > halfExtensionXYZ[1] &&
-					halfExtensionXYZ[0] > halfExtensionXYZ[2]) {
-					radius = (float)Math.sqrt(halfExtensionXYZ[1] * halfExtensionXYZ[1] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
-					a.set(obb.getAxes()[0]);
-					a.scale(-(halfExtensionXYZ[0] - radius));
-					a.add(obb.getCenter());
-					b.set(obb.getAxes()[0]);
-					b.scale(+(halfExtensionXYZ[0] - radius));
-					b.add(obb.getCenter());
-				} else
-				if (halfExtensionXYZ[1] > halfExtensionXYZ[0] &&
-					halfExtensionXYZ[1] > halfExtensionXYZ[2]) {
-					radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
-					a.set(obb.getAxes()[1]);
-					a.scale(-(halfExtensionXYZ[1] - radius));
-					a.add(obb.getCenter());
-					b.set(obb.getAxes()[1]);
-					b.scale(+(halfExtensionXYZ[1] - radius));
-					b.add(obb.getCenter()); 
-				} else {
-					radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[1] * halfExtensionXYZ[1]);
-					a.set(obb.getAxes()[2]);
-					a.scale(-(halfExtensionXYZ[2] - radius));
-					a.add(obb.getCenter());
-					b.set(obb.getAxes()[2]);
-					b.scale(+(halfExtensionXYZ[2] - radius));
-					b.add(obb.getCenter()); 						
-				}
-	
-				// setup capsule
-				modelViewerScreenController.setupCapsule(i,a, b, radius);
+		// set up sphere
+		modelViewerScreenController.setupSphere(
+			idx,
+			obb.getCenter(),
+			obb.getHalfExtension().computeLength()
+		);
+
+		// set up capsule
+		{
+			Vector3 a = new Vector3();
+			Vector3 b = new Vector3();
+			float radius = 0.0f;
+			float[] halfExtensionXYZ = obb.getHalfExtension().getArray();
+
+			// determine a, b
+			if (halfExtensionXYZ[0] > halfExtensionXYZ[1] &&
+				halfExtensionXYZ[0] > halfExtensionXYZ[2]) {
+				radius = (float)Math.sqrt(halfExtensionXYZ[1] * halfExtensionXYZ[1] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
+				a.set(obb.getAxes()[0]);
+				a.scale(-(halfExtensionXYZ[0] - radius));
+				a.add(obb.getCenter());
+				b.set(obb.getAxes()[0]);
+				b.scale(+(halfExtensionXYZ[0] - radius));
+				b.add(obb.getCenter());
+			} else
+			if (halfExtensionXYZ[1] > halfExtensionXYZ[0] &&
+				halfExtensionXYZ[1] > halfExtensionXYZ[2]) {
+				radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[2] * halfExtensionXYZ[2]);
+				a.set(obb.getAxes()[1]);
+				a.scale(-(halfExtensionXYZ[1] - radius));
+				a.add(obb.getCenter());
+				b.set(obb.getAxes()[1]);
+				b.scale(+(halfExtensionXYZ[1] - radius));
+				b.add(obb.getCenter()); 
+			} else {
+				radius = (float)Math.sqrt(halfExtensionXYZ[0] * halfExtensionXYZ[0] + halfExtensionXYZ[1] * halfExtensionXYZ[1]);
+				a.set(obb.getAxes()[2]);
+				a.scale(-(halfExtensionXYZ[2] - radius));
+				a.add(obb.getCenter());
+				b.set(obb.getAxes()[2]);
+				b.scale(+(halfExtensionXYZ[2] - radius));
+				b.add(obb.getCenter()); 						
 			}
-	
-			// set up AABB bounding box
-			modelViewerScreenController.setupBoundingBox(i, aabb.getMin(), aabb.getMax());
-	
-			// set up oriented bounding box
-			modelViewerScreenController.setupOrientedBoundingBox(
-				i,
-				obb.getCenter(),
-				obb.getAxes()[0],
-				obb.getAxes()[1],
-				obb.getAxes()[2],
-				obb.getHalfExtension()
-			);
+
+			// setup capsule
+			modelViewerScreenController.setupCapsule(idx,a, b, radius);
 		}
 
-		// 
-		updateGUIElements();
+		// set up AABB bounding box
+		modelViewerScreenController.setupBoundingBox(idx, aabb.getMin(), aabb.getMax());
+
+		// set up oriented bounding box
+		modelViewerScreenController.setupOrientedBoundingBox(
+			idx,
+			obb.getCenter(),
+			obb.getAxes()[0],
+			obb.getAxes()[1],
+			obb.getAxes()[2],
+			obb.getHalfExtension()
+		);
+
+		//
+		modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.NONE);
+	}
+
+	/**
+	 * Set bounding volumes
+	 */
+	private void setBoundingVolumes() {
+		// set up default bounding volumes
+		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
+			resetBoundingVolume(i);
+		}
+
+		// set up existing bounding volumes
+		for (int i = 0; i < entity.getBoundingVolumeCount(); i++) {
+			LevelEditorEntityBoundingVolume bv = entity.getBoundingVolumeAt(i);
+			if (bv == null) {
+				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.NONE);
+				continue;
+			} else
+			if (bv.getBoundingVolume() instanceof Sphere) {
+				Sphere sphere = (Sphere)bv.getBoundingVolume();
+				modelViewerScreenController.setupSphere(i, sphere.getCenter(), sphere.getRadius());
+				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.SPHERE);
+			} else
+			if (bv.getBoundingVolume() instanceof Capsule) {
+				Capsule capsule = (Capsule)bv.getBoundingVolume();
+				modelViewerScreenController.setupCapsule(i, capsule.getA(), capsule.getB(), capsule.getRadius());
+				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.CAPSULE);
+			} else
+			if (bv.getBoundingVolume() instanceof BoundingBox) {
+				BoundingBox aabb = (BoundingBox)bv.getBoundingVolume(); 
+				modelViewerScreenController.setupBoundingBox(i, aabb.getMin(), aabb.getMax());
+				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.BOUNDINGBOX);
+			} else
+			if (bv.getBoundingVolume() instanceof OrientedBoundingBox) {
+				OrientedBoundingBox obb = (OrientedBoundingBox)bv.getBoundingVolume(); 
+				modelViewerScreenController.setupOrientedBoundingBox(
+					i, 
+					obb.getCenter(), 
+					obb.getAxes()[0], 
+					obb.getAxes()[1], 
+					obb.getAxes()[2], 
+					obb.getHalfExtension()
+				);
+				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
+			} else
+			if (bv.getBoundingVolume() instanceof ConvexMesh) { 
+				modelViewerScreenController.setupConvexMesh(i, bv.getModelMeshFile());
+				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.CONVEXMESH);
+			}
+			// enable bounding volume and set type in GUI
+			modelViewerScreenController.enableBoundingVolume(i);
+			modelViewerScreenController.setupModelBoundingVolumeType(i); 
+		}
+	}
+
+	/**
+	 * Unset bounding volumes
+	 */
+	private void unsetBoundingVolumes() {
+		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
+			modelViewerScreenController.disableBoundingVolume(i);
+		}
 	}
 
 	/**
@@ -299,9 +381,11 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			Entity ground = engine.getEntity("ground");
 			model.setDynamicShadowingEnabled(displayShadowing);
 			ground.setEnabled(displayGroundPlate);
-			Entity modelBoundingVolume = engine.getEntity("model_bv");
-			if (modelBoundingVolume != null) {
-				modelBoundingVolume.setEnabled(displayBoundingVolume);
+			for (int i = 0; i < MODEL_BOUNDINGVOLUME_IDS.length; i++) {
+				Entity modelBoundingVolume = engine.getEntity(MODEL_BOUNDINGVOLUME_IDS[i]);
+				if (modelBoundingVolume != null) {
+					modelBoundingVolume.setEnabled(displayBoundingVolume);
+				}
 			}
 		}
 
@@ -320,21 +404,13 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			modelViewerScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
 			modelViewerScreenController.setEntityData(entity.getName(), entity.getDescription());
 			modelViewerScreenController.setPivot(entity.getPivot());
-			for (int i = 0; i < entity.getBoundingVolumeCount(); i++) {
-				modelViewerScreenController.setBoundingVolume(i);
-				modelViewerScreenController.setupModelBoundingVolume(i);	
-			}
-			for (int i = entity.getBoundingVolumeCount(); i < 8; i++) {
-				modelViewerScreenController.unsetBoundingVolume(i);
-			}
+			setBoundingVolumes();
 		} else {
 			modelViewerScreenController.setScreenCaption("Model Viewer - no entity loaded");
 			modelViewerScreenController.unsetEntityProperties();
 			modelViewerScreenController.unsetEntityData();
 			modelViewerScreenController.unsetPivot();
-			for (int i = 0; i < 8; i++) {
-				modelViewerScreenController.unsetBoundingVolume(i);
-			}
+			unsetBoundingVolumes();
 		}
 	}
 
@@ -371,7 +447,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		}
 
 		// set up bounding volume types
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
 			modelViewerScreenController.setupBoundingVolumeTypes(
 				i,
 				new String[] {

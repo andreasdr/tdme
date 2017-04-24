@@ -381,28 +381,28 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * Unset bounding volume
+	 * Disable bounding volume
 	 */
-	public void unsetBoundingVolume(int idx) {
+	public void disableBoundingVolume(int idx) {
 		view.selectBoundingVolumeType(idx, 0);
 		boundingVolumeTypeDropDown[idx].getController().setDisabled(true);
 		boundingVolumeNoneApply[idx].getController().setDisabled(true);
 	}
 
 	/**
-	 * Set up bounding volume
+	 * Enable bounding volume
 	 * @param idx
 	 */
-	public void setBoundingVolume(int idx) {
+	public void enableBoundingVolume(int idx) {
 		boundingVolumeTypeDropDown[idx].getController().setDisabled(false);
 		boundingVolumeNoneApply[idx].getController().setDisabled(false);
 	}
 
 	/**
-	 * Set up model bounding volume
+	 * Set up model bounding volume type
 	 * @param idx
 	 */
-	public void setupModelBoundingVolume(int idx) {
+	public void setupModelBoundingVolumeType(int idx) {
 		// model
 		LevelEditorEntity model = view.getEntity();
 		if (model == null) {
@@ -670,11 +670,12 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	}
 
 	/**
-	 * On bounding volume sphere apply
+	 * On bounding volume none apply
 	 * @param idx
 	 */
 	public void onBoundingVolumeNoneApply(int idx) {
 		view.applyBoundingVolumeNone(idx);
+		view.resetBoundingVolume(idx);
 	}
 
 	/**
