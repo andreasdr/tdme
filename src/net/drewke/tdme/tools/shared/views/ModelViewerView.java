@@ -607,7 +607,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		LevelEditorEntityBoundingVolume entityBoundingVolume = entity.getBoundingVolumeAt(idx);
 
 		// remove old bv
-		String id = "model_bv." + idx;
+		String id = MODEL_BOUNDINGVOLUME_IDS[idx];
 		Entity modelBoundingVolumeObject = engine.getEntity(id);
 		if (modelBoundingVolumeObject != null) {
 			engine.removeEntity(id);
