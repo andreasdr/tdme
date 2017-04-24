@@ -165,6 +165,7 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 
 		// 
 		if (quitRequested == true) {
+			if (view != null) view.dispose(drawable);
 			animator.stop();
 			glWindow.setVisible(false);
 			System.exit(0);

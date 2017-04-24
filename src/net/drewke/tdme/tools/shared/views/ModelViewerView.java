@@ -1,6 +1,10 @@
 package net.drewke.tdme.tools.shared.views;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
@@ -415,9 +419,31 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
+	 * Store settings
+	 */
+	private void storeSettings() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("./settings/modelviewer.properties");
+			Properties settings = new Properties();
+			settings.put("display.boundingvolumes", displayBoundingVolume == true?"true":"false");
+			settings.put("display.groundplate", displayGroundPlate?"true":"false");
+			settings.put("display.shadowing", displayShadowing?"true":"false");
+			settings.store(fos, null);
+			fos.close();
+		} catch (IOException ioe) {
+			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
+	}
+
+	/**
 	 * Shutdown
 	 */
 	public void dispose(GLAutoDrawable drawable) {
+		// store settings
+		storeSettings();
+		// reset engine
 		Engine.getInstance().reset();
 	}
 
@@ -429,9 +455,33 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
+	 * Load settings
+	 */
+	private void loadSettings() {
+		// read settings
+		FileInputStream fis = null;
+		Object tmp;
+		try {
+			fis = new FileInputStream("./settings/modelviewer.properties");
+			Properties settings = new Properties();
+			settings.load(fis);
+			displayBoundingVolume = (tmp = settings.get("display.boundingvolumes")) != null?tmp.equals("true") == true:false;
+			displayGroundPlate = (tmp = settings.get("display.groundplate")) != null?tmp.equals("true") == true:false;
+			displayShadowing = (tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false;
+			fis.close();
+		} catch (IOException ioe) {
+			if (fis != null) try { fis.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
+	}
+
+	/**
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
+		// load settings
+		loadSettings();
+
 		// reset engine and partition
 		engine.reset();
 		engine.setPartition(new PartitionNone());
@@ -440,6 +490,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
 			modelViewerScreenController.init();
+			modelViewerScreenController.setupDisplay();
 			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode());
 			modelViewerScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {
