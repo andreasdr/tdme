@@ -325,7 +325,7 @@ public final class Tools {
 		engine.addEntity(groundObject);
 
 		// add bounding volume if we have any
-		for (int i = 0; i < model.getBoundingVolumeCount(); i++) { 
+		for (int i = 0; i < model.getBoundingVolumeCount(); i++) {
 			LevelEditorEntityBoundingVolume boundingVolume = model.getBoundingVolumeAt(i);
 			if (boundingVolume.getModel() == null) continue;
 			Object3D modelBoundingVolumeObject = new Object3D("model_bv." + i, boundingVolume.getModel());

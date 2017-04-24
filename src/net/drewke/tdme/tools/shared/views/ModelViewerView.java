@@ -368,13 +368,13 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		if (loadModelRequested == true) {
 			initModelRequested = true;
 			loadModelRequested = false;
-			engine.reset();
 			loadModel();
 			cameraRotationInputHandler.reset();
 		}
 
 		// init model
 		if (initModelRequested == true) {
+			engine.reset();
 			initModel(drawable);
 			initModelRequested = false;
 		}
