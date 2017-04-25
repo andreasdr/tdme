@@ -1,8 +1,12 @@
 package net.drewke.tdme.tools.leveleditor.views;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Properties;
 
 import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
@@ -31,7 +35,6 @@ import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent.Type;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
-import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
@@ -45,7 +48,6 @@ import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
@@ -762,16 +764,60 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
+	 * Store settings
+	 */
+	private void storeSettings() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("./settings/leveleditor.properties");
+			Properties settings = new Properties();
+			settings.put("grid.enabled", gridEnabled == true?"true":"false");
+			settings.put("grid.y", String.valueOf(gridY));
+			settings.store(fos, null);
+			fos.close();
+		} catch (Exception ioe) {
+			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
+	}
+
+	/**
 	 * Shutdown
 	 */
 	public void dispose(GLAutoDrawable drawable) {
+		// reset engine
 		Engine.getInstance().reset();
+		// store settings
+		storeSettings();
+	}
+
+	/**
+	 * Load settings
+	 */
+	private void loadSettings() {
+		// read settings
+		FileInputStream fis = null;
+		Object tmp;
+		try {
+			fis = new FileInputStream("./settings/leveleditor.properties");
+			Properties settings = new Properties();
+			settings.load(fis);
+			gridEnabled = (tmp = settings.get("grid.enabled")) != null?tmp.equals("true") == true:true;
+			gridY = (tmp = settings.get("grid.y")) != null?Float.parseFloat(tmp.toString()):0f;
+			fis.close();
+		} catch (Exception ioe) {
+			if (fis != null) try { fis.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
 	}
 
 	/**
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
+		// load settings
+		loadSettings();
+
 		// reset engine and partition
 		engine.reset();
 		engine.setPartition(new PartitionQuadTree());

@@ -431,7 +431,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			settings.put("display.shadowing", displayShadowing?"true":"false");
 			settings.store(fos, null);
 			fos.close();
-		} catch (IOException ioe) {
+		} catch (Exception ioe) {
 			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
 			ioe.printStackTrace();
 		}
@@ -469,7 +469,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			displayGroundPlate = (tmp = settings.get("display.groundplate")) != null?tmp.equals("true") == true:false;
 			displayShadowing = (tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false;
 			fis.close();
-		} catch (IOException ioe) {
+		} catch (Exception ioe) {
 			if (fis != null) try { fis.close(); } catch (IOException ioeInner) {}
 			ioe.printStackTrace();
 		}
