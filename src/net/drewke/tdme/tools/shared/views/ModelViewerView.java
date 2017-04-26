@@ -489,7 +489,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
 			modelViewerScreenController.init();
-			modelViewerScreenController.setupDisplay();
 			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode());
 			modelViewerScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {
@@ -498,6 +497,9 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 
 		// load settings
 		loadSettings();
+
+		// set up display
+		modelViewerScreenController.setupDisplay();
 
 		// set up bounding volume types
 		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
