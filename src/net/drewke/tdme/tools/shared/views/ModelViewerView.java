@@ -429,6 +429,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			settings.put("display.boundingvolumes", displayBoundingVolume == true?"true":"false");
 			settings.put("display.groundplate", displayGroundPlate?"true":"false");
 			settings.put("display.shadowing", displayShadowing?"true":"false");
+			settings.put("model.path", modelViewerScreenController.getModelPath());
 			settings.store(fos, null);
 			fos.close();
 		} catch (Exception ioe) {
@@ -467,7 +468,8 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			settings.load(fis);
 			displayBoundingVolume = (tmp = settings.get("display.boundingvolumes")) != null?tmp.equals("true") == true:false;
 			displayGroundPlate = (tmp = settings.get("display.groundplate")) != null?tmp.equals("true") == true:false;
-			displayShadowing = (tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false;
+			displayShadowing = (tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false; 
+			modelViewerScreenController.setModelPath((tmp = settings.get("model.path")) != null?tmp.toString():"");
 			fis.close();
 		} catch (Exception ioe) {
 			if (fis != null) try { fis.close(); } catch (IOException ioeInner) {}
@@ -479,9 +481,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 * Initialize
 	 */
 	public void init(GLAutoDrawable drawable) {
-		// load settings
-		loadSettings();
-
 		// reset engine and partition
 		engine.reset();
 		engine.setPartition(new PartitionNone());
@@ -496,6 +495,9 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		// load settings
+		loadSettings();
 
 		// set up bounding volume types
 		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {

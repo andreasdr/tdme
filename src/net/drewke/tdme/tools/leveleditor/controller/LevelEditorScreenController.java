@@ -98,12 +98,15 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private MutableString selectedObjects;
 	private ArrayList<String> selectedObjectList;
 
+	private String mapPath;
+
 	/**
 	 * Public constructor
 	 * @param view
 	 */
 	public LevelEditorScreenController(LevelEditorView view) {
 		this.view = view;
+		this.mapPath = ".";
 	}
 
 	/*
@@ -112,6 +115,21 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public GUIScreenNode getScreenNode() {
 		return screenNode;
+	}
+
+	/**
+	 * @return map path
+	 */
+	public String getMapPath() {
+		return mapPath;
+	}
+
+	/**
+	 * Set map path
+	 * @param map path
+	 */
+	public void setMapPath(String mapPath) {
+		this.mapPath = mapPath;
 	}
 
 	/*
@@ -823,6 +841,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onMapLoad() {
 		view.getPopUps().getFileDialogScreenController().show(
+			mapPath,
 			"Load from: ", 
 			new String[]{"tl", "dae"},
 			view.getFileName(),
@@ -832,6 +851,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 						view.getPopUps().getFileDialogScreenController().getPathName(),
 						view.getPopUps().getFileDialogScreenController().getFileName()
 					);
+					mapPath = view.getPopUps().getFileDialogScreenController().getPathName();
 					view.getPopUps().getFileDialogScreenController().close();
 				}
 				
@@ -844,6 +864,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onMapSave() {
 		view.getPopUps().getFileDialogScreenController().show(
+			mapPath,
 			"Save to: ", 
 			new String[]{"tl"},
 			view.getFileName(),
@@ -853,6 +874,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 						view.getPopUps().getFileDialogScreenController().getPathName(),
 						view.getPopUps().getFileDialogScreenController().getFileName()
 					);
+					mapPath = view.getPopUps().getFileDialogScreenController().getPathName();
 					view.getPopUps().getFileDialogScreenController().close();
 				}
 				

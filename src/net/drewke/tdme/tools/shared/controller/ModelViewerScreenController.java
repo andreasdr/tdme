@@ -73,6 +73,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	private MutableString value;
 
+	private String modelPath = ".";
+
 	/**
 	 * Public constructor
 	 * @param view
@@ -94,6 +96,21 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public GUIScreenNode getScreenNode() {
 		return screenNode;
+	}
+
+	/**
+	 * @return model path
+	 */
+	public String getModelPath() {
+		return modelPath;
+	}
+
+	/**
+	 * Set model path
+	 * @param model path
+	 */
+	public void setModelPath(String modelPath) {
+		this.modelPath = modelPath;
 	}
 
 	/*
@@ -314,6 +331,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onModelLoad() {
 		view.getPopUpsViews().getFileDialogScreenController().show(
+			modelPath,
 			"Load from: ", 
 			new String[]{"tmm", "dae", "tm"},
 			view.getFileName(),
@@ -323,6 +341,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 						view.getPopUpsViews().getFileDialogScreenController().getPathName(),
 						view.getPopUpsViews().getFileDialogScreenController().getFileName()
 					);
+					modelPath = view.getPopUpsViews().getFileDialogScreenController().getPathName();
 					view.getPopUpsViews().getFileDialogScreenController().close();
 				}
 				
@@ -339,6 +358,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			fileName+= ".tmm";
 		}
 		view.getPopUpsViews().getFileDialogScreenController().show(
+			modelPath,
 			"Save from: ", 
 			new String[]{"tmm"},
 			fileName,
@@ -349,6 +369,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 							view.getPopUpsViews().getFileDialogScreenController().getPathName(),
 							view.getPopUpsViews().getFileDialogScreenController().getFileName()
 						);
+						modelPath = view.getPopUpsViews().getFileDialogScreenController().getPathName();
 						view.getPopUpsViews().getFileDialogScreenController().close();
 					} catch (Exception ioe) {
 						showErrorPopUp("Warning", ioe.getMessage());

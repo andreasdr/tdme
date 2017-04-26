@@ -26,7 +26,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	private GUIScreenNode screenNode;
 
 	// curent working dir, extensions
-	private File cwd;
+	private String cwd;
 	private String[] extensions;
 	private String captionText;
 
@@ -47,7 +47,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 */
 	public FileDialogScreenController() {
 		try {
-			this.cwd = new File(".").getCanonicalFile();
+			this.cwd = new File(".").getCanonicalFile().toString();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
@@ -67,14 +67,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 * @return path name
 	 */
 	public String getPathName() {
-		try {
-			return cwd.getCanonicalPath().toString();
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-
-		//
-		return null;
+		return cwd;
 	}
 
 	/**
@@ -116,7 +109,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	private void setupFileDialogListBox() {
 		// set up caption
 		{
-			String directory = cwd.getAbsolutePath();
+			String directory = cwd;
 			if (directory.length() > 50) directory = "..." + directory.substring(directory.length() - 50 + 3);
 			caption.getText().set(captionText).append(directory);
 		}
@@ -124,7 +117,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		// list files
 		String[] fileList = new String[0];
 		try {
-			String directory = cwd.getAbsolutePath();
+			String directory = cwd;
 			fileList = FileSystem.getInstance().list(directory, new FilenameFilter() {
 				public boolean accept(File directory, String file) {
 					if (new File(directory, file).isDirectory() == true) return true;
@@ -169,7 +162,13 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 * @param apply action
 	 * @throws IOException 
 	 */
-	public void show(String captionText, String[] extensions, String fileName, Action applyAction) {
+	public void show(String cwd, String captionText, String[] extensions, String fileName, Action applyAction) {
+		try {
+			this.cwd = new File(".").getCanonicalPath().toString();
+			this.cwd = new File(cwd).getCanonicalPath().toString();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 		this.captionText = captionText;
 		this.extensions = extensions;
 		this.fileName.getController().setValue(value.set(fileName));
@@ -193,9 +192,10 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		if (node.getId().equals(files.getId()) == true) {
 			String selectedFile = node.getController().getValue().toString();
 			System.out.println(selectedFile);
+			System.out.println(cwd + ":" + selectedFile);
 			if (new File(cwd, selectedFile).isDirectory()) {
-				cwd = new File(cwd, selectedFile);
-				try { cwd = cwd.getCanonicalFile(); } catch (IOException ioe) {}
+				File file = new File(cwd, selectedFile);
+				try { cwd = file.getCanonicalFile().toString(); } catch (IOException ioe) {}
 				setupFileDialogListBox();
 			} else {
 				fileName.getController().setValue(

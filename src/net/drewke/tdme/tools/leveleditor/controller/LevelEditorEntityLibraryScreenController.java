@@ -39,11 +39,14 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 
 	private PopUps popUps;
 
+	private String modelPath;
+
 	/**
 	 * Public constructor
 	 */
 	public LevelEditorEntityLibraryScreenController(PopUps popUps) {
 		this.popUps = popUps;
+		this.modelPath = ".";
 		entityLibraryListBoxSelection = new MutableString();
 	}
 
@@ -53,6 +56,21 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 	 */
 	public GUIScreenNode getScreenNode() {
 		return screenNode;
+	}
+
+	/**
+	 * @return model path
+	 */
+	public String getModelPath() {
+		return modelPath;
+	}
+
+	/**
+	 * Set model path
+	 * @param model path
+	 */
+	public void setModelPath(String modelPath) {
+		this.modelPath = modelPath;
 	}
 
 	/*
@@ -275,6 +293,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 				final LevelEditorEntityLibrary entityLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
 				//
 				popUps.getFileDialogScreenController().show(
+						modelPath,
 						"Load from: ", 
 						new String[]{"tmm", "dae", "tm"},
 						popUps.getFileDialogScreenController().getFileName(),
@@ -297,6 +316,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 								} catch (Exception exception) {
 									popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
 								}
+								modelPath = popUps.getFileDialogScreenController().getPathName();
 								popUps.getFileDialogScreenController().close();
 							}
 						}
