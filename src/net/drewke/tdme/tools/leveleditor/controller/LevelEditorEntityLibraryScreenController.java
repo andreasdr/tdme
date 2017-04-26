@@ -89,6 +89,15 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 	}
 
 	/**
+	 * Select entity by entity id
+	 * @param entity id
+	 */
+	public void selectEntity(int entityId) {
+		entityLibraryListBoxSelection.set(entityId);
+		entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection);
+	}
+
+	/**
 	 * Set up complete entity library
 	 */
 	public void setEntityLibrary() {

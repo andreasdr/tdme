@@ -446,6 +446,12 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 							// select in objects listbox
 							levelEditorScreenController.selectObjectInObjectListbox(selectedObject.getId());
+
+							// select in entity library
+							LevelEditorObject levelEditorObject = level.getObjectById(selectedObject.getId());
+							if (levelEditorObject != null) {
+								TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().selectEntity(levelEditorObject.getEntity().getId());
+							}
 						} else {
 							// undo add
 							setStandardObjectColorEffect(selectedObject);
