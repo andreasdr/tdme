@@ -785,6 +785,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @param idx
 	 */
 	public void onBoundingVolumeConvexMeshFile(int idx) {
+		final int idxFinal = idx;
 		view.getPopUpsViews().getFileDialogScreenController().show(
 			modelPath,
 			"Load from: ", 
@@ -792,10 +793,10 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			view.getFileName(),
 			new Action() {
 				public void performAction() {
-					boundingvolumeConvexMeshFile[idx].getController().setValue(value.set(
+					boundingvolumeConvexMeshFile[idxFinal].getController().setValue(value.set(
 						view.getPopUpsViews().getFileDialogScreenController().getFileName())
 					);
-					onBoundingVolumeConvexMeshApply(idx);
+					onBoundingVolumeConvexMeshApply(idxFinal);
 					modelPath = view.getPopUpsViews().getFileDialogScreenController().getPathName();
 					view.getPopUpsViews().getFileDialogScreenController().close();
 				}
