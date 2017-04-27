@@ -481,9 +481,11 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		// construct XML for sub nodes
 		int bvIdx = 0;
 		String boundingVolumeTypeDropDownSubNodesXML = "";
+		boundingVolumeTypeDropDownSubNodesXML+= "<scrollarea-vertical width=\"100%\" height=\"80\">";
 		for (String bvType: boundingVolumeTypes) {
 			boundingVolumeTypeDropDownSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(bvType) + "\" value=\"" +  + (bvIdx++) + "\" />\n";
 		}
+		boundingVolumeTypeDropDownSubNodesXML+= "</scrollarea-vertical>";
 
 		// inject sub nodes
 		try {
