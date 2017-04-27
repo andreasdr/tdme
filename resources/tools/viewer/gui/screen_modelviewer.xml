@@ -233,9 +233,11 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_0" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_0" name="boundingvolume_convexmesh_file_0" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_0" name="boundingvolume_convexmesh_file_0" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_0" name="button_boundingvolume_convexmesh_file_0" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_0" name="button_boundingvolume_convexmesh_apply_0" text="Apply" width="auto" height="auto" />
@@ -341,9 +343,11 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_1" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_1" name="boundingvolume_convexmesh_file_1" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_1" name="boundingvolume_convexmesh_file_1" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_1" name="button_boundingvolume_convexmesh_file_1" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_1" name="button_boundingvolume_convexmesh_apply_1" text="Apply" width="auto" height="auto" />
@@ -449,9 +453,11 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_2" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_2" name="boundingvolume_convexmesh_file_2" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_2" name="boundingvolume_convexmesh_file_2" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_2" name="button_boundingvolume_convexmesh_file_2" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_2" name="button_boundingvolume_convexmesh_apply_2" text="Apply" width="auto" height="auto" />
@@ -557,9 +563,11 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_3" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_3" name="boundingvolume_convexmesh_file_3" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_3" name="boundingvolume_convexmesh_file_3" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_3" name="button_boundingvolume_convexmesh_file_3" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_3" name="button_boundingvolume_convexmesh_apply_3" text="Apply" width="auto" height="auto" />
@@ -665,13 +673,16 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_4" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_4" name="boundingvolume_convexmesh_file_4" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_4" name="boundingvolume_convexmesh_file_4" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_4" name="button_boundingvolume_convexmesh_file_4" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_4" name="button_boundingvolume_convexmesh_apply_4" text="Apply" width="auto" height="auto" />
 											</layout> 
+
 										</element>
 									</layout>
 								</tab-content>
@@ -773,13 +784,16 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_5" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_5" name="boundingvolume_convexmesh_file_5" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_5" name="boundingvolume_convexmesh_file_5" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_5" name="button_boundingvolume_convexmesh_file_5" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_5" name="button_boundingvolume_convexmesh_apply_5" text="Apply" width="auto" height="auto" />
 											</layout> 
+
 										</element>
 									</layout>
 								</tab-content>
@@ -881,9 +895,11 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_6" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_6" name="boundingvolume_convexmesh_file_6" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_6" name="boundingvolume_convexmesh_file_6" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_6" name="button_boundingvolume_convexmesh_file_6" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_6" name="button_boundingvolume_convexmesh_apply_6" text="Apply" width="auto" height="auto" />
@@ -989,9 +1005,11 @@
 											</layout> 
 											<layout show-on="convexmesh" id="boundingvolume_convexmesh_7" alignment="vertical" width="auto" height="auto" horizontal-align="center">
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Center" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="File" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_convexmesh_file_7" name="boundingvolume_convexmesh_file_7" width="455" height="auto" text="./model.tm" />
+													<input id="boundingvolume_convexmesh_file_7" name="boundingvolume_convexmesh_file_7" width="*" height="auto" text="./model.tm" />
+													<space width="10" />
+													<button id="button_boundingvolume_convexmesh_file_7" name="button_boundingvolume_convexmesh_file_7" text="Load" width="60" height="auto" />
 												</layout>
 												<space height="10" />
 												<button id="button_boundingvolume_convexmesh_apply_7" name="button_boundingvolume_convexmesh_apply_7" text="Apply" width="auto" height="auto" />

@@ -778,6 +778,29 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		);
 	}
 
+	/**
+	 * On bounding volume convex mesh file clicked
+	 * @param idx
+	 */
+	public void onBoundingVolumeConvexMeshFile(int idx) {
+		view.getPopUpsViews().getFileDialogScreenController().show(
+			modelPath,
+			"Load from: ", 
+			new String[]{"dae", "tm"},
+			view.getFileName(),
+			new Action() {
+				public void performAction() {
+					boundingvolumeConvexMeshFile[idx].getController().setValue(value.set(
+						view.getPopUpsViews().getFileDialogScreenController().getFileName())
+					);
+					onBoundingVolumeConvexMeshApply(idx);
+					modelPath = view.getPopUpsViews().getFileDialogScreenController().getPathName();
+					view.getPopUpsViews().getFileDialogScreenController().close();
+				}
+			}
+		);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.PopUpsController#saveFile(java.lang.String, java.lang.String)
@@ -853,6 +876,9 @@ public final class ModelViewerScreenController extends ScreenController implemen
 					} else
 					if (node.getId().startsWith("button_boundingvolume_convexmesh_apply_")) {
 						onBoundingVolumeConvexMeshApply(Tools.convertToIntSilent(node.getId().substring(node.getId().lastIndexOf('_') + 1)));
+					} 
+					if (node.getId().startsWith("button_boundingvolume_convexmesh_file_")) {
+						onBoundingVolumeConvexMeshFile(Tools.convertToIntSilent(node.getId().substring(node.getId().lastIndexOf('_') + 1)));
 					} else {
 						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
