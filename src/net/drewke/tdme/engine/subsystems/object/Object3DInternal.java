@@ -18,14 +18,14 @@ import net.drewke.tdme.math.MathTools;
  */
 public class Object3DInternal extends Object3DBase {
 
-	private String id;
-	private boolean enabled;
-	private boolean pickable;
-	private boolean dynamicShadowing;
+	protected String id;
+	protected boolean enabled;
+	protected boolean pickable;
+	protected boolean dynamicShadowing;
 	protected Color4 effectColorMul;
 	protected Color4 effectColorAdd;
-	private BoundingBox boundingBox;
-	private BoundingBox boundingBoxTransformed;
+	protected BoundingBox boundingBox;
+	protected BoundingBox boundingBoxTransformed;
 
 	/**
 	 * Public constructor

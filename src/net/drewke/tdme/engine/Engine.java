@@ -434,9 +434,11 @@ public final class Engine {
 		// unload old object
 		if (oldEntity != null) {
 			oldEntity.dispose();
-			partition.removeEntity(oldEntity);
+			if (oldEntity.isEnabled() == true) partition.removeEntity(oldEntity);
 		}
-		partition.addEntity(entity);
+
+		// add to partition if enabled
+		if (entity.isEnabled() == true) partition.addEntity(entity);
 	}
 
 	/**

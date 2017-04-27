@@ -18,30 +18,30 @@ import net.drewke.tdme.math.Vector3;
  */
 public class PointsParticleSystemEntityInternal extends Transformations implements ParticleSystemEntity {
 
-	private String id;
+	protected String id;
 	protected Engine engine;
-	private GLRenderer renderer;
-	private boolean enabled;
-	private boolean active;
-	private boolean doCollisionTests;
-	private ParticleEmitter emitter;
-	private Particle[] particles;
-	private int maxPoints;
-	private TransparentRenderPointsPool pointsRenderPool;
+	protected GLRenderer renderer;
+	protected boolean enabled;
+	protected boolean active;
+	protected boolean doCollisionTests;
+	protected ParticleEmitter emitter;
+	protected Particle[] particles;
+	protected int maxPoints;
+	protected TransparentRenderPointsPool pointsRenderPool;
 
-	private Vector3 velocityForTime;
+	protected Vector3 velocityForTime;
 	private Vector3 point;
 
 	protected BoundingBox boundingBox;
 	protected BoundingBox boundingBoxTransformed;
 	protected Transformations inverseTransformation;
 
-	private Color4 effectColorMul;
-	private Color4 effectColorAdd;
-	private boolean pickable;
+	protected Color4 effectColorMul;
+	protected Color4 effectColorAdd;
+	protected boolean pickable;
 
-	float[] bbMinXYZ = new float[3];
-	float[] bbMaxXYZ = new float[3];
+	protected float[] bbMinXYZ = new float[3];
+	protected float[] bbMaxXYZ = new float[3];
 
 	/**
 	 * Public constructor 

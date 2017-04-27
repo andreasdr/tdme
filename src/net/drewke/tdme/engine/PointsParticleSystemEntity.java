@@ -69,12 +69,18 @@ public final class PointsParticleSystemEntity extends PointsParticleSystemEntity
 	 * @see net.drewke.tdme.engine.subsystems.particlesystem.PointsParticleSystemEntityInternal#setEnabled(boolean)
 	 */
 	public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
+		// return if enable state has not changed
+		if (this.enabled == enabled) return;
+
+		// otherwise add or remove from partition
 		if (enabled == true) {
 			if (engine != null) engine.partition.addEntity(this);
 		} else {
 			if (engine != null) engine.partition.removeEntity(this);
 		}
+
+		// call parent class::setEnabled()
+		super.setEnabled(enabled);
 	}
 
 }
