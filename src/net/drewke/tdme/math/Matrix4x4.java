@@ -11,6 +11,7 @@ public final class Matrix4x4 {
 
 	protected float data[];
 	protected float _data[];
+	protected Vector3 tmpVector3;
 
 	/**
 	 * Public constructor
@@ -19,6 +20,7 @@ public final class Matrix4x4 {
 		data = new float[16];
 		Arrays.fill(data, 0.0f);
 		_data = new float[16];
+		tmpVector3 = new Vector3();
 	}
 
 	/**
@@ -29,6 +31,7 @@ public final class Matrix4x4 {
 		data = new float[16];
 		System.arraycopy(m, 0, data, 0, Math.min(m.length, data.length));
 		_data = new float[16];
+		tmpVector3 = new Vector3();
 	}
 
 	/**
@@ -39,6 +42,7 @@ public final class Matrix4x4 {
 		data = new float[16];
 		System.arraycopy(matrix.data, 0, data, 0, data.length);
 		_data = new float[16];
+		tmpVector3 = new Vector3();
 	}
 
 	/**
@@ -68,6 +72,7 @@ public final class Matrix4x4 {
 		//
 		data = new float[16];
 		_data = new float[16];
+		tmpVector3 = new Vector3();
 		set(
 			r0c0, r1c0, r2c0, r3c0,
 			r0c1, r1c1, r2c1, r3c1,
@@ -123,7 +128,7 @@ public final class Matrix4x4 {
 	/**
 	 * Sets up this matrix by matrix m
 	 * @param m
-	 * @return
+	 * @return this matrix
 	 */
 	public Matrix4x4 set(float[] m) {
 		System.arraycopy(m, 0, data, 0, Math.min(m.length, data.length));
@@ -137,6 +142,116 @@ public final class Matrix4x4 {
 	 */
 	public Matrix4x4 set(Matrix4x4 m) {
 		System.arraycopy(m.data, 0, data, 0, data.length);
+		return this;
+	}
+
+	/**
+	 * Get coordinate system axes
+	 * @param x axis
+	 * @param y axis
+	 * @param z axis
+	 * @return this matrix
+	 */
+	public Matrix4x4 getAxes(Vector3 xAxis, Vector3 yAxis, Vector3 zAxis) {
+		// extract coordinate axes
+		xAxis.set(data[0], data[1], data[2]);
+		yAxis.set(data[4], data[5], data[6]);
+		zAxis.set(data[8], data[9], data[10]);
+		return this;
+	}
+
+	/**
+	 * Set coordinate system axes
+	 * @param x axis
+	 * @param y axis
+	 * @param z axis
+	 * @return this matrix
+	 */
+	public Matrix4x4 setAxes(Vector3 xAxis, Vector3 yAxis, Vector3 zAxis) {
+		data[0] = xAxis.data[0];
+		data[1] = xAxis.data[1];
+		data[2] = xAxis.data[2];
+		data[3] = 0f;
+		data[4] = yAxis.data[0];
+		data[5] = yAxis.data[1];
+		data[6] = yAxis.data[2];
+		data[7] = 0f;
+		data[8] = zAxis.data[0];
+		data[9] = zAxis.data[1];
+		data[10] = zAxis.data[2];
+		data[11] = 0f;
+		return this;
+	}
+
+	/**
+	 * Get translation
+	 * @param translation
+	 * @return this matrix
+	 */
+	public Matrix4x4 getTranslation(Vector3 translation) {
+		translation.set(
+			data[12],
+			data[13],
+			data[14]
+		);
+		return this;
+	}
+
+	/**
+	 * Set translation
+	 * @param translation
+	 * @return this matrix
+	 */
+	public Matrix4x4 setTranslation(Vector3 translation) {
+		data[12] = translation.data[0];
+		data[13] = translation.data[1];
+		data[14] = translation.data[2];
+		return this;
+	}
+
+	/**
+	 * Get scale
+	 * @param scale
+	 * @return this matrix
+	 */
+	public Matrix4x4 getScale(Vector3 scale) {
+		tmpVector3.set(data[0], data[1], data[2]);
+		scale.data[0] = tmpVector3.computeLength();
+		tmpVector3.set(data[4], data[5], data[6]);
+		scale.data[1] = tmpVector3.computeLength();
+		tmpVector3.set(data[8], data[9], data[10]);
+		scale.data[2] = tmpVector3.computeLength();
+		return this;
+	}
+
+	/**
+	 * Get scale
+	 * @param scale
+	 * @return this matrix
+	 */
+	public Matrix4x4 setScale(Vector3 scale) {
+		// x axis
+		tmpVector3.set(data[0], data[1], data[2]);
+		tmpVector3.normalize();
+		tmpVector3.scale(scale.data[0]);
+		data[0] = tmpVector3.data[0];
+		data[1] = tmpVector3.data[1];
+		data[2] = tmpVector3.data[2];
+		// y axis
+		tmpVector3.set(data[4], data[5], data[6]);
+		tmpVector3.normalize();
+		tmpVector3.scale(scale.data[1]);
+		data[4] = tmpVector3.data[0];
+		data[5] = tmpVector3.data[1];
+		data[6] = tmpVector3.data[2];
+		// z axis
+		tmpVector3.set(data[8], data[9], data[10]);
+		tmpVector3.normalize();
+		tmpVector3.scale(scale.data[2]);
+		data[8] = tmpVector3.data[0];
+		data[9] = tmpVector3.data[1];
+		data[10] = tmpVector3.data[2];
+		// done
 		return this;
 	}
 

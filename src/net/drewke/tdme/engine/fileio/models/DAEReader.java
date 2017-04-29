@@ -293,6 +293,9 @@ public final class DAEReader {
 					Vector3 translation = new Vector3();
 					Vector3 scale = new Vector3();
 					Vector3 rotation = new Vector3();
+					Vector3 xAxis = new Vector3();
+					Vector3 yAxis = new Vector3();
+					Vector3 zAxis = new Vector3();
 
 					// set up local transformations matrix
 					Matrix4x4 nodeTransformationsMatrix = null;
@@ -319,36 +322,10 @@ public final class DAEReader {
 						throw new ModelFileIOException("missing node transformations matrix for node " + xmlNode.getAttribute("id"));
 					}
 
-					// extract coordinate axes
-					Vector3 xAxis = new Vector3(
-						nodeTransformationsMatrix.getArray()[0],
-						nodeTransformationsMatrix.getArray()[1],
-						nodeTransformationsMatrix.getArray()[2]
-					);
-					Vector3 yAxis = new Vector3(
-						nodeTransformationsMatrix.getArray()[4],
-						nodeTransformationsMatrix.getArray()[5],
-						nodeTransformationsMatrix.getArray()[6]
-					);
-					Vector3 zAxis = new Vector3(
-						nodeTransformationsMatrix.getArray()[8],
-						nodeTransformationsMatrix.getArray()[9],
-						nodeTransformationsMatrix.getArray()[10]
-					);
-
-					// translation
-					translation.set(
-						nodeTransformationsMatrix.getArray()[12],
-						nodeTransformationsMatrix.getArray()[13],
-						nodeTransformationsMatrix.getArray()[14]
-					);
-
-					// scale
-					scale.set(
-						xAxis.computeLength(),
-						yAxis.computeLength(),
-						zAxis.computeLength()
-					);
+					// extract coordinate system axes
+					nodeTransformationsMatrix.getAxes(xAxis, yAxis, zAxis);
+					nodeTransformationsMatrix.getTranslation(translation);
+					nodeTransformationsMatrix.getScale(scale);
 
 					// normalize coordinate axes
 					xAxis.normalize();
@@ -356,37 +333,19 @@ public final class DAEReader {
 					zAxis.normalize();
 
 					// write back normalized x axis
-					nodeTransformationsMatrix.getArray()[0] = xAxis.getX();
-					nodeTransformationsMatrix.getArray()[1] = xAxis.getY();
-					nodeTransformationsMatrix.getArray()[2] = xAxis.getZ();
-
-					// write back normalized y axis
-					nodeTransformationsMatrix.getArray()[4] = yAxis.getX();
-					nodeTransformationsMatrix.getArray()[5] = yAxis.getY();
-					nodeTransformationsMatrix.getArray()[6] = yAxis.getZ();
-
-					// write back normalized z axis
-					nodeTransformationsMatrix.getArray()[8] = zAxis.getX();
-					nodeTransformationsMatrix.getArray()[9] = zAxis.getY();
-					nodeTransformationsMatrix.getArray()[10] = zAxis.getZ();
+					nodeTransformationsMatrix.setAxes(xAxis, yAxis, zAxis);
 
 					// check if negative scale and rotation
+					// TODO: move me into Matrix4x4 decomposing code?
 					if ((upVector == UpVector.Y_UP && Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, yAxis), zAxis) < 0.0f) ||
 						(upVector == UpVector.Z_UP && Vector3.computeDotProduct(Vector3.computeCrossProduct(xAxis, zAxis), yAxis) < 0.0f)) {
-						// x axis
-						nodeTransformationsMatrix.getArray()[0]*= -1f;
-						nodeTransformationsMatrix.getArray()[1]*= -1f;
-						nodeTransformationsMatrix.getArray()[2]*= -1f;
+						// negate axes
+						xAxis.scale(-1f);
+						yAxis.scale(-1f);
+						zAxis.scale(-1f);
 
-						// y axis
-						nodeTransformationsMatrix.getArray()[4]*= -1f;
-						nodeTransformationsMatrix.getArray()[5]*= -1f;
-						nodeTransformationsMatrix.getArray()[6]*= -1f;
-
-						// z axis
-						nodeTransformationsMatrix.getArray()[8]*= -1f;
-						nodeTransformationsMatrix.getArray()[9]*= -1f;
-						nodeTransformationsMatrix.getArray()[10]*= -1f;
+						// and write back to node transformation matrices
+						nodeTransformationsMatrix.setAxes(xAxis, yAxis, zAxis);
 
 						// scale
 						scale.scale(-1f);
