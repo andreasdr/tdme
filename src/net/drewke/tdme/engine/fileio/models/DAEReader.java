@@ -393,7 +393,7 @@ public final class DAEReader {
 					}
 
 					// determine rotation
-					computeEulerAngles(nodeTransformationsMatrix, rotation, 0, 1, 2, false);
+					nodeTransformationsMatrix.computeEulerAngles(rotation);
 
 					// apply model import matrix
 					modelImportRotationMatrix.multiply(scale, scale);
@@ -597,53 +597,6 @@ public final class DAEReader {
 				}
 			}
 		}
-	}
-
-	/**
-	 * Compute Euler angles (rotation around x, y, z axes)
-	 * @see https://github.com/erich666/GraphicsGems/tree/master/gemsiv/euler_angle
-	 * 
-	 * 		This code repository predates the concept of Open Source, and predates most licenses along such lines. 
-	 * 		As such, the official license truly is:
-	 * 
-	 * 		EULA: The Graphics Gems code is copyright-protected. 
-	 * 		In other words, you cannot claim the text of the code as your own and resell it. 
-	 * 		Using the code is permitted in any program, product, or library, non-commercial or commercial. 
-	 * 		Giving credit is not required, though is a nice gesture. 
-	 * 		The code comes as-is, and if there are any flaws or problems with any Gems code, 
-	 * 		nobody involved with Gems - authors, editors, publishers, or webmasters - are to be held responsible. 
-	 * 		Basically, don't be a jerk, and remember that anything free comes with no guarantee.
-	 * 
-	 * @param matrix
-	 * @param euler
-	 * @param axis 0
-	 * @param axis 1
-	 * @param axis 2
-	 * @param axis invert
-	 */
-	public static void computeEulerAngles(Matrix4x4 matrix, Vector3 euler, int axis0, int axis1, int axis2, boolean invert) {
-		float[] data = matrix.getArray();
-		float[] eulerXYZ = euler.getArray();
-
-		// compute euler angles in radians
-		float cy = (float)Math.sqrt(data[axis0 + 4 * axis0] * data[axis0 + 4 * axis0] + data[axis1 + 4 * axis0] * data[axis1 + 4 * axis0]);
-		if (cy > 16f * MathTools.EPSILON) {
-			eulerXYZ[0] = (float)(Math.atan2(data[axis2 + 4 * axis1], data[axis2 + 4 * axis2]));
-			eulerXYZ[1] = (float)(Math.atan2(-data[axis2 + 4 * axis0], cy));
-			eulerXYZ[2] = (float)(Math.atan2(data[axis1 + 4 * axis0], data[axis0 + 4 * axis0]));
-		} else {
-			eulerXYZ[0] = (float)(Math.atan2(-data[axis1 + 4 * axis2], data[axis1 + 4 * axis1]));
-			eulerXYZ[1] = (float)(Math.atan2(-data[axis2 + 4 * axis0], cy));
-			eulerXYZ[2] = 0f;
-		}
-
-		// invert
-		if (invert == true) {
-			euler.scale(-1f);
-		}
-
-	    // convert to degrees
-	    euler.scale((float)(180d / Math.PI));
 	}
 
 	/**
