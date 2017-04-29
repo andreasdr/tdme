@@ -25,6 +25,8 @@ public final class ShadowMapping {
 	protected GLRenderer renderer;
 	protected Object3DVBORenderer object3DVBORenderer;
 	
+	protected float lightEyeDistanceScale;
+
 	private Matrix4x4 shadowTransformationsMatrix;
 	private Matrix4x4 depthBiasMVPMatrix;
 	private Matrix4x4 tmpMatrix;
@@ -56,6 +58,7 @@ public final class ShadowMapping {
 		this.engine = engine;
 		this.renderer = renderer;
 		this.object3DVBORenderer = object3DVBORenderer;
+		this.lightEyeDistanceScale = 4f;
 		shadowMaps = new ShadowMap[engine.getLights().length];
 		for (int i = 0; i < shadowMaps.length; i++) {
 			shadowMaps[i] = null;
@@ -77,6 +80,21 @@ public final class ShadowMapping {
 	 */
 	public Engine getEngine() {
 		return engine;
+	}
+
+	/**
+	 * @return light eye distance scale
+	 */
+	public float getLightEyeDistanceScale() {
+		return lightEyeDistanceScale;
+	}
+
+	/**
+	 * Set light eye distance scale
+	 * @param light eye distance scale
+	 */
+	public void setLightEyeDistanceScale(float lightEyeDistanceScale) {
+		this.lightEyeDistanceScale = lightEyeDistanceScale;
 	}
 
 	/**

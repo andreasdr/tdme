@@ -19,7 +19,7 @@ import net.drewke.tdme.math.Vector3;
  */
 public final class ShadowMap {
 
-	protected final static int TEXTUREUNIT = 4;
+	protected final static int TEXTUREUNIT = 4; 
 
 	private ArrayList<Object3D> visibleObjects;
 	private ShadowMapping shadowMapping;
@@ -131,15 +131,15 @@ public final class ShadowMap {
 
 		// viewers camera
 		Camera camera = shadowMapping.engine.getCamera();
-		float lookLength = lightDirection.set(camera.getLookAt()).sub(camera.getLookFrom()).computeLength() * 4.0f;
+		float lightEyeDistance = lightDirection.set(camera.getLookAt()).sub(camera.getLookFrom()).computeLength() * shadowMapping.lightEyeDistanceScale;
 
 		// compute camera from view of light 
 		lightDirection.set(light.getSpotDirection()).normalize();
 		lightLookAt.set(camera.getLookAt());
-		lightLookFrom.set(lightLookAt).sub(lightDirection.scale(lookLength)); 
+		lightLookFrom.set(lightLookAt).sub(lightDirection.scale(lightEyeDistance)); 
 
 		// determine light camera z far
-		float lightCameraZFar = lookLength * 2.0f;
+		float lightCameraZFar = lightEyeDistance * 2.0f;
 		if (camera.getZFar() > lightCameraZFar) lightCameraZFar = camera.getZFar(); 
 
 		// set up light camera from view of light
