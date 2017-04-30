@@ -2,6 +2,11 @@ package net.drewke.tdme.gui.effects;
 
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 
+/**
+ * GUI position effect
+ * @author Andreas Drewke
+ * @version $Id$
+ */
 public class GUIPositionEffect extends GUIEffect {
 
 	private float positionXStart = 0f;
