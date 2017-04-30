@@ -1,5 +1,7 @@
 package net.drewke.tdme.tools.shared.controller;
 
+import net.drewke.tdme.engine.Rotation;
+import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.Capsule;
@@ -14,6 +16,8 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
@@ -66,9 +70,9 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private GUIElementNode[] boundingvolumeBoundingBoxMax;
 	private GUIElementNode[] boundingvolumeObbCenter;
 	private GUIElementNode[] boundingvolumeObbHalfextension;
-	private GUIElementNode[] boundingvolumeObbAxis0;
-	private GUIElementNode[] boundingvolumeObbAxis1;
-	private GUIElementNode[] boundingvolumeObbAxis2;
+	private GUIElementNode[] boundingvolumeObbRotationX;
+	private GUIElementNode[] boundingvolumeObbRotationY;
+	private GUIElementNode[] boundingvolumeObbRotationZ;
 	private GUIElementNode[] boundingvolumeConvexMeshFile;
 
 	private MutableString value;
@@ -148,9 +152,9 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			boundingvolumeObbCenter = new GUIElementNode[8];
 			boundingvolumeObbCenter = new GUIElementNode[8];
 			boundingvolumeObbHalfextension = new GUIElementNode[8];
-			boundingvolumeObbAxis0 = new GUIElementNode[8];
-			boundingvolumeObbAxis1 = new GUIElementNode[8];
-			boundingvolumeObbAxis2 = new GUIElementNode[8];
+			boundingvolumeObbRotationX = new GUIElementNode[8];
+			boundingvolumeObbRotationY = new GUIElementNode[8];
+			boundingvolumeObbRotationZ = new GUIElementNode[8];
 			boundingvolumeConvexMeshFile = new GUIElementNode[8];
 			for (int i = 0; i < 8; i++) {
 				boundingVolumeTypeDropDown[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_type_" + i);
@@ -166,9 +170,9 @@ public final class ModelViewerScreenController extends ScreenController implemen
 				boundingvolumeObbCenter[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_center_" + i);
 				boundingvolumeObbCenter[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_center_" + i);
 				boundingvolumeObbHalfextension[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_halfextension_" + i);
-				boundingvolumeObbAxis0[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_axis0_" + i);
-				boundingvolumeObbAxis1[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_axis1_" + i);
-				boundingvolumeObbAxis2[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_axis2_" + i);
+				boundingvolumeObbRotationX[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_rotation_x_" + i);
+				boundingvolumeObbRotationY[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_rotation_y_" + i);
+				boundingvolumeObbRotationZ[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_obb_rotation_z_" + i);
 				boundingvolumeConvexMeshFile[i] = (GUIElementNode)screenNode.getNodeById("boundingvolume_convexmesh_file_" + i);
 			}
 			statsOpaqueFaces = (GUIElementNode)screenNode.getNodeById("stats_opaque_faces");
@@ -621,6 +625,13 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @param half extension
 	 */
 	public void setupOrientedBoundingBox(int idx, Vector3 center, Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 halfExtension) {
+		// set up rotation maxtrix
+		Vector3 rotation = new Vector3();
+		Matrix4x4 rotationMatrix = new Matrix4x4().identity();
+		rotationMatrix.setAxes(axis0, axis1, axis2);
+		rotationMatrix.computeEulerAngles(rotation);
+
+		// set up obb in screen
 		selectBoundingVolume(idx, BoundingVolumeType.ORIENTEDBOUNDINGBOX);
 		boundingvolumeObbCenter[idx].getController().setValue(
 			value.reset().
@@ -638,29 +649,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			append(", "). 
 			append(Tools.formatFloat(halfExtension.getZ()))
 		);
-		boundingvolumeObbAxis0[idx].getController().setValue(
-			value.reset().
-			append(Tools.formatFloat(axis0.getX())).
-			append(", ").
-			append(Tools.formatFloat(axis0.getY())).
-			append(", " ).
-			append(Tools.formatFloat(axis0.getZ()))
+		boundingvolumeObbRotationX[idx].getController().setValue(
+			value.set(Tools.formatFloat(rotation.getX()))
 		);
-		boundingvolumeObbAxis1[idx].getController().setValue(
-			value.reset().
-			append(Tools.formatFloat(axis1.getX())).
-			append(", ").
-			append(Tools.formatFloat(axis1.getY())).
-			append(", ").
-			append(Tools.formatFloat(axis1.getZ()))
+		boundingvolumeObbRotationY[idx].getController().setValue(
+			value.set(Tools.formatFloat(rotation.getY()))
 		);
-		boundingvolumeObbAxis2[idx].getController().setValue(
-			value.reset().
-			append(Tools.formatFloat(axis2.getX())).
-			append(", ").
-			append(Tools.formatFloat(axis2.getY())).
-			append(", ").
-			append(Tools.formatFloat(axis2.getZ()))
+		boundingvolumeObbRotationZ[idx].getController().setValue(
+			value.set(Tools.formatFloat(rotation.getZ()))
 		);
 	}
 
@@ -756,12 +752,26 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onBoundingVolumeObbApply(int idx) {
 		try {
+			// rotation axes by rotation angle for x,y,z
+			Transformations rotations = new Transformations();
+			rotations.getRotations().add(new Rotation(Tools.convertToFloat(boundingvolumeObbRotationZ[idx].getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Z));
+			rotations.getRotations().add(new Rotation(Tools.convertToFloat(boundingvolumeObbRotationY[idx].getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Y));
+			rotations.getRotations().add(new Rotation(Tools.convertToFloat(boundingvolumeObbRotationX[idx].getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_X));
+			rotations.update();
+
+			// extract axes from matrix
+			Vector3 xAxis = new Vector3();
+			Vector3 yAxis = new Vector3();
+			Vector3 zAxis = new Vector3();
+			rotations.getTransformationsMatrix().getAxes(xAxis, yAxis, zAxis);
+
+			// delegate to view
 			view.applyBoundingVolumeObb(
 				idx,
 				Tools.convertToVector3(boundingvolumeObbCenter[idx].getController().getValue().toString()),
-				Tools.convertToVector3(boundingvolumeObbAxis0[idx].getController().getValue().toString()),
-				Tools.convertToVector3(boundingvolumeObbAxis1[idx].getController().getValue().toString()),
-				Tools.convertToVector3(boundingvolumeObbAxis2[idx].getController().getValue().toString()),
+				xAxis,
+				yAxis,
+				zAxis,
 				Tools.convertToVector3(boundingvolumeObbHalfextension[idx].getController().getValue().toString())
 			);
 		} catch (NumberFormatException nfe) {

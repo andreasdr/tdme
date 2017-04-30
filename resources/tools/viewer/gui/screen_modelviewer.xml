@@ -214,19 +214,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_0" name="boundingvolume_obb_axis0_0" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_0" name="boundingvolume_obb_rotation_x_0" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_0" name="boundingvolume_obb_axis1_0" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_0" name="boundingvolume_obb_rotation_y_0" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_0" name="boundingvolume_obb_axis2_0" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_0" name="boundingvolume_obb_rotation_z_0" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_0" name="button_boundingvolume_obb_apply_0" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -324,19 +324,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_1" name="boundingvolume_obb_axis0_1" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_1" name="boundingvolume_obb_rotation_x_1" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_1" name="boundingvolume_obb_axis1_1" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_1" name="boundingvolume_obb_rotation_y_1" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_1" name="boundingvolume_obb_axis2_1" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_1" name="boundingvolume_obb_rotation_z_1" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_1" name="button_boundingvolume_obb_apply_1" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -434,19 +434,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_2" name="boundingvolume_obb_axis0_2" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_2" name="boundingvolume_obb_rotation_x_2" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_2" name="boundingvolume_obb_axis1_2" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_2" name="boundingvolume_obb_rotation_y_2" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_2" name="boundingvolume_obb_axis2_2" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_2" name="boundingvolume_obb_rotation_z_2" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_2" name="button_boundingvolume_obb_apply_2" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -544,19 +544,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_3" name="boundingvolume_obb_axis0_3" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_3" name="boundingvolume_obb_rotation_x_3" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_3" name="boundingvolume_obb_axis1_3" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_3" name="boundingvolume_obb_rotation_y_3" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_3" name="boundingvolume_obb_axis2_3" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_3" name="boundingvolume_obb_rotation_z_3" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_3" name="button_boundingvolume_obb_apply_3" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -654,19 +654,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_4" name="boundingvolume_obb_axis0_4" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_4" name="boundingvolume_obb_rotation_x_4" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_4" name="boundingvolume_obb_axis1_4" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_4" name="boundingvolume_obb_rotation_y_4" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_4" name="boundingvolume_obb_axis2_4" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_4" name="boundingvolume_obb_rotation_z_4" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_4" name="button_boundingvolume_obb_apply_4" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -765,19 +765,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_5" name="boundingvolume_obb_axis0_5" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_5" name="boundingvolume_obb_rotation_x_5" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_5" name="boundingvolume_obb_axis1_5" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_5" name="boundingvolume_obb_rotation_y_5" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_5" name="boundingvolume_obb_axis2_5" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_5" name="boundingvolume_obb_rotation_z_5" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_5" name="button_boundingvolume_obb_apply_5" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -876,19 +876,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_6" name="boundingvolume_obb_axis0_6" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_6" name="boundingvolume_obb_rotation_x_6" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_6" name="boundingvolume_obb_axis1_6" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_6" name="boundingvolume_obb_rotation_y_6" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_6" name="boundingvolume_obb_axis2_6" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_6" name="boundingvolume_obb_rotation_z_6" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_6" name="button_boundingvolume_obb_apply_6" text="Apply" width="auto" height="auto" />
 												</layout>
@@ -986,19 +986,19 @@
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="X Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis0_7" name="boundingvolume_obb_axis0_7" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_x_7" name="boundingvolume_obb_rotation_x_7" width="150" height="auto" text="0.0" />
 													<space width="*" />
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Y Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis1_7" name="boundingvolume_obb_axis1_7" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_y_7" name="boundingvolume_obb_rotation_y_7" width="150" height="auto" text="0.0" />
 												</layout>
 												<space height="5" />
 												<layout width="600" height="auto" alignment="horizontal" vertical-align="center">
-													<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="140" height="auto" horizontal-align="left" />
+													<text font="resources/gui/fonts/Foo_20.fnt" text="Z Rotation" width="140" height="auto" horizontal-align="left" />
 													<space width="5" />
-													<input id="boundingvolume_obb_axis2_7" name="boundingvolume_obb_axis2_7" width="150" height="auto" text="0.0, 0.0, 0.0" />
+													<input id="boundingvolume_obb_rotation_z_7" name="boundingvolume_obb_rotation_z_7" width="150" height="auto" text="0.0" />
 													<space width="*" />
 													<button id="button_boundingvolume_obb_apply_7" name="button_boundingvolume_obb_apply_7" text="Apply" width="auto" height="auto" />
 												</layout>

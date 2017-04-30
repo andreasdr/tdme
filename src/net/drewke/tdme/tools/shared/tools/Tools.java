@@ -113,6 +113,15 @@ public final class Tools {
 	 * @param text
 	 * @return int
 	 */
+	public static int convertToInt(String text) throws NumberFormatException {
+		return Integer.parseInt(text);
+	}
+
+	/**
+	 * Convert string to int
+	 * @param text
+	 * @return int
+	 */
 	public static int convertToIntSilent(String text) {
 		try {
 			return Integer.parseInt(text);
