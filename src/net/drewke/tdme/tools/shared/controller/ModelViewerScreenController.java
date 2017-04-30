@@ -357,10 +357,21 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * On model save
 	 */
 	public void onModelSave() {
-		String fileName = view.getFileName();
-		if (fileName.toLowerCase().endsWith(".tmm") == false) {
-			fileName+= ".tmm";
+		// try to use entity file name
+		String fileName = view.getEntity().getEntityFileName();
+		// do we have a entity name?
+		if (fileName == null) {
+			// nope, take file model filename
+			fileName = view.getFileName();
+			// and add .tmm
+			if (fileName.toLowerCase().endsWith(".tmm") == false) {
+				fileName+= ".tmm";
+			}
 		}
+		// we only want the file name and not path
+		fileName = Tools.getFileName(fileName);
+
+		//
 		view.getPopUpsViews().getFileDialogScreenController().show(
 			modelPath,
 			"Save from: ", 

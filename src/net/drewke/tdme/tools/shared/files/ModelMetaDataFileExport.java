@@ -72,8 +72,11 @@ public final class ModelMetaDataFileExport {
 			// generate json
 			JSONObject jRoot = new JSONObject();
 
-			// convert to tm
-			TMWriter.write(entity.getModel(), Tools.getPath(entity.getFileName()), Tools.getFileName(entity.getFileName()) + ".tm");
+			// re-convert to tm
+			TMWriter.write(
+				entity.getModel(), 
+				Tools.getPath(entity.getFileName()), Tools.getFileName(entity.getFileName()) + (entity.getFileName().endsWith(".tm") == false?".tm":"")
+			);
 
 			// general data
 			jRoot.put("version", "0.11");
