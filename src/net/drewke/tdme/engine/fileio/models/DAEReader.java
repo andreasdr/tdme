@@ -418,7 +418,7 @@ public final class DAEReader {
 
 							//
 							ModelMetaDataFileExport.export(
-								pathName + "/" + fileName + "-models" + "/" + modelName + ".tmm", 
+								pathName + "/" + fileName + "-models" + "/" + modelName + ".tm.tmm", 
 								levelEditorEntity
 							);
 						}
