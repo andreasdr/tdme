@@ -206,16 +206,16 @@ public final class LevelEditorEntity extends Properties {
 		return pivot;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.model.Properties#toString()
+	 */
 	public String toString() {
 		return "LevelEditorEntity [id=" + id + ", type=" + type + ", name="
-				+ name + ", description=" + description + ", fileName="
-				+ fileName + ", thumbnail=" + thumbnail // + ", model=" + model
-				// + ", boundingModelMeshFile=" + boundingModelMeshFile
-				// + ", modelBoundingVolume=" + modelBoundingVolume
-				+ ", boundingVolumes=" + boundingVolumes + ", pivot=" + pivot + "]";
+				+ name + ", description=" + description + ", entityFileName="
+				+ entityFileName + ", fileName=" + fileName + ", thumbnail="
+				+ thumbnail + ", model=" + model + ", boundingVolumes="
+				+ boundingVolumes + ", pivot=" + pivot + "]";
 	}
-
-	
 	
 }

@@ -155,7 +155,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		if (entity == null) return;
 
 		//
-		modelFile = new File(entity.getFileName());
+		modelFile = new File(entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
 
 		// set up model in engine
 		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
@@ -333,7 +333,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		ModelMetaDataFileExport.export(new File(pathName, fileName).getCanonicalPath(), entity);
 	}
 
-
 	/**
 	 * Issue file reloading
 	 */
@@ -403,7 +402,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 */
 	public void updateGUIElements() {
 		if (entity != null) {
-			modelViewerScreenController.setScreenCaption("Model Viewer - " + entity.getName());
+			modelViewerScreenController.setScreenCaption("Model Viewer - " + (entity.getEntityFileName() != null?Tools.getFileName(entity.getEntityFileName()):Tools.getFileName(entity.getFileName())));
 			PropertyModelClass preset = entity.getProperty("preset");
 			modelViewerScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
 			modelViewerScreenController.setEntityData(entity.getName(), entity.getDescription());
