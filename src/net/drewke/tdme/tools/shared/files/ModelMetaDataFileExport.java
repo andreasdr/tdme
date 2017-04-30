@@ -73,9 +73,12 @@ public final class ModelMetaDataFileExport {
 			JSONObject jRoot = new JSONObject();
 
 			// re-convert to tm
+			String modelPathName = Tools.getPath(entity.getFileName());
+			String modelFileName = Tools.getFileName(entity.getFileName()) + (entity.getFileName().endsWith(".tm") == false?".tm":"");
 			TMWriter.write(
-				entity.getModel(), 
-				Tools.getPath(entity.getFileName()), Tools.getFileName(entity.getFileName()) + (entity.getFileName().endsWith(".tm") == false?".tm":"")
+				entity.getModel(),
+				modelPathName,
+				modelFileName
 			);
 
 			// general data
@@ -86,11 +89,11 @@ public final class ModelMetaDataFileExport {
 			jRoot.put("px", entity.getPivot().getX());
 			jRoot.put("py", entity.getPivot().getY());
 			jRoot.put("pz", entity.getPivot().getZ());
-			jRoot.put("file", entity.getFileName() + ".tm");
+			jRoot.put("file", modelPathName + "/" + modelFileName);
 
 			// try to copy thumbnail
 			try {
-				String thumbnail = Tools.getFileName(entity.getFileName()) + ".png";
+				String thumbnail = modelFileName + ".png";
 				jRoot.put("thumbnail", thumbnail);
 				copyFile(new File("./tmp", entity.getThumbnail()), new File(Tools.getPath(fileName), thumbnail));
 			} catch (IOException ioe) {
