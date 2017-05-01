@@ -11,7 +11,7 @@
 					<tab id="tab_properties_model" text="Model" />
 					<tab id="tab_properties_model_properties" text="Properties" />
 					<tab id="tab_properties_pivot" text="Pivot" />
-					<tab id="tab_properties_boundingvolume" text="Bounding Volume" />
+					<tab id="tab_properties_boundingvolume" text="Bounding Volumes" />
 					<tab id="tab_properties_stats" text="Statistics" />
 				</tabs-header>
 				<tabs-content>
