@@ -56,6 +56,8 @@ public class EntityBoundingVolumeSubScreenController {
 
 	/**
 	 * Public constructor
+	 * @param pop ups
+	 * @param model viewer screen controller
 	 */
 	public EntityBoundingVolumeSubScreenController(PopUps popUps, ModelViewerScreenController modelViewerScreenController) {
 		this.modelViewerScreenController = modelViewerScreenController;
