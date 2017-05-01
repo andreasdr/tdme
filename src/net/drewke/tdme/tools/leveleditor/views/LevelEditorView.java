@@ -779,7 +779,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			Properties settings = new Properties();
 			settings.put("grid.enabled", gridEnabled == true?"true":"false");
 			settings.put("grid.y", String.valueOf(gridY));
-			settings.put("map.path", levelEditorScreenController.getMapPath());
+			settings.put("map.path", levelEditorScreenController.getMapPath().getPath());
 			settings.put("model.path", TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getModelPath());
 			settings.store(fos, null);
 			fos.close();

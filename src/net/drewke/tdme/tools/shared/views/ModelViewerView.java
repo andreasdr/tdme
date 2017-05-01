@@ -218,7 +218,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			settings.put("display.boundingvolumes", entityDisplayView.isDisplayBoundingVolume() == true?"true":"false");
 			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
 			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
-			settings.put("model.path", modelViewerScreenController.getModelPath());
+			settings.put("model.path", modelViewerScreenController.getModelPath().getPath());
 			settings.store(fos, null);
 			fos.close();
 		} catch (Exception ioe) {
