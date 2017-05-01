@@ -1,4 +1,4 @@
-<screen id="modelviewer" background-color="#00000000">
+<screen id="particlesystem" background-color="#00000000">
 	<layout alignment="vertical" width="100%" height="100%">
 		<panel alignment="none" width="100%" height="30" padding="5" vertical-align="center">
 			<text id="screen_caption" font="resources/gui/fonts/Foo_20.fnt" text="Particle System" width="100%" horizontal-align="center" height="auto" />
@@ -53,9 +53,13 @@
 							</layout>
 							<space height="20" />
 							<layout width="100%" height="auto" alignment="horizontal">
+								<button id="button_entity_load" name="button_entity_load" text="Load" />
 								<space width="*" />
-								<button id="button_entity_apply" name="button_model_apply" text="Apply" />
+								<button id="button_entity_reload" name="button_entity_reload" text="Reload" />
 								<space width="*" />
+								<button id="button_entity_save" name="button_entity_save" text="Save" />
+								<space width="*" />
+								<button id="button_entity_apply" name="button_entity_save" text="Apply" />
 							</layout>
 						</layout>
 					</tab-content>
