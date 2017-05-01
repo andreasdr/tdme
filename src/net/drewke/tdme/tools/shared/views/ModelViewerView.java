@@ -54,15 +54,12 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 
 	private PopUps popUps;
 	private ModelViewerScreenController modelViewerScreenController;
+	private EntityDisplayView entityDisplayView;
 
 	private LevelEditorEntity entity;
 	private boolean loadModelRequested;
 	private boolean initModelRequested;
 	private File modelFile;
-
-	private boolean displayGroundPlate = false;
-	private boolean displayShadowing = false;
-	private boolean displayBoundingVolume = false;
 
 	private CameraRotationInputHandler cameraRotationInputHandler;
 
@@ -74,6 +71,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		this.popUps = popUps;
 		engine = Engine.getInstance();
 		modelViewerScreenController = null;
+		entityDisplayView = null;
 		loadModelRequested = false;
 		initModelRequested = false;
 		entity = null;
@@ -86,51 +84,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	 */
 	public PopUps getPopUpsViews() {
 		return popUps;
-	}
-
-	/**
-	 * @return display ground plate
-	 */
-	public boolean isDisplayGroundPlate() {
-		return displayGroundPlate;
-	}
-
-	/**
-	 * Set up ground plate visibility
-	 * @param ground plate visible
-	 */
-	public void setDisplayGroundPlate(boolean groundPlate) {
-		this.displayGroundPlate = groundPlate;
-	}
-
-	/**
-	 * @return display shadowing
-	 */
-	public boolean isDisplayShadowing() {
-		return displayShadowing;
-	}
-
-	/**
-	 * Set up shadow rendering
-	 * @param shadow rendering
-	 */
-	public void setDisplayShadowing(boolean shadowing) {
-		this.displayShadowing = shadowing;
-	}
-
-	/**
-	 * @return display bounding volume
-	 */
-	public boolean isDisplayBoundingVolume() {
-		return displayBoundingVolume;
-	}
-
-	/**
-	 * Set up bounding volume visibility
-	 * @param bounding volume
-	 */
-	public void setDisplayBoundingVolume(boolean displayBoundingVolume) {
-		this.displayBoundingVolume = displayBoundingVolume;
 	}
 
 	/**
@@ -382,12 +335,12 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		if (entity != null) {
 			Entity model = engine.getEntity("model");
 			Entity ground = engine.getEntity("ground");
-			model.setDynamicShadowingEnabled(displayShadowing);
-			ground.setEnabled(displayGroundPlate);
+			model.setDynamicShadowingEnabled(entityDisplayView.isDisplayShadowing());
+			ground.setEnabled(entityDisplayView.isDisplayGroundPlate());
 			for (int i = 0; i < MODEL_BOUNDINGVOLUME_IDS.length; i++) {
 				Entity modelBoundingVolume = engine.getEntity(MODEL_BOUNDINGVOLUME_IDS[i]);
 				if (modelBoundingVolume != null) {
-					modelBoundingVolume.setEnabled(displayBoundingVolume);
+					modelBoundingVolume.setEnabled(entityDisplayView.isDisplayBoundingVolume());
 				}
 			}
 		}
@@ -425,9 +378,9 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		try {
 			fos = new FileOutputStream("./settings/modelviewer.properties");
 			Properties settings = new Properties();
-			settings.put("display.boundingvolumes", displayBoundingVolume == true?"true":"false");
-			settings.put("display.groundplate", displayGroundPlate?"true":"false");
-			settings.put("display.shadowing", displayShadowing?"true":"false");
+			settings.put("display.boundingvolumes", entityDisplayView.isDisplayBoundingVolume() == true?"true":"false");
+			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
+			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
 			settings.put("model.path", modelViewerScreenController.getModelPath());
 			settings.store(fos, null);
 			fos.close();
@@ -465,9 +418,9 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			fis = new FileInputStream("./settings/modelviewer.properties");
 			Properties settings = new Properties();
 			settings.load(fis);
-			displayBoundingVolume = (tmp = settings.get("display.boundingvolumes")) != null?tmp.equals("true") == true:false;
-			displayGroundPlate = (tmp = settings.get("display.groundplate")) != null?tmp.equals("true") == true:false;
-			displayShadowing = (tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false; 
+			entityDisplayView.setDisplayBoundingVolume((tmp = settings.get("display.boundingvolumes")) != null?tmp.equals("true") == true:false);
+			entityDisplayView.setDisplayGroundPlate((tmp = settings.get("display.groundplate")) != null?tmp.equals("true") == true:false);
+			entityDisplayView.setDisplayShadowing((tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false); 
 			modelViewerScreenController.setModelPath((tmp = settings.get("model.path")) != null?tmp.toString():"");
 			fis.close();
 		} catch (Exception ioe) {
@@ -488,6 +441,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
 			modelViewerScreenController.init();
+			entityDisplayView = modelViewerScreenController.getEntityDisplaySubScreenController().getView();
 			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode());
 			modelViewerScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {
@@ -498,7 +452,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		loadSettings();
 
 		// set up display
-		modelViewerScreenController.setupDisplay();
+		modelViewerScreenController.getEntityDisplaySubScreenController().setupDisplay();
 
 		// set up bounding volume types
 		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
@@ -670,7 +624,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		// add new bv
 		if (entityBoundingVolume.getModel() == null) return;
 		modelBoundingVolumeObject = new Object3D(id, entityBoundingVolume.getModel());
-		modelBoundingVolumeObject.setEnabled(displayBoundingVolume);
+		modelBoundingVolumeObject.setEnabled(entityDisplayView.isDisplayBoundingVolume());
 		engine.addEntity(modelBoundingVolumeObject);
 	}
 

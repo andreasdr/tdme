@@ -36,11 +36,10 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	public enum BoundingVolumeType {NONE, SPHERE, CAPSULE, BOUNDINGBOX, ORIENTEDBOUNDINGBOX, CONVEXMESH};
 
-	private final static MutableString CHECKBOX_CHECKED = new MutableString("1");
-	private final static MutableString CHECKBOX_UNCHECKED = new MutableString("");
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
 	private EntityBaseSubScreenController entityBaseSubScreenController;
+	private EntityDisplaySubScreenController entityDisplaySubScreenController;
 
 	private final ModelViewerView view;
 
@@ -48,9 +47,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	private GUITextNode screenCaption;
 	private GUIElementNode modelReload;
 	private GUIElementNode modelSave;
-	private GUIElementNode displayBoundingVolume;
-	private GUIElementNode displayShadowing;
-	private GUIElementNode displayGround;
 	private GUIElementNode pivotX;
 	private GUIElementNode pivotY;
 	private GUIElementNode pivotZ;
@@ -92,6 +88,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 				finalView.onSetEntityData();
 			}
 		});
+		this.entityDisplaySubScreenController = new EntityDisplaySubScreenController();
+	}
+
+	/**
+	 * @return entity display sub screen controller
+	 */
+	public EntityDisplaySubScreenController getEntityDisplaySubScreenController() {
+		return entityDisplaySubScreenController;
 	}
 
 	/*
@@ -128,9 +132,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			screenNode.addActionListener(this);
 			screenNode.addChangeListener(this);
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
-			displayBoundingVolume = (GUIElementNode)screenNode.getNodeById("display_boundingvolume");
-			displayShadowing = (GUIElementNode)screenNode.getNodeById("display_shadowing");
-			displayGround = (GUIElementNode)screenNode.getNodeById("display_ground");
 			modelReload = (GUIElementNode)screenNode.getNodeById("button_model_reload");
 			modelSave = (GUIElementNode)screenNode.getNodeById("button_model_save");
 			pivotX = (GUIElementNode)screenNode.getNodeById("pivot_x");
@@ -185,8 +186,11 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			e.printStackTrace();
 		}
 
-		// init model base view
+		// init entity base screen controller
 		entityBaseSubScreenController.init(screenNode);
+
+		// init entity base screen controller
+		entityDisplaySubScreenController.init(screenNode);
 
 		//
 		value = new MutableString();
@@ -197,24 +201,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#dispose()
 	 */
 	public void dispose() {
-	}
-
-	/**
-	 * Set up display section
-	 */
-	public void setupDisplay() {
-		displayShadowing.getController().setValue(view.isDisplayShadowing() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-		displayGround.getController().setValue(view.isDisplayGroundPlate() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-		displayBoundingVolume.getController().setValue(view.isDisplayBoundingVolume() == true?CHECKBOX_CHECKED:CHECKBOX_UNCHECKED);
-	}
-
-	/**
-	 * On display apply button event
-	 */
-	public void onDisplayApply() {
-		view.setDisplayShadowing(displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED));
-		view.setDisplayGroundPlate(displayGround.getController().getValue().equals(CHECKBOX_CHECKED));
-		view.setDisplayBoundingVolume(displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED));
 	}
 
 	/**
@@ -288,27 +274,6 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		pivotZ.getController().setDisabled(true);
 		pivotZ.getController().getValue().set(TEXT_EMPTY);
 		pivotApply.getController().setDisabled(true);
-	}
-
-	/**
-	 * @return display shadowing checked
-	 */
-	public boolean getDisplayShadowing() {
-		return displayShadowing.getController().getValue().equals(CHECKBOX_CHECKED);
-	}
-
-	/**
-	 * @return display ground checked
-	 */
-	public boolean getDisplayGround() {
-		return displayGround.getController().getValue().equals(CHECKBOX_CHECKED);
-	}
-
-	/**
-	 * @return display bounding volume checked
-	 */
-	public boolean getDisplayBoundingVolume() {
-		return displayBoundingVolume.getController().getValue().equals(CHECKBOX_CHECKED);
 	}
 
 	/**
@@ -862,15 +827,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * @see net.drewke.tdme.gui.events.GUIActionListener#onActionPerformed(net.drewke.tdme.gui.events.GUIActionListener.Type, net.drewke.tdme.gui.nodes.GUIElementNode)
 	 */
 	public void onActionPerformed(Type type, GUIElementNode node) {
-		// delegate to model base screen controller
+		// delegate to model base sub screen controller
 		entityBaseSubScreenController.onActionPerformed(type, node, view.getEntity());
+		// delegate to display sub screen controller
+		entityDisplaySubScreenController.onActionPerformed(type, node);
 		// handle own actions
 		switch (type) {
 			case PERFORMED:
 				{
-					if (node.getId().equals("button_display_apply")) {
-						onDisplayApply();
-					} else
 					if (node.getId().equals("button_model_load")) {
 						onModelLoad();
 					} else
