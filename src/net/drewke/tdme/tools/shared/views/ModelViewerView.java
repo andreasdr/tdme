@@ -331,19 +331,8 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 			initModelRequested = false;
 		}
 
-		// apply settings from gui
-		if (entity != null) {
-			Entity model = engine.getEntity("model");
-			Entity ground = engine.getEntity("ground");
-			model.setDynamicShadowingEnabled(entityDisplayView.isDisplayShadowing());
-			ground.setEnabled(entityDisplayView.isDisplayGroundPlate());
-			for (int i = 0; i < MODEL_BOUNDINGVOLUME_IDS.length; i++) {
-				Entity modelBoundingVolume = engine.getEntity(MODEL_BOUNDINGVOLUME_IDS[i]);
-				if (modelBoundingVolume != null) {
-					modelBoundingVolume.setEnabled(entityDisplayView.isDisplayBoundingVolume());
-				}
-			}
-		}
+		// delegate to entity display view
+		entityDisplayView.display(entity);
 
 		// do GUI
 		engine.getGUI().render();
