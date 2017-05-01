@@ -18,6 +18,7 @@ import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
+import net.drewke.tdme.tools.shared.controller.FileDialogPath;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
@@ -98,7 +99,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	private MutableString selectedObjects;
 	private ArrayList<String> selectedObjectList;
 
-	private String mapPath;
+	private FileDialogPath mapPath;
 
 	/**
 	 * Public constructor
@@ -106,7 +107,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public LevelEditorScreenController(LevelEditorView view) {
 		this.view = view;
-		this.mapPath = ".";
+		this.mapPath = new FileDialogPath(".");
 	}
 
 	/*
@@ -120,16 +121,8 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	/**
 	 * @return map path
 	 */
-	public String getMapPath() {
+	public FileDialogPath getMapPath() {
 		return mapPath;
-	}
-
-	/**
-	 * Set map path
-	 * @param map path
-	 */
-	public void setMapPath(String mapPath) {
-		this.mapPath = mapPath;
 	}
 
 	/*
@@ -841,7 +834,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onMapLoad() {
 		view.getPopUps().getFileDialogScreenController().show(
-			mapPath,
+			mapPath.getPath(),
 			"Load from: ", 
 			new String[]{"tl", "dae"},
 			view.getFileName(),
@@ -851,7 +844,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 						view.getPopUps().getFileDialogScreenController().getPathName(),
 						view.getPopUps().getFileDialogScreenController().getFileName()
 					);
-					mapPath = view.getPopUps().getFileDialogScreenController().getPathName();
+					mapPath.setPath(view.getPopUps().getFileDialogScreenController().getPathName());
 					view.getPopUps().getFileDialogScreenController().close();
 				}
 				
@@ -864,7 +857,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 */
 	public void onMapSave() {
 		view.getPopUps().getFileDialogScreenController().show(
-			mapPath,
+			mapPath.getPath(),
 			"Save to: ", 
 			new String[]{"tl"},
 			view.getFileName(),
@@ -874,7 +867,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 						view.getPopUps().getFileDialogScreenController().getPathName(),
 						view.getPopUps().getFileDialogScreenController().getFileName()
 					);
-					mapPath = view.getPopUps().getFileDialogScreenController().getPathName();
+					mapPath.setPath(view.getPopUps().getFileDialogScreenController().getPathName());
 					view.getPopUps().getFileDialogScreenController().close();
 				}
 				

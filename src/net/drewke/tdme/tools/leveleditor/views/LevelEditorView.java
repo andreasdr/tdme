@@ -812,7 +812,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			settings.load(fis);
 			gridEnabled = (tmp = settings.get("grid.enabled")) != null?tmp.equals("true") == true:true;
 			gridY = (tmp = settings.get("grid.y")) != null?Float.parseFloat(tmp.toString()):0f;
-			levelEditorScreenController.setMapPath((tmp = settings.get("map.path")) != null?tmp.toString():".");
+			levelEditorScreenController.getMapPath().setPath((tmp = settings.get("map.path")) != null?tmp.toString():".");
 			TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setModelPath((tmp = settings.get("model.path")) != null?tmp.toString():".");
 			fis.close();
 		} catch (Exception ioe) {

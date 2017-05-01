@@ -31,7 +31,7 @@ import net.drewke.tdme.utils.MutableString;
  */
 public class EntityBoundingVolumeSubScreenController {
 
-	private ModelViewerScreenController modelViewerScreenController;
+	private FileDialogPath modelPath;
 
 	private EntityBoundingVolumeView view;
 
@@ -59,8 +59,8 @@ public class EntityBoundingVolumeSubScreenController {
 	 * @param pop ups
 	 * @param model viewer screen controller
 	 */
-	public EntityBoundingVolumeSubScreenController(PopUps popUps, ModelViewerScreenController modelViewerScreenController) {
-		this.modelViewerScreenController = modelViewerScreenController;
+	public EntityBoundingVolumeSubScreenController(PopUps popUps, FileDialogPath modelPath) {
+		this.modelPath = modelPath;
 		this.view = new EntityBoundingVolumeView(this, popUps);
 	}
 
@@ -528,7 +528,7 @@ public class EntityBoundingVolumeSubScreenController {
 	public void onBoundingVolumeConvexMeshFile(LevelEditorEntity entity, int idx) {
 		final int idxFinal = idx;
 		view.getPopUpsViews().getFileDialogScreenController().show(
-			modelViewerScreenController.getModelPath(),
+			modelPath.getPath(),
 			"Load from: ", 
 			new String[]{"dae", "tm"},
 			entity.getBoundingVolumeAt(idx).getModelMeshFile() != null?entity.getBoundingVolumeAt(idx).getModelMeshFile():entity.getFileName(),
@@ -538,7 +538,7 @@ public class EntityBoundingVolumeSubScreenController {
 						view.getPopUpsViews().getFileDialogScreenController().getFileName())
 					);
 					onBoundingVolumeConvexMeshApply(entity, idxFinal);
-					modelViewerScreenController.setModelPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
+					modelPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 					view.getPopUpsViews().getFileDialogScreenController().close();
 				}
 			}

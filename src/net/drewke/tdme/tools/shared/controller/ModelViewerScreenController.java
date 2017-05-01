@@ -45,13 +45,14 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 	private MutableString value;
 
-	private String modelPath = ".";
+	private FileDialogPath modelPath;
 
 	/**
 	 * Public constructor
 	 * @param view
 	 */
 	public ModelViewerScreenController(ModelViewerView view) {
+		this.modelPath = new FileDialogPath(".");
 		this.view = view;
 		final ModelViewerView finalView = view;
 		this.entityBaseSubScreenController = new EntityBaseSubScreenController(view.getPopUpsViews(), new Action() {
@@ -61,7 +62,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			}
 		});
 		this.entityDisplaySubScreenController = new EntityDisplaySubScreenController();
-		this.entityBoundingVolumeSubScreenController = new EntityBoundingVolumeSubScreenController(view.getPopUpsViews(), this);
+		this.entityBoundingVolumeSubScreenController = new EntityBoundingVolumeSubScreenController(view.getPopUpsViews(), modelPath);
 	}
 
 	/**
@@ -89,16 +90,8 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	/**
 	 * @return model path
 	 */
-	public String getModelPath() {
+	public FileDialogPath getModelPath() {
 		return modelPath;
-	}
-
-	/**
-	 * Set model path
-	 * @param model path
-	 */
-	public void setModelPath(String modelPath) {
-		this.modelPath = modelPath;
 	}
 
 	/*
@@ -245,7 +238,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 */
 	public void onModelLoad() {
 		view.getPopUpsViews().getFileDialogScreenController().show(
-			modelPath,
+			modelPath.getPath(),
 			"Load from: ", 
 			new String[]{"tmm", "dae", "tm"},
 			view.getFileName(),
@@ -255,7 +248,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 						view.getPopUpsViews().getFileDialogScreenController().getPathName(),
 						view.getPopUpsViews().getFileDialogScreenController().getFileName()
 					);
-					modelPath = view.getPopUpsViews().getFileDialogScreenController().getPathName();
+					modelPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 					view.getPopUpsViews().getFileDialogScreenController().close();
 				}
 				
@@ -283,7 +276,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 
 		//
 		view.getPopUpsViews().getFileDialogScreenController().show(
-			modelPath,
+			modelPath.getPath(),
 			"Save from: ", 
 			new String[]{"tmm"},
 			fileName,
@@ -294,7 +287,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 							view.getPopUpsViews().getFileDialogScreenController().getPathName(),
 							view.getPopUpsViews().getFileDialogScreenController().getFileName()
 						);
-						modelPath = view.getPopUpsViews().getFileDialogScreenController().getPathName();
+						modelPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 						view.getPopUpsViews().getFileDialogScreenController().close();
 					} catch (Exception ioe) {
 						showErrorPopUp("Warning", ioe.getMessage());
