@@ -21,8 +21,6 @@ import net.drewke.tdme.utils.MutableString;
  */
 public final class ModelViewerScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
 
-	public enum BoundingVolumeType {NONE, SPHERE, CAPSULE, BOUNDINGBOX, ORIENTEDBOUNDINGBOX, CONVEXMESH};
-
 	private final static MutableString TEXT_EMPTY = new MutableString("");
 
 	private EntityBaseSubScreenController entityBaseSubScreenController;

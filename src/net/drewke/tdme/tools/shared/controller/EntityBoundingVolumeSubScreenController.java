@@ -16,7 +16,6 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController.BoundingVolumeType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 import net.drewke.tdme.tools.shared.tools.Tools;
@@ -30,6 +29,19 @@ import net.drewke.tdme.utils.MutableString;
  * @version $Id$
  */
 public class EntityBoundingVolumeSubScreenController {
+
+	public enum BoundingVolumeType {NONE, SPHERE, CAPSULE, BOUNDINGBOX, ORIENTEDBOUNDINGBOX, CONVEXMESH};
+	public final static int MODEL_BOUNDINGVOLUME_COUNT = 8;
+	public final static String[] MODEL_BOUNDINGVOLUME_IDS = {
+		"model_bv.0",
+		"model_bv.1",
+		"model_bv.2",
+		"model_bv.3",
+		"model_bv.4",
+		"model_bv.5",
+		"model_bv.6",
+		"model_bv.7",
+	};
 
 	private FileDialogPath modelPath;
 

@@ -21,18 +21,6 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
  */
 public class EntityBoundingVolumeView {
 
-	private final int MODEL_BOUNDINGVOLUME_COUNT = 8;
-	private final static String[] MODEL_BOUNDINGVOLUME_IDS = {
-		"model_bv.0",
-		"model_bv.1",
-		"model_bv.2",
-		"model_bv.3",
-		"model_bv.4",
-		"model_bv.5",
-		"model_bv.6",
-		"model_bv.7",
-	};
-
 	private Engine engine;
 
 	private EntityBoundingVolumeSubScreenController modelViewerScreenController;
@@ -61,7 +49,7 @@ public class EntityBoundingVolumeView {
 	 */
 	public void init() {
 		// set up bounding volume types
-		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
+		for (int i = 0; i < EntityBoundingVolumeSubScreenController.MODEL_BOUNDINGVOLUME_COUNT; i++) {
 			modelViewerScreenController.setupBoundingVolumeTypes(
 				i,
 				new String[] {
@@ -72,7 +60,7 @@ public class EntityBoundingVolumeView {
 			);
 			modelViewerScreenController.selectBoundingVolume(
 				i, 
-				ModelViewerScreenController.BoundingVolumeType.NONE
+				EntityBoundingVolumeSubScreenController.BoundingVolumeType.NONE
 			);
 		}
 	}
@@ -149,7 +137,7 @@ public class EntityBoundingVolumeView {
 		);
 
 		//
-		modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.NONE);
+		modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.NONE);
 	}
 
 	/**
@@ -158,7 +146,7 @@ public class EntityBoundingVolumeView {
 	 */
 	public void setBoundingVolumes(LevelEditorEntity entity) {
 		// set up default bounding volumes
-		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
+		for (int i = 0; i < EntityBoundingVolumeSubScreenController.MODEL_BOUNDINGVOLUME_COUNT; i++) {
 			resetBoundingVolume(entity, i);
 		}
 
@@ -166,23 +154,23 @@ public class EntityBoundingVolumeView {
 		for (int i = 0; i < entity.getBoundingVolumeCount(); i++) {
 			LevelEditorEntityBoundingVolume bv = entity.getBoundingVolumeAt(i);
 			if (bv == null) {
-				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.NONE);
+				modelViewerScreenController.selectBoundingVolume(i, EntityBoundingVolumeSubScreenController.BoundingVolumeType.NONE);
 				continue;
 			} else
 			if (bv.getBoundingVolume() instanceof Sphere) {
 				Sphere sphere = (Sphere)bv.getBoundingVolume();
 				modelViewerScreenController.setupSphere(i, sphere.getCenter(), sphere.getRadius());
-				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.SPHERE);
+				modelViewerScreenController.selectBoundingVolume(i, EntityBoundingVolumeSubScreenController.BoundingVolumeType.SPHERE);
 			} else
 			if (bv.getBoundingVolume() instanceof Capsule) {
 				Capsule capsule = (Capsule)bv.getBoundingVolume();
 				modelViewerScreenController.setupCapsule(i, capsule.getA(), capsule.getB(), capsule.getRadius());
-				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.CAPSULE);
+				modelViewerScreenController.selectBoundingVolume(i, EntityBoundingVolumeSubScreenController.BoundingVolumeType.CAPSULE);
 			} else
 			if (bv.getBoundingVolume() instanceof BoundingBox) {
 				BoundingBox aabb = (BoundingBox)bv.getBoundingVolume(); 
 				modelViewerScreenController.setupBoundingBox(i, aabb.getMin(), aabb.getMax());
-				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.BOUNDINGBOX);
+				modelViewerScreenController.selectBoundingVolume(i, EntityBoundingVolumeSubScreenController.BoundingVolumeType.BOUNDINGBOX);
 			} else
 			if (bv.getBoundingVolume() instanceof OrientedBoundingBox) {
 				OrientedBoundingBox obb = (OrientedBoundingBox)bv.getBoundingVolume(); 
@@ -194,11 +182,11 @@ public class EntityBoundingVolumeView {
 					obb.getAxes()[2], 
 					obb.getHalfExtension()
 				);
-				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
+				modelViewerScreenController.selectBoundingVolume(i, EntityBoundingVolumeSubScreenController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
 			} else
 			if (bv.getBoundingVolume() instanceof ConvexMesh) { 
 				modelViewerScreenController.setupConvexMesh(i, bv.getModelMeshFile());
-				modelViewerScreenController.selectBoundingVolume(i, ModelViewerScreenController.BoundingVolumeType.CONVEXMESH);
+				modelViewerScreenController.selectBoundingVolume(i, EntityBoundingVolumeSubScreenController.BoundingVolumeType.CONVEXMESH);
 			}
 			// enable bounding volume and set type in GUI
 			modelViewerScreenController.enableBoundingVolume(i);
@@ -210,7 +198,7 @@ public class EntityBoundingVolumeView {
 	 * Unset bounding volumes
 	 */
 	public void unsetBoundingVolumes() {
-		for (int i = 0; i < MODEL_BOUNDINGVOLUME_COUNT; i++) {
+		for (int i = 0; i < EntityBoundingVolumeSubScreenController.MODEL_BOUNDINGVOLUME_COUNT; i++) {
 			modelViewerScreenController.disableBoundingVolume(i);
 		}
 	}
@@ -223,22 +211,22 @@ public class EntityBoundingVolumeView {
 	public void selectBoundingVolumeType(int idx, int bvTypeId) {
 		switch (bvTypeId) {
 			case 0:
-				modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.NONE);
+				modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.NONE);
 				break;
 			case 1:
-				modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.SPHERE);
+				modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.SPHERE);
 				break;
 			case 2:
-				modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.CAPSULE);
+				modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.CAPSULE);
 				break;
 			case 3:
-				modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.BOUNDINGBOX);
+				modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.BOUNDINGBOX);
 				break;
 			case 4:
-				modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
+				modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.ORIENTEDBOUNDINGBOX);
 				break;
 			case 5:
-				modelViewerScreenController.selectBoundingVolume(idx, ModelViewerScreenController.BoundingVolumeType.CONVEXMESH);
+				modelViewerScreenController.selectBoundingVolume(idx, EntityBoundingVolumeSubScreenController.BoundingVolumeType.CONVEXMESH);
 				break;
 		}
 	}
@@ -252,7 +240,7 @@ public class EntityBoundingVolumeView {
 		LevelEditorEntityBoundingVolume entityBoundingVolume = entity.getBoundingVolumeAt(idx);
 
 		// remove old bv
-		String id = MODEL_BOUNDINGVOLUME_IDS[idx];
+		String id = EntityBoundingVolumeSubScreenController.MODEL_BOUNDINGVOLUME_IDS[idx];
 		Entity modelBoundingVolumeObject = engine.getEntity(id);
 		if (modelBoundingVolumeObject != null) {
 			engine.removeEntity(id);
