@@ -312,26 +312,26 @@ public class EntityBaseSubScreenController {
 	 * On action performed
 	 * @param type
 	 * @param node
-	 * @param model
+	 * @param entity
 	 */
-	public void onActionPerformed(GUIActionListener.Type type, GUIElementNode node, LevelEditorEntity model) {
+	public void onActionPerformed(GUIActionListener.Type type, GUIElementNode node, LevelEditorEntity entity) {
 		switch (type) {
 			case PERFORMED:
 				{
 					if (node.getId().equals("button_entity_apply")) {
-						onEntityDataApply(model);
+						onEntityDataApply(entity);
 					} else
 					if (node.getId().equals("button_entity_properties_presetapply")) {
-						onEntityPropertyPresetApply(model);
+						onEntityPropertyPresetApply(entity);
 					} else
 					if (node.getId().equals("button_entity_properties_add")) {
-						onEntityPropertyAdd(model);
+						onEntityPropertyAdd(entity);
 					} else
 					if (node.getId().equals("button_entity_properties_remove")) {
-						onEntityPropertyRemove(model);
+						onEntityPropertyRemove(entity);
 					} else
 					if (node.getId().equals("button_entity_properties_save")) {
-						onEntityPropertySave(model);
+						onEntityPropertySave(entity);
 					} else {
 						// System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}

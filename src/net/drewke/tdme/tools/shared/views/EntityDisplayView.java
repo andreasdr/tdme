@@ -24,7 +24,7 @@ public class EntityDisplayView {
 	};
 
 	private Engine engine;
-
+	
 	private EntityDisplaySubScreenController entityDisplaySubScreenController;
 
 	private boolean displayGroundPlate = false;
