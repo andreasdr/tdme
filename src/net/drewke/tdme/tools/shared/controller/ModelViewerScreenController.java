@@ -61,7 +61,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 			}
 		});
 		this.entityDisplaySubScreenController = new EntityDisplaySubScreenController();
-		this.entityBoundingVolumeSubScreenController = new EntityBoundingVolumeSubScreenController(view.getPopUpsViews());
+		this.entityBoundingVolumeSubScreenController = new EntityBoundingVolumeSubScreenController(view.getPopUpsViews(), this);
 	}
 
 	/**
