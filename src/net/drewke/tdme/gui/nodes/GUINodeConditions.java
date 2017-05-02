@@ -47,6 +47,13 @@ public final class GUINodeConditions {
 		}
 	}
 
+	/**
+	 * Remove all
+	 */
+	public void removeAll() {
+		conditions.clear();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()

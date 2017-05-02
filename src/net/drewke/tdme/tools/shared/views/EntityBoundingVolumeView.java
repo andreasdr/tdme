@@ -71,8 +71,18 @@ public class EntityBoundingVolumeView {
 	 * @param idx
 	 */
 	public void resetBoundingVolume(LevelEditorEntity entity, int idx) {
+		// determine AABB
+		BoundingBox aabb = null;
+
+		// if we have a model we also have a AABB
+		if (entity.getModel() != null) {
+			aabb = entity.getModel().getBoundingBox();
+		} else {
+			// otherwise just create one for now
+			aabb = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+		}
+
 		// set up oriented bounding box
-		BoundingBox aabb = entity.getModel().getBoundingBox();
 		OrientedBoundingBox obb = new OrientedBoundingBox(aabb);
 
 		// set up sphere

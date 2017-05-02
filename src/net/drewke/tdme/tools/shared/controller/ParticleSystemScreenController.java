@@ -1,10 +1,13 @@
 package net.drewke.tdme.tools.shared.controller;
 
+import java.util.Collection;
+
 import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.events.Action;
 import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
+import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
@@ -30,6 +33,12 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUITextNode screenCaption;
 	private GUIElementNode particleSystemReload;
 	private GUIElementNode particleSystemSave;
+
+	private GUIElementNode particleSystemTypes;
+	private GUIElementNode particleSystemType;
+
+	private GUIElementNode particleSystemEmitters;
+	private GUIElementNode particleSystemEmitter;
 
 	private FileDialogPath particleSystemPath;
 
@@ -93,6 +102,10 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			screenCaption = (GUITextNode)screenNode.getNodeById("screen_caption");
 			particleSystemReload = (GUIElementNode)screenNode.getNodeById("button_entity_reload");
 			particleSystemSave = (GUIElementNode)screenNode.getNodeById("button_entity_save");
+			particleSystemTypes = (GUIElementNode)screenNode.getNodeById("ps_types");
+			particleSystemType = (GUIElementNode)screenNode.getNodeById("ps_type");
+			particleSystemEmitters = (GUIElementNode)screenNode.getNodeById("ps_emitters");
+			particleSystemEmitter = (GUIElementNode)screenNode.getNodeById("ps_emitter");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -161,10 +174,90 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	}
 
 	/**
+	 * Set up particle system types
+	 * @param particle system types
+	 */
+	public void setParticleSystemTypes(Collection<String> particleSystemTypesCollection) {
+		// particle system types inner node
+		GUIParentNode particleSystemTypesInnerNode = (GUIParentNode)(particleSystemTypes.getScreenNode().getNodeById(particleSystemTypes.getId() + "_inner"));
+
+		// construct XML for sub nodes
+		int idx = 0;
+		String particleSystemTypesInnerNodeSubNodesXML = "";
+		particleSystemTypesInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + particleSystemTypes.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
+		for (String particleSystem: particleSystemTypesCollection) {
+			particleSystemTypesInnerNodeSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(particleSystem) + "\" value=\"" + GUIParser.escapeQuotes(particleSystem) + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+			idx++;
+		}
+		particleSystemTypesInnerNodeSubNodesXML+= "</scrollarea-vertical>";
+
+		// inject sub nodes
+		try {
+			particleSystemTypesInnerNode.replaceSubNodes(
+				particleSystemTypesInnerNodeSubNodesXML,
+				true
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// initial selection
+		onParticleSystemTypeApply();
+	}
+
+	/**
+	 * Set up emitters
+	 * @param emitters
+	 */
+	public void setParticleSystemEmitters(Collection<String> emittersCollection) {
+		// particle system emitters inner node
+		GUIParentNode particleSystemEmittersInnerNode = (GUIParentNode)(particleSystemEmitters.getScreenNode().getNodeById(particleSystemEmitters.getId() + "_inner"));
+
+		// construct XML for sub nodes
+		int idx = 0;
+		String particleSystemEmittersInnerNodeSubNodesXML = "";
+		particleSystemEmittersInnerNodeSubNodesXML+= "<scrollarea-vertical id=\"" + particleSystemEmitters.getId() + "_inner_scrollarea\" width=\"100%\" height=\"100\">\n";
+		for (String particleSystemEmitter: emittersCollection) {
+			particleSystemEmittersInnerNodeSubNodesXML+= "<dropdown-option text=\"" + GUIParser.escapeQuotes(particleSystemEmitter) + "\" value=\"" + GUIParser.escapeQuotes(particleSystemEmitter) + "\" " + (idx == 0?"selected=\"true\" ":"")+ " />\n";
+			idx++;
+		}
+		particleSystemEmittersInnerNodeSubNodesXML+= "</scrollarea-vertical>";
+
+		// inject sub nodes
+		try {
+			particleSystemEmittersInnerNode.replaceSubNodes(
+				particleSystemEmittersInnerNodeSubNodesXML,
+				true
+			);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// initial selection
+		onParticleSystemEmitterApply();
+	}
+
+	/**
 	 * On quit
 	 */
 	public void onQuit() {
 		TDMEViewer.getInstance().quit();
+	}
+
+	/**
+	 * On particle system type apply
+	 */
+	public void onParticleSystemTypeApply() {
+		particleSystemType.getActiveConditions().removeAll();
+		particleSystemType.getActiveConditions().add(particleSystemTypes.getController().getValue().toString());
+	}
+
+	/**
+	 * On particle system emittter apply
+	 */
+	public void onParticleSystemEmitterApply() {
+		particleSystemEmitter.getActiveConditions().removeAll();
+		particleSystemEmitter.getActiveConditions().add(particleSystemEmitters.getController().getValue().toString());
 	}
 
 	/**
@@ -289,6 +382,12 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					} else
 					if (node.getId().equals("button_entity_save")) {
 						onEntitySave();
+					} else
+					if (node.getId().equals("button_ps_type_apply")) {
+						onParticleSystemTypeApply();
+					} 
+					if (node.getId().equals("button_emitter_apply")) {
+						onParticleSystemEmitterApply();
 					} else {
 						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}

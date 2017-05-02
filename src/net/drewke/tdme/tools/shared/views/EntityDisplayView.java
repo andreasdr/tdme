@@ -92,7 +92,12 @@ public class EntityDisplayView {
 	public void display(LevelEditorEntity entity) {
 		// apply settings from gui
 		if (entity != null) {
+			// get model
 			Entity model = engine.getEntity("model");
+			// skip if no model yet
+			if (model == null) return;
+
+			// apply display settings
 			Entity ground = engine.getEntity("ground");
 			model.setDynamicShadowingEnabled(displayShadowing);
 			ground.setEnabled(displayGroundPlate);

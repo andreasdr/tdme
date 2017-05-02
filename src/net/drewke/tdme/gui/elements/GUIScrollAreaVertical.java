@@ -60,6 +60,8 @@ public final class GUIScrollAreaVertical extends GUIElement {
 		attributes.put("border", "0");
 		attributes.put("border-color", "transparent");
 		attributes.put("padding", "0");
+		attributes.put("show-on", "");
+		attributes.put("hide-on", "");
 		return attributes;
 	}
 

@@ -4,17 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.PartitionNone;
-import net.drewke.tdme.engine.fileio.models.DAEReader;
-import net.drewke.tdme.engine.fileio.models.TMReader;
-import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.shared.controller.ParticleSystemScreenController;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
@@ -60,6 +56,17 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		entity = null;
 		particleSystemFile = null;
 		cameraRotationInputHandler = new CameraRotationInputHandler(engine);
+		entity = new LevelEditorEntity(
+			-1, 
+			LevelEditorEntity.EntityType.PARTICLESYSTEM, 
+			"Untitled", 
+			"", 
+			"Untitled.tps", 
+			null, 
+			null, 
+			null,
+			new Vector3()
+		);
 	}
 
 	/**
@@ -274,8 +281,23 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		// set up display
 		particleSystemScreenController.getEntityDisplaySubScreenController().setupDisplay();
 
-		//
+		// init entity bounding volume view
 		entityBoundingVolumeView.init();
+
+		// particle system types
+		ArrayList<String> particleSystemTypes = new ArrayList<String>();
+		particleSystemTypes.add("Object Particle System");
+		particleSystemTypes.add("Points Particle System");
+		particleSystemScreenController.setParticleSystemTypes(particleSystemTypes);
+
+		// particle system types
+		ArrayList<String> particleSystemEmitters = new ArrayList<String>();
+		particleSystemEmitters.add("Point Particle Emitter");
+		particleSystemEmitters.add("BoundingBox Particle Emitter");
+		particleSystemEmitters.add("Circle Particle Emitter");
+		// particleSystemEmitters.add("Circle Particle Emitter Plane Velocity");
+		particleSystemEmitters.add("Sphere Particle Emitter");
+		particleSystemScreenController.setParticleSystemEmitters(particleSystemEmitters);
 
 		// set up gui
 		updateGUIElements();

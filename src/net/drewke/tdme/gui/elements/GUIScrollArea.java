@@ -57,6 +57,8 @@ public final class GUIScrollArea extends GUIElement {
 		attributes.put("vertical-align", "top");
 		attributes.put("alignment", "vertical");
 		attributes.put("background-color", "transparent");
+		attributes.put("show-on", "");
+		attributes.put("hide-on", "");
 		return attributes;
 	}
 
