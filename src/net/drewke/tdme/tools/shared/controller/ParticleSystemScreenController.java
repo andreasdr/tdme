@@ -83,8 +83,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode cpeColorEnd;
 	private GUIElementNode cpeCenter;
 	private GUIElementNode cpeRadius;
-	private GUIElementNode cpeObbAxis0;
-	private GUIElementNode cpeObbAxis1;
+	private GUIElementNode cpeAxis0;
+	private GUIElementNode cpeAxis1;
 
 	private GUIElementNode cpepvCount;
 	private GUIElementNode cpepvLifeTime;
@@ -97,8 +97,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode cpepvColorEnd;
 	private GUIElementNode cpepvCenter;
 	private GUIElementNode cpepvRadius;
-	private GUIElementNode cpepvObbAxis0;
-	private GUIElementNode cpepvObbAxis1;
+	private GUIElementNode cpepvAxis0;
+	private GUIElementNode cpepvAxis1;
 
 	private GUIElementNode speCount;
 	private GUIElementNode speLifeTime;
@@ -227,8 +227,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			cpeColorEnd = (GUIElementNode)screenNode.getNodeById("cpe_colorend");
 			cpeCenter = (GUIElementNode)screenNode.getNodeById("cpe_center");
 			cpeRadius = (GUIElementNode)screenNode.getNodeById("cpe_radius");
-			cpeObbAxis0 = (GUIElementNode)screenNode.getNodeById("cpe_obb_axis0");
-			cpeObbAxis1 = (GUIElementNode)screenNode.getNodeById("cpe_obb_axis1");
+			cpeAxis0 = (GUIElementNode)screenNode.getNodeById("cpe_axis0");
+			cpeAxis1 = (GUIElementNode)screenNode.getNodeById("cpe_axis1");
 
 			// circle particle emitter plane velocity
 			cpepvCount = (GUIElementNode)screenNode.getNodeById("cpepv_count");
@@ -242,8 +242,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			cpepvColorEnd = (GUIElementNode)screenNode.getNodeById("cpepv_colorend");
 			cpepvCenter = (GUIElementNode)screenNode.getNodeById("cpepv_center");
 			cpepvRadius = (GUIElementNode)screenNode.getNodeById("cpepv_radius");
-			cpepvObbAxis0 = (GUIElementNode)screenNode.getNodeById("cpepv_obb_axis0");
-			cpepvObbAxis1 = (GUIElementNode)screenNode.getNodeById("cpepv_obb_axis1");
+			cpepvAxis0 = (GUIElementNode)screenNode.getNodeById("cpepv_axis0");
+			cpepvAxis1 = (GUIElementNode)screenNode.getNodeById("cpepv_axis1");
 
 			// sphere particle emitter
 			speCount = (GUIElementNode)screenNode.getNodeById("spe_count");

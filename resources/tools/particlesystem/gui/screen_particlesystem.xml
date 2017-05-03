@@ -378,11 +378,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpe_obb_axis0" name="cpe_obb_axis0" width="150" height="auto" text="Axis 0" />
+											<input id="cpe_axis0" name="cpe_axis0" width="150" height="auto" text="Axis 0" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpe_obb_axis1" name="cpe_obb_axis1" width="150" height="auto" text="Axis 1" />
+											<input id="cpe_axis1" name="cpe_axis1" width="150" height="auto" text="Axis 1" />
 										</layout>
 										<space height="20" />
 										<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">
@@ -456,11 +456,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 0" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpepv_obb_axis0" name="cpepv_obb_axis0" width="150" height="auto" text="Axis 0" />
+											<input id="cpepv_axis0" name="cpepv_axis0" width="150" height="auto" text="Axis 0" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Axis 1" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpepv_obb_axis1" name="cpepv_obb_axis1" width="150" height="auto" text="Axis 1" />
+											<input id="cpepv_axis1" name="cpepv_axis1" width="150" height="auto" text="Axis 1" />
 										</layout>
 										<space height="20" />
 										<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">
