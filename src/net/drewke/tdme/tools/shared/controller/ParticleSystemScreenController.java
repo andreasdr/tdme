@@ -40,6 +40,78 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode particleSystemEmitters;
 	private GUIElementNode particleSystemEmitter;
 
+	private GUIElementNode opsScale;
+	private GUIElementNode opsMaxCount;
+	private GUIElementNode opsModel;
+
+	private GUIElementNode ppsMaxPoints;
+
+	private GUIElementNode ppeCount;
+	private GUIElementNode ppeLifeTime;
+	private GUIElementNode ppeLifeTimeRnd;
+	private GUIElementNode ppeCountMass;
+	private GUIElementNode ppeCountMassRnd;
+	private GUIElementNode ppePosition;
+	private GUIElementNode ppeVelocity;
+	private GUIElementNode ppeVelocityRnd;
+	private GUIElementNode ppeColorStart;
+	private GUIElementNode ppeColorEnd;
+
+	private GUIElementNode bbpeCount;
+	private GUIElementNode bbpeLifeTime;
+	private GUIElementNode bbpeLifeTimeRnd;
+	private GUIElementNode bbpeCountMass;
+	private GUIElementNode bbpeCountMassRnd;
+	private GUIElementNode bbpeVelocity;
+	private GUIElementNode bbpeVelocityRnd;
+	private GUIElementNode bbpeColorStart;
+	private GUIElementNode bbpeColorEnd;
+	private GUIElementNode bbpeObbCenter;
+	private GUIElementNode bbpeObbHalfextension;
+	private GUIElementNode bbpeObbAxis0;
+	private GUIElementNode bbpeObbAxis1;
+	private GUIElementNode bbpeObbAxis2;
+
+	private GUIElementNode cpeCount;
+	private GUIElementNode cpeLifeTime;
+	private GUIElementNode cpeLifeTimeRnd;
+	private GUIElementNode cpeCountMass;
+	private GUIElementNode cpeCountMassrnd;
+	private GUIElementNode cpeVelocity;
+	private GUIElementNode cpeVelocityRnd;
+	private GUIElementNode cpeColorStart;
+	private GUIElementNode cpeColorEnd;
+	private GUIElementNode cpeCenter;
+	private GUIElementNode cpeRadius;
+	private GUIElementNode cpeObbAxis0;
+	private GUIElementNode cpeObbAxis1;
+
+	private GUIElementNode cpepvCount;
+	private GUIElementNode cpepvLifeTime;
+	private GUIElementNode cpepvLifeTimeRnd;
+	private GUIElementNode cpepvCountMass;
+	private GUIElementNode cpepvCountMassRnd;
+	private GUIElementNode cpepvVelocity;
+	private GUIElementNode cpepvVelocityRnd;
+	private GUIElementNode cpepvColorStart;
+	private GUIElementNode cpepvColorEnd;
+	private GUIElementNode cpepvCenter;
+	private GUIElementNode cpepvRadius;
+	private GUIElementNode cpepvObbAxis0;
+	private GUIElementNode cpepvObbAxis1;
+
+	private GUIElementNode speCount;
+	private GUIElementNode speLifeTime;
+	private GUIElementNode speLifeTimeRnd;
+	private GUIElementNode speCountMass;
+	private GUIElementNode speCountMassRnd;
+	private GUIElementNode speVelocity;
+	private GUIElementNode speVelocityRnd;
+	private GUIElementNode speColorStart;
+	private GUIElementNode speColorEnd;
+	private GUIElementNode speCenter;
+	private GUIElementNode speRadius;
+
 	private FileDialogPath particleSystemPath;
 
 	/**
@@ -106,6 +178,87 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			particleSystemType = (GUIElementNode)screenNode.getNodeById("ps_type");
 			particleSystemEmitters = (GUIElementNode)screenNode.getNodeById("ps_emitters");
 			particleSystemEmitter = (GUIElementNode)screenNode.getNodeById("ps_emitter");
+
+			// object particle system
+			opsScale = (GUIElementNode)screenNode.getNodeById("ops_scale");
+			opsMaxCount = (GUIElementNode)screenNode.getNodeById("ops_maxcount");
+			opsModel = (GUIElementNode)screenNode.getNodeById("ops_model");
+
+			// point particle system
+			ppsMaxPoints = (GUIElementNode)screenNode.getNodeById("pps_maxpoints");
+
+			// point particle emitter
+			ppeCount = (GUIElementNode)screenNode.getNodeById("ppe_count");
+			ppeLifeTime = (GUIElementNode)screenNode.getNodeById("ppe_lifetime");
+			ppeLifeTimeRnd = (GUIElementNode)screenNode.getNodeById("ppe_lifetimernd");
+			ppeCountMass = (GUIElementNode)screenNode.getNodeById("ppe_count_mass");
+			ppeCountMassRnd = (GUIElementNode)screenNode.getNodeById("ppe_count_massrnd");
+			ppePosition = (GUIElementNode)screenNode.getNodeById("ppe_position");
+			ppeVelocity = (GUIElementNode)screenNode.getNodeById("ppe_velocity");
+			ppeVelocityRnd = (GUIElementNode)screenNode.getNodeById("ppe_velocityrnd");
+			ppeColorStart = (GUIElementNode)screenNode.getNodeById("ppe_colorstart");
+			ppeColorEnd = (GUIElementNode)screenNode.getNodeById("ppe_colorend");
+
+			// bounding box particle emitter
+			bbpeCount = (GUIElementNode)screenNode.getNodeById("bbpe_count");
+			bbpeLifeTime = (GUIElementNode)screenNode.getNodeById("bbpe_lifetime");
+			bbpeLifeTimeRnd = (GUIElementNode)screenNode.getNodeById("bbpe_lifetimernd");
+			bbpeCountMass = (GUIElementNode)screenNode.getNodeById("bbpe_count_mass");
+			bbpeCountMassRnd = (GUIElementNode)screenNode.getNodeById("bbpe_count_massrnd");
+			bbpeVelocity = (GUIElementNode)screenNode.getNodeById("bbpe_velocity");
+			bbpeVelocityRnd = (GUIElementNode)screenNode.getNodeById("bbpe_velocityrnd");
+			bbpeColorStart = (GUIElementNode)screenNode.getNodeById("bbpe_colorstart");
+			bbpeColorEnd = (GUIElementNode)screenNode.getNodeById("bbpe_colorend");
+			bbpeObbCenter = (GUIElementNode)screenNode.getNodeById("bbpe_obb_center");
+			bbpeObbHalfextension = (GUIElementNode)screenNode.getNodeById("bbpe_obb_halfextension");
+			bbpeObbAxis0 = (GUIElementNode)screenNode.getNodeById("bbpe_obb_axis0");
+			bbpeObbAxis1 = (GUIElementNode)screenNode.getNodeById("bbpe_obb_axis1");
+			bbpeObbAxis2 = (GUIElementNode)screenNode.getNodeById("bbpe_obb_axis2");
+
+			// circle particle emitter
+			cpeCount = (GUIElementNode)screenNode.getNodeById("cpe_count");
+			cpeLifeTime = (GUIElementNode)screenNode.getNodeById("cpe_lifetime");
+			cpeLifeTimeRnd = (GUIElementNode)screenNode.getNodeById("cpe_lifetimernd");
+			cpeCountMass = (GUIElementNode)screenNode.getNodeById("cpe_count_mass");
+			cpeCountMassrnd = (GUIElementNode)screenNode.getNodeById("cpe_count_massrnd");
+			cpeVelocity = (GUIElementNode)screenNode.getNodeById("cpe_velocity");
+			cpeVelocityRnd = (GUIElementNode)screenNode.getNodeById("cpe_velocityrnd");
+			cpeColorStart = (GUIElementNode)screenNode.getNodeById("cpe_colorstart");
+			cpeColorEnd = (GUIElementNode)screenNode.getNodeById("cpe_colorend");
+			cpeCenter = (GUIElementNode)screenNode.getNodeById("cpe_center");
+			cpeRadius = (GUIElementNode)screenNode.getNodeById("cpe_radius");
+			cpeObbAxis0 = (GUIElementNode)screenNode.getNodeById("cpe_obb_axis0");
+			cpeObbAxis1 = (GUIElementNode)screenNode.getNodeById("cpe_obb_axis1");
+
+			// circle particle emitter plane velocity
+			cpepvCount = (GUIElementNode)screenNode.getNodeById("cpepv_count");
+			cpepvLifeTime = (GUIElementNode)screenNode.getNodeById("cpepv_lifetime");
+			cpepvLifeTimeRnd = (GUIElementNode)screenNode.getNodeById("cpepv_lifetimernd");
+			cpepvCountMass = (GUIElementNode)screenNode.getNodeById("cpepv_count_mass");
+			cpepvCountMassRnd = (GUIElementNode)screenNode.getNodeById("cpepv_count_massrnd");
+			cpepvVelocity = (GUIElementNode)screenNode.getNodeById("cpepv_velocity");
+			cpepvVelocityRnd = (GUIElementNode)screenNode.getNodeById("cpepv_velocityrnd");
+			cpepvColorStart = (GUIElementNode)screenNode.getNodeById("cpepv_colorstart");
+			cpepvColorEnd = (GUIElementNode)screenNode.getNodeById("cpepv_colorend");
+			cpepvCenter = (GUIElementNode)screenNode.getNodeById("cpepv_center");
+			cpepvRadius = (GUIElementNode)screenNode.getNodeById("cpepv_radius");
+			cpepvObbAxis0 = (GUIElementNode)screenNode.getNodeById("cpepv_obb_axis0");
+			cpepvObbAxis1 = (GUIElementNode)screenNode.getNodeById("cpepv_obb_axis1");
+
+			// sphere particle emitter
+			speCount = (GUIElementNode)screenNode.getNodeById("spe_count");
+			speLifeTime = (GUIElementNode)screenNode.getNodeById("spe_lifetime");
+			speLifeTimeRnd = (GUIElementNode)screenNode.getNodeById("spe_lifetimernd");
+			speCountMass = (GUIElementNode)screenNode.getNodeById("spe_count_mass");
+			speCountMassRnd = (GUIElementNode)screenNode.getNodeById("spe_count_massrnd");
+			speVelocity = (GUIElementNode)screenNode.getNodeById("spe_velocity");
+			speVelocityRnd = (GUIElementNode)screenNode.getNodeById("spe_velocityrnd");
+			speColorStart = (GUIElementNode)screenNode.getNodeById("spe_colorstart");
+			speColorEnd = (GUIElementNode)screenNode.getNodeById("spe_colorend");
+			speCenter = (GUIElementNode)screenNode.getNodeById("spe_center");
+			speRadius = (GUIElementNode)screenNode.getNodeById("spe_radius");
+
+			// done
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
