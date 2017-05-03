@@ -188,11 +188,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
 											<space width="5" />
-											<input id="ppe_count_mass" name="ppe_count_mass" width="150" height="auto" text="Mass" />
+											<input id="ppe_mass" name="ppe_mass" width="150" height="auto" text="Mass" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
 											<space width="5" />
-											<input id="ppe_count_massrnd" name="ppe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+											<input id="ppe_massrnd" name="ppe_massrnd" width="150" height="auto" text="Mass rnd" />
 										</layout>
 										<space height="5" />
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
@@ -253,11 +253,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
 											<space width="5" />
-											<input id="bbpe_count_mass" name="bbpe_count_mass" width="150" height="auto" text="Mass" />
+											<input id="bbpe_mass" name="bbpe_mass" width="150" height="auto" text="Mass" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
 											<space width="5" />
-											<input id="bbpe_count_massrnd" name="bbpe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+											<input id="bbpe_massrnd" name="bbpe_massrnd" width="150" height="auto" text="Mass rnd" />
 										</layout>
 										<space height="5" />
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
@@ -338,11 +338,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpe_count_mass" name="cpe_count_mass" width="150" height="auto" text="Mass" />
+											<input id="cpe_mass" name="cpe_mass" width="150" height="auto" text="Mass" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpe_count_massrnd" name="cpe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+											<input id="cpe_massrnd" name="cpe_massrnd" width="150" height="auto" text="Mass rnd" />
 										</layout>
 										<space height="5" />
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
@@ -416,11 +416,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpepv_count_mass" name="cpepv_count_mass" width="150" height="auto" text="Mass" />
+											<input id="cpepv_mass" name="cpepv_mass" width="150" height="auto" text="Mass" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
 											<space width="5" />
-											<input id="cpepv_count_massrnd" name="cpepv_count_massrnd" width="150" height="auto" text="Mass rnd" />
+											<input id="cpepv_massrnd" name="cpepv_massrnd" width="150" height="auto" text="Mass rnd" />
 										</layout>
 										<space height="5" />
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
@@ -494,11 +494,11 @@
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass" width="145" height="auto"/>
 											<space width="5" />
-											<input id="spe_count_mass" name="spe_count_mass" width="150" height="auto" text="Mass" />
+											<input id="spe_mass" name="spe_mass" width="150" height="auto" text="Mass" />
 											<space width="20" />
 											<text font="resources/gui/fonts/Foo_20.fnt" text="Mass rnd" width="145" height="auto"/>
 											<space width="5" />
-											<input id="spe_count_massrnd" name="spe_count_massrnd" width="150" height="auto" text="Mass rnd" />
+											<input id="spe_massrnd" name="spe_massrnd" width="150" height="auto" text="Mass rnd" />
 										</layout>
 										<space height="5" />
 										<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
