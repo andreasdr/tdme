@@ -14,6 +14,7 @@ import net.drewke.tdme.math.Vector3;
 public final class LevelEditorEntity extends Properties {
 
 	public enum EntityType {TRIGGER, MODEL, EMPTY, PARTICLESYSTEM};
+
 	public final static int ID_NONE = -1; 
 
 	private int id;

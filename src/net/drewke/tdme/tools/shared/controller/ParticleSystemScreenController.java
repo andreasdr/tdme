@@ -76,7 +76,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode cpeLifeTime;
 	private GUIElementNode cpeLifeTimeRnd;
 	private GUIElementNode cpeMass;
-	private GUIElementNode cpeMassrnd;
+	private GUIElementNode cpeMassRnd;
 	private GUIElementNode cpeVelocity;
 	private GUIElementNode cpeVelocityRnd;
 	private GUIElementNode cpeColorStart;
@@ -220,7 +220,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			cpeLifeTime = (GUIElementNode)screenNode.getNodeById("cpe_lifetime");
 			cpeLifeTimeRnd = (GUIElementNode)screenNode.getNodeById("cpe_lifetimernd");
 			cpeMass = (GUIElementNode)screenNode.getNodeById("cpe_mass");
-			cpeMassrnd = (GUIElementNode)screenNode.getNodeById("cpe_massrnd");
+			cpeMassRnd = (GUIElementNode)screenNode.getNodeById("cpe_massrnd");
 			cpeVelocity = (GUIElementNode)screenNode.getNodeById("cpe_velocity");
 			cpeVelocityRnd = (GUIElementNode)screenNode.getNodeById("cpe_velocityrnd");
 			cpeColorStart = (GUIElementNode)screenNode.getNodeById("cpe_colorstart");
