@@ -101,7 +101,15 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	 * @see net.drewke.tdme.engine.Entity#isEnabled()
 	 */
 	public boolean isEnabled() {
-		return enabled && enabledObjects.size() > 0;
+		return enabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#isActive()
+	 */
+	public boolean isActive() {
+		return enabledObjects.size() > 0;
 	}
 
 	/*

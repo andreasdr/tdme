@@ -428,7 +428,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			case OBJECT_PARTICLE_SYSTEM:
 				opsMaxCount.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getMaxCount()));
 				opsScale.getController().setValue(value.set(Tools.formatVector3(particleSystem.getObjectParticleSystem().getScale())));
-				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModel()));
+				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModelFileName()));
 				break;
 			case POINT_PARTICLE_SYSTEM:
 				ppsMaxPoints.getController().setValue(value.set(particleSystem.getPointParticleSystem().getMaxPoints()));
@@ -460,6 +460,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 
 		//
 		setParticleSystemType();
+
+		// re init entity in view
+		view.setEntity(view.getEntity());
 	}
 
 	/**
@@ -567,8 +570,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					cpepvLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
 					cpepvMass.getController().setValue(value.set(emitter.getMass(), 4));
 					cpepvMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
-					cpepvVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
-					cpepvVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+					cpepvVelocity.getController().setValue(value.set(emitter.getVelocity(), 4));
+					cpepvVelocityRnd.getController().setValue(value.set(emitter.getVelocityRnd(), 4));
 					cpepvColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
 					cpepvColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
 					cpepvCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
@@ -596,6 +599,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			default:
 				System.out.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
 		}
+
+		// re init entity in view
+		view.setEntity(view.getEntity());
 	}
 
 	/**

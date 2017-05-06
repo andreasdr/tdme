@@ -95,7 +95,7 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		modelFile = new File(entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
 
 		// set up model in engine
-		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
+		Tools.setupEntity(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
 		// Make model screenshot
 		Tools.oseThumbnail(drawable, entity);

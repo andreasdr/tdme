@@ -796,12 +796,16 @@ public final class Engine {
 				visibleObjects.add(object);
 			} else
 			if (entity instanceof ObjectParticleSystemEntity) {
-				ObjectParticleSystemEntity opse = (ObjectParticleSystemEntity)entity; 
-				visibleObjects.addAll(opse.getEnabledObjects());
+				ObjectParticleSystemEntity opse = (ObjectParticleSystemEntity)entity;
+				if (opse.isActive() == true) {
+					visibleObjects.addAll(opse.getEnabledObjects());
+				}
 			} else
 			if (entity instanceof PointsParticleSystemEntity) {
 				PointsParticleSystemEntity ppse = (PointsParticleSystemEntity)entity;
-				visiblePpses.add(ppse);
+				if (ppse.isActive() == true) {
+					visiblePpses.add(ppse);
+				}
 			}
 		}
 

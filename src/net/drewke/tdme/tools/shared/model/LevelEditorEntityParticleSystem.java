@@ -1,6 +1,7 @@
 package net.drewke.tdme.tools.shared.model;
 
 import net.drewke.tdme.engine.model.Color4;
+import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.math.Vector3;
 
 /**
@@ -26,7 +27,8 @@ public class LevelEditorEntityParticleSystem {
 
 		private Vector3 scale;
 		private int maxCount;
-		private String model;
+		private Model model;
+		private String modelFileName;
 
 		/**
 		 * Public constructor
@@ -34,7 +36,8 @@ public class LevelEditorEntityParticleSystem {
 		public ObjectParticleSystem() {
 			scale = new Vector3(1f, 1f, 1f);
 			maxCount = 10;
-			model = "";
+			model = null;
+			modelFileName = "";
 		}
 
 		/**
@@ -70,7 +73,7 @@ public class LevelEditorEntityParticleSystem {
 		/**
 		 * @return model
 		 */
-		public String getModel() {
+		public Model getModel() {
 			return model;
 		}
 
@@ -78,8 +81,23 @@ public class LevelEditorEntityParticleSystem {
 		 * Set model
 		 * @param model
 		 */
-		public void setModel(String model) {
+		public void setModel(Model model) {
 			this.model = model;
+		}
+
+		/**
+		 * @return model file name
+		 */
+		public String getModelFileName() {
+			return modelFileName;
+		}
+
+		/**
+		 * Set model file name 
+		 * @param model file name
+		 */
+		public void setModelFileName(String modelFileName) {
+			this.modelFileName = modelFileName;
 		}
 
 		/*
@@ -702,8 +720,8 @@ public class LevelEditorEntityParticleSystem {
 		private long lifeTimeRnd;
 		private float mass;
 		private float massRnd;
-		private Vector3 velocity;
-		private Vector3 velocityRnd;
+		private float velocity;
+		private float velocityRnd;
 		private Color4 colorStart;
 		private Color4 colorEnd;
 		private Vector3 center;
@@ -720,8 +738,8 @@ public class LevelEditorEntityParticleSystem {
 			lifeTimeRnd = 500;
 			mass = 0.001f;
 			massRnd = 0.001f;
-			velocity = new Vector3(1f,1f,1f);
-			velocityRnd = new Vector3(0.5f,0.5f,0.5f);
+			velocity = 1.0f;
+			velocityRnd = 0.5f;
 			colorStart = new Color4(1f, 1f, 1f, 1f);
 			colorEnd = new Color4(1f, 1f, 1f, 1f);
 			center = new Vector3(0f,0f,0f);
@@ -808,15 +826,31 @@ public class LevelEditorEntityParticleSystem {
 		/**
 		 * @return velocity
 		 */
-		public Vector3 getVelocity() {
+		public float getVelocity() {
 			return velocity;
+		}
+
+		/**
+		 * Set velocity
+		 * @param velocity
+		 */
+		public void setVelocity(float velocity) {
+			this.velocity = velocity;
 		}
 
 		/**
 		 * @return velocity rnd
 		 */
-		public Vector3 getVelocityRnd() {
+		public float getVelocityRnd() {
 			return velocityRnd;
+		}
+
+		/**
+		 * Set velocity rnd
+		 * @param velocity rnd
+		 */
+		public void setVelocityRnd(float velocityRnd) {
+			this.velocityRnd = velocityRnd;
 		}
 
 		/**

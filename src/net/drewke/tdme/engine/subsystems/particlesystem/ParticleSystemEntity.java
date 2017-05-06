@@ -25,6 +25,11 @@ public interface ParticleSystemEntity {
 	public boolean isEnabled();
 
 	/**
+	 * @return true if active / particles available
+	 */
+	public boolean isActive();
+
+	/**
 	 * Enable/disable rendering
 	 * @param enabled
 	 */

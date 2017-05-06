@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import net.drewke.tdme.engine.Camera;
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.PartitionNone;
@@ -27,7 +28,9 @@ import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
+import net.drewke.tdme.tools.leveleditor.logic.Level;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 
 import com.jogamp.opengl.GLAutoDrawable;
@@ -209,7 +212,7 @@ public final class Tools {
 	 * @param model
 	 */
 	public static void oseThumbnail(GLAutoDrawable drawable, LevelEditorEntity model) {
-		Tools.setupModel(model, osEngine, oseLookFromRotations, oseScale);
+		Tools.setupEntity(model, osEngine, oseLookFromRotations, oseScale);
 
 		// make thumbnail
 		osEngine.getSceneColor().set(0.5f, 0.5f, 0.5f, 1.0f);
@@ -331,26 +334,37 @@ public final class Tools {
 	}
 
 	/**
-	 * Set up model in given engine with look from rotations and scale
+	 * Set up entity in given engine with look from rotations and scale
 	 * @param entity
 	 * @param engine
 	 * @param look from rotations
 	 * @param scale
 	 */
-	public static void setupModel(LevelEditorEntity entity, Engine engine, Transformations lookFromRotations, float scale) {
+	public static void setupEntity(LevelEditorEntity entity, Engine engine, Transformations lookFromRotations, float scale) {
 		if (entity == null) return;
 
+		// entity bounding box
+		BoundingBox entityBoundingBox = null;
+
 		// add model to engine
-		Object3D modelObject = new Object3D("model", entity.getModel());
-		modelObject.setDynamicShadowingEnabled(true);
-		engine.addEntity(modelObject);
+		if (entity.getType() == EntityType.PARTICLESYSTEM) {
+			entityBoundingBox = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+			Entity particleSystemObject = Level.createParticleSystem(entity.getParticleSystem(), "model", true);
+			if (particleSystemObject != null) {
+				engine.addEntity(particleSystemObject);
+			}
+		} else {
+			entityBoundingBox = entity.getModel().getBoundingBox();
+			Object3D modelObject = new Object3D("model", entity.getModel());
+			modelObject.setDynamicShadowingEnabled(true);
+			engine.addEntity(modelObject);
+		}
 
 		// create ground object
-		BoundingBox modelBoundingBox = modelObject.getBoundingBox();
 		Model ground = createGroundModel(
-			(modelBoundingBox.getMax().getX() - modelBoundingBox.getMin().getX()) * 1f,
-			(modelBoundingBox.getMax().getZ() - modelBoundingBox.getMin().getZ()) * 1f,
-			modelBoundingBox.getMin().getY() - MathTools.EPSILON
+			(entityBoundingBox.getMax().getX() - entityBoundingBox.getMin().getX()) * 1f,
+			(entityBoundingBox.getMax().getZ() - entityBoundingBox.getMin().getZ()) * 1f,
+			entityBoundingBox.getMin().getY() - MathTools.EPSILON
 		);
 
 		// add ground to engine
@@ -374,10 +388,10 @@ public final class Tools {
 		light0.getDiffuse().set(0.5f,0.5f,0.5f,1f);
 		light0.getSpecular().set(1f,1f,1f,1f);
 		light0.getPosition().set(
-			modelBoundingBox.getMin().getX() + ((modelBoundingBox.getMax().getX() - modelBoundingBox.getMin().getX()) / 2f),
+			entityBoundingBox.getMin().getX() + ((entityBoundingBox.getMax().getX() - entityBoundingBox.getMin().getX()) / 2f),
 			//modelBoundingBox.getMax().getY(),
-			modelBoundingBox.getMin().getY() + ((modelBoundingBox.getMax().getY() - modelBoundingBox.getMin().getY()) / 2f),
-			-modelBoundingBox.getMin().getZ() * 4f,
+			entityBoundingBox.getMin().getY() + ((entityBoundingBox.getMax().getY() - entityBoundingBox.getMin().getY()) / 2f),
+			-entityBoundingBox.getMin().getZ() * 4f,
 			1f
 		);
 		light0.getSpotDirection().set(0f,0f,0f).sub(new Vector3(light0.getPosition().getArray()));
@@ -390,11 +404,11 @@ public final class Tools {
 
 		// model dimension
 		Vector3 dimension = 
-			modelBoundingBox.getMax().clone().
-			sub(modelBoundingBox.getMin());
+			entityBoundingBox.getMax().clone().
+			sub(entityBoundingBox.getMin());
 
 		// determine max dimension on each axis
-		float maxAxisDimension = computeMaxAxisDimension(modelBoundingBox); 
+		float maxAxisDimension = computeMaxAxisDimension(entityBoundingBox); 
 
 		// set up cam
 		Camera cam = engine.getCamera();
@@ -403,7 +417,7 @@ public final class Tools {
 
 		// look at
 		Vector3 lookAt =
-			modelBoundingBox.getMin().clone().add(
+			entityBoundingBox.getMin().clone().add(
 				dimension.clone().scale(0.5f)
 			);
 		cam.getLookAt().set(lookAt);

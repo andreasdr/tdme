@@ -9,6 +9,8 @@ import java.util.Properties;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.PartitionNone;
+import net.drewke.tdme.engine.primitives.BoundingBox;
+import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.controller.ParticleSystemScreenController;
@@ -100,13 +102,19 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		particleSystemFile = new File(entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
 
 		// set up model in engine
-		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
+		Tools.setupEntity(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
 		// Make model screenshot
 		Tools.oseThumbnail(drawable, entity);
 
 		// max axis dimension
-		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(entity.getModel().getBoundingBox()));
+		BoundingBox boundingBox = null;
+		if (entity.getModel() == null) {
+			boundingBox = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+		} else {
+			boundingBox = entity.getModel().getBoundingBox();
+		}
+		cameraRotationInputHandler.setMaxAxisDimension(Tools.computeMaxAxisDimension(boundingBox));
 
 		// 
 		updateGUIElements();
@@ -167,6 +175,13 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 			engine.reset();
 			initParticleSystem(drawable);
 			initParticleSystemRequested = false;
+		}
+
+		// emit and update
+		ParticleSystemEntity particleSystemEntity = (ParticleSystemEntity)engine.getEntity("model");
+		if (particleSystemEntity != null)  {
+			particleSystemEntity.emitParticles();
+			particleSystemEntity.updateParticles();
 		}
 
 		// delegate to entity display view
@@ -309,6 +324,9 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		onInitAdditionalScreens();
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
+
+		// init particle system
+		initParticleSystemRequested = true;
 	}
 
 	/**

@@ -5,13 +5,26 @@ import java.util.ArrayList;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.Object3D;
+import net.drewke.tdme.engine.ObjectParticleSystemEntity;
+import net.drewke.tdme.engine.PointsParticleSystemEntity;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.physics.RigidBody;
 import net.drewke.tdme.engine.physics.World;
+import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
+import net.drewke.tdme.engine.primitives.Sphere;
+import net.drewke.tdme.engine.subsystems.particlesystem.ParticleEmitter;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.BoundingBoxParticleEmitter;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitter;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitterPlaneVelocity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.ObjectParticleSystem;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.PointParticleEmitter;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.PointParticleSystem;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.SphereParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.utils.MutableString;
@@ -54,6 +67,156 @@ public class Level {
 				engine.getLightAt(i).getPosition().setY(engine.getLightAt(i).getPosition().getY() + translation.getY());
 				engine.getLightAt(i).getPosition().setZ(engine.getLightAt(i).getPosition().getZ() + translation.getZ());
 			}
+		}
+	}
+
+	/**
+	 * Create particle system
+	 * @param level editor entity particle system
+	 * @param id
+	 * @param enable dynamic shadows
+	 * @return engine entity
+	 */
+	public static Entity createParticleSystem(LevelEditorEntityParticleSystem particleSystem, String id, boolean enableDynamicShadows) {
+		// create emitter for engine
+		ParticleEmitter engineEmitter = null;
+
+		//
+		switch (particleSystem.getEmitter()) {
+			case NONE:
+				{
+					return null;
+				}
+			case POINT_PARTICLE_EMITTER:
+				{
+					PointParticleEmitter emitter = particleSystem.getPointParticleEmitter();
+					engineEmitter = new net.drewke.tdme.engine.subsystems.particlesystem.PointParticleEmitter(
+						emitter.getCount(),
+						emitter.getLifeTime(),
+						emitter.getLifeTimeRnd(),
+						emitter.getMass(),
+						emitter.getMassRnd(),
+						emitter.getPosition(),
+						emitter.getVelocity(),
+						emitter.getVelocityRnd(),
+						emitter.getColorStart(),
+						emitter.getColorEnd()
+					);
+					break;
+				}
+			case BOUNDINGBOX_PARTICLE_EMITTER:
+				{
+					BoundingBoxParticleEmitter emitter = particleSystem.getBoundingBoxParticleEmitters();
+					engineEmitter = new net.drewke.tdme.engine.subsystems.particlesystem.BoundingBoxParticleEmitter(
+						emitter.getCount(),
+						emitter.getLifeTime(),
+						emitter.getLifeTimeRnd(),
+						emitter.getMass(),
+						emitter.getMassRnd(),
+						new OrientedBoundingBox(
+							emitter.getObbCenter(),
+							emitter.getObbAxis0(),
+							emitter.getObbAxis1(),
+							emitter.getObbAxis2(),
+							emitter.getObbHalfextension()
+						),
+						emitter.getVelocity(),
+						emitter.getVelocityRnd(),
+						emitter.getColorStart(),
+						emitter.getColorEnd()
+					);
+					break;
+				}
+			case CIRCLE_PARTICLE_EMITTER:
+				{
+					CircleParticleEmitter emitter = particleSystem.getCircleParticleEmitter();
+					engineEmitter = new net.drewke.tdme.engine.subsystems.particlesystem.CircleParticleEmitter(
+						emitter.getCount(),
+						emitter.getLifeTime(),
+						emitter.getLifeTimeRnd(),
+						emitter.getAxis0(),
+						emitter.getAxis1(),
+						emitter.getCenter(),
+						emitter.getRadius(),
+						emitter.getMass(),
+						emitter.getMassRnd(),
+						emitter.getVelocity(),
+						emitter.getVelocityRnd(),
+						emitter.getColorStart(),
+						emitter.getColorEnd()
+					);
+					break;
+				}
+			case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
+				{
+					CircleParticleEmitterPlaneVelocity emitter = particleSystem.getCircleParticleEmitterPlaneVelocity();
+					engineEmitter = new net.drewke.tdme.engine.subsystems.particlesystem.CircleParticleEmitterPlaneVelocity(
+						emitter.getCount(),
+						emitter.getLifeTime(),
+						emitter.getLifeTimeRnd(),
+						emitter.getAxis0(),
+						emitter.getAxis1(),
+						emitter.getCenter(),
+						emitter.getRadius(),
+						emitter.getMass(),
+						emitter.getMassRnd(),
+						emitter.getVelocity(),
+						emitter.getVelocityRnd(),
+						emitter.getColorStart(),
+						emitter.getColorEnd()
+					);
+					break;
+				}
+			case SPHERE_PARTICLE_EMITTER:
+				{
+					SphereParticleEmitter emitter = particleSystem.getSphereParticleEmitter();
+					engineEmitter = new net.drewke.tdme.engine.subsystems.particlesystem.SphereParticleEmitter(
+						emitter.getCount(),
+						emitter.getLifeTime(),
+						emitter.getLifeTimeRnd(),
+						emitter.getMass(),
+						emitter.getMassRnd(),
+						new Sphere(
+							emitter.getCenter(),
+							emitter.getRadius()
+						),
+						emitter.getVelocity(),
+						emitter.getVelocityRnd(),
+						emitter.getColorStart(),
+						emitter.getColorEnd()
+					);
+					break;
+				}
+			default:
+				System.out.println("Level::createParticleSystem(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+				return null;
+		}
+
+		//
+		switch (particleSystem.getType()) {
+			case NONE:
+				return null;
+			case OBJECT_PARTICLE_SYSTEM:
+				ObjectParticleSystem objectParticleSystem = particleSystem.getObjectParticleSystem();
+				return new ObjectParticleSystemEntity(
+					id,
+					objectParticleSystem.getModel(), 
+					objectParticleSystem.getScale(),
+					enableDynamicShadows,
+					objectParticleSystem.getMaxCount(),
+					engineEmitter
+				);
+			case POINT_PARTICLE_SYSTEM:
+				PointParticleSystem pointParticleSystem = particleSystem.getPointParticleSystem();
+				return new PointsParticleSystemEntity(
+					id,
+					false,
+					engineEmitter,
+					pointParticleSystem.getMaxPoints()
+				);
+			default:
+				System.out.println("Level::createParticleSystem(): unknown particle system type '" + particleSystem.getType() + "'");
+				return null;
 		}
 	}
 

@@ -102,7 +102,15 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	 * @see net.drewke.tdme.engine.Entity#isEnabled()
 	 */
 	public boolean isEnabled() {
-		return enabled == true && active == true;
+		return enabled;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#isActive()
+	 */
+	public boolean isActive() {
+		return active;
 	}
 
 	/*

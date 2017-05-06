@@ -80,7 +80,7 @@ public class EmptyView extends View implements GUIInputEventHandler {
 		if (entity == null) return;
 
 		// set up entity in engine
-		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
+		Tools.setupEntity(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
 		// Make entity screenshot
 		Tools.oseThumbnail(drawable, entity);
