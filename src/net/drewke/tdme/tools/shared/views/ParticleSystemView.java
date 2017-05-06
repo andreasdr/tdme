@@ -53,7 +53,6 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		entityDisplayView = null;
 		loadParticleSystemRequested = false;
 		initParticleSystemRequested = false;
-		entity = null;
 		particleSystemFile = null;
 		cameraRotationInputHandler = new CameraRotationInputHandler(engine);
 		entity = new LevelEditorEntity(
@@ -101,7 +100,7 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		particleSystemFile = new File(entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
 
 		// set up model in engine
-		// Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
+		Tools.setupModel(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
 
 		// Make model screenshot
 		Tools.oseThumbnail(drawable, entity);
@@ -286,16 +285,18 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 
 		// particle system types
 		ArrayList<String> particleSystemTypes = new ArrayList<String>();
+		particleSystemTypes.add("None");
 		particleSystemTypes.add("Object Particle System");
 		particleSystemTypes.add("Points Particle System");
 		particleSystemScreenController.setParticleSystemTypes(particleSystemTypes);
 
 		// particle system types
 		ArrayList<String> particleSystemEmitters = new ArrayList<String>();
+		particleSystemEmitters.add("None");
 		particleSystemEmitters.add("Point Particle Emitter");
 		particleSystemEmitters.add("BoundingBox Particle Emitter");
 		particleSystemEmitters.add("Circle Particle Emitter");
-		// particleSystemEmitters.add("Circle Particle Emitter Plane Velocity");
+		particleSystemEmitters.add("Circle Particle Emitter Plane Velocity");
 		particleSystemEmitters.add("Sphere Particle Emitter");
 		particleSystemScreenController.setParticleSystemEmitters(particleSystemEmitters);
 

@@ -53,6 +53,31 @@ public final class Tools {
 	}
 
 	/**
+	 * Formats a vector3 to a human readable format
+	 * @param value
+	 * @return value as string
+	 */
+	public static String formatVector3(Vector3 value) {
+		return
+			formatFloat(value.getX()) + ", " +
+			formatFloat(value.getY()) + ", " +
+			formatFloat(value.getZ());
+	}
+
+	/**
+	 * Formats a color4 to a human readable format
+	 * @param value
+	 * @return value as string
+	 */
+	public static String formatColor4(Color4 value) {
+		return
+			formatFloat(value.getRed()) + ", " +
+			formatFloat(value.getGreen()) + ", " +
+			formatFloat(value.getBlue()) + ", " +
+			formatFloat(value.getAlpha());
+	}
+
+	/**
 	 * Convert string to array
 	 * @param text
 	 * @param length
@@ -307,16 +332,16 @@ public final class Tools {
 
 	/**
 	 * Set up model in given engine with look from rotations and scale
-	 * @param model
+	 * @param entity
 	 * @param engine
 	 * @param look from rotations
 	 * @param scale
 	 */
-	public static void setupModel(LevelEditorEntity model, Engine engine, Transformations lookFromRotations, float scale) {
-		if (model == null) return;
+	public static void setupModel(LevelEditorEntity entity, Engine engine, Transformations lookFromRotations, float scale) {
+		if (entity == null) return;
 
 		// add model to engine
-		Object3D modelObject = new Object3D("model", model.getModel());
+		Object3D modelObject = new Object3D("model", entity.getModel());
 		modelObject.setDynamicShadowingEnabled(true);
 		engine.addEntity(modelObject);
 
@@ -334,8 +359,8 @@ public final class Tools {
 		engine.addEntity(groundObject);
 
 		// add bounding volume if we have any
-		for (int i = 0; i < model.getBoundingVolumeCount(); i++) {
-			LevelEditorEntityBoundingVolume boundingVolume = model.getBoundingVolumeAt(i);
+		for (int i = 0; i < entity.getBoundingVolumeCount(); i++) {
+			LevelEditorEntityBoundingVolume boundingVolume = entity.getBoundingVolumeAt(i);
 			if (boundingVolume.getModel() == null) continue;
 			Object3D modelBoundingVolumeObject = new Object3D("model_bv." + i, boundingVolume.getModel());
 			modelBoundingVolumeObject.setEnabled(false);

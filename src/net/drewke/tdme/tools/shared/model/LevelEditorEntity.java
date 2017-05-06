@@ -25,8 +25,9 @@ public final class LevelEditorEntity extends Properties {
 	private String fileName;
 	private String thumbnail;
 	private Model model;
-	private ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes;
 	private Vector3 pivot;
+	private LevelEditorEntityParticleSystem particleSystem;
+	private ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes;
 
 	/**
 	 * Creates a level editor model
@@ -49,8 +50,11 @@ public final class LevelEditorEntity extends Properties {
 		this.fileName = fileName;
 		this.thumbnail = thumbnail;
 		this.model = model;
-		this.boundingVolumes = new ArrayList<LevelEditorEntityBoundingVolume>();
 		this.pivot = pivot;
+		if (this.type == EntityType.PARTICLESYSTEM) {
+			this.particleSystem = new LevelEditorEntityParticleSystem();
+		}
+		this.boundingVolumes = new ArrayList<LevelEditorEntityBoundingVolume>();
 	}
 
 	/**
@@ -141,11 +145,10 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
-	 * Set bounding volumes
-	 * @param bounding volumes
+	 * @return pivot
 	 */
-	protected void setBoundingVolumes(ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes) {
-		this.boundingVolumes = boundingVolumes;
+	public Vector3 getPivot() {
+		return pivot;
 	}
 
 	/**
@@ -201,10 +204,10 @@ public final class LevelEditorEntity extends Properties {
 	}
 
 	/**
-	 * @return pivot
+	 * @return level editor entity particle system
 	 */
-	public Vector3 getPivot() {
-		return pivot;
+	public LevelEditorEntityParticleSystem getParticleSystem() {
+		return particleSystem;
 	}
 
 	/*

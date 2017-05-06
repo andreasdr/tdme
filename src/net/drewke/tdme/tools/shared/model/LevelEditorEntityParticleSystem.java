@@ -34,7 +34,7 @@ public class LevelEditorEntityParticleSystem {
 		public ObjectParticleSystem() {
 			scale = new Vector3(1f, 1f, 1f);
 			maxCount = 10;
-			model = null;
+			model = "";
 		}
 
 		/**

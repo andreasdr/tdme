@@ -10,11 +10,17 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.BoundingBoxParticleEmitter;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitter;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitterPlaneVelocity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.PointParticleEmitter;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.SphereParticleEmitter;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
-import net.drewke.tdme.tools.shared.views.ModelViewerView;
 import net.drewke.tdme.tools.shared.views.ParticleSystemView;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
+import net.drewke.tdme.utils.MutableString;
 
 /**
  * Model viewer screen controller
@@ -22,6 +28,17 @@ import net.drewke.tdme.tools.viewer.TDMEViewer;
  * @version $Id$
  */
 public final class ParticleSystemScreenController extends ScreenController implements GUIActionListener, GUIChangeListener {
+
+	private final static String TYPE_NONE = "None";
+	private final static String TYPE_OBJECTPARTICLESYSTEM = "Object Particle System";
+	private final static String TYPE_POINTSPARTICLESYSTEM = "Points Particle System";
+
+	private final static String EMITTER_NONE = "None";
+	private final static String EMITTER_POINTPARTICLEEMITTER = "Point Particle Emitter";
+	private final static String EMITTER_BOUNDINGBOXPARTICLEEMITTER = "BoundingBox Particle Emitter";
+	private final static String EMITTER_CIRCLEPARTICLEEMITTER = "Circle Particle Emitter";
+	private final static String EMITTER_CIRCLEPARTICLEEMITTERPLANEVELOCITY = "Circle Particle Emitter Plane Velocity";
+	private final static String EMITTER_SPHEREPARTICLEEMITTER = "Sphere Particle Emitter";
 
 	private EntityBaseSubScreenController entityBaseSubScreenController;
 	private EntityDisplaySubScreenController entityDisplaySubScreenController;
@@ -112,6 +129,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode speCenter;
 	private GUIElementNode speRadius;
 
+	private MutableString value;
+
 	private FileDialogPath particleSystemPath;
 
 	/**
@@ -130,6 +149,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		});
 		this.entityDisplaySubScreenController = new EntityDisplaySubScreenController();
 		this.entityBoundingVolumeSubScreenController = new EntityBoundingVolumeSubScreenController(view.getPopUpsViews(), particleSystemPath);
+		this.value = new MutableString();
 	}
 
 	/**
@@ -398,19 +418,184 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	}
 
 	/**
-	 * On particle system type apply
+	 * Set particle system type
 	 */
-	public void onParticleSystemTypeApply() {
-		particleSystemType.getActiveConditions().removeAll();
-		particleSystemType.getActiveConditions().add(particleSystemTypes.getController().getValue().toString());
+	public void setParticleSystemType() {
+		LevelEditorEntityParticleSystem particleSystem = view.getEntity().getParticleSystem();
+		switch (particleSystem.getType()) {
+			case NONE:
+				break;
+			case OBJECT_PARTICLE_SYSTEM:
+				opsMaxCount.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getMaxCount()));
+				opsScale.getController().setValue(value.set(Tools.formatVector3(particleSystem.getObjectParticleSystem().getScale())));
+				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModel()));
+				break;
+			case POINT_PARTICLE_SYSTEM:
+				ppsMaxPoints.getController().setValue(value.set(particleSystem.getPointParticleSystem().getMaxPoints()));
+				break;
+			default:
+				System.out.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
+				break;
+		}
 	}
 
 	/**
-	 * On particle system emittter apply
+	 * On particle system type apply
+	 */
+	public void onParticleSystemTypeApply() {
+		String particleSystemTypeString = particleSystemTypes.getController().getValue().toString();
+		particleSystemType.getActiveConditions().removeAll();
+		particleSystemType.getActiveConditions().add(particleSystemTypeString);
+		if (particleSystemTypeString.equals(TYPE_NONE) == true) {
+			view.getEntity().getParticleSystem().setType(LevelEditorEntityParticleSystem.Type.NONE);
+		} else
+		if (particleSystemTypeString.equals(TYPE_OBJECTPARTICLESYSTEM) == true) {
+			view.getEntity().getParticleSystem().setType(LevelEditorEntityParticleSystem.Type.OBJECT_PARTICLE_SYSTEM);
+		} else
+		if (particleSystemTypeString.equals(TYPE_POINTSPARTICLESYSTEM) == true) {
+			view.getEntity().getParticleSystem().setType(LevelEditorEntityParticleSystem.Type.POINT_PARTICLE_SYSTEM);
+		} else {
+			System.out.println("ParticleSystemScreenController::onParticleSystemTypeApply(): unknown particle system type '" + particleSystemTypeString + "'");
+		}
+
+		//
+		setParticleSystemType();
+	}
+
+	/**
+	 * On particle system emitter apply
 	 */
 	public void onParticleSystemEmitterApply() {
+		LevelEditorEntityParticleSystem particleSystem = view.getEntity().getParticleSystem();
+		String particleSystemEmitterString = particleSystemEmitters.getController().getValue().toString();
 		particleSystemEmitter.getActiveConditions().removeAll();
-		particleSystemEmitter.getActiveConditions().add(particleSystemEmitters.getController().getValue().toString());
+		particleSystemEmitter.getActiveConditions().add(particleSystemEmitterString);
+
+		// set new emitter
+		if (particleSystemEmitterString.equals(EMITTER_NONE) == true) {
+			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.NONE);
+		} else
+		if (particleSystemEmitterString.equals(EMITTER_POINTPARTICLEEMITTER) == true) {
+			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.POINT_PARTICLE_EMITTER);
+		} else
+		if (particleSystemEmitterString.equals(EMITTER_BOUNDINGBOXPARTICLEEMITTER) == true) {
+			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.BOUNDINGBOX_PARTICLE_EMITTER);
+		} else
+		if (particleSystemEmitterString.equals(EMITTER_CIRCLEPARTICLEEMITTER) == true) {
+			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.CIRCLE_PARTICLE_EMITTER);
+		} else
+		if (particleSystemEmitterString.equals(EMITTER_CIRCLEPARTICLEEMITTERPLANEVELOCITY) == true) {
+			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY);
+		} else
+		if (particleSystemEmitterString.equals(EMITTER_SPHEREPARTICLEEMITTER) == true) {
+			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.SPHERE_PARTICLE_EMITTER);
+		} else {
+			System.out.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystemEmitterString + "'");
+		}
+
+		//
+		setParticleSystemEmitter();
+	}
+
+	/**
+	 * Set particle system emitter
+	 */
+	public void setParticleSystemEmitter() {
+		LevelEditorEntityParticleSystem particleSystem = view.getEntity().getParticleSystem();
+		switch (particleSystem.getEmitter()) {
+			case NONE:
+				{
+					break;
+				}
+			case POINT_PARTICLE_EMITTER:
+				{
+					PointParticleEmitter emitter = particleSystem.getPointParticleEmitter();
+					ppeCount.getController().setValue(value.set(emitter.getCount()));
+					ppeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
+					ppeLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
+					ppeMass.getController().setValue(value.set(emitter.getMass(), 4));
+					ppeMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
+					ppePosition.getController().setValue(value.set(Tools.formatVector3(emitter.getPosition())));
+					ppeVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
+					ppeVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+					ppeColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
+					ppeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
+					break;
+				}
+			case BOUNDINGBOX_PARTICLE_EMITTER:
+				{
+					BoundingBoxParticleEmitter emitter = particleSystem.getBoundingBoxParticleEmitters();
+					bbpeCount.getController().setValue(value.set(emitter.getCount()));
+					bbpeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
+					bbpeLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
+					bbpeMass.getController().setValue(value.set(emitter.getMass(), 4));
+					bbpeMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
+					bbpeVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
+					bbpeVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+					bbpeColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
+					bbpeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
+					bbpeObbCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getObbCenter())));
+					bbpeObbHalfextension.getController().setValue(value.set(Tools.formatVector3(emitter.getObbHalfextension())));
+					bbpeObbAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getObbAxis0())));
+					bbpeObbAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getObbAxis1())));
+					bbpeObbAxis2.getController().setValue(value.set(Tools.formatVector3(emitter.getObbAxis2())));
+					break;
+				}
+			case CIRCLE_PARTICLE_EMITTER:
+				{
+						CircleParticleEmitter emitter = particleSystem.getCircleParticleEmitter();
+						cpeCount.getController().setValue(value.set(emitter.getCount()));
+						cpeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
+						cpeLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
+						cpeMass.getController().setValue(value.set(emitter.getMass(), 4));
+						cpeMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
+						cpeVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
+						cpeVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+						cpeColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
+						cpeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
+						cpeCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
+						cpeRadius.getController().setValue(value.set(emitter.getRadius(), 4));
+						cpeAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis0())));
+						cpeAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis1())));
+					break;
+				}
+			case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
+				{
+					CircleParticleEmitterPlaneVelocity emitter = particleSystem.getCircleParticleEmitterPlaneVelocity();
+					cpepvCount.getController().setValue(value.set(emitter.getCount()));
+					cpepvLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
+					cpepvLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
+					cpepvMass.getController().setValue(value.set(emitter.getMass(), 4));
+					cpepvMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
+					cpepvVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
+					cpepvVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+					cpepvColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
+					cpepvColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
+					cpepvCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
+					cpepvRadius.getController().setValue(value.set(emitter.getRadius(), 4));
+					cpepvAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis0())));
+					cpepvAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis1())));
+					break;
+				}
+			case SPHERE_PARTICLE_EMITTER:
+				{
+					SphereParticleEmitter emitter = particleSystem.getSphereParticleEmitter();
+					speCount.getController().setValue(value.set(emitter.getCount()));
+					speLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
+					speLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
+					speMass.getController().setValue(value.set(emitter.getMass(), 4));
+					speMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
+					speVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
+					speVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+					speColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
+					speColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
+					speCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
+					speRadius.getController().setValue(value.set(emitter.getRadius(), 4));
+					break;
+				}
+			default:
+				System.out.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+		}
 	}
 
 	/**
