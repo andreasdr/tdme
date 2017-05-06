@@ -543,20 +543,20 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				}
 			case CIRCLE_PARTICLE_EMITTER:
 				{
-						CircleParticleEmitter emitter = particleSystem.getCircleParticleEmitter();
-						cpeCount.getController().setValue(value.set(emitter.getCount()));
-						cpeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
-						cpeLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
-						cpeMass.getController().setValue(value.set(emitter.getMass(), 4));
-						cpeMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
-						cpeVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
-						cpeVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
-						cpeColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
-						cpeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
-						cpeCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
-						cpeRadius.getController().setValue(value.set(emitter.getRadius(), 4));
-						cpeAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis0())));
-						cpeAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis1())));
+					CircleParticleEmitter emitter = particleSystem.getCircleParticleEmitter();
+					cpeCount.getController().setValue(value.set(emitter.getCount()));
+					cpeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
+					cpeLifeTimeRnd.getController().setValue(value.set((int)emitter.getLifeTimeRnd()));
+					cpeMass.getController().setValue(value.set(emitter.getMass(), 4));
+					cpeMassRnd.getController().setValue(value.set(emitter.getMassRnd(), 4));
+					cpeVelocity.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocity())));
+					cpeVelocityRnd.getController().setValue(value.set(Tools.formatVector3(emitter.getVelocityRnd())));
+					cpeColorStart.getController().setValue(value.set(Tools.formatColor4(emitter.getColorStart())));
+					cpeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
+					cpeCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
+					cpeRadius.getController().setValue(value.set(emitter.getRadius(), 4));
+					cpeAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis0())));
+					cpeAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis1())));
 					break;
 				}
 			case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
