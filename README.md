@@ -112,8 +112,8 @@ TDME
         - documentation
 
     - What is WIP
-        - particle system editor
-        - rigid body simulator(needs to be updated to newer "ReactPhysics3D 0.5")
+        - particle system editor
+        - rigid body simulator(needs to be updated to newer "ReactPhysics3D 0.5")
 
     - Technology
         - designed for simple multi threading
