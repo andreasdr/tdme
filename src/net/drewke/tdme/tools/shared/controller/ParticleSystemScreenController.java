@@ -422,15 +422,22 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 */
 	public void setParticleSystemType() {
 		LevelEditorEntityParticleSystem particleSystem = view.getEntity().getParticleSystem();
+		particleSystemType.getActiveConditions().removeAll();
 		switch (particleSystem.getType()) {
 			case NONE:
+				particleSystemTypes.getController().setValue(value.set(TYPE_NONE));
+				particleSystemType.getActiveConditions().add(TYPE_NONE);
 				break;
 			case OBJECT_PARTICLE_SYSTEM:
+				particleSystemTypes.getController().setValue(value.set(TYPE_OBJECTPARTICLESYSTEM));
+				particleSystemType.getActiveConditions().add(TYPE_OBJECTPARTICLESYSTEM);
 				opsMaxCount.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getMaxCount()));
 				opsScale.getController().setValue(value.set(Tools.formatVector3(particleSystem.getObjectParticleSystem().getScale())));
 				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModelFileName()));
 				break;
 			case POINT_PARTICLE_SYSTEM:
+				particleSystemTypes.getController().setValue(value.set(TYPE_POINTSPARTICLESYSTEM));
+				particleSystemType.getActiveConditions().add(TYPE_POINTSPARTICLESYSTEM);
 				ppsMaxPoints.getController().setValue(value.set(particleSystem.getPointParticleSystem().getMaxPoints()));
 				break;
 			default:
@@ -538,10 +545,12 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			switch (particleSystem.getEmitter()) {
 				case NONE:
 					{
+						particleSystemEmitters.getController().setValue(value.set(EMITTER_NONE));
 						break;
 					}
 				case POINT_PARTICLE_EMITTER:
 					{
+						particleSystemEmitters.getController().setValue(value.set(EMITTER_POINTPARTICLEEMITTER));
 						PointParticleEmitter emitter = particleSystem.getPointParticleEmitter();
 						emitter.setCount(Tools.convertToInt(ppeCount.getController().getValue().toString()));
 						emitter.setLifeTime(Tools.convertToInt(ppeLifeTime.getController().getValue().toString()));
@@ -557,6 +566,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					}
 				case BOUNDINGBOX_PARTICLE_EMITTER:
 					{
+						particleSystemEmitters.getController().setValue(value.set(EMITTER_BOUNDINGBOXPARTICLEEMITTER));
 						BoundingBoxParticleEmitter emitter = particleSystem.getBoundingBoxParticleEmitters();
 						emitter.setCount(Tools.convertToInt(bbpeCount.getController().getValue().toString()));
 						emitter.setLifeTime(Tools.convertToInt(bbpeLifeTime.getController().getValue().toString()));
@@ -576,6 +586,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					}
 				case CIRCLE_PARTICLE_EMITTER:
 					{
+						particleSystemEmitters.getController().setValue(value.set(EMITTER_CIRCLEPARTICLEEMITTER));
 						CircleParticleEmitter emitter = particleSystem.getCircleParticleEmitter();
 						emitter.setCount(Tools.convertToInt(cpeCount.getController().getValue().toString()));
 						emitter.setLifeTime(Tools.convertToInt(cpeLifeTime.getController().getValue().toString()));
@@ -594,6 +605,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					}
 				case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
 					{
+						particleSystemEmitters.getController().setValue(value.set(EMITTER_CIRCLEPARTICLEEMITTERPLANEVELOCITY));
 						CircleParticleEmitterPlaneVelocity emitter = particleSystem.getCircleParticleEmitterPlaneVelocity();
 						emitter.setCount(Tools.convertToInt(cpepvCount.getController().getValue().toString()));
 						emitter.setLifeTime(Tools.convertToInt(cpepvLifeTime.getController().getValue().toString()));
@@ -612,6 +624,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					}
 				case SPHERE_PARTICLE_EMITTER:
 					{
+						particleSystemEmitters.getController().setValue(value.set(EMITTER_SPHEREPARTICLEEMITTER));
 						SphereParticleEmitter emitter = particleSystem.getSphereParticleEmitter();
 						emitter.setCount(Tools.convertToInt(speCount.getController().getValue().toString()));
 						emitter.setLifeTime(Tools.convertToInt(speLifeTime.getController().getValue().toString()));
@@ -641,14 +654,19 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 * Set particle system emitter
 	 */
 	public void setParticleSystemEmitter() {
+		particleSystemEmitter.getActiveConditions().removeAll();
 		LevelEditorEntityParticleSystem particleSystem = view.getEntity().getParticleSystem();
 		switch (particleSystem.getEmitter()) {
 			case NONE:
 				{
+					particleSystemEmitters.getController().setValue(value.set(EMITTER_NONE));
+					particleSystemEmitter.getActiveConditions().add(EMITTER_NONE);
 					break;
 				}
 			case POINT_PARTICLE_EMITTER:
 				{
+					particleSystemEmitters.getController().setValue(value.set(EMITTER_POINTPARTICLEEMITTER));
+					particleSystemEmitter.getActiveConditions().add(EMITTER_POINTPARTICLEEMITTER);
 					PointParticleEmitter emitter = particleSystem.getPointParticleEmitter();
 					ppeCount.getController().setValue(value.set(emitter.getCount()));
 					ppeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
@@ -664,6 +682,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				}
 			case BOUNDINGBOX_PARTICLE_EMITTER:
 				{
+					particleSystemEmitters.getController().setValue(value.set(EMITTER_BOUNDINGBOXPARTICLEEMITTER));
+					particleSystemEmitter.getActiveConditions().add(EMITTER_BOUNDINGBOXPARTICLEEMITTER);
 					BoundingBoxParticleEmitter emitter = particleSystem.getBoundingBoxParticleEmitters();
 					bbpeCount.getController().setValue(value.set(emitter.getCount()));
 					bbpeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
@@ -683,6 +703,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				}
 			case CIRCLE_PARTICLE_EMITTER:
 				{
+					particleSystemEmitters.getController().setValue(value.set(EMITTER_CIRCLEPARTICLEEMITTER));
+					particleSystemEmitter.getActiveConditions().add(EMITTER_CIRCLEPARTICLEEMITTER);
 					CircleParticleEmitter emitter = particleSystem.getCircleParticleEmitter();
 					cpeCount.getController().setValue(value.set(emitter.getCount()));
 					cpeLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
@@ -701,6 +723,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				}
 			case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
 				{
+					particleSystemEmitters.getController().setValue(value.set(EMITTER_CIRCLEPARTICLEEMITTERPLANEVELOCITY));
+					particleSystemEmitter.getActiveConditions().add(EMITTER_CIRCLEPARTICLEEMITTERPLANEVELOCITY);
 					CircleParticleEmitterPlaneVelocity emitter = particleSystem.getCircleParticleEmitterPlaneVelocity();
 					cpepvCount.getController().setValue(value.set(emitter.getCount()));
 					cpepvLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
@@ -719,6 +743,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				}
 			case SPHERE_PARTICLE_EMITTER:
 				{
+					particleSystemEmitters.getController().setValue(value.set(EMITTER_SPHEREPARTICLEEMITTER));
+					particleSystemEmitter.getActiveConditions().add(EMITTER_SPHEREPARTICLEEMITTER);
 					SphereParticleEmitter emitter = particleSystem.getSphereParticleEmitter();
 					speCount.getController().setValue(value.set(emitter.getCount()));
 					speLifeTime.getController().setValue(value.set((int)emitter.getLifeTime()));
@@ -793,7 +819,6 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						particleSystemPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 						view.getPopUpsViews().getFileDialogScreenController().close();
 					} catch (Exception ioe) {
-						ioe.printStackTrace();
 						showErrorPopUp("Warning", ioe.getMessage());
 					}
 				}

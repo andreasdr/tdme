@@ -1276,4 +1276,15 @@ public class LevelEditorEntityParticleSystem {
 		return spe;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return "LevelEditorEntityParticleSystem [type=" + type + ", ops=" + ops
+				+ ", pps=" + pps + ", emitter=" + emitter + ", ppe=" + ppe
+				+ ", bbpe=" + bbpe + ", cpe=" + cpe + ", cpepv=" + cpepv
+				+ ", spe=" + spe + "]";
+	}
+
 }

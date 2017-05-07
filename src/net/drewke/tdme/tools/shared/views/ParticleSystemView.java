@@ -168,6 +168,8 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 			loadParticleSystemRequested = false;
 			loadParticleSystem();
 			cameraRotationInputHandler.reset();
+			particleSystemScreenController.setParticleSystemType();
+			particleSystemScreenController.setParticleSystemEmitter();
 		}
 
 		// init model
