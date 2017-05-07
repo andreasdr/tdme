@@ -90,7 +90,6 @@ public abstract class GLES2Renderer extends GLRenderer {
 		gl.glBlendFunc(GLES2.GL_SRC_ALPHA, GLES2.GL_ONE_MINUS_SRC_ALPHA);  // enable alpha transparency
 		gl.glBlendEquation(GLES2.GL_FUNC_ADD);
 		gl.glDisable(GLES2.GL_BLEND);
-		// TODO: gl.glPointSize(5f);
 	}
 
 	/*
@@ -367,7 +366,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 		this.viewPortY = x;
 		this.viewPortWidth = width;
 		this.viewPortHeight = height;
-		this.pointSize = width * 0.00625f;
+		this.pointSize = width / 10f;
 	}
 
 	/*

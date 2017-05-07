@@ -1,11 +1,6 @@
 package net.drewke.tdme.engine.subsystems.particlesystem;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-
 import net.drewke.tdme.engine.Engine;
-import net.drewke.tdme.engine.fileio.textures.ImageLoader;
-import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.fileio.textures.TextureLoader;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
@@ -22,6 +17,7 @@ public final class ParticlesShader {
 	private int renderVertexShaderId;
 
 	private int uniformMVPMatrix;
+	private int uniformMVMatrix;
 	private int uniformPointSize;
 	private int uniformDiffuseTextureUnit;
 	private int uniformEffectColorMul;
@@ -96,7 +92,11 @@ public final class ParticlesShader {
 		//	globals
 		uniformMVPMatrix =  renderer.getProgramUniformLocation(renderProgramId, "mvpMatrix");
 		if (uniformMVPMatrix == -1) return;
+		uniformMVMatrix =  renderer.getProgramUniformLocation(renderProgramId, "mvMatrix");
+		if (uniformMVMatrix == -1) return;
 		uniformPointSize =  renderer.getProgramUniformLocation(renderProgramId, "pointSize");
+		if (uniformPointSize == -1) return;
+
 		//
 		uniformDiffuseTextureUnit = renderer.getProgramUniformLocation(renderProgramId, "diffuseTextureUnit");
 		if (uniformDiffuseTextureUnit == -1) return;
@@ -163,6 +163,7 @@ public final class ParticlesShader {
 
 		// upload matrices
 		renderer.setProgramUniformFloatMatrix4x4(uniformMVPMatrix, mvpMatrix.getArray());
+		renderer.setProgramUniformFloatMatrix4x4(uniformMVMatrix, renderer.getModelViewMatrix().getArray());
 	}
 
 }

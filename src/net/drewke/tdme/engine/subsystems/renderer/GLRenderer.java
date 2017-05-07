@@ -89,9 +89,9 @@ abstract public class GLRenderer {
 	protected Matrix4x4 modelViewMatrix;
 	protected Matrix4x4 viewportMatrix;
 
-	public float pointSize;
-
 	public boolean renderingTexturingClientState;
+
+	public float pointSize;
 
 	/**
 	 * public constructor
@@ -130,7 +130,6 @@ abstract public class GLRenderer {
 		cameraMatrix = new Matrix4x4().identity();
 		modelViewMatrix = new Matrix4x4().identity();
 		viewportMatrix = new Matrix4x4().identity();
-		pointSize = 1f;
 
 		//
 		viewPortX = 0;

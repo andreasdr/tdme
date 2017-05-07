@@ -126,6 +126,7 @@ public abstract class GL2Renderer extends GLRenderer {
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);  // enable alpha transparency
 		gl.glBlendEquation(GL2.GL_FUNC_ADD);
 		gl.glDisable(GL2.GL_BLEND);
+		gl.glEnable(GL2.GL_PROGRAM_POINT_SIZE_EXT);
 
 		//
 		setTextureUnit(0);
@@ -411,8 +412,7 @@ public abstract class GL2Renderer extends GLRenderer {
 		this.viewPortY = x;
 		this.viewPortWidth = width;
 		this.viewPortHeight = height;
-		this.pointSize = width * 0.00625f;
-		gl.glPointSize(this.pointSize);
+		this.pointSize = width / 10f;
 	}
 
 	/*
