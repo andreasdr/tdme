@@ -793,6 +793,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						particleSystemPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 						view.getPopUpsViews().getFileDialogScreenController().close();
 					} catch (Exception ioe) {
+						ioe.printStackTrace();
 						showErrorPopUp("Warning", ioe.getMessage());
 					}
 				}

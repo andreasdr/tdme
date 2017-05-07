@@ -190,8 +190,8 @@ public class LevelEditorEntityParticleSystem {
 			position = new Vector3(0f,0f,0f);
 			velocity = new Vector3(0f,1f,0f);
 			velocityRnd = new Vector3(0f,0.5f,0f);
-			colorStart = new Color4(1f, 1f, 1f, 1f);
-			colorEnd = new Color4(1f, 1f, 1f, 1f);
+			colorStart = new Color4(0.5f, 0.5f, 0.5f, 0.5f);
+			colorEnd = new Color4(1f, 1f, 1f, 0.5f);
 		}
 
 		/**
@@ -351,8 +351,8 @@ public class LevelEditorEntityParticleSystem {
 			massRnd = 0f;
 			velocity = new Vector3(0f,1f,0f);
 			velocityRnd = new Vector3(0f,0.5f,0f);
-			colorStart = new Color4(1f, 1f, 1f, 1f);
-			colorEnd = new Color4(1f, 1f, 1f, 1f);
+			colorStart = new Color4(0.5f, 0.5f, 0.5f, 0.5f);
+			colorEnd = new Color4(1f, 1f, 1f, 0.5f);
 			obbCenter = new Vector3(0f,0f,0f);
 			obbHalfextension = new Vector3(0.5f, 0.5f, 0.5f);
 			obbAxis0 = new Vector3(1f,0f,0f);
@@ -546,8 +546,8 @@ public class LevelEditorEntityParticleSystem {
 			massRnd = 0f;
 			velocity = new Vector3(0f,1f,0f);
 			velocityRnd = new Vector3(0f,0.5f,0f);
-			colorStart = new Color4(1f, 1f, 1f, 1f);
-			colorEnd = new Color4(1f, 1f, 1f, 1f);
+			colorStart = new Color4(0.5f, 0.5f, 0.5f, 0.5f);
+			colorEnd = new Color4(1f, 1f, 1f, 0.5f);
 			center = new Vector3(0f,0f,0f);
 			radius = 0.5f;
 			axis0 = new Vector3(1f,0f,0f);
@@ -740,8 +740,8 @@ public class LevelEditorEntityParticleSystem {
 			massRnd = 0f;
 			velocity = 1.0f;
 			velocityRnd = 0.5f;
-			colorStart = new Color4(1f, 1f, 1f, 1f);
-			colorEnd = new Color4(1f, 1f, 1f, 1f);
+			colorStart = new Color4(0.5f, 0.5f, 0.5f, 0.5f);
+			colorEnd = new Color4(1f, 1f, 1f, 0.5f);
 			center = new Vector3(0f,0f,0f);
 			radius = 0.5f;
 			axis0 = new Vector3(1f,0f,0f);
@@ -949,8 +949,8 @@ public class LevelEditorEntityParticleSystem {
 			massRnd = 0f;
 			velocity = new Vector3(0f,1f,0f);
 			velocityRnd = new Vector3(0f,0.5f,0f);
-			colorStart = new Color4(1f, 1f, 1f, 1f);
-			colorEnd = new Color4(1f, 1f, 1f, 1f);
+			colorStart = new Color4(0.5f, 0.5f, 0.5f, 0.5f);
+			colorEnd = new Color4(1f, 1f, 1f, 0.5f);
 			center = new Vector3(0f,0f,0f);
 			radius = 0.5f;
 		}
