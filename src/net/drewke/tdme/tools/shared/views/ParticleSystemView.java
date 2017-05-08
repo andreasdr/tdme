@@ -224,6 +224,7 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
 			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
 			settings.put("particlesystem.path", particleSystemScreenController.getParticleSystemPath().getPath());
+			settings.put("model.path", particleSystemScreenController.getModelPath().getPath());
 			settings.store(fos, null);
 			fos.close();
 		} catch (Exception ioe) {
@@ -263,7 +264,8 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 			entityDisplayView.setDisplayBoundingVolume((tmp = settings.get("display.boundingvolumes")) != null?tmp.equals("true") == true:false);
 			entityDisplayView.setDisplayGroundPlate((tmp = settings.get("display.groundplate")) != null?tmp.equals("true") == true:false);
 			entityDisplayView.setDisplayShadowing((tmp = settings.get("display.shadowing")) != null?tmp.equals("true") == true:false); 
-			particleSystemScreenController.getParticleSystemPath().setPath((tmp = settings.get("model.path")) != null?tmp.toString():"");
+			particleSystemScreenController.getParticleSystemPath().setPath((tmp = settings.get("particlesystem.path")) != null?tmp.toString():"");
+			particleSystemScreenController.getModelPath().setPath((tmp = settings.get("model.path")) != null?tmp.toString():"");
 			fis.close();
 		} catch (Exception ioe) {
 			if (fis != null) try { fis.close(); } catch (IOException ioeInner) {}

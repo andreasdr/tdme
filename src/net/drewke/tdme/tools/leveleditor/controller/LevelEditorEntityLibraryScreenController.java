@@ -296,7 +296,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 						modelPath,
 						"Load from: ", 
 						new String[]{"tmm", "dae", "tm"},
-						popUps.getFileDialogScreenController().getFileName(),
+						"",
 						new Action() {
 							public void performAction() {
 								try {

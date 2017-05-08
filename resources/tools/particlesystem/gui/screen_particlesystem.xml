@@ -124,7 +124,9 @@
 									<layout width="auto" height="auto" alignment="horizontal" vertical-align="center">
 										<text font="resources/gui/fonts/Foo_20.fnt" text="Model" width="145" height="auto"/>
 										<space width="5" />
-										<input id="ops_model" name="ops_model" width="470" height="auto" text="Model" />
+										<input id="ops_model" name="ops_model" width="400" height="auto" text="Model" />
+										<space width="10" />
+										<button id="button_ops_model_file" name="button_ops_model_file" text="Load" width="60" height="auto" />
 									</layout>
 									<space height="10" />
 									<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">

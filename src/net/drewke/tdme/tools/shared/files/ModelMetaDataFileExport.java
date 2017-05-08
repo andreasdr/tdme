@@ -124,11 +124,28 @@ public final class ModelMetaDataFileExport {
 					case OBJECT_PARTICLE_SYSTEM: 
 						{
 							JSONObject jObjectParticleSystem = new JSONObject();
+							// do we have a model file name?
+							if (particleSystem.getObjectParticleSystem().getModelFile() != null &&
+								particleSystem.getObjectParticleSystem().getModelFile().length() > 0) {
+								// yep, convert to .tm
+								String modelPathName = Tools.getPath(particleSystem.getObjectParticleSystem().getModelFile());
+								String modelFileName = Tools.getFileName(
+									particleSystem.getObjectParticleSystem().getModelFile() + 
+									(particleSystem.getObjectParticleSystem().getModelFile().endsWith(".tm") == false?".tm":"")
+								);
+								TMWriter.write(
+									particleSystem.getObjectParticleSystem().getModel(),
+									modelPathName,
+									modelFileName
+								);
+								// and store to file
+								particleSystem.getObjectParticleSystem().setModelFile(modelPathName + "/" + modelFileName);
+							}
 							jObjectParticleSystem.put("mc", particleSystem.getObjectParticleSystem().getMaxCount());
 							jObjectParticleSystem.put("sx", particleSystem.getObjectParticleSystem().getScale().getX());
 							jObjectParticleSystem.put("sy", particleSystem.getObjectParticleSystem().getScale().getY());
 							jObjectParticleSystem.put("sz", particleSystem.getObjectParticleSystem().getScale().getZ());
-							jObjectParticleSystem.put("mf", particleSystem.getObjectParticleSystem().getModelFileName());
+							jObjectParticleSystem.put("mf", particleSystem.getObjectParticleSystem().getModelFile());
 							jParticleSystem.put("ops", jObjectParticleSystem);
 							break;
 						}

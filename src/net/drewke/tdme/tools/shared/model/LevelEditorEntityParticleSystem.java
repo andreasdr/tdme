@@ -1,8 +1,11 @@
 package net.drewke.tdme.tools.shared.model;
 
+import net.drewke.tdme.engine.fileio.models.DAEReader;
+import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.shared.tools.Tools;
 
 /**
  * Level editor entity particle system
@@ -86,18 +89,26 @@ public class LevelEditorEntityParticleSystem {
 		}
 
 		/**
-		 * @return model file name
+		 * @return model file
 		 */
-		public String getModelFileName() {
+		public String getModelFile() {
 			return modelFileName;
 		}
 
 		/**
-		 * Set model file name 
+		 * Set model file
 		 * @param model file name
 		 */
-		public void setModelFileName(String modelFileName) {
+		public void setModelFile(String modelFileName) throws Exception {
 			this.modelFileName = modelFileName;
+			if (modelFileName.toLowerCase().endsWith(".tm")) {
+				model = TMReader.read(Tools.getPath(modelFileName), Tools.getFileName(modelFileName));
+			} else
+			if (modelFileName.toLowerCase().endsWith(".dae")) {
+				model = DAEReader.read(Tools.getPath(modelFileName), Tools.getFileName(modelFileName));
+			} else {
+				throw new Exception("LevelEditorEntityParticleSystem::ObjectParticleSystem::setModelFileName(): unsupported model '" +  modelFileName + "'");
+			}
 		}
 
 		/*

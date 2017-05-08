@@ -198,6 +198,7 @@ public class Level {
 				return null;
 			case OBJECT_PARTICLE_SYSTEM:
 				ObjectParticleSystem objectParticleSystem = particleSystem.getObjectParticleSystem();
+				if (objectParticleSystem.getModel() == null) return null;
 				return new ObjectParticleSystemEntity(
 					id,
 					objectParticleSystem.getModel(), 

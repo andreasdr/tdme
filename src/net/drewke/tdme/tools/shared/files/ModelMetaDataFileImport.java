@@ -150,7 +150,11 @@ public final class ModelMetaDataFileImport {
 						objectParticleSystem.getScale().setX((float)jObjectParticleSystem.getDouble("sx"));
 						objectParticleSystem.getScale().setY((float)jObjectParticleSystem.getDouble("sy"));
 						objectParticleSystem.getScale().setZ((float)jObjectParticleSystem.getDouble("sz"));
-						objectParticleSystem.setModelFileName(jObjectParticleSystem.getString("mf"));
+						try {
+							objectParticleSystem.setModelFile(jObjectParticleSystem.getString("mf"));
+						} catch (Exception exception) {
+							System.out.println("ModelMetaDataFileImport::doImport(): Failed to set model file: " + exception.getMessage());
+						}
 						break;
 					}
 				case POINT_PARTICLE_SYSTEM:

@@ -10,6 +10,9 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.BoundingBoxParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitter;
@@ -132,6 +135,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private MutableString value;
 
 	private FileDialogPath particleSystemPath;
+	private FileDialogPath modelPath;
 
 	/**
 	 * Public constructor
@@ -139,6 +143,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 */
 	public ParticleSystemScreenController(ParticleSystemView view) {
 		this.particleSystemPath = new FileDialogPath(".");
+		this.modelPath = new FileDialogPath(".");
 		this.view = view;
 		final ParticleSystemView finalView = view;
 		this.entityBaseSubScreenController = new EntityBaseSubScreenController(view.getPopUpsViews(), new Action() {
@@ -179,6 +184,13 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 */
 	public FileDialogPath getParticleSystemPath() {
 		return particleSystemPath;
+	}
+
+	/**
+	 * @return model path
+	 */
+	public FileDialogPath getModelPath() {
+		return modelPath;
 	}
 
 	/*
@@ -433,7 +445,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				particleSystemType.getActiveConditions().add(TYPE_OBJECTPARTICLESYSTEM);
 				opsMaxCount.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getMaxCount()));
 				opsScale.getController().setValue(value.set(Tools.formatVector3(particleSystem.getObjectParticleSystem().getScale())));
-				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModelFileName()));
+				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModelFile()));
 				break;
 			case POINT_PARTICLE_SYSTEM:
 				particleSystemTypes.getController().setValue(value.set(TYPE_POINTSPARTICLESYSTEM));
@@ -458,7 +470,11 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				case OBJECT_PARTICLE_SYSTEM:
 					particleSystem.getObjectParticleSystem().setMaxCount(Tools.convertToInt(opsMaxCount.getController().getValue().toString()));
 					particleSystem.getObjectParticleSystem().getScale().set(Tools.convertToVector3(opsScale.getController().getValue().toString()));
-					particleSystem.getObjectParticleSystem().setModelFileName(opsModel.getController().getValue().toString());
+					try {
+						particleSystem.getObjectParticleSystem().setModelFile(opsModel.getController().getValue().toString());
+					} catch (Exception exception) {
+						view.getPopUpsViews().getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
+					}
 					break;
 				case POINT_PARTICLE_SYSTEM:
 					particleSystem.getPointParticleSystem().setMaxPoints(Tools.convertToInt(ppsMaxPoints.getController().getValue().toString()));
@@ -819,6 +835,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						particleSystemPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 						view.getPopUpsViews().getFileDialogScreenController().close();
 					} catch (Exception ioe) {
+						ioe.printStackTrace();
 						showErrorPopUp("Warning", ioe.getMessage());
 					}
 				}
@@ -906,6 +923,28 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						node.getId().equals("button_cpepv_emitter_apply") ||
 						node.getId().equals("button_spe_emitter_apply")) {
 						onParticleSystemEmitterDataApply();
+					} else
+					if (node.getId().equals("button_ops_model_file")) {
+						//
+						view.getPopUpsViews().getFileDialogScreenController().show(
+								modelPath.getPath(),
+								"Load from: ", 
+								new String[]{"dae", "tm"},
+								"",
+								new Action() {
+									public void performAction() {
+										opsModel.getController().setValue(
+											value.set(
+												view.getPopUpsViews().getFileDialogScreenController().getPathName() + 
+												"/" + 
+												view.getPopUpsViews().getFileDialogScreenController().getFileName()
+											)
+										);
+										modelPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
+										view.getPopUpsViews().getFileDialogScreenController().close();
+									}
+								}
+							);
 					} else {
 						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
