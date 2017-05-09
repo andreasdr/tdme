@@ -95,7 +95,7 @@ public class LevelEditorEntityBoundingVolume {
 	 */
 	public void setupSphere(Vector3 center, float radius) {
 		boundingVolume = new Sphere(center, radius);
-		model = PrimitiveModel.createModel(boundingVolume, levelEditorEntity.getModel().getId() + "_model_bv." + id + "." + (staticIdx++));
+		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
 	}
 
@@ -107,7 +107,7 @@ public class LevelEditorEntityBoundingVolume {
 	 */
 	public void setupCapsule(Vector3 a, Vector3 b, float radius) {
 		boundingVolume = new Capsule(a, b, radius);
-		model = PrimitiveModel.createModel(boundingVolume, levelEditorEntity.getModel().getId() + "_model_bv." + id + "." + (staticIdx++));
+		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
 	}
 
@@ -121,7 +121,7 @@ public class LevelEditorEntityBoundingVolume {
 	 */
 	public void setupObb(Vector3 center, Vector3 axis0, Vector3 axis1, Vector3 axis2, Vector3 halfExtension) {
 		boundingVolume = new OrientedBoundingBox(center, axis0, axis1, axis2, halfExtension);
-		model = PrimitiveModel.createModel(boundingVolume, levelEditorEntity.getModel().getId() + "_model_bv." + id + "." + (staticIdx++));
+		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
 	}
 
@@ -132,7 +132,7 @@ public class LevelEditorEntityBoundingVolume {
 	 */
 	public void setupAabb(Vector3 min, Vector3 max) {
 		boundingVolume = new BoundingBox(min, max);
-		model = PrimitiveModel.createModel(boundingVolume, levelEditorEntity.getModel().getId() + "_model_bv." + id + "." + (staticIdx++));
+		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
 	}
 

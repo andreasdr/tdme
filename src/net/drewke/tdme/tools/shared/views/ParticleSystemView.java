@@ -68,6 +68,7 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 			null,
 			new Vector3()
 		);
+		entity.setDefaultBoundingVolumes();
 	}
 
 	/**
