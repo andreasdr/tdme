@@ -348,7 +348,7 @@ public final class Tools {
 
 		// add model to engine
 		if (entity.getType() == EntityType.PARTICLESYSTEM) {
-			entityBoundingBox = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+			entityBoundingBox = new BoundingBox(new Vector3(-0.5f, 0f, -0.5f), new Vector3(0.5f, 3f, 0.5f));
 			Entity particleSystemObject = Level.createParticleSystem(entity.getParticleSystem(), "model", true);
 			if (particleSystemObject != null) {
 				engine.addEntity(particleSystemObject);

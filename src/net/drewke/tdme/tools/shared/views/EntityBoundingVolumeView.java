@@ -79,7 +79,9 @@ public class EntityBoundingVolumeView {
 			aabb = entity.getModel().getBoundingBox();
 		} else {
 			// otherwise just create one for now
-			aabb = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+			// this applies currently for particle systems
+			// TODO: check if particle system
+			aabb = new BoundingBox(new Vector3(-0.5f, 0f, -0.5f), new Vector3(0.5f, 3f, 0.5f));
 		}
 
 		// set up oriented bounding box

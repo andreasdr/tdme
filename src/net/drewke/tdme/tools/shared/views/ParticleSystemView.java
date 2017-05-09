@@ -111,7 +111,7 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		// max axis dimension
 		BoundingBox boundingBox = null;
 		if (entity.getModel() == null) {
-			boundingBox = new BoundingBox(new Vector3(-0.5f, -0.5f, -0.5f), new Vector3(0.5f, 0.5f, 0.5f));
+			boundingBox = new BoundingBox(new Vector3(-0.5f, 0f, -0.5f), new Vector3(0.5f, 3f, 0.5f));
 		} else {
 			boundingBox = entity.getModel().getBoundingBox();
 		}
