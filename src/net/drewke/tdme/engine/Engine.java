@@ -11,9 +11,7 @@ import java.util.Iterator;
 
 import net.drewke.tdme.engine.fileio.textures.PNG;
 import net.drewke.tdme.engine.model.Color4;
-import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.physics.CollisionDetection;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.lighting.LightingShader;
 import net.drewke.tdme.engine.subsystems.manager.MeshManager;
 import net.drewke.tdme.engine.subsystems.manager.TextureManager;
