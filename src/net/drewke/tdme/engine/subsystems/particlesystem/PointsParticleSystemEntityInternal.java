@@ -21,6 +21,7 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	protected String id;
 	protected Engine engine;
 	protected GLRenderer renderer;
+	protected boolean autoEmit;
 	protected boolean enabled;
 	protected boolean active;
 	protected boolean doCollisionTests;
@@ -49,8 +50,9 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	 * @param do collision tests
 	 * @param emitter
 	 * @param max points
+	 * @param auto emit
 	 */
-	public PointsParticleSystemEntityInternal(String id, boolean doCollisionTests, ParticleEmitter emitter, int maxPoints) {
+	public PointsParticleSystemEntityInternal(String id, boolean doCollisionTests, ParticleEmitter emitter, int maxPoints, boolean autoEmit) {
 		this.id = id;
 		this.enabled = true;
 		this.doCollisionTests = doCollisionTests;
@@ -70,6 +72,7 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 		this.effectColorMul = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
 		this.effectColorAdd = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
 		this.pickable = false;
+		this.autoEmit = autoEmit;
 	}
 
 	/*
@@ -151,6 +154,22 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	 */
 	public void setPickable(boolean pickable) {
 		this.pickable = pickable;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#isAutoEmit()
+	 */
+	public boolean isAutoEmit() {
+		return autoEmit;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#setAutoEmit(boolean)
+	 */
+	public void setAutoEmit(boolean autoEmit) {
+		this.autoEmit = autoEmit;
 	}
 
 	/**

@@ -17,9 +17,10 @@ public final class PointsParticleSystemEntity extends PointsParticleSystemEntity
 	 * @param do collision tests
 	 * @param emitter
 	 * @param max points
+	 * @param auto emit
 	 */
-	public PointsParticleSystemEntity(String id, boolean doCollisionTests, ParticleEmitter emitter, int maxPoints) {
-		super(id, doCollisionTests, emitter, maxPoints);
+	public PointsParticleSystemEntity(String id, boolean doCollisionTests, ParticleEmitter emitter, int maxPoints, boolean autoEmit) {
+		super(id, doCollisionTests, emitter, maxPoints, autoEmit);
 	}
 
 	/*

@@ -46,6 +46,17 @@ public interface ParticleSystemEntity {
 	 */
 	public void setPickable(boolean pickable);
 
+	/**
+	 * @return if auto emit is enabled
+	 */
+	public boolean isAutoEmit();
+
+	/**
+	 * Set auto emit
+	 * @param auto emit
+	 */
+	public void setAutoEmit(boolean autoEmit);
+
 	/**************************************************************************
 	 * Effect Color                                                           *
 	 **************************************************************************/

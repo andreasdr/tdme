@@ -608,7 +608,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 						new Color4(1f, 1f, 1f, 0.3f),
 						new Color4(1f, 1f, 1f, 0.3f)
 					),
-					1000
+					1000,
+					false
 				)
 			);
 			engine.addEntity(
@@ -627,7 +628,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 						new Color4(0.8f,0.8f,1f,0.25f),
 						new Color4(0.8f,0.8f,1f,0.25f)
 					),
-					4000
+					4000,
+					false
 				)
 			);
 			engine.addEntity(
@@ -652,7 +654,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 						new Color4(0.8f,0.8f,1f,0.5f),
 						new Color4(0.8f,0.8f,1f,0.5f)							
 					),
-					1024
+					1024,
+					false
 				)
 			);
 			engine.addEntity(
@@ -674,7 +677,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 						new Color4(0.0f, 0f, 0f, 0.5f),
 						new Color4(0.4f, 0f, 0f, 0.5f)
 					),
-					2048
+					2048,
+					false
 				)
 			);
 			//
@@ -697,7 +701,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 						new Color4(0.75f, 0.0f, 0f, 0.5f),
 						new Color4(1f, 1f, 0f, 0.5f)
 					),
-					2048
+					2048,
+					false
 				)
 			);
 			//
@@ -720,7 +725,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 						new Color4(0.8f, 0.8f, 0.8f, 0.1f),
 						new Color4(0.8f, 0.8f, 0.8f, 0.1f)
 					),
-					2048
+					2048,
+					false
 				)
 			);
 			((ParticleSystemEntity)engine.getEntity("circle")).setPickable(false);

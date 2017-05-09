@@ -20,12 +20,13 @@ public final class ObjectParticleSystemEntity extends ObjectParticleSystemEntity
 	 * @param id
 	 * @param model
 	 * @param scale
+	 * @param auto emit
 	 * @param enable dynamic shadows
 	 * @param max count
 	 * @param emitter
 	 */
-	public ObjectParticleSystemEntity(String id, Model model, Vector3 scale, boolean enableDynamicShadows, int maxCount, ParticleEmitter emitter) {
-		super(id, model, scale, enableDynamicShadows, maxCount, emitter);
+	public ObjectParticleSystemEntity(String id, Model model, Vector3 scale, boolean autoEmit, boolean enableDynamicShadows, int maxCount, ParticleEmitter emitter) {
+		super(id, model, scale, autoEmit, enableDynamicShadows, maxCount, emitter);
 	}
 
 	/*

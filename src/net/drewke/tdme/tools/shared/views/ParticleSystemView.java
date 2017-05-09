@@ -182,7 +182,7 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 
 		// emit and update
 		ParticleSystemEntity particleSystemEntity = (ParticleSystemEntity)engine.getEntity("model");
-		if (particleSystemEntity != null)  {
+		if (particleSystemEntity != null && particleSystemEntity.isAutoEmit() == false)  {
 			particleSystemEntity.emitParticles();
 			particleSystemEntity.updateParticles();
 		}

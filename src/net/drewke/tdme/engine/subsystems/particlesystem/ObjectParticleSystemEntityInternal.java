@@ -24,6 +24,7 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	protected String id;
 	protected boolean enabled;
 	protected Model model;
+	protected boolean autoEmit;
 	protected boolean enableDynamicShadows;
 	protected Particle[] particles;
 	protected Object3D[] objects;
@@ -38,19 +39,26 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 
 	/**
 	 * Public constructor
+	 * @param id
 	 * @param model
-	 * @param count
+	 * @param scale
+	 * @param auto emit
+	 * @param enable dynamic shadows
+	 * @param maxCount
+	 * @param emitter
 	 */
 	public ObjectParticleSystemEntityInternal(
 		String id,
 		Model model, 	
 		Vector3 scale,
+		boolean autoEmit,
 		boolean enableDynamicShadows,
 		int maxCount,
 		ParticleEmitter emitter) {
 		this.id = id;
 		this.enabled = true;
 		this.model = model;
+		this.autoEmit = autoEmit;
 		this.enableDynamicShadows = enableDynamicShadows;
 		this.enabledObjects = new ArrayList<Object3D>();
 		particles = new Particle[maxCount];
@@ -150,6 +158,22 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	 */
 	public void setPickable(boolean pickable) {
 		this.pickable = pickable;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#isAutoEmit()
+	 */
+	public boolean isAutoEmit() {
+		return autoEmit;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#setAutoEmit(boolean)
+	 */
+	public void setAutoEmit(boolean autoEmit) {
+		this.autoEmit = autoEmit;
 	}
 
 	/**

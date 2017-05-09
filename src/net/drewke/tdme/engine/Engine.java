@@ -790,20 +790,39 @@ public final class Engine {
 		if (renderingInitiated == false) initRendering(drawable);
 
 		for(Entity entity: partition.getVisibleEntities(camera.getFrustum())) {
+			// object 3d
 			if (entity instanceof Object3D) {
-				Object3D object = (Object3D)entity; 
+				Object3D object = (Object3D)entity;
+				// compute transformations
 				object.computeTransformations();
+				// add to visible objects
 				visibleObjects.add(object);
 			} else
+			// object particle system entity
 			if (entity instanceof ObjectParticleSystemEntity) {
 				ObjectParticleSystemEntity opse = (ObjectParticleSystemEntity)entity;
+				// do auto emit
+				if (opse.isAutoEmit() == true)  {
+					opse.emitParticles();
+					opse.updateParticles();
+				}
+				// active?
 				if (opse.isActive() == true) {
+					// add to visible objects
 					visibleObjects.addAll(opse.getEnabledObjects());
 				}
 			} else
+			// points particle system entity
 			if (entity instanceof PointsParticleSystemEntity) {
 				PointsParticleSystemEntity ppse = (PointsParticleSystemEntity)entity;
+				// do auto emit
+				if (ppse.isAutoEmit() == true) {
+					ppse.emitParticles();
+					ppse.updateParticles();
+				}
+				// active?
 				if (ppse.isActive() == true) {
+					// add to visible point particle systems
 					visiblePpses.add(ppse);
 				}
 			}

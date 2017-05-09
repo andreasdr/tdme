@@ -203,6 +203,7 @@ public class Level {
 					id,
 					objectParticleSystem.getModel(), 
 					objectParticleSystem.getScale(),
+					objectParticleSystem.isAutoEmit(),
 					enableDynamicShadows,
 					objectParticleSystem.getMaxCount(),
 					engineEmitter
@@ -213,7 +214,8 @@ public class Level {
 					id,
 					false,
 					engineEmitter,
-					pointParticleSystem.getMaxPoints()
+					pointParticleSystem.getMaxPoints(),
+					pointParticleSystem.isAutoEmit()
 				);
 			default:
 				System.out.println("Level::createParticleSystem(): unknown particle system type '" + particleSystem.getType() + "'");
