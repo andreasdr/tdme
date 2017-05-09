@@ -30,6 +30,7 @@ public class LevelEditorEntityParticleSystem {
 
 		private Vector3 scale;
 		private int maxCount;
+		private boolean autoEmit;
 		private Model model;
 		private String modelFileName;
 
@@ -39,6 +40,7 @@ public class LevelEditorEntityParticleSystem {
 		public ObjectParticleSystem() {
 			scale = new Vector3(1f, 1f, 1f);
 			maxCount = 10;
+			autoEmit = true;
 			model = null;
 			modelFileName = "";
 		}
@@ -71,6 +73,21 @@ public class LevelEditorEntityParticleSystem {
 		 */
 		public void setMaxCount(int maxCount) {
 			this.maxCount = maxCount;
+		}
+
+		/**
+		 * @return is auto emit
+		 */
+		public boolean isAutoEmit() {
+			return autoEmit;
+		}
+
+		/**
+		 * Set auto emit 
+		 * @param autoEmit
+		 */
+		public void setAutoEmit(boolean autoEmit) {
+			this.autoEmit = autoEmit;
 		}
 
 		/**
@@ -129,12 +146,14 @@ public class LevelEditorEntityParticleSystem {
 	public static class PointParticleSystem {
 
 		private int maxPoints;
+		private boolean autoEmit;
 
 		/**
 		 * Public constructor
 		 */
 		public PointParticleSystem() {
 			maxPoints = 4000;
+			autoEmit = true;
 		}
 
 		/**
@@ -150,6 +169,21 @@ public class LevelEditorEntityParticleSystem {
 		 */
 		public void setMaxPoints(int maxPoints) {
 			this.maxPoints = maxPoints;
+		}
+
+		/**
+		 * @return is auto emit
+		 */
+		public boolean isAutoEmit() {
+			return autoEmit;
+		}
+
+		/**
+		 * Set auto emit
+		 * @param auto emit
+		 */
+		public void setAutoEmit(boolean autoEmit) {
+			this.autoEmit = autoEmit;
 		}
 
 		/*

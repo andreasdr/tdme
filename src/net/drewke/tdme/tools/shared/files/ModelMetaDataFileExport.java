@@ -146,6 +146,7 @@ public final class ModelMetaDataFileExport {
 							jObjectParticleSystem.put("sy", particleSystem.getObjectParticleSystem().getScale().getY());
 							jObjectParticleSystem.put("sz", particleSystem.getObjectParticleSystem().getScale().getZ());
 							jObjectParticleSystem.put("mf", particleSystem.getObjectParticleSystem().getModelFile());
+							jObjectParticleSystem.put("ae", particleSystem.getObjectParticleSystem().isAutoEmit());
 							jParticleSystem.put("ops", jObjectParticleSystem);
 							break;
 						}
@@ -153,6 +154,7 @@ public final class ModelMetaDataFileExport {
 						{
 							JSONObject jPointParticleSystem = new JSONObject();
 							jPointParticleSystem.put("mp", particleSystem.getPointParticleSystem().getMaxPoints());
+							jPointParticleSystem.put("ae", particleSystem.getPointParticleSystem().isAutoEmit());
 							jParticleSystem.put("pps", jPointParticleSystem);
 							break;
 						}

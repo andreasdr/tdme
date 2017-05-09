@@ -150,6 +150,7 @@ public final class ModelMetaDataFileImport {
 						objectParticleSystem.getScale().setX((float)jObjectParticleSystem.getDouble("sx"));
 						objectParticleSystem.getScale().setY((float)jObjectParticleSystem.getDouble("sy"));
 						objectParticleSystem.getScale().setZ((float)jObjectParticleSystem.getDouble("sz"));
+						objectParticleSystem.setAutoEmit(jObjectParticleSystem.getBoolean("ae"));
 						try {
 							objectParticleSystem.setModelFile(jObjectParticleSystem.getString("mf"));
 						} catch (Exception exception) {
@@ -161,6 +162,7 @@ public final class ModelMetaDataFileImport {
 					{
 						JSONObject jPointParticleSystem = jParticleSystem.getJSONObject("pps");
 						particleSystem.getPointParticleSystem().setMaxPoints(jPointParticleSystem.getInt("mp"));
+						particleSystem.getPointParticleSystem().setAutoEmit(jPointParticleSystem.getBoolean("ae"));
 						break;
 					}
 				default:

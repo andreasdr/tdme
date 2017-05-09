@@ -133,7 +133,7 @@
 									<layout width="620" height="auto" alignment="horizontal" vertical-align="center">
 										<text font="resources/gui/fonts/Foo_20.fnt" text="Auto emit" width="145" height="auto"/>
 										<space width="5" />
-										<checkbox id="ops_autoemit" name="ops_auto_emit" width="auto" height="auto" value="1" />
+										<checkbox id="ops_auto_emit" name="ops_auto_emit" width="auto" height="auto" value="1" />
 										<space width="*" />
 									</layout>
 									<space height="10" />
@@ -152,7 +152,7 @@
 										<space width="20" />
 										<text font="resources/gui/fonts/Foo_20.fnt" text="Auto emit" width="155" height="auto"/>
 										<space width="*" />
-										<checkbox id="pps_autoemit" name="pps_auto_emit" width="auto" height="auto" value="1" />
+										<checkbox id="pps_auto_emit" name="pps_auto_emit" width="auto" height="auto" value="1" />
 									</layout>
 									<space height="10" />
 									<layout alignment="none" width="auto" height="auto" vertical-align="center" horizontal-align="center">

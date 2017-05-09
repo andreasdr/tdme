@@ -63,6 +63,8 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode opsScale;
 	private GUIElementNode opsMaxCount;
 	private GUIElementNode opsModel;
+	private GUIElementNode opsAutoEmit;
+	private GUIElementNode ppsAutoEmit;
 
 	private GUIElementNode ppsMaxPoints;
 
@@ -215,9 +217,11 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			opsScale = (GUIElementNode)screenNode.getNodeById("ops_scale");
 			opsMaxCount = (GUIElementNode)screenNode.getNodeById("ops_maxcount");
 			opsModel = (GUIElementNode)screenNode.getNodeById("ops_model");
+			opsAutoEmit = (GUIElementNode)screenNode.getNodeById("ops_auto_emit");
 
 			// point particle system
 			ppsMaxPoints = (GUIElementNode)screenNode.getNodeById("pps_maxpoints");
+			ppsAutoEmit = (GUIElementNode)screenNode.getNodeById("pps_auto_emit");
 
 			// point particle emitter
 			ppeCount = (GUIElementNode)screenNode.getNodeById("ppe_count");
@@ -446,11 +450,13 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				opsMaxCount.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getMaxCount()));
 				opsScale.getController().setValue(value.set(Tools.formatVector3(particleSystem.getObjectParticleSystem().getScale())));
 				opsModel.getController().setValue(value.set(particleSystem.getObjectParticleSystem().getModelFile()));
+				opsAutoEmit.getController().setValue(value.set(particleSystem.getObjectParticleSystem().isAutoEmit() == true?"1":""));
 				break;
 			case POINT_PARTICLE_SYSTEM:
 				particleSystemTypes.getController().setValue(value.set(TYPE_POINTSPARTICLESYSTEM));
 				particleSystemType.getActiveConditions().add(TYPE_POINTSPARTICLESYSTEM);
 				ppsMaxPoints.getController().setValue(value.set(particleSystem.getPointParticleSystem().getMaxPoints()));
+				ppsAutoEmit.getController().setValue(value.set(particleSystem.getPointParticleSystem().isAutoEmit() == true?"1":""));
 				break;
 			default:
 				System.out.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
@@ -470,6 +476,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				case OBJECT_PARTICLE_SYSTEM:
 					particleSystem.getObjectParticleSystem().setMaxCount(Tools.convertToInt(opsMaxCount.getController().getValue().toString()));
 					particleSystem.getObjectParticleSystem().getScale().set(Tools.convertToVector3(opsScale.getController().getValue().toString()));
+					particleSystem.getObjectParticleSystem().setAutoEmit(opsAutoEmit.getController().getValue().equals("1"));
 					try {
 						particleSystem.getObjectParticleSystem().setModelFile(opsModel.getController().getValue().toString());
 					} catch (Exception exception) {
@@ -478,6 +485,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					break;
 				case POINT_PARTICLE_SYSTEM:
 					particleSystem.getPointParticleSystem().setMaxPoints(Tools.convertToInt(ppsMaxPoints.getController().getValue().toString()));
+					particleSystem.getPointParticleSystem().setAutoEmit(ppsAutoEmit.getController().getValue().equals("1"));
 					break;
 				default:
 					System.out.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
