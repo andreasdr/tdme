@@ -25,6 +25,9 @@ import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
+import com.jogamp.newt.event.WindowEvent;
+import com.jogamp.newt.event.WindowListener;
+import com.jogamp.newt.event.WindowUpdateEvent;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
@@ -37,7 +40,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author andreas.drewke
  * @version $Id$
  */
-public final class PhysicsTest1 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public final class PhysicsTest1 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener, WindowListener {
 
 	private final static int RIGID_TYPEID_STANDARD = 1;
 
@@ -88,6 +91,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 		glWindow.setVisible(true);
 		glWindow.addKeyListener(engineTest);
 		glWindow.addMouseListener(engineTest);
+		glWindow.addWindowListener(engineTest);
 		
 		// start animator
 		animator.setUpdateFPSFrames(3, null);
@@ -561,7 +565,6 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseDragged(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
 	}
 
 	/*
@@ -569,7 +572,6 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseMoved(java.awt.event.MouseEvent e) {
-		// TODO Auto-generated method stub
 	}
 
 	/*
@@ -577,7 +579,56 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseWheelMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowDestroyNotify(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowDestroyNotify(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowDestroyed(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowDestroyed(WindowEvent arg0) {
+		System.exit(0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowGainedFocus(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowGainedFocus(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowLostFocus(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowLostFocus(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowMoved(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowMoved(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowRepaint(com.jogamp.newt.event.WindowUpdateEvent)
+	 */
+	public void windowRepaint(WindowUpdateEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowResized(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowResized(WindowEvent arg0) {
 	}
 
 }

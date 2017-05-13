@@ -37,19 +37,20 @@ import net.drewke.tdme.engine.subsystems.particlesystem.BoundingBoxParticleEmitt
 import net.drewke.tdme.engine.subsystems.particlesystem.CircleParticleEmitter;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.engine.subsystems.particlesystem.SphereParticleEmitter;
-import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.math.Vector3;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
 import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
+import com.jogamp.newt.event.WindowEvent;
+import com.jogamp.newt.event.WindowListener;
+import com.jogamp.newt.event.WindowUpdateEvent;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -57,7 +58,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author andreas.drewke
  * @version $Id$
  */
-public final class EngineTest implements GLEventListener, MouseListener, KeyListener {
+public final class EngineTest implements GLEventListener, MouseListener, KeyListener, WindowListener {
 
 	private GLWindow glWindow;
 	private FPSAnimator fpsAnimator;
@@ -119,6 +120,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 		glWindow.setVisible(true);
 		glWindow.addKeyListener(engineTest);
 		glWindow.addMouseListener(engineTest);
+		glWindow.addWindowListener(engineTest);
 		
 		// start animator
 		animator.setUpdateFPSFrames(3, null);
@@ -861,8 +863,56 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseWheelMoved(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowDestroyNotify(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowDestroyNotify(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowDestroyed(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowDestroyed(WindowEvent arg0) {
+		System.exit(0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowGainedFocus(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowGainedFocus(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowLostFocus(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowLostFocus(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowMoved(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowMoved(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowRepaint(com.jogamp.newt.event.WindowUpdateEvent)
+	 */
+	public void windowRepaint(WindowUpdateEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowResized(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowResized(WindowEvent arg0) {
 	}
 
 }
