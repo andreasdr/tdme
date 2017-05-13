@@ -412,7 +412,7 @@ public abstract class GL2Renderer extends GLRenderer {
 		this.viewPortY = x;
 		this.viewPortWidth = width;
 		this.viewPortHeight = height;
-		this.pointSize = width / 10f;
+		this.pointSize = width > height?width / 12f:height / 12f * 16 / 9;
 	}
 
 	/*

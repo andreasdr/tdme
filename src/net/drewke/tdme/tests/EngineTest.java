@@ -1,13 +1,5 @@
 package net.drewke.tdme.tests;
 
-import java.awt.Frame;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,8 +37,14 @@ import net.drewke.tdme.engine.subsystems.particlesystem.BoundingBoxParticleEmitt
 import net.drewke.tdme.engine.subsystems.particlesystem.CircleParticleEmitter;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.engine.subsystems.particlesystem.SphereParticleEmitter;
+import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.math.Vector3;
 
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
+import com.jogamp.newt.event.MouseEvent;
+import com.jogamp.newt.event.MouseListener;
+import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
@@ -59,7 +57,10 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author andreas.drewke
  * @version $Id$
  */
-public final class EngineTest implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public final class EngineTest implements GLEventListener, MouseListener, KeyListener {
+
+	private GLWindow glWindow;
+	private FPSAnimator fpsAnimator;
 
 	private Engine engine;
 	private Engine osEngine;
@@ -101,45 +102,36 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		// create GL canvas
 		GLProfile glp = Engine.getProfile();
 		GLCapabilities caps = new GLCapabilities(glp);
-		caps.setDoubleBuffered(false);
-		caps.setDepthBits(16);
-		final GLCanvas glCanvas = new GLCanvas(caps);
 
-		// create AWT frame
-		final Frame frame = new Frame("Enginetest");
-		frame.setSize(640, 480);
-		frame.add(glCanvas);
-		frame.setVisible(true);
+		// create GL window
+		GLWindow glWindow = GLWindow.create(caps);
+		glWindow.setTitle("EngineTest");
 
-		// add window listener to be able to handle window close events
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				frame.remove(glCanvas);
-				frame.dispose();
-				System.exit(0);
-			}
-		});
+		// animator
+		FPSAnimator animator = new FPSAnimator(glWindow, 60);
 
-		// event listener
-		EngineTest renderTest = new EngineTest(glCanvas);
-		glCanvas.addGLEventListener(renderTest);
-		glCanvas.addMouseListener(renderTest);
-		glCanvas.addMouseMotionListener(renderTest);
-		glCanvas.addKeyListener(renderTest);
-		glCanvas.setEnabled(true);
-
-		// animator, do the frames
-		FPSAnimator animator = new FPSAnimator(glCanvas, 60);
+		// tdme level editor
+		EngineTest engineTest = new EngineTest(glWindow, animator);
+		
+		// GL Window
+		glWindow.addGLEventListener(engineTest);
+		glWindow.setSize(800, 600);
+		glWindow.setVisible(true);
+		glWindow.addKeyListener(engineTest);
+		glWindow.addMouseListener(engineTest);
+		
+		// start animator
+		animator.setUpdateFPSFrames(3, null);
 		animator.start();
 	}
 
 	/**
-	 * Public constructor
-	 * 
-	 * @param gl
-	 *            canvas
+	 * Engine test
+	 * @param gl window
 	 */
-	public EngineTest(GLCanvas glCanvas) {
+	public EngineTest(GLWindow glWindow, FPSAnimator fpsAnimator) {
+		this.glWindow = glWindow;
+		this.fpsAnimator = fpsAnimator;
 		keyLeft = false;
 		keyRight = false;
 		keyUp = false;
@@ -153,6 +145,10 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		engine = Engine.getInstance();
 	}
 
+	/**
+	 * Create wall model
+	 * @return
+	 */
 	private Model createWallModel() {
 		// wall model
 		Model wall = new Model("wall", "wall", UpVector.Y_UP, RotationOrder.XYZ, null);
@@ -161,14 +157,14 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		Material wallMaterial = new Material("wall");
 		wall.getMaterials().put("wall", wallMaterial);
 
-
 		//	group
 		Group wallGroup = new Group(wall, null, "wall", "wall");
 
 		//	faces entity
 		//		far plane
 		FacesEntity groupFacesEntityFarPlane = new FacesEntity(wallGroup, "wall");
-		wallMaterial.getAmbientColor().set(1f,1f,1f,1f);;
+		wallMaterial.getAmbientColor().set(1f,1f,1f,1f);
+		wallMaterial.getDiffuseColor().set(1f,1f,1f,1f);
 		groupFacesEntityFarPlane.setMaterial(wallMaterial);
 
 		//	faces entity 
@@ -189,10 +185,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 		//	normals
 		ArrayList<Vector3> normals = new ArrayList<Vector3>();
-		//		ground
-		normals.add(new Vector3(0f, 1f, 0f));
 		//		far plane
-		normals.add(new Vector3(0f, 0f, 1f));
+		normals.add(new Vector3(0f, 0f, -1f));
 
 		// texture coordinates
 		ArrayList<TextureCoordinate> textureCoordinates = new ArrayList<TextureCoordinate>();
@@ -203,8 +197,8 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 		//	faces ground far plane
 		ArrayList<Face> facesFarPlane = new ArrayList<Face>();
-		facesFarPlane.add(new Face(wallGroup,0,1,2,1,1,1,0,1,2));
-		facesFarPlane.add(new Face(wallGroup,2,3,0,1,1,1,2,3,0));
+		facesFarPlane.add(new Face(wallGroup,0,1,2,0,0,0,0,1,2));
+		facesFarPlane.add(new Face(wallGroup,2,3,0,0,0,0,2,3,0));
 
 		// set up faces entity
 		groupFacesEntityFarPlane.setFaces(facesFarPlane);
@@ -214,6 +208,9 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		wallGroup.setNormals(normals);
 		wallGroup.setTextureCoordinates(textureCoordinates);
 		wallGroup.setFacesEntities(groupFacesEntities);
+
+		// determine features
+		wallGroup.determineFeatures();
 
 		// register group
 		wall.getGroups().put("wall", wallGroup);
@@ -226,6 +223,10 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		return wall;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#display(com.jogamp.opengl.GLAutoDrawable)
+	 */
 	public void display(GLAutoDrawable drawable) {
 		circleTransformations.getTranslation().setX(players.get(0).getTranslation().getX());
 		circleTransformations.getTranslation().setZ(players.get(0).getTranslation().getZ());
@@ -261,7 +262,6 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		// render
 		osEngine.display(drawable);
 		engine.display(drawable);
-		// osEngine.makeScreenshot(".", "ostest.png");
 
 		// handle mouse clicked
 		if (mouseClicked != null) {
@@ -281,6 +281,13 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		}
 	}
 
+	/**
+	 * Do player control
+	 * @param idx
+	 * @param key left
+	 * @param key right
+	 * @param key up
+	 */
 	private void doPlayerControl(int idx, boolean keyLeft, boolean keyRight, boolean keyUp) {
 		float fps = engine.getTiming().getCurrentFPS();
 
@@ -379,14 +386,23 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#dispose(com.jogamp.opengl.GLAutoDrawable)
+	 */
 	public void dispose(GLAutoDrawable drawable) {
 		engine.dispose(drawable);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
+	 */
 	public void init(GLAutoDrawable drawable) {
 		engine.init(drawable);
 		if (osEngine == null) {
 			osEngine = Engine.createOffScreenInstance(drawable, 512, 512);
+
 			//
 			Light osLight0 = osEngine.getLightAt(0);
 			osLight0.getAmbient().set(1.0f, 1.0f, 1.0f, 1.0f);
@@ -404,14 +420,14 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			osCam.computeUpVector(osCam.getLookFrom(), osCam.getLookAt(), osCam.getUpVector());
 
 			// scene color
-			osEngine.getSceneColor().set(1f, 1f,1f, 1.0f);
+			osEngine.getSceneColor().set(0.5f, 0.0f, 0.0f, 1.0f);
 		}
 
 		// cam
 		Camera cam = engine.getCamera();
 		cam.setZNear(0.10f);
 		cam.setZFar(50.00f);
-		cam.getLookFrom().set(0f, 4f, -6f);
+		cam.getLookFrom().set(0f, 3f, -8f);
 		cam.getLookAt().set(0f, 0.50f, 0f);
 		cam.computeUpVector(cam.getLookFrom(), cam.getLookAt(), cam.getUpVector());
 
@@ -454,6 +470,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			barrelBoundingVolume = new ConvexMesh(new Object3DModel(_barrel));
 			barrel.getTranslation().set(1.5f,0.35f,-2f);
 			barrel.setDynamicShadowingEnabled(true);
+			barrel.setEnabled(true);
 			barrel.update();
 			barrelBoundingVolumeTransformed = barrelBoundingVolume.clone();
 			barrelBoundingVolumeTransformed.fromBoundingVolumeWithTransformations(barrelBoundingVolume, barrel);
@@ -468,6 +485,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			//
 			Model _grass = DAEReader.read("resources/tests/models/grass", "grass.dae");
 			Object3D grass = new Object3D("ground", _grass);
+			grass.setEnabled(true);
 			grass.getScale().set(8f,1f,8f);
 			grass.update();
 			engine.addEntity(grass);
@@ -501,6 +519,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			player1.setAnimation("still");
 			player1.getRotations().add(new Rotation(0f, new Vector3(0f, 1f, 0f)));
 			player1.update();
+			player1.setEnabled(true);
 			player1.setPickable(true);
 			player1.setDynamicShadowingEnabled(true);
 			engine.addEntity(player1);
@@ -516,7 +535,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			player1BoundingVolume.fromTransformations(player1);
 			player1BoundingVolume.setEnabled(true);
 			playersBoundingVolumeModel.add(player1BoundingVolume);
-			engine.addEntity(player1BoundingVolume);
+			// engine.addEntity(player1BoundingVolume);
 
 			// add player 2
 			//	player
@@ -525,6 +544,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			player2.setAnimation("still");
 			player2.getRotations().add(new Rotation(0f, new Vector3(0f, 1f, 0f)));
 			player2.update();
+			player2.setEnabled(true);
 			player2.setPickable(true);
 			player2.setDynamicShadowingEnabled(true);
 			players.add(player2);
@@ -540,7 +560,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 			player2BoundingVolume.fromTransformations(player2);
 			player2BoundingVolume.setEnabled(true);
 			playersBoundingVolumeModel.add(player2BoundingVolume);
-			engine.addEntity(player2BoundingVolume);
+			// engine.addEntity(player2BoundingVolume);
 
 			// add cube
 			Model _cube = DAEReader.read("resources/tests/models/test", "cube.dae");
@@ -612,6 +632,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 					false
 				)
 			);
+			engine.getEntity("circle").setEnabled(true);
 			engine.addEntity(
 				new PointsParticleSystemEntity(
 					"water",
@@ -632,6 +653,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 					false
 				)
 			);
+			engine.getEntity("water").setEnabled(true);
 			engine.addEntity(
 				new PointsParticleSystemEntity(
 					"snow",
@@ -658,6 +680,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 					false
 				)
 			);
+			engine.getEntity("snow").setEnabled(true);
 			engine.addEntity(
 				new PointsParticleSystemEntity(
 					"firebase",
@@ -681,6 +704,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 					false
 				)
 			);
+			engine.getEntity("firebase").setEnabled(true);
 			//
 			engine.addEntity(
 				new PointsParticleSystemEntity(
@@ -705,6 +729,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 					false
 				)
 			);
+			engine.getEntity("firetop").setEnabled(true);
 			//
 			engine.addEntity(
 				new PointsParticleSystemEntity(
@@ -729,6 +754,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 					false
 				)
 			);
+			engine.getEntity("firesmoke").setEnabled(true);
 			((ParticleSystemEntity)engine.getEntity("circle")).setPickable(false);
 			((ParticleSystemEntity)engine.getEntity("snow")).setPickable(false);
 			((ParticleSystemEntity)engine.getEntity("firebase")).setPickable(true);
@@ -740,34 +766,38 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#reshape(com.jogamp.opengl.GLAutoDrawable, int, int, int, int)
+	 */
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		engine.reshape(drawable, x, y, width, height);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseClicked(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseEntered(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseEntered(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseExited(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseExited(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
 		mouseClicked = new int[]{e.getX(), e.getY()};
@@ -775,28 +805,28 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseReleased(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseDragged(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseMoved(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -812,7 +842,7 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -828,10 +858,11 @@ public final class EngineTest implements GLEventListener, MouseListener, MouseMo
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
 	 */
-	public void keyTyped(KeyEvent e) {
-		char keyChar = Character.toLowerCase(e.getKeyChar());
+	public void mouseWheelMoved(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
