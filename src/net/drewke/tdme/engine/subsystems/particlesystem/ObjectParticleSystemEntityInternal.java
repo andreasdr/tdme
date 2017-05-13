@@ -228,13 +228,22 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	public int emitParticles() {
 		// determine particles to spawn
 		float particlesToSpawn = emitter.getCount() * engine.getTiming().getDeltaTime() / 1000f;
-		int particlesToSpawnInteger = (int)particlesToSpawn;
-		particlesToSpawnRemainder+= particlesToSpawn - particlesToSpawnInteger;
-		if (particlesToSpawnRemainder > 1.0f) {
-			particlesToSpawn+= 1.0f;
-			particlesToSpawnInteger++;
-			particlesToSpawnRemainder-= 1f;
+
+		// particles to spawn
+		int particlesToSpawnInteger = 0;
+		if (autoEmit == true) {
+			particlesToSpawnInteger = (int)particlesToSpawn;
+			particlesToSpawnRemainder+= particlesToSpawn - particlesToSpawnInteger;
+			if (particlesToSpawnRemainder > 1.0f) {
+				particlesToSpawn+= 1.0f;
+				particlesToSpawnInteger++;
+				particlesToSpawnRemainder-= 1f;
+			}
+		} else {
+			particlesToSpawnInteger = emitter.getCount();
 		}
+
+		// skip if nothing to spawn
 		if (particlesToSpawnInteger == 0) return 0;
 
 		// spawn

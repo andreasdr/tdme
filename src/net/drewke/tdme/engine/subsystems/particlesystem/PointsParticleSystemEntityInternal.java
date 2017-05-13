@@ -347,14 +347,21 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 		long timeDelta = engine.getTiming().getDeltaTime();
 
 		// determine particles to spawn
-		float particlesToSpawn = emitter.getCount() * engine.getTiming().getDeltaTime() / 1000f;
-		int particlesToSpawnInteger = (int)particlesToSpawn;
-		particlesToSpawnRemainder+= particlesToSpawn - particlesToSpawnInteger;
-		if (particlesToSpawnRemainder > 1.0f) {
-			particlesToSpawn+= 1.0f;
-			particlesToSpawnInteger++;
-			particlesToSpawnRemainder-= 1f;
+		int particlesToSpawnInteger = 0;
+		if (autoEmit == true) {
+			float particlesToSpawn = emitter.getCount() * engine.getTiming().getDeltaTime() / 1000f;
+			particlesToSpawnInteger = (int)particlesToSpawn;
+			particlesToSpawnRemainder+= particlesToSpawn - particlesToSpawnInteger;
+			if (particlesToSpawnRemainder > 1.0f) {
+				particlesToSpawn+= 1.0f;
+				particlesToSpawnInteger++;
+				particlesToSpawnRemainder-= 1f;
+			}
+		} else {
+			particlesToSpawnInteger = emitter.getCount();
 		}
+
+		// skip if nothing to spawn
 		if (particlesToSpawnInteger == 0) return 0;
 
 		// spawn
