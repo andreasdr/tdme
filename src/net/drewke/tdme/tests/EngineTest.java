@@ -60,9 +60,6 @@ import com.jogamp.opengl.util.FPSAnimator;
  */
 public final class EngineTest implements GLEventListener, MouseListener, KeyListener, WindowListener {
 
-	private GLWindow glWindow;
-	private FPSAnimator fpsAnimator;
-
 	private Engine engine;
 	private Engine osEngine;
 
@@ -132,8 +129,6 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 	 * @param gl window
 	 */
 	public EngineTest(GLWindow glWindow, FPSAnimator fpsAnimator) {
-		this.glWindow = glWindow;
-		this.fpsAnimator = fpsAnimator;
 		keyLeft = false;
 		keyRight = false;
 		keyUp = false;
@@ -238,19 +233,6 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 		}
 		circleTransformations.update();
 		((ParticleSystemEntity)engine.getEntity("circle")).getParticleEmitter().fromTransformations(circleTransformations);
-		// particle system test
-		((ParticleSystemEntity)engine.getEntity("circle")).emitParticles();
-		((ParticleSystemEntity)engine.getEntity("circle")).updateParticles();
-		((ParticleSystemEntity)engine.getEntity("snow")).emitParticles();
-		((ParticleSystemEntity)engine.getEntity("snow")).updateParticles();
-		((ParticleSystemEntity)engine.getEntity("firebase")).emitParticles();
-		((ParticleSystemEntity)engine.getEntity("firebase")).updateParticles();
-		((ParticleSystemEntity)engine.getEntity("firetop")).emitParticles();
-		((ParticleSystemEntity)engine.getEntity("firetop")).updateParticles();
-		((ParticleSystemEntity)engine.getEntity("firesmoke")).emitParticles();
-		((ParticleSystemEntity)engine.getEntity("firesmoke")).updateParticles();
-		((ParticleSystemEntity)engine.getEntity("water")).emitParticles();
-		((ParticleSystemEntity)engine.getEntity("water")).updateParticles();
 
 		// player control
 		doPlayerControl(0, keyLeft, keyRight, keyUp);
@@ -631,7 +613,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 						new Color4(1f, 1f, 1f, 0.3f)
 					),
 					1000,
-					false
+					true
 				)
 			);
 			engine.getEntity("circle").setEnabled(true);
@@ -652,22 +634,22 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 						new Color4(0.8f,0.8f,1f,0.25f)
 					),
 					4000,
-					false
+					true
 				)
 			);
 			engine.getEntity("water").setEnabled(true);
 			engine.addEntity(
 				new PointsParticleSystemEntity(
 					"snow",
-					true,
+					false,
 					new BoundingBoxParticleEmitter(
-						100,
+						15,
 						15000,
 						1000,
 						0,
 						0,
 						new OrientedBoundingBox(
-							new Vector3(0f,5f,0f),
+							new Vector3(0f,4f,0f),
 							new Vector3(1f,0f,0f),
 							new Vector3(0f,1f,0f),
 							new Vector3(0f,0f,1f),
@@ -679,7 +661,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 						new Color4(0.8f,0.8f,1f,0.5f)							
 					),
 					1024,
-					false
+					true
 				)
 			);
 			engine.getEntity("snow").setEnabled(true);
@@ -703,7 +685,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 						new Color4(0.4f, 0f, 0f, 0.5f)
 					),
 					2048,
-					false
+					true
 				)
 			);
 			engine.getEntity("firebase").setEnabled(true);
@@ -728,7 +710,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 						new Color4(1f, 1f, 0f, 0.5f)
 					),
 					2048,
-					false
+					true
 				)
 			);
 			engine.getEntity("firetop").setEnabled(true);
@@ -753,7 +735,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 						new Color4(0.8f, 0.8f, 0.8f, 0.1f)
 					),
 					2048,
-					false
+					true
 				)
 			);
 			engine.getEntity("firesmoke").setEnabled(true);
