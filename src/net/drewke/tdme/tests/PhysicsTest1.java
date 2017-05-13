@@ -77,21 +77,21 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 
 		// create GL window
 		GLWindow glWindow = GLWindow.create(caps);
-		glWindow.setTitle("EngineTest");
+		glWindow.setTitle("PhysicsTest1");
 
 		// animator
 		FPSAnimator animator = new FPSAnimator(glWindow, 60);
 
 		// tdme level editor
-		PhysicsTest1 engineTest = new PhysicsTest1(glWindow, animator);
+		PhysicsTest1 physicsTest1 = new PhysicsTest1(glWindow, animator);
 		
 		// GL Window
-		glWindow.addGLEventListener(engineTest);
+		glWindow.addGLEventListener(physicsTest1);
 		glWindow.setSize(800, 600);
 		glWindow.setVisible(true);
-		glWindow.addKeyListener(engineTest);
-		glWindow.addMouseListener(engineTest);
-		glWindow.addWindowListener(engineTest);
+		glWindow.addKeyListener(physicsTest1);
+		glWindow.addMouseListener(physicsTest1);
+		glWindow.addWindowListener(physicsTest1);
 		
 		// start animator
 		animator.setUpdateFPSFrames(3, null);
