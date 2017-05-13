@@ -2,6 +2,9 @@ package net.drewke.tdme.tools.shared.controller;
 
 import java.util.Collection;
 
+import net.drewke.tdme.engine.Rotation;
+import net.drewke.tdme.engine.Transformations;
+import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.events.Action;
 import net.drewke.tdme.gui.events.GUIActionListener;
@@ -10,6 +13,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
+import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
@@ -90,9 +94,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode bbpeColorEnd;
 	private GUIElementNode bbpeObbCenter;
 	private GUIElementNode bbpeObbHalfextension;
-	private GUIElementNode bbpeObbAxis0;
-	private GUIElementNode bbpeObbAxis1;
-	private GUIElementNode bbpeObbAxis2;
+	private GUIElementNode bbpeObbRotationX;
+	private GUIElementNode bbpeObbRotationY;
+	private GUIElementNode bbpeObbRotationZ;
 
 	private GUIElementNode cpeCount;
 	private GUIElementNode cpeLifeTime;
@@ -105,8 +109,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode cpeColorEnd;
 	private GUIElementNode cpeCenter;
 	private GUIElementNode cpeRadius;
-	private GUIElementNode cpeAxis0;
-	private GUIElementNode cpeAxis1;
+	private GUIElementNode cpeRotationX;
+	private GUIElementNode cpeRotationY;
+	private GUIElementNode cpeRotationZ;
 
 	private GUIElementNode cpepvCount;
 	private GUIElementNode cpepvLifeTime;
@@ -119,8 +124,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	private GUIElementNode cpepvColorEnd;
 	private GUIElementNode cpepvCenter;
 	private GUIElementNode cpepvRadius;
-	private GUIElementNode cpepvAxis0;
-	private GUIElementNode cpepvAxis1;
+	private GUIElementNode cpepvRotationX;
+	private GUIElementNode cpepvRotationY;
+	private GUIElementNode cpepvRotationZ;
 
 	private GUIElementNode speCount;
 	private GUIElementNode speLifeTime;
@@ -247,9 +253,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			bbpeColorEnd = (GUIElementNode)screenNode.getNodeById("bbpe_colorend");
 			bbpeObbCenter = (GUIElementNode)screenNode.getNodeById("bbpe_obb_center");
 			bbpeObbHalfextension = (GUIElementNode)screenNode.getNodeById("bbpe_obb_halfextension");
-			bbpeObbAxis0 = (GUIElementNode)screenNode.getNodeById("bbpe_obb_axis0");
-			bbpeObbAxis1 = (GUIElementNode)screenNode.getNodeById("bbpe_obb_axis1");
-			bbpeObbAxis2 = (GUIElementNode)screenNode.getNodeById("bbpe_obb_axis2");
+			bbpeObbRotationX = (GUIElementNode)screenNode.getNodeById("bbpe_obb_rotation_x");
+			bbpeObbRotationY = (GUIElementNode)screenNode.getNodeById("bbpe_obb_rotation_y");
+			bbpeObbRotationZ = (GUIElementNode)screenNode.getNodeById("bbpe_obb_rotation_z");
 
 			// circle particle emitter
 			cpeCount = (GUIElementNode)screenNode.getNodeById("cpe_count");
@@ -263,8 +269,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			cpeColorEnd = (GUIElementNode)screenNode.getNodeById("cpe_colorend");
 			cpeCenter = (GUIElementNode)screenNode.getNodeById("cpe_center");
 			cpeRadius = (GUIElementNode)screenNode.getNodeById("cpe_radius");
-			cpeAxis0 = (GUIElementNode)screenNode.getNodeById("cpe_axis0");
-			cpeAxis1 = (GUIElementNode)screenNode.getNodeById("cpe_axis1");
+			cpeRotationX = (GUIElementNode)screenNode.getNodeById("cpe_rotation_x");
+			cpeRotationY = (GUIElementNode)screenNode.getNodeById("cpe_rotation_y");
+			cpeRotationZ = (GUIElementNode)screenNode.getNodeById("cpe_rotation_z");
 
 			// circle particle emitter plane velocity
 			cpepvCount = (GUIElementNode)screenNode.getNodeById("cpepv_count");
@@ -278,8 +285,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 			cpepvColorEnd = (GUIElementNode)screenNode.getNodeById("cpepv_colorend");
 			cpepvCenter = (GUIElementNode)screenNode.getNodeById("cpepv_center");
 			cpepvRadius = (GUIElementNode)screenNode.getNodeById("cpepv_radius");
-			cpepvAxis0 = (GUIElementNode)screenNode.getNodeById("cpepv_axis0");
-			cpepvAxis1 = (GUIElementNode)screenNode.getNodeById("cpepv_axis1");
+			cpepvRotationX = (GUIElementNode)screenNode.getNodeById("cpepv_rotation_x");
+			cpepvRotationY = (GUIElementNode)screenNode.getNodeById("cpepv_rotation_y");
+			cpepvRotationZ = (GUIElementNode)screenNode.getNodeById("cpepv_rotation_z");
 
 			// sphere particle emitter
 			speCount = (GUIElementNode)screenNode.getNodeById("spe_count");
@@ -603,9 +611,18 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						emitter.getColorEnd().set(Tools.convertToColor4(bbpeColorEnd.getController().getValue().toString()));
 						emitter.getObbCenter().set(Tools.convertToVector3(bbpeObbCenter.getController().getValue().toString()));
 						emitter.getObbHalfextension().set(Tools.convertToVector3(bbpeObbHalfextension.getController().getValue().toString()));
-						emitter.getObbAxis0().set(Tools.convertToVector3(bbpeObbAxis0.getController().getValue().toString()));
-						emitter.getObbAxis1().set(Tools.convertToVector3(bbpeObbAxis1.getController().getValue().toString()));
-						emitter.getObbAxis2().set(Tools.convertToVector3(bbpeObbAxis2.getController().getValue().toString()));
+
+						// rotation axes by rotation angle for x,y,z
+						Transformations rotations = new Transformations();
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(bbpeObbRotationZ.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Z));
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(bbpeObbRotationY.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Y));
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(bbpeObbRotationX.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_X));
+						rotations.update();
+
+						// extract axes from matrix
+						rotations.getTransformationsMatrix().getAxes(emitter.getObbAxis0(), emitter.getObbAxis1(), emitter.getObbAxis2());
+
+						// done
 						break;
 					}
 				case CIRCLE_PARTICLE_EMITTER:
@@ -623,8 +640,18 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						emitter.getColorEnd().set(Tools.convertToColor4(cpeColorEnd.getController().getValue().toString()));
 						emitter.getCenter().set(Tools.convertToVector3(cpeCenter.getController().getValue().toString()));
 						emitter.setRadius(Tools.convertToFloat(cpeRadius.getController().getValue().toString()));
-						emitter.getAxis0().set(Tools.convertToVector3(cpeAxis0.getController().getValue().toString()));
-						emitter.getAxis1().set(Tools.convertToVector3(cpeAxis1.getController().getValue().toString()));
+
+						// rotation axes by rotation angle for x,y,z
+						Transformations rotations = new Transformations();
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(cpeRotationZ.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Z));
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(cpeRotationY.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Y));
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(cpeRotationX.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_X));
+						rotations.update();
+
+						// extract axes from matrix
+						rotations.getTransformationsMatrix().getAxes(emitter.getAxis0(), new Vector3(), emitter.getAxis1());
+
+						// done
 						break;
 					}
 				case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
@@ -642,8 +669,18 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						emitter.getColorEnd().set(Tools.convertToColor4(cpepvColorEnd.getController().getValue().toString()));
 						emitter.getCenter().set(Tools.convertToVector3(cpepvCenter.getController().getValue().toString()));
 						emitter.setRadius(Tools.convertToFloat(cpepvRadius.getController().getValue().toString()));
-						emitter.getAxis0().set(Tools.convertToVector3(cpepvAxis0.getController().getValue().toString()));
-						emitter.getAxis1().set(Tools.convertToVector3(cpepvAxis1.getController().getValue().toString()));
+
+						// rotation axes by rotation angle for x,y,z
+						Transformations rotations = new Transformations();
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(cpepvRotationZ.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Z));
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(cpepvRotationY.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_Y));
+						rotations.getRotations().add(new Rotation(Tools.convertToFloat(cpepvRotationX.getController().getValue().toString()), OrientedBoundingBox.AABB_AXIS_X));
+						rotations.update();
+
+						// extract axes from matrix
+						rotations.getTransformationsMatrix().getAxes(emitter.getAxis0(), new Vector3(), emitter.getAxis1());
+
+						// done
 						break;
 					}
 				case SPHERE_PARTICLE_EMITTER:
@@ -720,9 +757,17 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					bbpeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
 					bbpeObbCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getObbCenter())));
 					bbpeObbHalfextension.getController().setValue(value.set(Tools.formatVector3(emitter.getObbHalfextension())));
-					bbpeObbAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getObbAxis0())));
-					bbpeObbAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getObbAxis1())));
-					bbpeObbAxis2.getController().setValue(value.set(Tools.formatVector3(emitter.getObbAxis2())));
+
+					// set up rotation matrix to extract euler angles
+					Vector3 rotation = new Vector3();
+					Matrix4x4 rotationMatrix = new Matrix4x4().identity();
+					rotationMatrix.setAxes(emitter.getObbAxis0(), emitter.getObbAxis1(), emitter.getObbAxis2());
+					rotationMatrix.computeEulerAngles(rotation);
+
+					// set up rotation
+					bbpeObbRotationX.getController().setValue(value.set(Tools.formatFloat(rotation.getX())));
+					bbpeObbRotationY.getController().setValue(value.set(Tools.formatFloat(rotation.getY())));
+					bbpeObbRotationZ.getController().setValue(value.set(Tools.formatFloat(rotation.getZ())));
 					break;
 				}
 			case CIRCLE_PARTICLE_EMITTER:
@@ -741,8 +786,17 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					cpeColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
 					cpeCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
 					cpeRadius.getController().setValue(value.set(emitter.getRadius(), 4));
-					cpeAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis0())));
-					cpeAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis1())));
+
+					// set up rotation matrix to extract euler angles
+					Vector3 rotation = new Vector3();
+					Matrix4x4 rotationMatrix = new Matrix4x4().identity();
+					rotationMatrix.setAxes(emitter.getAxis0(), Vector3.computeCrossProduct(emitter.getAxis0(), emitter.getAxis1()), emitter.getAxis1());
+					rotationMatrix.computeEulerAngles(rotation);
+
+					// set up rotation
+					cpeRotationX.getController().setValue(value.set(Tools.formatFloat(rotation.getX())));
+					cpeRotationY.getController().setValue(value.set(Tools.formatFloat(rotation.getY())));
+					cpeRotationZ.getController().setValue(value.set(Tools.formatFloat(rotation.getZ())));
 					break;
 				}
 			case CIRCLE_PARTICLE_EMITTER_PLANE_VELOCITY: 
@@ -761,8 +815,17 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					cpepvColorEnd.getController().setValue(value.set(Tools.formatColor4(emitter.getColorEnd())));
 					cpepvCenter.getController().setValue(value.set(Tools.formatVector3(emitter.getCenter())));
 					cpepvRadius.getController().setValue(value.set(emitter.getRadius(), 4));
-					cpepvAxis0.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis0())));
-					cpepvAxis1.getController().setValue(value.set(Tools.formatVector3(emitter.getAxis1())));
+
+					// set up rotation matrix to extract euler angles
+					Vector3 rotation = new Vector3();
+					Matrix4x4 rotationMatrix = new Matrix4x4().identity();
+					rotationMatrix.setAxes(emitter.getAxis0(), Vector3.computeCrossProduct(emitter.getAxis0(), emitter.getAxis1()), emitter.getAxis1());
+					rotationMatrix.computeEulerAngles(rotation);
+
+					// set up rotation
+					cpepvRotationX.getController().setValue(value.set(Tools.formatFloat(rotation.getX())));
+					cpepvRotationY.getController().setValue(value.set(Tools.formatFloat(rotation.getY())));
+					cpepvRotationZ.getController().setValue(value.set(Tools.formatFloat(rotation.getZ())));
 					break;
 				}
 			case SPHERE_PARTICLE_EMITTER:
