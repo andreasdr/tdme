@@ -41,8 +41,6 @@ public final class PhysicsTest2 implements GLEventListener, MouseListener, Mouse
 	private final static int BOX_COUNT = 4;
 
 	private Engine engine;
-	private FPSAnimator animator;
-
 	private World world;
 
 	/**

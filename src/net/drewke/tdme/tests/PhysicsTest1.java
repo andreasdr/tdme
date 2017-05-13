@@ -50,8 +50,6 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 	private final static int SPHERE_COUNT = 10;
 
 	private Engine engine;
-	private GLWindow glWindow;
-	private FPSAnimator fpsAnimator;
 
 	private boolean keyLeft;
 	private boolean keyRight;
@@ -83,7 +81,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 		FPSAnimator animator = new FPSAnimator(glWindow, 60);
 
 		// tdme level editor
-		PhysicsTest1 physicsTest1 = new PhysicsTest1(glWindow, animator);
+		PhysicsTest1 physicsTest1 = new PhysicsTest1();
 		
 		// GL Window
 		glWindow.addGLEventListener(physicsTest1);
@@ -103,9 +101,7 @@ public final class PhysicsTest1 implements GLEventListener, MouseListener, Mouse
 	 * @param gl window
 	 * @param fps animator
 	 */
-	public PhysicsTest1(GLWindow glWindow, FPSAnimator fpsAnimator) {
-		this.glWindow = glWindow;
-		this.fpsAnimator = fpsAnimator;
+	public PhysicsTest1() {
 		keyLeft = false;
 		keyRight = false;
 		keyUp = false;

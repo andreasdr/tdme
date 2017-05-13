@@ -1,13 +1,6 @@
 package net.drewke.tdme.tests;
 
-import java.awt.Frame;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,11 +22,18 @@ import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
 
+import com.jogamp.newt.event.KeyEvent;
+import com.jogamp.newt.event.KeyListener;
+import com.jogamp.newt.event.MouseEvent;
+import com.jogamp.newt.event.MouseListener;
+import com.jogamp.newt.event.WindowEvent;
+import com.jogamp.newt.event.WindowListener;
+import com.jogamp.newt.event.WindowUpdateEvent;
+import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
-import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -41,7 +41,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author andreas.drewke
  * @version $Id$
  */
-public final class PhysicsTest3 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener {
+public final class PhysicsTest3 implements GLEventListener, MouseListener, MouseMotionListener, KeyListener, WindowListener {
 
 	private final static int RIGID_TYPEID_STANDARD = 1;
 
@@ -51,7 +51,6 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 	private final static int SPHERE_COUNT = 10;
 	
 	private Engine engine;
-	private FPSAnimator animator;
 
 	private boolean keyLeft;
 	private boolean keyRight;
@@ -66,6 +65,7 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 	private World world;
 
 	/**
+	 * Main
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -74,53 +74,45 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 		// create GL canvas
 		GLProfile glp = Engine.getProfile();
 		GLCapabilities caps = new GLCapabilities(glp);
-		caps.setDoubleBuffered(false);
-		caps.setDepthBits(16);
-		final GLCanvas glCanvas = new GLCanvas(caps);
 
-		// create AWT frame
-		final Frame frame = new Frame("PhysicsTest");
-		frame.setSize(640, 480);
-		frame.add(glCanvas);
-		frame.setVisible(true);
+		// create GL window
+		GLWindow glWindow = GLWindow.create(caps);
+		glWindow.setTitle("PhysicsTest3");
 
-		// add window listener to be able to handle window close events
-		frame.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				frame.remove(glCanvas);
-				frame.dispose();
-				System.exit(0);
-			}
-		});
+		// animator
+		FPSAnimator animator = new FPSAnimator(glWindow, 60);
 
-		// event listener
-		PhysicsTest3 physicsTest = new PhysicsTest3(glCanvas);
-		glCanvas.addGLEventListener(physicsTest);
-		glCanvas.addMouseListener(physicsTest);
-		glCanvas.addMouseMotionListener(physicsTest);
-		glCanvas.addKeyListener(physicsTest);
-		glCanvas.setEnabled(true);
+		// tdme level editor
+		PhysicsTest3 physicsTest3 = new PhysicsTest3();
+		
+		// GL Window
+		glWindow.addGLEventListener(physicsTest3);
+		glWindow.setSize(800, 600);
+		glWindow.setVisible(true);
+		glWindow.addKeyListener(physicsTest3);
+		glWindow.addMouseListener(physicsTest3);
+		glWindow.addWindowListener(physicsTest3);
+		
+		// start animator
+		animator.setUpdateFPSFrames(3, null);
+		animator.start();
 	}
 
 	/**
 	 * Public constructor
-	 * 
-	 * @param gl
-	 *            canvas
 	 */
-	public PhysicsTest3(GLCanvas glCanvas) {
+	public PhysicsTest3() {
 		keyLeft = false;
 		keyRight = false;
 		keyUp = false;
 		keyDown = false;
 		engine = Engine.getInstance();
 		world = new World();
-		// animator, do the frames
-		animator = new FPSAnimator(glCanvas, 60);
-		animator.setUpdateFPSFrames(3, null);
-		animator.start();
 	}
 
+	/**
+	 * Display
+	 */
 	public void display(GLAutoDrawable drawable) {
 		// apply some manual damping on boxes on x and z axis
 		for (int i = 0; i < BOX_COUNT; i++) {
@@ -159,10 +151,18 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 		System.out.println("PhysicsTest::display::" + (end-start) + "ms");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#dispose(com.jogamp.opengl.GLAutoDrawable)
+	 */
 	public void dispose(GLAutoDrawable drawable) {
 		engine.dispose(drawable);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
+	 */
 	public void init(GLAutoDrawable drawable) {
 		drawable.getGL().setSwapInterval(0);
 		engine.init(drawable);
@@ -462,62 +462,66 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.opengl.GLEventListener#reshape(com.jogamp.opengl.GLAutoDrawable, int, int, int, int)
+	 */
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		engine.reshape(drawable, x, y, width, height);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseClicked(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseEntered(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseEntered(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseExited(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseExited(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mousePressed(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseReleased(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseReleased(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseDragged(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
 	 */
 	public void mouseMoved(MouseEvent e) {
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 * @see com.jogamp.newt.event.KeyListener#keyPressed(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -533,7 +537,7 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 * @see com.jogamp.newt.event.KeyListener#keyReleased(com.jogamp.newt.event.KeyEvent)
 	 */
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
@@ -549,9 +553,73 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 * @see com.jogamp.newt.event.MouseListener#mouseDragged(com.jogamp.newt.event.MouseEvent)
 	 */
-	public void keyTyped(KeyEvent e) {
+	public void mouseDragged(java.awt.event.MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.MouseListener#mouseMoved(com.jogamp.newt.event.MouseEvent)
+	 */
+	public void mouseMoved(java.awt.event.MouseEvent e) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.MouseListener#mouseWheelMoved(com.jogamp.newt.event.MouseEvent)
+	 */
+	public void mouseWheelMoved(MouseEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowDestroyNotify(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowDestroyNotify(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowDestroyed(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowDestroyed(WindowEvent arg0) {
+		System.exit(0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowGainedFocus(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowGainedFocus(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowLostFocus(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowLostFocus(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowMoved(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowMoved(WindowEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowRepaint(com.jogamp.newt.event.WindowUpdateEvent)
+	 */
+	public void windowRepaint(WindowUpdateEvent arg0) {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.jogamp.newt.event.WindowListener#windowResized(com.jogamp.newt.event.WindowEvent)
+	 */
+	public void windowResized(WindowEvent arg0) {
 	}
 
 }
