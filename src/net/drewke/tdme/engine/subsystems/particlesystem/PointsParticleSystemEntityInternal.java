@@ -44,6 +44,8 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	protected float[] bbMinXYZ = new float[3];
 	protected float[] bbMaxXYZ = new float[3];
 
+	protected float particlesToSpawnRemainder;
+
 	/**
 	 * Public constructor 
 	 * @param id
@@ -73,6 +75,7 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 		this.effectColorAdd = new Color4(0.0f, 0.0f, 0.0f, 0.0f);
 		this.pickable = false;
 		this.autoEmit = autoEmit;
+		this.particlesToSpawnRemainder = 0f;
 	}
 
 	/*
@@ -340,11 +343,22 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 		// enable particle system
 		active = true;
 
-		//
+		// delta time
 		long timeDelta = engine.getTiming().getDeltaTime();
+
+		// determine particles to spawn
+		float particlesToSpawn = emitter.getCount() * engine.getTiming().getDeltaTime() / 1000f;
+		int particlesToSpawnInteger = (int)particlesToSpawn;
+		particlesToSpawnRemainder+= particlesToSpawn - particlesToSpawnInteger;
+		if (particlesToSpawnRemainder > 1.0f) {
+			particlesToSpawn+= 1.0f;
+			particlesToSpawnInteger++;
+			particlesToSpawnRemainder-= 1f;
+		}
+		if (particlesToSpawnInteger == 0) return 0;
+
+		// spawn
 		int particlesSpawned = 0;
-		int particlesToSpawn = (int)(emitter.getCount() * engine.getTiming().getDeltaTime() / 1000);
-		if (particlesToSpawn == 0) return 0;
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
 			if (particle.active == true) continue;
@@ -360,7 +374,7 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 
 			//
 			particlesSpawned++;
-			if (particlesSpawned == particlesToSpawn) break;
+			if (particlesSpawned == particlesToSpawnInteger) break;
 		}
 
 		return particlesSpawned;
