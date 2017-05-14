@@ -12,10 +12,10 @@ import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
 import net.drewke.tdme.tools.leveleditor.views.EmptyView;
 import net.drewke.tdme.tools.leveleditor.views.LevelEditorView;
 import net.drewke.tdme.tools.leveleditor.views.ModelViewerView;
+import net.drewke.tdme.tools.leveleditor.views.ParticleSystemView;
 import net.drewke.tdme.tools.leveleditor.views.TriggerView;
 import net.drewke.tdme.tools.shared.controller.ScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
@@ -195,7 +195,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 				if (TDMELevelEditor.getInstance().getView() instanceof ModelViewerView == false) {
 					TDMELevelEditor.getInstance().switchToModelViewer();
 				}
-		
+
 				// set model
 				((ModelViewerView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
 				break;
@@ -204,7 +204,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 				if (TDMELevelEditor.getInstance().getView() instanceof TriggerView == false) {
 					TDMELevelEditor.getInstance().switchToTriggerView();
 				}
-		
+
 				// set model
 				((TriggerView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
 				break;
@@ -213,9 +213,18 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 				if (TDMELevelEditor.getInstance().getView() instanceof EmptyView == false) {
 					TDMELevelEditor.getInstance().switchToEmptyView();
 				}
-		
+
 				// set model
 				((EmptyView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
+				break;
+			case PARTICLESYSTEM:
+				// switch to model trigger view if not yet done
+				if (TDMELevelEditor.getInstance().getView() instanceof ParticleSystemView == false) {
+					TDMELevelEditor.getInstance().switchToParticleSystemView();
+				}
+
+				// set model
+				((ParticleSystemView)TDMELevelEditor.getInstance().getView()).setEntity(entity);
 				break;
 		}
 
@@ -360,8 +369,19 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 				
 			} else
 			// particle
-			if (node.getController().getValue().equals("create_particle") == true) {
-			
+			if (node.getController().getValue().equals("create_particlesystem") == true) {
+				try {
+					LevelEditorEntity model = TDMELevelEditor.getInstance().getEntityLibrary().addParticleSystem(	
+						LevelEditorEntityLibrary.ID_ALLOCATE,
+						"New particle system",
+						""
+					);
+					setEntityLibrary();
+					entityLibraryListBox.getController().setValue(entityLibraryListBoxSelection.set(model.getId()));
+					onEditEntity();
+				} catch (Exception exception) {
+					popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
+				}
 			} else {
 				System.out.println("LevelEditorEntityLibraryScreenController::onValueChanged: dropdown_model_create: " + node.getController().getValue());
 			}

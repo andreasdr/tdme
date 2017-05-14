@@ -123,7 +123,7 @@ public final class LevelEditorEntityLibrary {
 		if (entitiesById.get(new Integer(id)) != null) {
 			throw new Exception(pathName + "/" + fileName + ": Model id already in use");
 		}
-		addModel(levelEditorEntity);
+		addEntity(levelEditorEntity);
 		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
@@ -171,7 +171,7 @@ public final class LevelEditorEntityLibrary {
 		if (entitiesById.get(new Integer(id)) != null) {
 			throw new Exception("Model id already in use");
 		}
-		addModel(levelEditorEntity);
+		addEntity(levelEditorEntity);
 		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
@@ -213,7 +213,40 @@ public final class LevelEditorEntityLibrary {
 		if (entitiesById.get(new Integer(id)) != null) {
 			throw new Exception("Model id already in use");
 		}
-		addModel(levelEditorEntity);
+		addEntity(levelEditorEntity);
+		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
+
+		//
+		return levelEditorEntity;
+	}
+
+	/**
+	 * Add a empty
+	 * @param name
+	 * @param description
+	 * @return level editor entity
+	 * @throws Exception
+	 */
+	public LevelEditorEntity addParticleSystem(int id, String name, String description) throws Exception {
+		// create entity
+		LevelEditorEntity levelEditorEntity = new LevelEditorEntity(
+			id == ID_ALLOCATE?allocateEntityId():id,
+			EntityType.PARTICLESYSTEM,
+			name,
+			description,
+			null,
+			null,
+			null,
+			null,
+			new Vector3()
+		);
+		id = levelEditorEntity.getId();
+
+		// add model
+		if (entitiesById.get(new Integer(id)) != null) {
+			throw new Exception("Model id already in use");
+		}
+		addEntity(levelEditorEntity);
 		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
@@ -224,7 +257,7 @@ public final class LevelEditorEntityLibrary {
 	 * Add a model
 	 * @param model
 	 */
-	protected void addModel(LevelEditorEntity model) {
+	protected void addEntity(LevelEditorEntity model) {
 		LevelEditorEntity _model = entitiesById.put(model.getId(), model);
 		if (_model != null) entities.remove(_model);
 		entities.add(model);

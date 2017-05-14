@@ -15,8 +15,6 @@ import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.BoundingBoxParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitter;
@@ -397,9 +395,6 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// initial selection
-		onParticleSystemTypeApply();
 	}
 
 	/**
@@ -429,9 +424,6 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// initial selection
-		onParticleSystemEmitterApply();
 	}
 
 	/**
@@ -470,6 +462,9 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				System.out.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
 				break;
 		}
+
+		// re init entity in view
+		view.initParticleSystem();
 	}
 
 	/**
@@ -504,7 +499,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		}
 
 		// re init entity in view
-		view.setEntity(view.getEntity());
+		view.initParticleSystem();
 	}
 
 	/**
@@ -530,7 +525,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		setParticleSystemType();
 
 		// re init entity in view
-		view.setEntity(view.getEntity());
+		view.initParticleSystem();
 	}
 
 	/**
@@ -708,7 +703,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		}
 
 		// re init entity in view
-		view.setEntity(view.getEntity());
+		view.initParticleSystem();
 	}
 
 	/**
@@ -851,7 +846,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		}
 
 		// re init entity in view
-		view.setEntity(view.getEntity());
+		view.initParticleSystem();
 	}
 
 	/**

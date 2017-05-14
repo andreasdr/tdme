@@ -13,6 +13,7 @@ import net.drewke.tdme.engine.physics.World;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleEmitter;
+import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
@@ -75,7 +76,7 @@ public class Level {
 	 * @param level editor entity particle system
 	 * @param id
 	 * @param enable dynamic shadows
-	 * @return engine entity
+	 * @return engine particle system entity
 	 */
 	public static Entity createParticleSystem(LevelEditorEntityParticleSystem particleSystem, String id, boolean enableDynamicShadows) {
 		// create emitter for engine
@@ -240,8 +241,19 @@ public class Level {
 			// skip on empties or trigger
 			if (addEmpties == false && object.getEntity().getType() == EntityType.EMPTY) continue;
 			if (addTrigger == false && object.getEntity().getType() == EntityType.TRIGGER) continue;
+
 			// add to 3d engine
-			Entity entity = new Object3D(object.getId(), object.getEntity().getModel());
+			Entity entity = null;
+			if (object.getEntity().getModel() != null) {
+				entity = new Object3D(object.getId(), object.getEntity().getModel());
+			} else
+			if (object.getEntity().getType() == EntityType.PARTICLESYSTEM) {
+				entity = createParticleSystem(object.getEntity().getParticleSystem(), object.getId(), false);
+			}
+
+			// skip if we have no entity
+			if (entity == null) continue;
+
 			// apply transformations
 			entity.fromTransformations(object.getTransformations());
 			// apply translation

@@ -43,6 +43,7 @@ import net.drewke.tdme.tools.leveleditor.logic.Level;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
 import net.drewke.tdme.tools.shared.files.LevelFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
@@ -703,9 +704,19 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisYIndex()).getAngle(),
 					selectedObject.getRotations().get(level.getRotationOrder().getAxisZIndex()).getAngle()
 				);
-				BoundingVolume bv = levelEditorObject.getEntity().getModel().getBoundingBox().clone();
-				bv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
-				Vector3 objectCenter = bv.getCenter();
+
+				// determine center
+				Vector3 objectCenter = null;
+				if (levelEditorObject.getEntity().getModel() != null) {
+					BoundingVolume bv = levelEditorObject.getEntity().getModel().getBoundingBox().clone();
+					bv.fromBoundingVolumeWithTransformations(bv, levelEditorObject.getTransformations());
+					objectCenter = bv.getCenter();
+				} else {
+					// TODO: this is not the center, applies currently to particle systems
+					objectCenter = levelEditorObject.getTransformations().getTranslation();
+				}
+
+				//
 				levelEditorScreenController.setObjectData(
 					levelEditorObject.getId(),
 					levelEditorObject.getDescription(),
@@ -1217,17 +1228,22 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 				selectedObject.getBoundingBox().getMin().clone().add(selectedObject.getBoundingBox().getMax()).scale(0.5f);
 
 			// compute center of selected model
-			Vector3 centerNewObject = 
-				selectedEntity.getModel().getBoundingBox().getCenter().clone();
+			Vector3 centerNewObject =
+				selectedEntity.getModel() != null?
+					selectedEntity.getModel().getBoundingBox().getCenter().clone():
+					new Vector3(0f,0f,0f);
 
 			// put new object on middle of selected object
 			levelEditorObjectTransformations.getTranslation().add(centerNewObject.clone().add(centerSelectedObject));
 
 			// set on selected object / y
-			if (selectedLevelEditorObject == null) {
+			if (selectedLevelEditorObject == null || selectedLevelEditorObject.getEntity().getType() == EntityType.PARTICLESYSTEM) {
 				levelEditorObjectTransformations.getTranslation().setY(
 					gridY +
-					-selectedEntity.getModel().getBoundingBox().getMin().getY()
+					(selectedEntity.getModel() != null?
+						-selectedEntity.getModel().getBoundingBox().getMin().getY():
+						0f
+					)
 				);
 			} else {
 				// create transformed level editor object bounding box
@@ -1275,11 +1291,24 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			//	add to level
 			level.addObject(levelEditorObject);
 
-			// add to 3d engine
-			Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getEntity().getModel());
-			object.fromTransformations(levelEditorObjectTransformations);
-			object.setPickable(true);
-			engine.addEntity(object);
+			// add model to 3d engine
+			if (levelEditorObject.getEntity().getModel() != null) {
+				Object3D object = new Object3D(levelEditorObject.getId(), levelEditorObject.getEntity().getModel());
+				object.fromTransformations(levelEditorObjectTransformations);
+				object.setPickable(true);
+				engine.addEntity(object);
+			}
+
+			// add particle system to 3d engine
+			if (levelEditorObject.getEntity().getType() == EntityType.PARTICLESYSTEM) {
+				System.out.println("aaa:" + levelEditorObject);
+				System.out.println("bbb:" + levelEditorObject.getEntity());
+				System.out.println("ccc:" + levelEditorObject.getEntity().getParticleSystem());
+				Entity object = Level.createParticleSystem(levelEditorObject.getEntity().getParticleSystem(), levelEditorObject.getId(), false);
+				object.fromTransformations(levelEditorObjectTransformations);
+				object.setPickable(true);
+				engine.addEntity(object);
+			}
 
 			// add to objects listbox
 			levelEditorScreenController.setObjectListbox(level.getObjectIdsIterator());

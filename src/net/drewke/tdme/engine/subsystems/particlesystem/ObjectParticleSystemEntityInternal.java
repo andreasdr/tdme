@@ -210,6 +210,7 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity#fromTransformations(net.drewke.tdme.engine.Transformations)
 	 */
 	public void fromTransformations(Transformations transformations) {
+		super.fromTransformations(transformations);
 		emitter.fromTransformations(transformations);
 	}
 

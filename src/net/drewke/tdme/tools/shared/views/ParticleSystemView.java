@@ -96,11 +96,18 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 	/**
 	 * Init particle system
 	 */
+	public void initParticleSystem() {
+		initParticleSystemRequested = true;
+	}
+
+	/**
+	 * Init particle system
+	 */
 	protected void initParticleSystem(GLAutoDrawable drawable) {
 		if (entity == null) return;
 
 		//
-		particleSystemFile = new File(entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
+		particleSystemFile = entity.getEntityFileName() != null?new File(entity.getEntityFileName()):null;
 
 		// set up model in engine
 		Tools.setupEntity(entity, engine, cameraRotationInputHandler.getLookFromRotations(), cameraRotationInputHandler.getScale());
@@ -169,14 +176,14 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 			loadParticleSystemRequested = false;
 			loadParticleSystem();
 			cameraRotationInputHandler.reset();
-			particleSystemScreenController.setParticleSystemType();
-			particleSystemScreenController.setParticleSystemEmitter();
 		}
 
 		// init model
 		if (initParticleSystemRequested == true) {
 			engine.reset();
 			initParticleSystem(drawable);
+			particleSystemScreenController.setParticleSystemType();
+			particleSystemScreenController.setParticleSystemEmitter();
 			initParticleSystemRequested = false;
 		}
 
@@ -200,7 +207,7 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 	 */
 	public void updateGUIElements() {
 		if (entity != null) {
-			particleSystemScreenController.setScreenCaption("Particle System - " + (entity.getEntityFileName() != null?Tools.getFileName(entity.getEntityFileName()):Tools.getFileName(entity.getFileName())));
+			particleSystemScreenController.setScreenCaption("Particle System - " + (entity.getEntityFileName() != null?Tools.getFileName(entity.getEntityFileName()):entity.getName()));
 			PropertyModelClass preset = entity.getProperty("preset");
 			particleSystemScreenController.setEntityProperties(preset != null ? preset.getValue() : null, entity.getProperties(), null);
 			particleSystemScreenController.setEntityData(entity.getName(), entity.getDescription());
