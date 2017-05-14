@@ -1237,7 +1237,9 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 			levelEditorObjectTransformations.getTranslation().add(centerNewObject.clone().add(centerSelectedObject));
 
 			// set on selected object / y
-			if (selectedLevelEditorObject == null || selectedLevelEditorObject.getEntity().getType() == EntityType.PARTICLESYSTEM) {
+			if (selectedLevelEditorObject == null || 
+				selectedLevelEditorObject.getEntity().getType() == EntityType.PARTICLESYSTEM ||
+				selectedEntity.getType() == EntityType.PARTICLESYSTEM) {
 				levelEditorObjectTransformations.getTranslation().setY(
 					gridY +
 					(selectedEntity.getModel() != null?

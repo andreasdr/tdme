@@ -371,7 +371,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 			// particle
 			if (node.getController().getValue().equals("create_particlesystem") == true) {
 				try {
-					LevelEditorEntity model = TDMELevelEditor.getInstance().getEntityLibrary().addParticleSystem(	
+					LevelEditorEntity model = TDMELevelEditor.getInstance().getEntityLibrary().addParticleSystem(
 						LevelEditorEntityLibrary.ID_ALLOCATE,
 						"New particle system",
 						""
