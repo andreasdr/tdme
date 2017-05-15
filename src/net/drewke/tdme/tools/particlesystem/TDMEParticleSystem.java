@@ -133,7 +133,8 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 		// replace view if requested
 		if (viewNew != null) {
 			if (view != null && viewInitialized == true) {
-				view.dispose(drawable);
+				view.deactivate();
+				view.dispose();
 				viewInitialized = false;
 			}
 			view = viewNew;
@@ -143,7 +144,8 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 		// do view init, render
 		if (view != null) {
 			if (viewInitialized == false) {
-				view.init(drawable);
+				view.init();
+				view.activate();
 				viewInitialized = true;
 			}
 			view.display(drawable);
@@ -152,17 +154,15 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 		//
 		engine.display(drawable);
 
-		// view handle events
-		if (view != null) {
-			view.handleEvents();
-		}
-
 		// render view
 		view.display(drawable);
 
 		// 
 		if (quitRequested == true) {
-			if (view != null) view.dispose(drawable);
+			if (view != null) {
+				view.deactivate();
+				view.dispose();
+			}
 			animator.stop();
 			glWindow.setVisible(false);
 			System.exit(0);
@@ -174,7 +174,8 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 	 */
 	public void dispose(GLAutoDrawable drawable) {
 		if (view != null && viewInitialized == true) {
-			view.dispose(drawable);
+			view.deactivate();
+			view.dispose();
 			view = null;
 		}
 		engine.dispose(drawable);

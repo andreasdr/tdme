@@ -27,7 +27,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class ParticleSystemView extends View implements GUIInputEventHandler {
+public class ParticleSystemView implements View, GUIInputEventHandler {
 
 	protected Engine engine;
 
@@ -221,37 +221,6 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * Store settings
-	 */
-	private void storeSettings() {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream("./settings/particlesystem.properties");
-			Properties settings = new Properties();
-			settings.put("display.boundingvolumes", entityDisplayView.isDisplayBoundingVolume() == true?"true":"false");
-			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
-			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
-			settings.put("particlesystem.path", particleSystemScreenController.getParticleSystemPath().getPath());
-			settings.put("model.path", particleSystemScreenController.getModelPath().getPath());
-			settings.store(fos, null);
-			fos.close();
-		} catch (Exception ioe) {
-			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
-			ioe.printStackTrace();
-		}
-	}
-
-	/**
-	 * Shutdown
-	 */
-	public void dispose(GLAutoDrawable drawable) {
-		// store settings
-		storeSettings();
-		// reset engine
-		Engine.getInstance().reset();
-	}
-
-	/**
 	 * On init additional screens
 	 * @param drawable
 	 */
@@ -281,14 +250,11 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		}
 	}
 
-	/**
-	 * Initialize
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init(GLAutoDrawable drawable) {
-		// reset engine and partition
-		engine.reset();
-		engine.setPartition(new PartitionNone());
-
+	public void init() {
 		//
 		try {
 			particleSystemScreenController = new ParticleSystemScreenController(this);
@@ -303,9 +269,6 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 
 		// load settings
 		loadSettings();
-
-		// set up display
-		particleSystemScreenController.getEntityDisplaySubScreenController().setupDisplay();
 
 		// init entity bounding volume view
 		entityBoundingVolumeView.init();
@@ -327,8 +290,24 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		particleSystemEmitters.add("Sphere Particle Emitter");
 		particleSystemScreenController.setParticleSystemEmitters(particleSystemEmitters);
 
+		// set up display
+		particleSystemScreenController.getEntityDisplaySubScreenController().setupDisplay();
+
 		// set up gui
 		updateGUIElements();
+
+		// init particle system
+		initParticleSystemRequested = true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#activate()
+	 */
+	public void activate() {
+		// reset engine and partition
+		engine.reset();
+		engine.setPartition(new PartitionNone());
 
 		//
 		engine.getGUI().resetRenderScreens();
@@ -336,9 +315,45 @@ public class ParticleSystemView extends View implements GUIInputEventHandler {
 		onInitAdditionalScreens();
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
+	}
 
-		// init particle system
-		initParticleSystemRequested = true;
+	/**
+	 * Store settings
+	 */
+	private void storeSettings() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("./settings/particlesystem.properties");
+			Properties settings = new Properties();
+			settings.put("display.boundingvolumes", entityDisplayView.isDisplayBoundingVolume() == true?"true":"false");
+			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
+			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
+			settings.put("particlesystem.path", particleSystemScreenController.getParticleSystemPath().getPath());
+			settings.put("model.path", particleSystemScreenController.getModelPath().getPath());
+			settings.store(fos, null);
+			fos.close();
+		} catch (Exception ioe) {
+			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#dispose()
+	 */
+	public void dispose() {
+		// store settings
+		storeSettings();
+		// reset engine
+		Engine.getInstance().reset();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#deactivate()
+	 */
+	public void deactivate() {
 	}
 
 	/**

@@ -3,7 +3,6 @@ package net.drewke.tdme.tools.leveleditor.views;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.PartitionNone;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.leveleditor.TDMELevelEditor;
@@ -22,7 +21,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class EmptyView extends View implements GUIInputEventHandler {
+public class EmptyView implements View, GUIInputEventHandler {
 
 	protected Engine engine;
 
@@ -147,21 +146,11 @@ public class EmptyView extends View implements GUIInputEventHandler {
 		}
 	}
 
-	/**
-	 * Shutdown
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void dispose(GLAutoDrawable drawable) {
-		Engine.getInstance().reset();
-	}
-
-	/**
-	 * Initialize
-	 */
-	public void init(GLAutoDrawable drawable) {
-		// reset engine and partition
-		engine.reset();
-		engine.setPartition(new PartitionNone());
-
+	public void init() {
 		//
 		try {
 			emptyScreenController = new EmptyScreenController(this);
@@ -174,6 +163,16 @@ public class EmptyView extends View implements GUIInputEventHandler {
 
 		// set up gui
 		updateGUIElements();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#activate()
+	 */
+	public void activate() {
+		// reset engine and partition
+		engine.reset();
+		engine.setPartition(new PartitionNone());
 
 		//
 		engine.getGUI().resetRenderScreens();
@@ -181,6 +180,21 @@ public class EmptyView extends View implements GUIInputEventHandler {
 		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#deactivate()
+	 */
+	public void deactivate() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#dispose()
+	 */
+	public void dispose() {
+		Engine.getInstance().reset();
 	}
 
 }

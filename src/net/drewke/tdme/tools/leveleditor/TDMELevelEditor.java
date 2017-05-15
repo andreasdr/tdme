@@ -44,14 +44,18 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	private FPSAnimator animator;
 
 	private View view;
-	private boolean viewInitialized;
-	private View viewNew;
 
 	private boolean quitRequested = false;
 
 	private LevelEditorLevel level;
 	private LevelEditorEntityLibraryScreenController levelEditorEntityLibraryScreenController;
 	private PopUps popUps;
+
+	private LevelEditorView levelEditorView;
+	private ModelViewerView modelViewerView;
+	private TriggerView triggerView;
+	private EmptyView emptyView;
+	private ParticleSystemView particleSystemView;
 
 	/**
 	 * @param args
@@ -107,8 +111,6 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		LevelPropertyPresets.getInstance().setDefaultLevelProperties(level);
 		engine = Engine.getInstance();
 		view = null;
-		viewInitialized = false;
-		viewNew = null;
 		popUps = new PopUps();
 	}
 
@@ -145,14 +147,16 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * @param view
 	 */
 	public void setView(View view) {
-		viewNew = view;
+		if (this.view != null) view.deactivate();
+		this.view = view;
+		if (this.view != null) view.activate();
 	}
 
 	/**
 	 * @return current view
 	 */
 	public View getView() {
-		return viewNew != null?viewNew:view;
+		return view;
 	}
 
 	/**
@@ -166,45 +170,21 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Renders the scene 
 	 */
 	public void display(GLAutoDrawable drawable) {
-		// replace view if requested
-		if (viewNew != null) {
-			if (view != null && viewInitialized == true) {
-				view.dispose(drawable);
-				viewInitialized = false;
-			}
-			view = viewNew;
-			viewNew = null;
-		}
-
-		// do view init, render
-		if (view != null) {
-			if (viewInitialized == false) {
-				view.init(drawable);
-				viewInitialized = true;
-			}
-			view.display(drawable);
-		}
-
 		//
 		engine.display(drawable);
-
-		// view inputsystem
-		if (view != null) {
-			view.handleEvents();
-		}
 
 		//
 		Engine.getInstance().initGUIMode();
 
 		// render view
-		view.display(drawable);
+		if (view != null) view.display(drawable);
 
 		//
 		Engine.getInstance().doneGUIMode();
 
 		// 
 		if (quitRequested == true) {
-			if (view != null) view.dispose(drawable);
+			dispose(drawable);
 			animator.stop();
 			glWindow.setVisible(false);
 			System.exit(0);
@@ -215,10 +195,17 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Shutdown tdme viewer
 	 */
 	public void dispose(GLAutoDrawable drawable) {
-		if (view != null && viewInitialized == true) {
-			view.dispose(drawable);
-			view = null;
-		}
+		// deactivate current view
+		if (view != null) view.deactivate();
+
+		// dispose views
+		levelEditorView.dispose();
+		modelViewerView.dispose();
+		triggerView.dispose();
+		emptyView.dispose();
+		particleSystemView.dispose();
+
+		// dispose engines
 		engine.dispose(drawable);
 		Tools.oseDispose(drawable);
 	}
@@ -244,8 +231,20 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 		// pop ups
 		popUps.init();
 
+		//
+		levelEditorView = new LevelEditorView(popUps);
+		levelEditorView.init();
+		modelViewerView = new ModelViewerView(popUps);
+		modelViewerView.init();
+		triggerView = new TriggerView(popUps);
+		triggerView.init();
+		emptyView = new EmptyView(popUps);
+		emptyView.init();
+		particleSystemView = new ParticleSystemView(popUps);
+		particleSystemView.init();
+
 		// show up level editor view
-		setView(new LevelEditorView(popUps));
+		setView(levelEditorView);
 	}
 
 	/**
@@ -259,35 +258,35 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Switch to level editor
 	 */
 	public void switchToLevelEditor() {
-		setView(new LevelEditorView(popUps));
+		setView(levelEditorView);
 	}
 
 	/**
 	 * Switch to model viewer
 	 */
 	public void switchToModelViewer() {
-		setView(new ModelViewerView(popUps));
+		setView(modelViewerView);
 	}
 
 	/**
 	 * Switch to trigger view
 	 */
 	public void switchToTriggerView() {
-		setView(new TriggerView(popUps));
+		setView(triggerView);
 	}
 
 	/**
 	 * Switch to empty view
 	 */
 	public void switchToEmptyView() {
-		setView(new EmptyView(popUps));
+		setView(emptyView);
 	}
 
 	/**
 	 * Switch to particle system view
 	 */
 	public void switchToParticleSystemView() {
-		setView(new ParticleSystemView(popUps));
+		setView(particleSystemView);
 	}
 
 	/*

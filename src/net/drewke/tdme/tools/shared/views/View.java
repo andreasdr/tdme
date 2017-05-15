@@ -7,32 +7,31 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public abstract class View {
+public interface View {
 
 	/**
 	 * Initiates the view
-	 * @param drawable
 	 */
-	public void init(GLAutoDrawable drawable) {
-	}
+	abstract public void init();
+
+	/**
+	 * Activate view
+	 */
+	abstract public void activate();
 
 	/**
 	 * Renders the view
 	 */
-	public void display(GLAutoDrawable drawable) {
-	}
+	abstract public void display(GLAutoDrawable drawable);
+
+	/**
+	 * Deactivate view
+	 */
+	abstract public void deactivate();
 
 	/**
 	 * Disposes the view
-	 * @param drawable
 	 */
-	public void dispose(GLAutoDrawable drawable)  {
-	}
-
-	/**
-	 * handle input events, ...
-	 */
-	public void handleEvents() {
-	}
+	abstract public void dispose();
 
 }

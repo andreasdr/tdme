@@ -26,14 +26,6 @@ public class ModelViewerView extends net.drewke.tdme.tools.shared.views.ModelVie
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#init(com.jogamp.opengl.GLAutoDrawable)
-	 */
-	public void init(GLAutoDrawable drawable) {
-		super.init(drawable);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onSetEntityData()
 	 */
 	public void onSetEntityData() {

@@ -30,7 +30,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class ModelViewerView extends View implements GUIInputEventHandler {
+public class ModelViewerView implements View, GUIInputEventHandler {
 
 	protected Engine engine;
 
@@ -208,36 +208,6 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * Store settings
-	 */
-	private void storeSettings() {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream("./settings/modelviewer.properties");
-			Properties settings = new Properties();
-			settings.put("display.boundingvolumes", entityDisplayView.isDisplayBoundingVolume() == true?"true":"false");
-			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
-			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
-			settings.put("model.path", modelViewerScreenController.getModelPath().getPath());
-			settings.store(fos, null);
-			fos.close();
-		} catch (Exception ioe) {
-			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
-			ioe.printStackTrace();
-		}
-	}
-
-	/**
-	 * Shutdown
-	 */
-	public void dispose(GLAutoDrawable drawable) {
-		// store settings
-		storeSettings();
-		// reset engine
-		Engine.getInstance().reset();
-	}
-
-	/**
 	 * On init additional screens
 	 * @param drawable
 	 */
@@ -266,14 +236,11 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		}
 	}
 
-	/**
-	 * Initialize
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init(GLAutoDrawable drawable) {
-		// reset engine and partition
-		engine.reset();
-		engine.setPartition(new PartitionNone());
-
+	public void init() {
 		//
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
@@ -297,6 +264,16 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 
 		// set up gui
 		updateGUIElements();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#activate()
+	 */
+	public void activate() {
+		// reset engine and partition
+		engine.reset();
+		engine.setPartition(new PartitionNone());
 
 		//
 		engine.getGUI().resetRenderScreens();
@@ -304,6 +281,44 @@ public class ModelViewerView extends View implements GUIInputEventHandler {
 		onInitAdditionalScreens();
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
+	}
+
+	/**
+	 * Store settings
+	 */
+	private void storeSettings() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("./settings/modelviewer.properties");
+			Properties settings = new Properties();
+			settings.put("display.boundingvolumes", entityDisplayView.isDisplayBoundingVolume() == true?"true":"false");
+			settings.put("display.groundplate", entityDisplayView.isDisplayGroundPlate() == true?"true":"false");
+			settings.put("display.shadowing", entityDisplayView.isDisplayShadowing() == true?"true":"false");
+			settings.put("model.path", modelViewerScreenController.getModelPath().getPath());
+			settings.store(fos, null);
+			fos.close();
+		} catch (Exception ioe) {
+			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#deactivate()
+	 */
+	public void deactivate() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#dispose()
+	 */
+	public void dispose() {
+		// store settings
+		storeSettings();
+		// reset engine
+		Engine.getInstance().reset();
 	}
 
 	/**

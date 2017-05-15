@@ -29,7 +29,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author Andreas Drewke
  * @version $Id$
  */
-public class TriggerView extends View implements GUIInputEventHandler {
+public class TriggerView implements View, GUIInputEventHandler {
 
 	protected Engine engine;
 
@@ -157,13 +157,6 @@ public class TriggerView extends View implements GUIInputEventHandler {
 	}
 
 	/**
-	 * Shutdown
-	 */
-	public void dispose(GLAutoDrawable drawable) {
-		Engine.getInstance().reset();
-	}
-
-	/**
 	 * Trigger apply
 	 * @param width
 	 * @param height
@@ -206,10 +199,11 @@ public class TriggerView extends View implements GUIInputEventHandler {
 		}
 	}
 
-	/**
-	 * Initialize
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init(GLAutoDrawable drawable) {
+	public void init() {
 		// reset engine and partition
 		engine.reset();
 		engine.setPartition(new PartitionNone());
@@ -226,13 +220,34 @@ public class TriggerView extends View implements GUIInputEventHandler {
 
 		// set up gui
 		updateGUIElements();
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#activate()
+	 */
+	public void activate() {
 		//
 		engine.getGUI().resetRenderScreens();
 		engine.getGUI().addRenderScreen(triggerScreenController.getScreenNode().getId());
 		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
 		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#deactivate()
+	 */
+	public void deactivate() {
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#dispose()
+	 */
+	public void dispose() {
+		Engine.getInstance().reset();
 	}
 
 }

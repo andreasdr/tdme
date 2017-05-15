@@ -60,7 +60,7 @@ import com.jogamp.opengl.GLAutoDrawable;
  * @author andreas.drewke
  * @version $Id: 04313d20d0978eefc881024d6e0af748196c1425 $
  */
-public final class LevelEditorView extends View implements GUIInputEventHandler  {
+public final class LevelEditorView implements View, GUIInputEventHandler  {
 
 	/**
 	 * Object Color
@@ -636,7 +636,7 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	public void selectObjects(ArrayList<String> objectIds) {
 		// remove all objects which are currently selected 
 		ArrayList<Object3D> objectsToRemove = (ArrayList<Object3D>)selectedObjects.clone();
-		for (Object3D objectToRemove: objectsToRemove) {
+		for (Entity objectToRemove: objectsToRemove) {
 			setStandardObjectColorEffect(objectToRemove);
 			selectedObjects.remove(objectToRemove);
 			selectedObjectsById.remove(objectToRemove.getId());
@@ -781,36 +781,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 	}
 
 	/**
-	 * Store settings
-	 */
-	private void storeSettings() {
-		FileOutputStream fos = null;
-		try {
-			fos = new FileOutputStream("./settings/leveleditor.properties");
-			Properties settings = new Properties();
-			settings.put("grid.enabled", gridEnabled == true?"true":"false");
-			settings.put("grid.y", String.valueOf(gridY));
-			settings.put("map.path", levelEditorScreenController.getMapPath().getPath());
-			settings.put("model.path", TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getModelPath());
-			settings.store(fos, null);
-			fos.close();
-		} catch (Exception ioe) {
-			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
-			ioe.printStackTrace();
-		}
-	}
-
-	/**
-	 * Shutdown
-	 */
-	public void dispose(GLAutoDrawable drawable) {
-		// reset engine
-		Engine.getInstance().reset();
-		// store settings
-		storeSettings();
-	}
-
-	/**
 	 * Load settings
 	 */
 	private void loadSettings() {
@@ -832,10 +802,11 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		}
 	}
 
-	/**
-	 * Initialize
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init(GLAutoDrawable drawable) {
+	public void init() {
 		// reset engine and partition
 		engine.reset();
 		engine.setPartition(new PartitionQuadTree());
@@ -852,16 +823,6 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 
 		// load settings
 		loadSettings();
-
-		//
-		engine.getGUI().resetRenderScreens();
-		engine.getGUI().addRenderScreen(levelEditorScreenController.getScreenNode().getId());
-		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
-		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
-		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
-
-		//
-		TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 
 		// set up grid
 		levelEditorScreenController.setGrid(gridEnabled, gridY);
@@ -891,9 +852,63 @@ public final class LevelEditorView extends View implements GUIInputEventHandler 
 		cam.setZFar(1000f);
 		camLookAt.set(level.computeCenter());
 		gridCenter.set(camLookAt);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#activate()
+	 */
+	public void activate() {
+		//
+		engine.getGUI().resetRenderScreens();
+		engine.getGUI().addRenderScreen(levelEditorScreenController.getScreenNode().getId());
+		engine.getGUI().addRenderScreen(TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(popUps.getFileDialogScreenController().getScreenNode().getId());
+		engine.getGUI().addRenderScreen(popUps.getInfoDialogScreenController().getScreenNode().getId());
+
+		//
+		TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 
 		//
 		loadLevel();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#deactivate()
+	 */
+	public void deactivate() {
+	}
+
+	/**
+	 * Store settings
+	 */
+	private void storeSettings() {
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream("./settings/leveleditor.properties");
+			Properties settings = new Properties();
+			settings.put("grid.enabled", gridEnabled == true?"true":"false");
+			settings.put("grid.y", String.valueOf(gridY));
+			settings.put("map.path", levelEditorScreenController.getMapPath().getPath());
+			settings.put("model.path", TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().getModelPath());
+			settings.store(fos, null);
+			fos.close();
+		} catch (Exception ioe) {
+			if (fos != null) try { fos.close(); } catch (IOException ioeInner) {}
+			ioe.printStackTrace();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.views.View#dispose()
+	 */
+	public void dispose() {
+		// reset engine
+		Engine.getInstance().reset();
+		// store settings
+		storeSettings();
 	}
 
 	/**
