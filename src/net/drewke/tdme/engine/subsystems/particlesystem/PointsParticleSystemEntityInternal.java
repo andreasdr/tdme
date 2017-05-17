@@ -311,9 +311,11 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 			return;
 		}
 
-		// store new bounding box
+		// store new bounding box transformed
 		System.arraycopy(bbMinXYZ, 0, boundingBoxTransformed.getMin().getArray(), 0, 3);
 		System.arraycopy(bbMaxXYZ, 0, boundingBoxTransformed.getMax().getArray(), 0, 3);
+		boundingBoxTransformed.getMin().sub(0.1f); // scale a bit up to make picking work better
+		boundingBoxTransformed.getMax().add(0.1f); // same here
 
 		// compute bounding boxes
 		boundingBoxTransformed.update();
