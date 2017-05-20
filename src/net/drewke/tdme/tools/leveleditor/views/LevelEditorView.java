@@ -661,8 +661,8 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	 */
 	public void unselectObjects() {
 		// remove all objects which are currently selected 
-		ArrayList<Object3D> objectsToRemove = (ArrayList<Object3D>)selectedObjects.clone();
-		for (Object3D objectToRemove: objectsToRemove) {
+		ArrayList<Entity> objectsToRemove = (ArrayList<Entity>)selectedObjects.clone();
+		for (Entity objectToRemove: objectsToRemove) {
 			setStandardObjectColorEffect(objectToRemove);
 			selectedObjects.remove(objectToRemove);
 			selectedObjectsById.remove(objectToRemove.getId());
