@@ -260,10 +260,11 @@ public final class MutableString {
 		int integer = (int)f;
 		int integerDecimals = (int)((f - integer) * Math.pow(10f, decimals));
 		if (integerDecimals < 0f) integerDecimals = -integerDecimals;
-		if (decimals > 0) {
-			insert(idx, integerDecimals);
-			insert(idx, '.');
+		for (int i = 0; i < decimals; i++) {
+			int integerDecimal = (int)((f - integer) * Math.pow(10f, i + 1)) - (10 * (int)((f - integer) * Math.pow(10f, i)));
+			insert(idx+i, integerDecimal);
 		}
+		insert(idx, '.');
 		insert(idx, integer);
 		return this;
 	}
