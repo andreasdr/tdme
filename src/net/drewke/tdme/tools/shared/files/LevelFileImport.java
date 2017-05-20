@@ -137,60 +137,6 @@ public final class LevelFileImport {
 			JSONObject jModel = jModels.getJSONObject(i);
 			// add model to library
 			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImportFromJSON(jModel.getInt("id"), null, jModel.getJSONObject("entity"));
-			/*
-			if (jModel.has("type") == false || LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.MODEL) {
-				String modelFileName = jModel.getString("file");
-				File modelFile = new File(modelFileName);
-				// check if file exists on this computer
-				if (modelFile.exists() == false) {
-					// nope, try to get file via structure knowledge of game
-					modelFileName = Tools.getRelativeResourcesFileName(level.getGameRoot(), modelFileName);
-					modelFile = new File(level.getGameRoot() + "/" + modelFileName);
-				}
-				levelEditorEntity = level.getEntityLibrary().addModel(	
-					jModel.getInt("id"),
-					jModel.has("name")?jModel.getString("name"):"unknown",
-					jModel.has("descr")?jModel.getString("descr"):"",
-					modelFile.getParentFile().getCanonicalPath(),
-					modelFile.getName(),
-					new Vector3(
-						jModel.has("px")?(float)jModel.getDouble("px"):0.0f,
-						jModel.has("py")?(float)jModel.getDouble("py"):0.0f,
-						jModel.has("pz")?(float)jModel.getDouble("pz"):0.0f
-					)
-				);
-			} else 
-			if (jModel.has("type") == true && LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.TRIGGER) {
-				JSONObject jBv = jModel.getJSONObject("bv");
-				BoundingBox boundingBox = new BoundingBox(
-					new Vector3(
-						(float)jBv.getDouble("mix"),
-						(float)jBv.getDouble("miy"),
-						(float)jBv.getDouble("miz")
-					),
-					new Vector3(
-						(float)jBv.getDouble("max"),
-						(float)jBv.getDouble("may"),
-						(float)jBv.getDouble("maz")
-					)
-				);
-				levelEditorEntity = level.getEntityLibrary().addTrigger(	
-					jModel.getInt("id"),
-					jModel.has("name")?jModel.getString("name"):"unknown",
-					jModel.has("descr")?jModel.getString("descr"):"",
-					boundingBox.getMax().getX() - boundingBox.getMin().getX(),
-					boundingBox.getMax().getY() - boundingBox.getMin().getY(),
-					boundingBox.getMax().getZ() - boundingBox.getMin().getZ()
-				);		
-			} else
-			if (jModel.has("type") == true && LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.EMPTY) {
-				levelEditorEntity = level.getEntityLibrary().addEmpty(	
-					jModel.getInt("id"),
-					jModel.has("name")?jModel.getString("name"):"unknown",
-					jModel.has("descr")?jModel.getString("descr"):""
-				);		
-			}
-			*/
 
 			// do we have a valid entity?
 			if (levelEditorEntity == null) {
