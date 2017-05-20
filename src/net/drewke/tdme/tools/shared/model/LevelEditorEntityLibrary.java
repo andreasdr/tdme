@@ -120,11 +120,7 @@ public final class LevelEditorEntityLibrary {
 		}
 
 		// add model
-		if (entitiesById.get(new Integer(id)) != null) {
-			throw new Exception(pathName + "/" + fileName + ": Model id already in use");
-		}
 		addEntity(levelEditorEntity);
-		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
 		return levelEditorEntity;
@@ -167,12 +163,8 @@ public final class LevelEditorEntityLibrary {
 		levelEditorEntity.getBoundingVolumeAt(0).setupAabb(boundingBox.getMin(), boundingBox.getMax());
 		id = levelEditorEntity.getId();
 
-		// add model
-		if (entitiesById.get(new Integer(id)) != null) {
-			throw new Exception("Model id already in use");
-		}
+		// add trigger
 		addEntity(levelEditorEntity);
-		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
 		return levelEditorEntity;
@@ -191,7 +183,6 @@ public final class LevelEditorEntityLibrary {
 
 		// create entity
 		Model model = DAEReader.read("resources/tools/leveleditor/models", "arrow.dae");
-		Model modelBoundingVolume = PrimitiveModel.createModel(model.getBoundingBox(), model.getId() + "_bv");;
 		levelEditorEntity = new LevelEditorEntity(
 			id == ID_ALLOCATE?allocateEntityId():id,
 			EntityType.EMPTY,
@@ -207,14 +198,9 @@ public final class LevelEditorEntityLibrary {
 			model,
 			new Vector3()
 		);
-		id = levelEditorEntity.getId();
 
-		// add model
-		if (entitiesById.get(new Integer(id)) != null) {
-			throw new Exception("Model id already in use");
-		}
+		// add empty
 		addEntity(levelEditorEntity);
-		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
 		return levelEditorEntity;
@@ -240,27 +226,30 @@ public final class LevelEditorEntityLibrary {
 			null,
 			new Vector3()
 		);
-		id = levelEditorEntity.getId();
 
-		// add model
-		if (entitiesById.get(new Integer(id)) != null) {
-			throw new Exception("Model id already in use");
-		}
+		// add particle system
 		addEntity(levelEditorEntity);
-		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 
 		//
 		return levelEditorEntity;
 	}
 
 	/**
-	 * Add a model
+	 * Add a entity
 	 * @param model
 	 */
-	protected void addEntity(LevelEditorEntity model) {
-		LevelEditorEntity _model = entitiesById.put(model.getId(), model);
-		if (_model != null) entities.remove(_model);
-		entities.add(model);
+	public void addEntity(LevelEditorEntity levelEditorEntity) throws Exception {
+		// add model
+		if (entitiesById.get(new Integer(levelEditorEntity.getId())) != null) {
+			throw new Exception("Entity id already in use");
+		}
+
+		// add
+		entities.add(levelEditorEntity);
+		entitiesById.put(levelEditorEntity.getId(), levelEditorEntity);
+
+		// global entity idx
+		if (levelEditorEntity.getId() >= entityIdx) entityIdx = levelEditorEntity.getId() + 1;
 	}
 
 	/**

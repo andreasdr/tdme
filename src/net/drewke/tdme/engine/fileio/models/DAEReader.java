@@ -30,12 +30,10 @@ import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.engine.subsystems.object.ModelUtilitiesInternal.ModelStatistics;
-import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.files.LevelFileExport;
-import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
@@ -414,12 +412,6 @@ public final class DAEReader {
 								pathName + "/" + fileName + "-models",
 								modelName + ".tm",
 								new Vector3()
-							);
-
-							//
-							ModelMetaDataFileExport.export(
-								pathName + "/" + fileName + "-models" + "/" + modelName + ".tm.tmm", 
-								levelEditorEntity
 							);
 						}
 					} else

@@ -1318,9 +1318,6 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 
 			// add particle system to 3d engine
 			if (levelEditorObject.getEntity().getType() == EntityType.PARTICLESYSTEM) {
-				System.out.println("aaa:" + levelEditorObject);
-				System.out.println("bbb:" + levelEditorObject.getEntity());
-				System.out.println("ccc:" + levelEditorObject.getEntity().getParticleSystem());
 				Entity object = Level.createParticleSystem(levelEditorObject.getEntity().getParticleSystem(), levelEditorObject.getId(), false);
 				object.fromTransformations(levelEditorObjectTransformations);
 				object.setPickable(true);
@@ -1821,8 +1818,13 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	 * Triggers saving a map
 	 */
 	public void saveMap(String pathName, String fileName) {
-		File levelFile = new File(pathName, fileName);
-		LevelFileExport.export(levelFile.getAbsolutePath(), level);
+		try {
+			File levelFile = new File(pathName, fileName);
+			LevelFileExport.export(levelFile.getAbsolutePath(), level);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			levelEditorScreenController.showErrorPopUp("Warning: Could not save level file", exception.getMessage());
+		}
 		updateGUIElements();
 	}
 

@@ -7,19 +7,13 @@ import java.io.PrintStream;
 
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
-import net.drewke.tdme.engine.primitives.BoundingBox;
-import net.drewke.tdme.engine.primitives.BoundingVolume;
-import net.drewke.tdme.engine.primitives.Capsule;
-import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
-import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
-import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
+import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
+import net.drewke.tdme.tools.shared.model.LevelEditorLight;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +30,7 @@ public final class LevelFileExport {
 	 * Exports a level to a TDME level file
 	 * @param file name
 	 */
-	public static void export(String fileName, LevelEditorLevel level) {
+	public static void export(String fileName, LevelEditorLevel level) throws Exception {
 		FileOutputStream fos = null;
 	    PrintStream fops = null;
 	    level.setFileName(new File(fileName).getName());
@@ -44,7 +38,7 @@ public final class LevelFileExport {
 			// generate json
 			LevelEditorEntityLibrary entityLibrary = level.getEntityLibrary();
 			JSONObject jRoot = new JSONObject();
-			jRoot.put("version", "0.6");
+			jRoot.put("version", "0.99");
 			jRoot.put("ro", level.getRotationOrder().toString());
 			JSONArray jLights = new JSONArray();
 			for (int i = 0; i < level.getLightCount(); i++) {
@@ -90,35 +84,7 @@ public final class LevelFileExport {
 				jModel.put("type", entity.getType());
 				jModel.put("name", entity.getName());
 				jModel.put("descr", entity.getDescription());
-				if (entity.getType() == EntityType.MODEL) {
-					jModel.put("file", entity.getEntityFileName() != null?entity.getEntityFileName():entity.getFileName());
-					jModel.put("px", entity.getPivot().getX());
-					jModel.put("py", entity.getPivot().getY());
-					jModel.put("pz", entity.getPivot().getZ());
-				} else
-				if (entity.getType() == EntityType.TRIGGER) {
-					JSONObject jBoundingVolume = new JSONObject();
-					BoundingBox aabb = entity.getModel().getBoundingBox();
-					jBoundingVolume.put("type", "aabb");
-                   	jBoundingVolume.put("mix", aabb.getMin().getX());
-                    jBoundingVolume.put("miy", aabb.getMin().getY());
-                   	jBoundingVolume.put("miz", aabb.getMin().getZ());
-                   	jBoundingVolume.put("max", aabb.getMax().getX());
-                   	jBoundingVolume.put("may", aabb.getMax().getY());
-                   	jBoundingVolume.put("maz", aabb.getMax().getZ());
-                   	jModel.put("bv", jBoundingVolume);
-				} else
-				if (entity.getType() == EntityType.EMPTY) {
-					// no op for now
-				}
-				JSONArray jModelProperties = new JSONArray();
-				for (PropertyModelClass modelProperty: entity.getProperties()) {
-					JSONObject jObjectProperty = new JSONObject();
-					jObjectProperty.put("name", modelProperty.getName());
-					jObjectProperty.put("value", modelProperty.getValue());
-					jModelProperties.put(jObjectProperty);					
-				}
-				jModel.put("properties", jModelProperties);
+				jModel.put("entity", ModelMetaDataFileExport.exportToJSON(entity));
 				jEntityLibrary.put(jModel);
 			}
 			JSONArray jMapProperties = new JSONArray();
@@ -170,7 +136,9 @@ public final class LevelFileExport {
 	        fops = new PrintStream(fos);
 	        fops.print(jRoot.toString(2));  
 		} catch (JSONException je) {
+			je.printStackTrace();
 		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		} finally {
 			if (fops != null) fops.close();
 			if (fos != null) try { fos.close(); } catch (IOException ioe) {}

@@ -136,7 +136,8 @@ public final class LevelFileImport {
 		for (int i = 0; i < jModels.length(); i++) {
 			JSONObject jModel = jModels.getJSONObject(i);
 			// add model to library
-			LevelEditorEntity levelEditorEntity = null;
+			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImportFromJSON(jModel.getInt("id"), null, jModel.getJSONObject("entity"));
+			/*
 			if (jModel.has("type") == false || LevelEditorEntity.EntityType.valueOf(jModel.getString("type")) == EntityType.MODEL) {
 				String modelFileName = jModel.getString("file");
 				File modelFile = new File(modelFileName);
@@ -189,9 +190,15 @@ public final class LevelFileImport {
 					jModel.has("descr")?jModel.getString("descr"):""
 				);		
 			}
+			*/
+
+			// do we have a valid entity?
 			if (levelEditorEntity == null) {
-				throw new Exception("Invalid model");
+				throw new Exception("Invalid entity");
 			}
+			// add entity
+			level.getEntityLibrary().addEntity(levelEditorEntity);
+
 			// parse optional model properties
 			if (jModel.has("properties")) {
 				JSONArray jModelProperties = jModel.getJSONArray("properties");

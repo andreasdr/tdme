@@ -7,7 +7,9 @@ import java.io.InputStream;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
+import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
+import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
@@ -37,42 +39,57 @@ import org.json.JSONTokener;
 public final class ModelMetaDataFileImport {
 
 	/**
-	 * Imports a level from a TDME level file to Level Editor
-	 * @param game root
+	 * Imports a model meta data file from file
 	 * @param id or LevelEditorEntity.ID_NONE
 	 * @param path name
 	 * @param file name
 	 */
 	public static LevelEditorEntity doImport(int id, String pathName, String fileName) throws Exception {
 		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
-		JSONObject jRoot = null;
+		JSONObject jEntityRoot = null;
 		InputStream is = null;
 		try {
-			jRoot = new JSONObject(new JSONTokener(FileSystem.getInstance().getContent(pathName, fileName)));
+			jEntityRoot = new JSONObject(new JSONTokener(FileSystem.getInstance().getContent(pathName, fileName)));
 		} catch (IOException ioe) {
 			throw ioe;
 		} finally {
 			if (is != null) try { is.close(); } catch (IOException ioei) {}
 		}
 
+		// do the work
+		LevelEditorEntity levelEditorEntity = doImportFromJSON(id, pathName, jEntityRoot);
+		levelEditorEntity.setEntityFileName(pathName + "/" + fileName);
+		return levelEditorEntity;
+	}
+
+	/**
+	 * Imports a model meta data file from JSON object
+	 * @param id or LevelEditorEntity.ID_NONE
+	 * @param path name or null
+	 * @param JSON entity root
+	 */
+	public static LevelEditorEntity doImportFromJSON(int id, String pathName, JSONObject jEntityRoot) throws Exception {
 		LevelEditorEntity levelEditorEntity;
 
 		// check for version
-		float version = Float.parseFloat(jRoot.getString("version"));
+		float version = Float.parseFloat(jEntityRoot.getString("version"));
 
 		// pivot
 		Vector3 pivot = new Vector3(
-			(float)jRoot.getDouble("px"),
-			(float)jRoot.getDouble("py"),
-			(float)jRoot.getDouble("pz")
+			(float)jEntityRoot.getDouble("px"),
+			(float)jEntityRoot.getDouble("py"),
+			(float)jEntityRoot.getDouble("pz")
 		);
 
 		// String thumbnail = jRoot.getString("thumbnail");
-		EntityType modelType = LevelEditorEntity.EntityType.valueOf(jRoot.getString("type"));
-		String modelFile = jRoot.has("file") == true?new File(pathName, jRoot.getString("file")).getCanonicalPath():null;
-		String modelThumbnail = jRoot.has("thumbnail") == true?jRoot.getString("thumbnail"):null;
-		String name = jRoot.getString("name");
-		String description = jRoot.getString("descr");
+		EntityType modelType = LevelEditorEntity.EntityType.valueOf(jEntityRoot.getString("type"));
+		String modelFile = 
+			jEntityRoot.has("file") == true?
+				new File(pathName != null?pathName:Tools.getPath(jEntityRoot.getString("file")), Tools.getFileName(jEntityRoot.getString("file"))).getCanonicalPath():
+				null;
+		String modelThumbnail = jEntityRoot.has("thumbnail") == true?jEntityRoot.getString("thumbnail"):null;
+		String name = jEntityRoot.getString("name");
+		String description = jEntityRoot.getString("descr");
 
 		// load model
 		Model model = null;
@@ -82,7 +99,7 @@ public final class ModelMetaDataFileImport {
 		String modelRelativeFileName = null;
 		if (modelFile != null) {
 			// yep, load it
-			modelGameRoot = Tools.getGameRootPath(pathName);
+			modelGameRoot = Tools.getGameRootPath(modelFile);
 			modelRelativeFileName = Tools.getRelativeResourcesFileName(modelGameRoot, modelFile);
 			if (modelFile.toLowerCase().endsWith(".dae")) {
 				model = DAEReader.read(modelGameRoot + "/" + Tools.getPath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
@@ -92,6 +109,11 @@ public final class ModelMetaDataFileImport {
 			} else {
 				throw new Exception("Unsupported mode file: " + modelFile);
 			}
+		} else
+		// load model for empty
+		//	TODO: only load if required e.g. for LevelEditor
+		if (modelType == EntityType.EMPTY) {
+			model = DAEReader.read("resources/tools/leveleditor/models", "arrow.dae");
 		}
 
 		// load level editor model
@@ -100,7 +122,7 @@ public final class ModelMetaDataFileImport {
 			modelType,
 			name,
 			description,
-			pathName + "/" + fileName,
+			null,
 			modelFile != null?new File(modelGameRoot, modelRelativeFileName).getCanonicalPath():null,
 			modelThumbnail,
 			model,
@@ -108,7 +130,7 @@ public final class ModelMetaDataFileImport {
 		);
 
 		// parse properties
-		JSONArray jProperties = jRoot.getJSONArray("properties");
+		JSONArray jProperties = jEntityRoot.getJSONArray("properties");
 		for (int i = 0; i < jProperties.length(); i++) {
 			JSONObject jProperty = jProperties.getJSONObject(i);
 			levelEditorEntity.addProperty(
@@ -118,22 +140,21 @@ public final class ModelMetaDataFileImport {
 		}
 
 		// old: optional bounding volume
-		if (jRoot.has("bv") == true) {
-			levelEditorEntity.addBoundingVolume(0, parseBoundingVolume(0, levelEditorEntity, jRoot.getJSONObject("bv")));
+		if (jEntityRoot.has("bv") == true) {
+			levelEditorEntity.addBoundingVolume(0, parseBoundingVolume(0, levelEditorEntity, jEntityRoot.getJSONObject("bv")));
 		} else
 		// new: optional bounding volumeS
-		if (jRoot.has("bvs") == true) {
-			JSONArray jBoundingVolumes = jRoot.getJSONArray("bvs");
+		if (jEntityRoot.has("bvs") == true) {
+			JSONArray jBoundingVolumes = jEntityRoot.getJSONArray("bvs");
 			for (int i = 0; i < jBoundingVolumes.length(); i++) {
 				JSONObject jBv = jBoundingVolumes.getJSONObject(i);
 				levelEditorEntity.addBoundingVolume(i, parseBoundingVolume(i, levelEditorEntity, jBv));
 			}
 		}
-
 		// parse particle system 
 		if (modelType == EntityType.PARTICLESYSTEM) {
 			LevelEditorEntityParticleSystem particleSystem = levelEditorEntity.getParticleSystem();
-			JSONObject jParticleSystem = jRoot.getJSONObject("ps");
+			JSONObject jParticleSystem = jEntityRoot.getJSONObject("ps");
 
 			// type
 			particleSystem.setType(Type.valueOf(jParticleSystem.getString("t")));

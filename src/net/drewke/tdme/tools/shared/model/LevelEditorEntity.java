@@ -17,17 +17,17 @@ public final class LevelEditorEntity extends Properties {
 
 	public final static int ID_NONE = -1; 
 
-	private int id;
-	private EntityType type;
-	private String name;
-	private String description;
-	private String entityFileName;
-	private String fileName;
-	private String thumbnail;
-	private Model model;
-	private Vector3 pivot;
-	private LevelEditorEntityParticleSystem particleSystem;
-	private ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes;
+	protected int id;
+	protected EntityType type;
+	protected String name;
+	protected String description;
+	protected String entityFileName;
+	protected String fileName;
+	protected String thumbnail;
+	protected Model model;
+	protected Vector3 pivot;
+	protected LevelEditorEntityParticleSystem particleSystem;
+	protected ArrayList<LevelEditorEntityBoundingVolume> boundingVolumes;
 
 	/**
 	 * Creates a level editor model

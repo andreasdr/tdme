@@ -131,7 +131,7 @@ public class ModelViewerView implements View, GUIInputEventHandler {
 	 * Triggers saving a map
 	 */
 	public void saveFile(String pathName, String fileName) throws Exception {
-		ModelMetaDataFileExport.export(new File(pathName, fileName).getCanonicalPath(), entity);
+		ModelMetaDataFileExport.export(pathName, fileName, entity);
 	}
 
 	/**

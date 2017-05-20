@@ -14,6 +14,7 @@ import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 
 /**
  * Level Editor Entity Bouning Volume
@@ -86,6 +87,7 @@ public class LevelEditorEntityBoundingVolume {
 		boundingVolume = null;
 		model = null;
 		modelMeshFile = null;
+		updateLevelEditorEntity();
 	}
 
 	/**
@@ -97,6 +99,7 @@ public class LevelEditorEntityBoundingVolume {
 		boundingVolume = new Sphere(center, radius);
 		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
+		updateLevelEditorEntity();
 	}
 
 	/**
@@ -109,6 +112,7 @@ public class LevelEditorEntityBoundingVolume {
 		boundingVolume = new Capsule(a, b, radius);
 		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
+		updateLevelEditorEntity();
 	}
 
 	/**
@@ -123,6 +127,7 @@ public class LevelEditorEntityBoundingVolume {
 		boundingVolume = new OrientedBoundingBox(center, axis0, axis1, axis2, halfExtension);
 		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
+		updateLevelEditorEntity();
 	}
 
 	/**
@@ -134,6 +139,7 @@ public class LevelEditorEntityBoundingVolume {
 		boundingVolume = new BoundingBox(min, max);
 		model = PrimitiveModel.createModel(boundingVolume, (levelEditorEntity.getModel() != null?levelEditorEntity.getModel().getId():levelEditorEntity.getId()) + "_model_bv." + id + "." + (staticIdx++));
 		modelMeshFile = null;
+		updateLevelEditorEntity();
 	}
 
 	/**
@@ -156,6 +162,14 @@ public class LevelEditorEntityBoundingVolume {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		updateLevelEditorEntity();
+	}
+
+	/**
+	 * Update level editor entity
+	 */
+	private void updateLevelEditorEntity() {
+		if (levelEditorEntity.type == EntityType.TRIGGER) levelEditorEntity.model = model; 
 	}
 
 	/*
