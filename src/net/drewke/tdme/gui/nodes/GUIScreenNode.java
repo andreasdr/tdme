@@ -242,33 +242,36 @@ public final class GUIScreenNode extends GUIParentNode {
 	}
 
 	/**
-	 * Layout node
+	 * Layout node content (e.g. child nodes or content)
+	 * 	this does also does call layouted nodes post layout method
 	 * @param node
 	 */
 	public void layout(GUINode node) {
-		//
-		node.layout();
+		// we never relayout the node itself, as this will be done by parent layouters
+		// but we layout sub nodes of given node if there are any
+		if (node instanceof GUIParentNode) {
+			GUIParentNode parentNode = (GUIParentNode)node;
 
-		// call controller.postLayout()
-		GUINodeController controller = node.getController();
-		if (controller != null) {
-			controller.postLayout();
-		}
-	}
+			// layout sub nodes
+			parentNode.layoutSubNodes();
 
-	/**
-	 * Layout sub nodes
-	 * @param parent node 
-	 */
-	public void layoutSubNodes(GUIParentNode parentNode) {
-		parentNode.layoutSubNodes();
+			// determine screen child controller nodes
+			parentNode.getChildControllerNodes(childControllerNodes);
 
-		// determine screen child controller nodes
-		parentNode.getChildControllerNodes(childControllerNodes);
-
-		// call controller.postLayout()
-		for (int i = 0; i < childControllerNodes.size(); i++) {
-			GUINode node = childControllerNodes.get(i);
+			// call controller.postLayout()
+			for (int i = 0; i < childControllerNodes.size(); i++) {
+				GUINode childNode = childControllerNodes.get(i);
+				GUINodeController controller = childNode.getController();
+				if (controller != null) {
+					controller.postLayout();
+				}
+			}
+		} else {
+			// we never relayout the node itself, as this will be done by parent layouters
+			// but we layout its content
+			node.computeContentAlignment();
+	
+			// call controller.postLayout()
 			GUINodeController controller = node.getController();
 			if (controller != null) {
 				controller.postLayout();

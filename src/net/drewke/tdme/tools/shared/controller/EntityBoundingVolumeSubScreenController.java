@@ -539,6 +539,7 @@ public class EntityBoundingVolumeSubScreenController {
 	 */
 	public void onBoundingVolumeConvexMeshFile(LevelEditorEntity entity, int idx) {
 		final int idxFinal = idx;
+		final LevelEditorEntity entityFinal = entity;
 		view.getPopUpsViews().getFileDialogScreenController().show(
 			modelPath.getPath(),
 			"Load from: ", 
@@ -549,7 +550,7 @@ public class EntityBoundingVolumeSubScreenController {
 					boundingvolumeConvexMeshFile[idxFinal].getController().setValue(value.set(
 						view.getPopUpsViews().getFileDialogScreenController().getFileName())
 					);
-					onBoundingVolumeConvexMeshApply(entity, idxFinal);
+					onBoundingVolumeConvexMeshApply(entityFinal, idxFinal);
 					modelPath.setPath(view.getPopUpsViews().getFileDialogScreenController().getPathName());
 					view.getPopUpsViews().getFileDialogScreenController().close();
 				}

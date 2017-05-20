@@ -106,7 +106,7 @@ public abstract class GUIParentNode extends GUINode {
 		GUIParser.parse(this, xml);
 
 		// layout
-		screenNode.layoutSubNodes(this);
+		screenNode.layout(this);
 
 		// clip to children render offset X to min, max
 		float elementWidth = computedConstraints.width;
