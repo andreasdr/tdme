@@ -75,6 +75,7 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 			objects[i].setEnabled(false);
 			objects[i].getScale().set(scale);
 			objects[i].setDynamicShadowingEnabled(enableDynamicShadows);
+			objects[i].setPickable(false);
 		}
 		this.boundingBox = new BoundingBox();
 		this.boundingBoxTransformed = new BoundingBox();
@@ -267,8 +268,11 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 			object.getTranslation().set(particle.position);
 			object.update();
 			object.setEnabled(true);
+			object.getEffectColorAdd().set(effectColorAdd);
+			object.getEffectColorMul().set(effectColorMul);
 			enabledObjects.add(object);
 
+			// all particles spawned?
 			particlesSpawned++;
 			if (particlesSpawned == particlesToSpawnInteger) break;
 		}
@@ -309,6 +313,10 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 			//	maybe take air resistance into account like a huge paper needs more time to fall than a sphere of paper
 			//	or heat for smoke or fire, whereas having no mass for those particles works around this problem for now
 
+			// update up effect colors
+			object.getEffectColorAdd().set(effectColorAdd);
+			object.getEffectColorMul().set(effectColorMul);
+
 			// translation
 			object.getTranslation().add(velocityForTime.set(particle.velocity).scale((float)timeDelta/1000f));
 			object.update();
@@ -345,11 +353,23 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
+	 * @see net.drewke.tdme.engine.Transformations#toString()
 	 */
 	public String toString() {
-		return "ObjectParticleSystemEntity [particles="
-				+ Arrays.toString(particles) + "]";
+		return "ObjectParticleSystemEntityInternal [id="
+				+ id + ", enabled=" + enabled + ", model=" + model
+				+ ", autoEmit=" + autoEmit + ", enableDynamicShadows="
+				+ enableDynamicShadows + ", particles="
+				+ Arrays.toString(particles) + ", objects="
+				+ Arrays.toString(objects) + ", enabledObjects="
+				+ enabledObjects + ", boundingBox=" + boundingBox
+				+ ", boundingBoxTransformed=" + boundingBoxTransformed
+				+ ", inverseTransformation=" + inverseTransformation
+				+ ", emitter=" + emitter + ", pickable=" + pickable
+				+ ", effectColorMul=" + effectColorMul + ", effectColorAdd="
+				+ effectColorAdd + ", velocityForTime=" + velocityForTime
+				+ ", particlesToSpawnRemainder=" + particlesToSpawnRemainder
+				+ "]";
 	}
 
 }

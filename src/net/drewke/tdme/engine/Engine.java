@@ -88,6 +88,8 @@ public final class Engine {
 	protected ArrayList<Object3D> objects;
 	private ArrayList<Object3D> visibleObjects;
 
+	private ArrayList<ObjectParticleSystemEntity> visibleOpses;
+
 	protected ArrayList<PointsParticleSystemEntity> ppses;
 	private ArrayList<PointsParticleSystemEntity> visiblePpses;
 
@@ -223,6 +225,7 @@ public final class Engine {
 		entitiesById = new HashMap<String,Entity>();
 		objects = new ArrayList<Object3D>();
 		visibleObjects = new ArrayList<Object3D>();
+		visibleOpses = new ArrayList<ObjectParticleSystemEntity>();
 		ppses = new ArrayList<PointsParticleSystemEntity>();
 		visiblePpses = new ArrayList<PointsParticleSystemEntity>();
 		particleSystemEntitiesById = new HashMap<String, ParticleSystemEntity>();
@@ -773,6 +776,7 @@ public final class Engine {
 
 		// clear lists of visible objects
 		visibleObjects.clear();
+		visibleOpses.clear();
 		visiblePpses.clear();
 
 		//
@@ -817,6 +821,7 @@ public final class Engine {
 			if (entity instanceof ObjectParticleSystemEntity) {
 				ObjectParticleSystemEntity opse = (ObjectParticleSystemEntity)entity;
 				visibleObjects.addAll(opse.getEnabledObjects());
+				visibleOpses.add(opse);
 			} else
 			// points particle system entity
 			if (entity instanceof PointsParticleSystemEntity) {
@@ -1008,9 +1013,31 @@ public final class Engine {
 			}
 		}
 
-		// iterate visible pses
+		// iterate visible object particle system entities
+		for (int i = 0; i < visibleOpses.size(); i++) {
+			ObjectParticleSystemEntity entity = visibleOpses.get(i);
+			if (filter != null && filter.filterEntity(entity) == false) continue;
+			if (entity.isPickable() == true &&
+				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
+				// yep, got one, its pickable and mouse world coordinate is in bounding volume
+				float entityVolume =
+					tmpVector3b.set(
+						entity.getBoundingBoxTransformed().getMax()
+					).sub(
+						entity.getBoundingBoxTransformed().getMin()
+					).computeLength();
+				// check if not yet selected entity or its volume smaller than previous match
+				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
+					selectedEntity = entity;
+					selectedEntityVolume = entityVolume;
+				}
+			}
+		}
+
+		// iterate visible pointparticle system entities
 		for (int i = 0; i < visiblePpses.size(); i++) {
 			PointsParticleSystemEntity entity = visiblePpses.get(i);
+			if (filter != null && filter.filterEntity(entity) == false) continue;
 			if (entity.isPickable() == true &&
 				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
