@@ -50,7 +50,7 @@ public final class ObjectParticleSystemEntity extends ObjectParticleSystemEntity
 	 * @see net.drewke.tdme.engine.Entity#getBoundingBoxTransformed()
 	 */
 	public BoundingBox getBoundingBoxTransformed() {
-		return boundingBox;
+		return boundingBoxTransformed;
 	}
 
 	/**

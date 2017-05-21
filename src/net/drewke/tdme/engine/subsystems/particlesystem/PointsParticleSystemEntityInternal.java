@@ -41,9 +41,6 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	protected Color4 effectColorAdd;
 	protected boolean pickable;
 
-	protected float[] bbMinXYZ = new float[3];
-	protected float[] bbMaxXYZ = new float[3];
-
 	protected float particlesToSpawnRemainder;
 
 	/**
@@ -216,6 +213,10 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 	public void updateParticles() {
 		if (enabled == false || active == false) return;
 
+		// bounding box transformed min, max xyz 
+		float bbMinXYZ[] = boundingBoxTransformed.getMin().getArray();
+		float bbMaxXYZ[] = boundingBoxTransformed.getMax().getArray();
+
 		//
 		boolean haveBoundingBox = false;
 
@@ -311,11 +312,9 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 			return;
 		}
 
-		// store new bounding box transformed
-		System.arraycopy(bbMinXYZ, 0, boundingBoxTransformed.getMin().getArray(), 0, 3);
-		System.arraycopy(bbMaxXYZ, 0, boundingBoxTransformed.getMax().getArray(), 0, 3);
-		boundingBoxTransformed.getMin().sub(0.1f); // scale a bit up to make picking work better
-		boundingBoxTransformed.getMax().add(0.1f); // same here
+		// scale a bit up to make picking work better
+		boundingBoxTransformed.getMin().sub(0.1f);
+		boundingBoxTransformed.getMax().add(0.1f);
 
 		// compute bounding boxes
 		boundingBoxTransformed.update();

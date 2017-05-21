@@ -30,6 +30,8 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	protected Object3D[] objects;
 	protected ArrayList<Object3D> enabledObjects;
 	protected BoundingBox boundingBox;
+	protected BoundingBox boundingBoxTransformed;
+	protected Transformations inverseTransformation;
 	protected ParticleEmitter emitter;
 	protected boolean pickable;
 	protected Color4 effectColorMul;
@@ -75,6 +77,8 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 			objects[i].setDynamicShadowingEnabled(enableDynamicShadows);
 		}
 		this.boundingBox = new BoundingBox();
+		this.boundingBoxTransformed = new BoundingBox();
+		this.inverseTransformation = new Transformations();
 		this.emitter = emitter;
 		this.velocityForTime = new Vector3();
 		this.effectColorMul = new Color4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -203,6 +207,7 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	public void update() {
 		super.update();
 		emitter.fromTransformations(this);
+		inverseTransformation.getTransformationsMatrix().set(this.getTransformationsMatrix()).invert();
 	}
 
 	/*
@@ -212,6 +217,7 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	public void fromTransformations(Transformations transformations) {
 		super.fromTransformations(transformations);
 		emitter.fromTransformations(transformations);
+		inverseTransformation.getTransformationsMatrix().set(this.getTransformationsMatrix()).invert();
 	}
 
 	/*
@@ -277,8 +283,8 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 	 */
 	public void updateParticles() {
 		boolean first = true;
-		float bbMinXYZ[] = boundingBox.getMin().getArray();
-		float bbMaxXYZ[] = boundingBox.getMax().getArray();
+		float bbMinXYZ[] = boundingBoxTransformed.getMin().getArray();
+		float bbMaxXYZ[] = boundingBoxTransformed.getMax().getArray();
 		long timeDelta = engine.getTiming().getDeltaTime();
 		for (int i = 0; i < particles.length; i++) {
 			Particle particle = particles[i];
@@ -307,8 +313,8 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 			object.getTranslation().add(velocityForTime.set(particle.velocity).scale((float)timeDelta/1000f));
 			object.update();
 			if (first == true) {
-				boundingBox.getMin().set(object.getBoundingBoxTransformed().getMin());
-				boundingBox.getMax().set(object.getBoundingBoxTransformed().getMax());
+				boundingBoxTransformed.getMin().set(object.getBoundingBoxTransformed().getMin());
+				boundingBoxTransformed.getMax().set(object.getBoundingBoxTransformed().getMax());
 				first = false;
 			} else {
 				float objBbMinXYZ[] = object.getBoundingBoxTransformed().getMin().getArray();
@@ -321,7 +327,10 @@ public class ObjectParticleSystemEntityInternal extends Transformations implemen
 				if (objBbMaxXYZ[2] > bbMaxXYZ[2]) bbMaxXYZ[2] = objBbMaxXYZ[2];
 			}
 		}
-		boundingBox.update();
+
+		// compute bounding boxes
+		boundingBoxTransformed.update();
+		boundingBox.fromBoundingVolumeWithTransformations(boundingBoxTransformed, inverseTransformation);
 	}
 
 	/*
