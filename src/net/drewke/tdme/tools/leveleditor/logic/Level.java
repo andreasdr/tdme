@@ -279,7 +279,7 @@ public class Level {
 	}
 
 	/**
-	 * Add level to engine
+	 * Add level to physics world
 	 * @param world
 	 * @param level
 	 * @param rigid bodies (will be filled by logic)
@@ -293,6 +293,7 @@ public class Level {
 			// skip on empties or trigger
 			if (object.getEntity().getType() == EntityType.EMPTY) continue;
 			if (object.getEntity().getType() == EntityType.TRIGGER) continue;
+			if (object.getEntity().getType() == EntityType.PARTICLESYSTEM) continue;
 
 			//
 			for (int j = 0; j < object.getEntity().getBoundingVolumeCount(); j++) {
@@ -378,7 +379,7 @@ public class Level {
 			if (entity == null) continue;
 			// apply transformations
 			entity.fromTransformations(object.getTransformations());
-			// apply transformatio
+			// apply transformation
 			if (translation != null) {
 				entity.getTranslation().add(translation);
 			}
@@ -398,7 +399,7 @@ public class Level {
 	}
 
 	/**
-	 * Enable disabled level in engine
+	 * Enable disabled level in physics world
 	 * @param world
 	 * @param level
 	 * @param rigid bodies

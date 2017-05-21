@@ -66,7 +66,7 @@ public final class ObjectParticleSystemEntity extends ObjectParticleSystemEntity
 	 */
 	public void fromTransformations(Transformations transformations) {
 		super.fromTransformations(transformations);
-		if (engine != null) engine.partition.updateEntity(this);
+		if (engine != null && enabled == true) engine.partition.updateEntity(this);
 	}
 
 	/*
@@ -75,7 +75,7 @@ public final class ObjectParticleSystemEntity extends ObjectParticleSystemEntity
 	 */
 	public void update() {
 		super.update();
-		if (engine != null) engine.partition.updateEntity(this);
+		if (engine != null && enabled == true) engine.partition.updateEntity(this);
 	}
 
 	/*
@@ -96,5 +96,15 @@ public final class ObjectParticleSystemEntity extends ObjectParticleSystemEntity
 		// call parent class::setEnabled()
 		super.setEnabled(enabled);
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.particlesystem.ObjectParticleSystemEntityInternal#updateParticles()
+	 */
+	public void updateParticles() {
+		super.updateParticles();
+		if (engine != null && enabled == true) engine.partition.updateEntity(this);
+	}
+
 
 }
