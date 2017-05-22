@@ -204,10 +204,6 @@ public class TriggerView implements View, GUIInputEventHandler {
 	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
 	public void init() {
-		// reset engine and partition
-		engine.reset();
-		engine.setPartition(new PartitionNone());
-
 		//
 		try {
 			triggerScreenController = new TriggerScreenController(this);
@@ -227,6 +223,10 @@ public class TriggerView implements View, GUIInputEventHandler {
 	 * @see net.drewke.tdme.tools.shared.views.View#activate()
 	 */
 	public void activate() {
+		// reset engine and partition
+		engine.reset();
+		engine.setPartition(new PartitionNone());
+
 		//
 		engine.getGUI().resetRenderScreens();
 		engine.getGUI().addRenderScreen(triggerScreenController.getScreenNode().getId());
