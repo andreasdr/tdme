@@ -995,9 +995,9 @@ public final class Engine {
 		// iterate visible objects
 		for (int i = 0; i < visibleObjects.size(); i++) {
 			Object3D entity = visibleObjects.get(i);
+			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
-			if (entity.isPickable() == true &&
-				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a) == true) {
+			if (entity.getBoundingBoxTransformed().containsPoint(tmpVector3a) == true) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
 				float entityVolume =
 					tmpVector3b.set(
@@ -1016,9 +1016,9 @@ public final class Engine {
 		// iterate visible object particle system entities
 		for (int i = 0; i < visibleOpses.size(); i++) {
 			ObjectParticleSystemEntity entity = visibleOpses.get(i);
+			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
-			if (entity.isPickable() == true &&
-				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
+			if (entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
 				float entityVolume =
 					tmpVector3b.set(
@@ -1037,9 +1037,9 @@ public final class Engine {
 		// iterate visible pointparticle system entities
 		for (int i = 0; i < visiblePpses.size(); i++) {
 			PointsParticleSystemEntity entity = visiblePpses.get(i);
+			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
-			if (entity.isPickable() == true &&
-				entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
+			if (entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
 				// yep, got one, its pickable and mouse world coordinate is in bounding volume
 				float entityVolume =
 					tmpVector3b.set(
