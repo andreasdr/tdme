@@ -1817,6 +1817,13 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 
 			// reset cam
 			engine.getCamera().getLookAt().set(level.computeCenter());
+			camLookRotationX.setAngle(-45.0f);
+			camLookRotationX.update();
+			camLookRotationY.setAngle(0.0f);
+			camLookRotationY.update();
+			camScale = 1.0f;
+
+			// grid
 			gridCenter.set(engine.getCamera().getLookAt());
 
 			//
