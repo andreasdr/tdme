@@ -147,9 +147,9 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * @param view
 	 */
 	public void setView(View view) {
-		if (this.view != null) view.deactivate();
+		if (this.view != null) this.view.deactivate();
 		this.view = view;
-		if (this.view != null) view.activate();
+		if (this.view != null) this.view.activate();
 	}
 
 	/**

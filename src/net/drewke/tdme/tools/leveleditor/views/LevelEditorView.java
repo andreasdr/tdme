@@ -123,13 +123,17 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	private HashMap<String, ObjectColor> objectColors;
 
 	// camera properties
-	Rotation camLookRotationX = new Rotation(-45f, new Vector3(1f, 0f, 0f));
-	Rotation camLookRotationY = new Rotation(0f, new Vector3(0f, 1f, 0f));
-	Vector3 camLookAt;
-	Vector3 camLookFrom;
-	float camScale;
-	float camScaleMax = 3f;
-	float camScaleMin = 0.05f;
+	private Rotation camLookRotationX = new Rotation(-45f, new Vector3(1f, 0f, 0f));
+	private Rotation camLookRotationY = new Rotation(0f, new Vector3(0f, 1f, 0f));
+	private float camScale;
+	private float camScaleMax = 3f;
+	private float camScaleMin = 0.05f;
+	private Vector3 FORWARD_VECTOR = new Vector3(0f, 0f, 1f);
+	private Vector3 SIDE_VECTOR = new Vector3(1f, 0f, 0f);
+	private Vector3 camForwardVector = new Vector3();
+	private Vector3 camSideVector = new Vector3();
+	private Vector3 camLookAtToFromVector = new Vector3();
+	private Vector3 camLookAt = new Vector3();
 
 	// input properties
 	private int mouseDownLastX = MOUSE_DOWN_LAST_POSITION_NONE;
@@ -175,6 +179,8 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	private PopUps popUps;
 
 	private EntityPickingFilter entityPickingFilterNoGrid;
+
+	private Vector3 tmpVector3;
 
 	/**
 	 * Public constructor
@@ -223,8 +229,6 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 
 		//
 		engine = Engine.getInstance();
-		camLookFrom = engine.getCamera().getLookFrom();
-		camLookAt = engine.getCamera().getLookAt();
 
 		//
 		entityPickingFilterNoGrid = new EntityPickingFilter() {
@@ -232,6 +236,8 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 				return entity.getId().startsWith("leveleditor.ground@") == false;
 			}
 		};
+
+		tmpVector3 = new Vector3();
 	}
 
 	/**
@@ -533,6 +539,10 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	 * Renders the scene 
 	 */
 	public void display(GLAutoDrawable drawable) {
+		// camera
+		Camera cam = engine.getCamera();
+
+		// reload entity library
 		if (reloadEntityLibrary == true) {
 			LevelEditorEntityLibrary entityLibrary = TDMELevelEditor.getInstance().getEntityLibrary();
 			for (int i = 0; i < entityLibrary.getEntityCount(); i++) {
@@ -569,7 +579,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 			camLookRotationX.update();
 			camLookRotationY.setAngle(0.0f);
 			camLookRotationY.update();
-			camLookAt.set(level.computeCenter());
+			cam.getLookAt().set(level.computeCenter());
 			camScale = 1.0f;
 		}
 
@@ -581,47 +591,43 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 			if (camLookRotationX.getAngle() < -89.99f) camLookRotationX.setAngle(-89.99f);
 			camLookRotationX.update();
 		}
-		Camera cam = engine.getCamera();
 
 		// look at -> look to vector
-		Vector3 lookAtToFromUnitVector = new Vector3(0f, 0f, 1.0f);
-		Vector3 lookAtToFromVectorXAxisRotation = new Vector3();
-		Vector3 lookAtToFromVectorXYAxisRotation = new Vector3();
-		camLookRotationX.getQuaternion().multiply(lookAtToFromUnitVector, lookAtToFromVectorXAxisRotation);
-		camLookRotationY.getQuaternion().multiply(lookAtToFromVectorXAxisRotation, lookAtToFromVectorXYAxisRotation);
+		camLookRotationX.getQuaternion().multiply(FORWARD_VECTOR, tmpVector3);
+		camLookRotationY.getQuaternion().multiply(tmpVector3, tmpVector3);
 
 		// apply look from rotations
-		Vector3 lookAtToFromVector =
-			lookAtToFromVectorXYAxisRotation.
-			scale(camScale * 10.0f);
+		camLookAtToFromVector.set(tmpVector3).scale(camScale * 10.0f);
 
+		// timing
 		Timing timing = engine.getTiming();
+
 		// do camera movement with arrow keys
-		Vector3 forwardVector = new Vector3();
-		Vector3 sideVector = new Vector3();
-		camLookRotationY.getQuaternion().multiply(new Vector3(0.0f, 0.0f, 1.0f), forwardVector).scale(timing.getDeltaTime() / 1000f * 60f);
-		camLookRotationY.getQuaternion().multiply(new Vector3(1.0f, 0.0f, 0.0f), sideVector).scale(timing.getDeltaTime() / 1000f * 60f);
-		if (keyUp) camLookAt.sub(forwardVector.clone().scale(0.1f));
-		if (keyDown) camLookAt.add(forwardVector.clone().scale(0.1f));
-		if (keyLeft) camLookAt.sub(sideVector.clone().scale(0.1f));
-		if (keyRight) camLookAt.add(sideVector.clone().scale(0.1f));
+		camLookRotationY.getQuaternion().multiply(FORWARD_VECTOR, camForwardVector).scale(timing.getDeltaTime() / 1000f * 60f);
+		camLookRotationY.getQuaternion().multiply(SIDE_VECTOR, camSideVector).scale(timing.getDeltaTime() / 1000f * 60f);
+		if (keyUp) cam.getLookAt().sub(tmpVector3.set(camForwardVector).scale(0.1f));
+		if (keyDown) cam.getLookAt().add(tmpVector3.set(camForwardVector).scale(0.1f));
+		if (keyLeft) cam.getLookAt().sub(tmpVector3.set(camSideVector).scale(0.1f));
+		if (keyRight) cam.getLookAt().add(tmpVector3.set(camSideVector).scale(0.1f));
+		
+		// mouse panning
 		if (mousePanningForward != MOUSE_PANNING_NONE) {
-			camLookAt.sub(forwardVector.clone().scale(mousePanningForward / 30f * camScale));
+			cam.getLookAt().sub(tmpVector3.set(camForwardVector).scale(mousePanningForward / 30f * camScale));
 			mousePanningForward = MOUSE_PANNING_NONE;
 		}
 		if (mousePanningSide != MOUSE_PANNING_NONE) {
-			camLookAt.sub(sideVector.clone().scale(mousePanningSide / 30f * camScale));
+			cam.getLookAt().sub(tmpVector3.set(camSideVector).scale(mousePanningSide / 30f * camScale));
 			mousePanningSide = MOUSE_PANNING_NONE;
 		}
 
 		// look from with rotations
-		camLookFrom.set(camLookAt.clone().add(lookAtToFromVector));
+		cam.getLookFrom().set(cam.getLookAt()).add(camLookAtToFromVector);
 
 		// up vector
-		cam.computeUpVector(camLookFrom, camLookAt, cam.getUpVector());
+		cam.computeUpVector(cam.getLookFrom(), cam.getLookAt(), cam.getUpVector());
 
 		// update grid
-		gridCenter.set(camLookAt);
+		gridCenter.set(cam.getLookAt());
 		updateGrid();
 
 		// do GUI
@@ -635,7 +641,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	 */
 	public void selectObjects(ArrayList<String> objectIds) {
 		// remove all objects which are currently selected 
-		ArrayList<Object3D> objectsToRemove = (ArrayList<Object3D>)selectedObjects.clone();
+		ArrayList<Entity> objectsToRemove = (ArrayList<Entity>)selectedObjects.clone();
 		for (Entity objectToRemove: objectsToRemove) {
 			setStandardObjectColorEffect(objectToRemove);
 			selectedObjects.remove(objectToRemove);
@@ -850,8 +856,11 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 		Camera cam = engine.getCamera();
 		cam.setZNear(1f);
 		cam.setZFar(1000f);
-		camLookAt.set(level.computeCenter());
-		gridCenter.set(camLookAt);
+		cam.getLookAt().set(level.computeCenter());
+		gridCenter.set(cam.getLookAt());
+
+		// store cam look at
+		camLookAt.set(engine.getCamera().getLookAt());
 	}
 
 	/*
@@ -871,6 +880,9 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 
 		//
 		loadLevel();
+
+		// restore cam look at
+		engine.getCamera().getLookAt().set(camLookAt);
 	}
 
 	/*
@@ -878,6 +890,8 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	 * @see net.drewke.tdme.tools.shared.views.View#deactivate()
 	 */
 	public void deactivate() {
+		// store cam look at
+		camLookAt.set(engine.getCamera().getLookAt());
 	}
 
 	/**
@@ -1425,7 +1439,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 				scale(0.5f)
 			);
 		}
-		camLookAt.set(
+		engine.getCamera().getLookAt().set(
 			center.scale(1.0f / selectedObjects.size())
 		);
 	}
@@ -1802,8 +1816,8 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 			loadLevel();
 
 			// reset cam
-			camLookAt.set(level.computeCenter());
-			gridCenter.set(camLookAt);
+			engine.getCamera().getLookAt().set(level.computeCenter());
+			gridCenter.set(engine.getCamera().getLookAt());
 
 			//
 			reloadEntityLibrary = true;
