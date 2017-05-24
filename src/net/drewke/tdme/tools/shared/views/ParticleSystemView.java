@@ -384,6 +384,7 @@ public class ParticleSystemView implements View, GUIInputEventHandler {
 			);
 			onLoadParticleSystem(oldEntity, entity);
 		} catch (Exception exception) {
+			exception.printStackTrace();
 			popUps.getInfoDialogScreenController().show("Warning", exception.getMessage());
 		}
 	}

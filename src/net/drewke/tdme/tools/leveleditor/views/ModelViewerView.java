@@ -36,9 +36,9 @@ public class ModelViewerView extends net.drewke.tdme.tools.shared.views.ModelVie
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.ModelViewerView#onLoadModel(net.drewke.tdme.tools.shared.model.LevelEditorEntity, net.drewke.tdme.tools.shared.model.LevelEditorEntity)
 	 */
-	public void onLoadModel(LevelEditorEntity oldModel, LevelEditorEntity model) {
-		TDMELevelEditor.getInstance().getLevel().replaceEntity(oldModel.getId(), model.getId());
-		TDMELevelEditor.getInstance().getEntityLibrary().removeEntity(oldModel.getId());
+	public void onLoadModel(LevelEditorEntity oldEntity, LevelEditorEntity entity) {
+		TDMELevelEditor.getInstance().getLevel().replaceEntity(oldEntity.getId(), entity.getId());
+		TDMELevelEditor.getInstance().getEntityLibrary().removeEntity(oldEntity.getId());
 		TDMELevelEditor.getInstance().getLevelEditorEntityLibraryScreenController().setEntityLibrary();
 	}
 
