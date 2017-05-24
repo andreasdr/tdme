@@ -74,19 +74,21 @@ public final class ModelMetaDataFileExport {
 	    PrintStream fops = null;
 		try {
 			// set entity file name
-			String entityFileName = new File(fileName).getCanonicalPath();
+			String entityFileName = new File(pathName, fileName).getCanonicalPath();
 			entity.setEntityFileName(entityFileName);
 
 			// export to entity root JSON node
 			JSONObject jEntityRoot = exportToJSON(entity);
 
 			// save to file
-			fos = new FileOutputStream(new File(entity.getEntityFileName())); 
+			fos = new FileOutputStream(entityFileName); 
 	        fops = new PrintStream(fos);
 	        fops.print(jEntityRoot.toString(2));  
 		} catch (JSONException je) {
+			je.printStackTrace();
 			throw je;
 		} catch (IOException ioe) {
+			ioe.printStackTrace();
 			throw ioe;
 		} finally {
 			if (fops != null) fops.close();
