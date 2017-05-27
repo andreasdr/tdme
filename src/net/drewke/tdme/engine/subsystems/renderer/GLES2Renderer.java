@@ -515,7 +515,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 			height, 
 			0,
 			GLES2.GL_DEPTH_COMPONENT,
-			GLES2.GL_INT,
+			GLES2.GL_UNSIGNED_INT,
 			null
 		);
 

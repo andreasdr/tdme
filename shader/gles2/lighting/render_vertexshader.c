@@ -39,6 +39,8 @@
 *                                                                       *
 ************************************************************************/
 
+#version 100
+
 #define FALSE		0
 #define MAX_LIGHTS	8
 #define MAX_JOINTS	60

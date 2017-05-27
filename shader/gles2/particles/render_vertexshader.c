@@ -1,3 +1,5 @@
+#version 100
+
 // layouts
 attribute vec3 inVertex;
 attribute vec4 inColor;
