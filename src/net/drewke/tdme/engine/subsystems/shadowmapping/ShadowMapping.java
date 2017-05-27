@@ -2,7 +2,6 @@ package net.drewke.tdme.engine.subsystems.shadowmapping;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Light;
@@ -11,6 +10,7 @@ import net.drewke.tdme.engine.subsystems.object.Object3DVBORenderer;
 import net.drewke.tdme.engine.subsystems.object.Object3DVBORenderer.DepthBufferMode;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 
 /**
@@ -34,9 +34,11 @@ public final class ShadowMapping {
 	private Matrix4x4 mvpMatrix;
 	private Matrix4x4 normalMatrix;
 
-	private Vector4 lightPositionTransformed;
+	private Vector4 lightPosition4Transformed;
+	private Vector3 lightPosition3Transformed;
 	private Vector4 spotDirection4;
 	private Vector4 spotDirection4Transformed;
+	private Vector3 spotDirection3Transformed;
 
 	Engine engine;
 	private ShadowMap[] shadowMaps;
@@ -69,9 +71,11 @@ public final class ShadowMapping {
 		mvMatrix = new Matrix4x4().identity();
 		mvpMatrix = new Matrix4x4().identity();
 		normalMatrix = new Matrix4x4().identity();
-		lightPositionTransformed = new Vector4();
+		lightPosition4Transformed = new Vector4();
+		lightPosition3Transformed = new Vector3();
 		spotDirection4 = new Vector4();
 		spotDirection4Transformed = new Vector4();
+		spotDirection3Transformed = new Vector3();
 		runState = RunState.NONE;
 	}
 
@@ -186,20 +190,24 @@ public final class ShadowMapping {
 
 			// set up light shader uniforms
 			shader.setProgramLightPosition(
-				renderer.getCameraMatrix().multiply(
-					light.getPosition(),
-					lightPositionTransformed
-				).scale(
-					1f / lightPositionTransformed.getW()
+				lightPosition3Transformed.set(
+					renderer.getCameraMatrix().multiply(
+						light.getPosition(),
+						lightPosition4Transformed
+					).scale(
+						1f / lightPosition4Transformed.getW()
+					).getArray()
 				)
 			);
 			shader.setProgramLightDirection(
-				renderer.getCameraMatrix().multiply(
-					spotDirection4.set(
-						light.getSpotDirection(),
-						0.0f
-					), 
-					spotDirection4Transformed
+				spotDirection3Transformed.set(
+					renderer.getCameraMatrix().multiply(
+						spotDirection4.set(
+							light.getSpotDirection(),
+							0.0f
+						), 
+						spotDirection4Transformed
+					).getArray()
 				)
 			);
 			shader.setProgramLightSpotExponent(light.getSpotExponent());

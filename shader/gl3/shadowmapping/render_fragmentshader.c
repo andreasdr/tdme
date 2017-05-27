@@ -8,7 +8,7 @@ uniform sampler2D textureUnit;
 uniform float texturePixelWidth;
 uniform float texturePixelHeight;
 
-uniform vec4 lightPosition;
+uniform vec3 lightPosition;
 uniform vec3 lightDirection;
 uniform float lightSpotExponent;
 uniform float lightSpotCosCutoff;
@@ -28,7 +28,7 @@ void main() {
 		// return color to be blended with framebuffer
 		outColor = vec4(0.0, 0.0, 0.0, 0.0);
 	} else {
-		vec3 L = lightPosition.xyz - vsPosition.xyz;
+		vec3 L = lightPosition - vsPosition;
 		float d = length(L);
 		L = normalize(L);
 

@@ -228,15 +228,15 @@ public final class ShadowMappingShader {
 	 * Set up program light position
 	 * @param light position
 	 */
-	public void setProgramLightPosition(Vector4 lightPosition) {
-		renderer.setProgramUniformFloatVec4(renderUniformLightPosition, lightPosition.getArray());
+	public void setProgramLightPosition(Vector3 lightPosition) {
+		renderer.setProgramUniformFloatVec3(renderUniformLightPosition, lightPosition.getArray());
 	}
 
 	/**
 	 * Set up program light position
 	 * @param light position
 	 */
-	public void setProgramLightDirection(Vector4 lightDirection) {
+	public void setProgramLightDirection(Vector3 lightDirection) {
 		renderer.setProgramUniformFloatVec3(renderUniformLightDirection, lightDirection.getArray());
 	}
 
