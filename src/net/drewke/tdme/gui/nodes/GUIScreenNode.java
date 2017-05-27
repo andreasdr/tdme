@@ -2,8 +2,6 @@ package net.drewke.tdme.gui.nodes;
 
 import java.util.ArrayList;
 
-import com.sun.scenario.effect.Effect;
-
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.effects.GUIEffect;
