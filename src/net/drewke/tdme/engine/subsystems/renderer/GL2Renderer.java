@@ -122,7 +122,6 @@ public abstract class GL2Renderer extends GLRenderer {
 		gl.glEnable(GL2.GL_CULL_FACE);									// The Type Of Depth Testing To Do
 		gl.glDepthFunc(GL2.GL_LEQUAL);
 		gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);	// Really Nice Perspective Calculations
-		gl.glEnable(GL2.GL_TEXTURE_2D);									// enable texture 2d
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);  // enable alpha transparency
 		gl.glBlendEquation(GL2.GL_FUNC_ADD);
 		gl.glDisable(GL2.GL_BLEND);
