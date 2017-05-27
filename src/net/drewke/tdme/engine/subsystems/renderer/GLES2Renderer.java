@@ -16,7 +16,6 @@ import net.drewke.tdme.math.Matrix4x4;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL3;
 import com.jogamp.opengl.GLES2;
 
 /**
@@ -41,8 +40,8 @@ public abstract class GLES2Renderer extends GLRenderer {
 		CULLFACE_FRONT = GLES2.GL_FRONT;
 		CULLFACE_BACK = GLES2.GL_BACK;
 
-		FRONTFACE_CW = GL3.GL_CW;
-		FRONTFACE_CCW = GL3.GL_CCW;
+		FRONTFACE_CW = GLES2.GL_CW;
+		FRONTFACE_CCW = GLES2.GL_CCW;
 
 		CLIENTSTATE_TEXTURECOORD_ARRAY = 2;
 		CLIENTSTATE_VERTEX_ARRAY = 0;
@@ -80,13 +79,13 @@ public abstract class GLES2Renderer extends GLRenderer {
 		gl.glGetError();
 		// get default framebuffer
 		FRAMEBUFFER_DEFAULT = gl.getContext().getDefaultDrawFramebuffer();
+		checkGLError();
 		// setup open gl
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);						// Black Background
 		gl.glClearDepthf(1.0f); 											// Depth Buffer Setup
 		gl.glEnable(GLES2.GL_DEPTH_TEST); 								// Enables Depth Testing
 		gl.glEnable(GLES2.GL_CULL_FACE);									// The Type Of Depth Testing To Do
 		gl.glDepthFunc(GLES2.GL_LEQUAL);
-		gl.glEnable(GLES2.GL_TEXTURE_2D);									// enable texture 2d
 		gl.glBlendFunc(GLES2.GL_SRC_ALPHA, GLES2.GL_ONE_MINUS_SRC_ALPHA);  // enable alpha transparency
 		gl.glBlendEquation(GLES2.GL_FUNC_ADD);
 		gl.glDisable(GLES2.GL_BLEND);
@@ -723,6 +722,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 	}
 
 	/*
+
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#createBufferObjects(int)
 	 */
@@ -961,7 +961,6 @@ public abstract class GLES2Renderer extends GLRenderer {
 		gl.glEnable(GLES2.GL_BLEND);
 		gl.glDisable(GLES2.GL_DEPTH_TEST);
 		gl.glDisable(GLES2.GL_CULL_FACE);
-		gl.glGetError();
 	}
 
 	/*
@@ -969,7 +968,6 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#doneGuiMode()
 	 */
 	final public void doneGuiMode() {
-		gl.glGetError();
 		gl.glBindTexture(GLES2.GL_TEXTURE_2D, ID_NONE);
 		gl.glDisable(GLES2.GL_BLEND);
 		gl.glEnable(GLES2.GL_DEPTH_TEST);
@@ -984,7 +982,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 		if (error != GL.GL_NO_ERROR) {
 			System.out.println("OpenGL Error: (" + error + ") @:");
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-			for (int i = 1; i < stackTrace.length; i++) {
+			for (int i = 1; i < /*stackTrace.length*/4; i++) {
 				System.out.println("\t" + stackTrace[i]);
 			}
 		}

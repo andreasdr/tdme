@@ -9,25 +9,26 @@ attribute vec2 inTextureUV;
 uniform mat4 depthBiasMVPMatrix;
 uniform mat4 mvpMatrix;
 uniform mat4 mvMatrix;
-uniform mat3 normalMatrix;
+uniform mat4 normalMatrix;
 uniform vec4 lightPosition;
+uniform vec3 lightDirection;
 
-varying vec4 shadowCoord;
-varying float shadowIntensity;
-
-
+varying vec4 vsShadowCoord;
+varying float vsShadowIntensity;
+varying vec3 vsPosition;
 
 void main() {
-	shadowCoord = depthBiasMVPMatrix * vec4(inVertex, 1.0);
-	shadowCoord = shadowCoord / shadowCoord.w;
+	// shadow coord
+	vsShadowCoord = depthBiasMVPMatrix * vec4(inVertex, 1.0);
+	vsShadowCoord = vsShadowCoord / vsShadowCoord.w;
 
-	vec4 position = mvMatrix * vec4(0.0, 0.0, 0.0, 1.0);
-	position = position / position.w;
-	vec4 lightPositionTransformed = mvMatrix * lightPosition;
-	lightPositionTransformed = lightPositionTransformed / lightPositionTransformed.w;
-	vec3 normal = normalMatrix * inNormal;
+	// shadow intensity 
+	vec3 normal = normalize(vec3(normalMatrix * vec4(inNormal, 0.0)));
+	vsShadowIntensity = clamp(abs(dot(normalize(lightDirection.xyz), normal)), 0.0, 1.0);
 
-	shadowIntensity = 1.0 - clamp(dot(normalize(position.xyz - lightPositionTransformed.xyz), normal), 0.0, 1.0);
+	// Eye-coordinate position of vertex, needed in various calculations
+	vec4 vsPosition4 = mvMatrix * vec4(inVertex, 1.0);
+	vsPosition = vsPosition4.xyz / vsPosition4.w;
 
 	// compute gl position
 	gl_Position = mvpMatrix * vec4(inVertex, 1.0);
