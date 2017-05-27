@@ -136,7 +136,7 @@ public final class LevelFileImport {
 		for (int i = 0; i < jModels.length(); i++) {
 			JSONObject jModel = jModels.getJSONObject(i);
 			// add model to library
-			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImportFromJSON(jModel.getInt("id"), null, jModel.getJSONObject("entity"));
+			LevelEditorEntity levelEditorEntity = ModelMetaDataFileImport.doImportFromJSON(jModel.getInt("id"), new File(pathName).getCanonicalPath(), jModel.getJSONObject("entity"));
 
 			// do we have a valid entity?
 			if (levelEditorEntity == null) {

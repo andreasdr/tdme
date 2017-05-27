@@ -454,24 +454,27 @@ public final class Tools {
 	 */
 	public static String getRelativeResourcesFileName(String gameRoot, String fileName) {
 		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
-		// try to cut by game root
-		int filesRootIdx = gameRoot.length() > 0?fileName.lastIndexOf(gameRoot):-1;
-		if (filesRootIdx != -1) {
-			// yep, works
-			filesRootIdx+= gameRoot.length();
-		}
-		// did not work, then try to do by /resources/
-		if (filesRootIdx == -1) {
-			filesRootIdx = fileName.lastIndexOf("/resources/");
-			// do we have resources?
-			if (filesRootIdx != -1) {
-				// yep
-				filesRootIdx+= "/resources/".length();
+
+		//
+		int cutFileNameIdx = -1;
+
+		// check last /resources/ which seems to be safe 
+		if (cutFileNameIdx == -1) {
+			cutFileNameIdx = fileName.lastIndexOf("/resources/");
+			if (cutFileNameIdx != -1) {
+				fileName = fileName.substring(cutFileNameIdx + 1);
 			}
 		}
-		if (filesRootIdx != -1) {
-			fileName = fileName.substring(filesRootIdx + 1);
+
+		// check last resources/ which seems to be a bit less safe
+		if (cutFileNameIdx == -1) {
+			cutFileNameIdx = fileName.lastIndexOf("resources/");
+			if (cutFileNameIdx != -1) {
+				fileName = fileName.substring(cutFileNameIdx);
+			}
 		}
+		
+		// done
 		return fileName;
 	}
 
@@ -482,8 +485,23 @@ public final class Tools {
 	 */
 	public static String getGameRootPath(String fileName) {
 		fileName = fileName.replace(File.separatorChar == '/'?'\\':'/', File.separatorChar);
-		int filesRootIdx = fileName.lastIndexOf("/resources/");
-		if (filesRootIdx != -1) fileName = fileName.substring(0, filesRootIdx);
+
+		//
+		int filesRootIdx = -1;
+
+		// check /resources/
+		if (filesRootIdx == -1) {
+			filesRootIdx = fileName.lastIndexOf("/resources/");
+			if (filesRootIdx != -1) fileName = fileName.substring(0, filesRootIdx);
+		}
+
+		// check resources/
+		if (filesRootIdx == -1) {
+			filesRootIdx = fileName.lastIndexOf("resources/");
+			if (filesRootIdx != -1) fileName = fileName.substring(0, filesRootIdx);
+		}
+
+		// done
 		return fileName;
 	}
 

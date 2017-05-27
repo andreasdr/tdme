@@ -85,7 +85,7 @@ public final class ModelMetaDataFileImport {
 		EntityType modelType = LevelEditorEntity.EntityType.valueOf(jEntityRoot.getString("type"));
 		String modelFile = 
 			jEntityRoot.has("file") == true?
-				new File(pathName != null?pathName:Tools.getPath(jEntityRoot.getString("file")), Tools.getFileName(jEntityRoot.getString("file"))).getCanonicalPath():
+				new File(jEntityRoot.getString("file")).getCanonicalPath():
 				null;
 		String modelThumbnail = jEntityRoot.has("thumbnail") == true?jEntityRoot.getString("thumbnail"):null;
 		String name = jEntityRoot.getString("name");
@@ -95,17 +95,17 @@ public final class ModelMetaDataFileImport {
 		Model model = null;
 
 		// having a model file?
-		String modelGameRoot = null;
+		String gameRoot = Tools.getGameRootPath(pathName);
 		String modelRelativeFileName = null;
 		if (modelFile != null) {
 			// yep, load it
-			modelGameRoot = Tools.getGameRootPath(modelFile);
-			modelRelativeFileName = Tools.getRelativeResourcesFileName(modelGameRoot, modelFile);
+			modelRelativeFileName = Tools.getRelativeResourcesFileName(gameRoot, modelFile);
+			String modelPath = (gameRoot.length() > 0?gameRoot + "/":"") + Tools.getPath(modelRelativeFileName);
 			if (modelFile.toLowerCase().endsWith(".dae")) {
-				model = DAEReader.read(modelGameRoot + "/" + Tools.getPath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
+				model = DAEReader.read(modelPath, Tools.getFileName(modelRelativeFileName));
 			} else
 			if (modelFile.toLowerCase().endsWith(".tm")) {
-				model = TMReader.read(modelGameRoot + "/" + Tools.getPath(modelRelativeFileName), Tools.getFileName(modelRelativeFileName));
+				model = TMReader.read(modelPath, Tools.getFileName(modelRelativeFileName));
 			} else {
 				throw new Exception("Unsupported mode file: " + modelFile);
 			}
@@ -123,7 +123,7 @@ public final class ModelMetaDataFileImport {
 			name,
 			description,
 			null,
-			modelFile != null?new File(modelGameRoot, modelRelativeFileName).getCanonicalPath():null,
+			modelFile != null?new File(gameRoot, modelRelativeFileName).getCanonicalPath():null,
 			modelThumbnail,
 			model,
 			pivot
@@ -173,8 +173,12 @@ public final class ModelMetaDataFileImport {
 						objectParticleSystem.getScale().setZ((float)jObjectParticleSystem.getDouble("sz"));
 						objectParticleSystem.setAutoEmit(jObjectParticleSystem.getBoolean("ae"));
 						try {
-							objectParticleSystem.setModelFile(jObjectParticleSystem.getString("mf"));
+							String particleModelFile = jObjectParticleSystem.getString("mf");
+							String particleModelRelativeFileName = Tools.getRelativeResourcesFileName(gameRoot, particleModelFile);
+							String particleModelPath = (gameRoot.length() > 0?gameRoot + "/":"") + Tools.getPath(particleModelRelativeFileName);
+							objectParticleSystem.setModelFile(particleModelPath + "/" + Tools.getFileName(particleModelRelativeFileName));
 						} catch (Exception exception) {
+							exception.printStackTrace();
 							System.out.println("ModelMetaDataFileImport::doImport(): Failed to set model file: " + exception.getMessage());
 						}
 						break;
