@@ -861,7 +861,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#drawTrianglesFromBufferObjects(int, int)
 	 */
 	final public void drawIndexedTrianglesFromBufferObjects(int triangles, int trianglesOffset) {
-		gl.glDrawElements(GLES2.GL_TRIANGLES, triangles * 3, GLES2.GL_UNSIGNED_SHORT, 0L);
+		gl.glDrawElements(GLES2.GL_TRIANGLES, triangles * 3, GLES2.GL_UNSIGNED_SHORT, (long)trianglesOffset * 3L * 2L);
 	}
 
 	/*
