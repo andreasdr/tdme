@@ -166,11 +166,10 @@ public final class LightingShader extends SkinningShader {
 			renderer.setProgramAttributeLocation(renderLightingProgramId, 0, "inVertex");
 			renderer.setProgramAttributeLocation(renderLightingProgramId, 1, "inNormal");
 			renderer.setProgramAttributeLocation(renderLightingProgramId, 2, "inTextureUV");
-			// renderer.setProgramAttributeLocation(renderLightingProgramId, 3, "inColor");
-			renderer.setProgramAttributeLocation(renderLightingProgramId, 4, "inSkinningVertexJoints");
-			renderer.setProgramAttributeLocation(renderLightingProgramId, 5, "inSkinningVertexJointIdxs");
-			renderer.setProgramAttributeLocation(renderLightingProgramId, 6, "inSkinningVertexJointWeights");
 		}
+
+		// pre link init skinning shader
+		super.preLinkInit(renderer, renderLightingProgramId);
 
 		// link program
 		if (renderer.linkProgram(renderLightingProgramId) == false) return;

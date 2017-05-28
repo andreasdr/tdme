@@ -19,28 +19,43 @@ public class SkinningShader {
 	/**
 	 * Public constructor
 	 */
-	public SkinningShader() {
+	protected SkinningShader() {
 	}
 
 	/**
 	 * @return initialized and ready to be used
 	 */
-	public boolean isInitialized() {
+	protected boolean isInitialized() {
 		return initialized;
 	}
 
 	/**
 	 * Use lighting program
 	 */
-	public void useProgram() {
+	protected void useProgram() {
 		isRunning = true;
 	}
 
 	/**
 	 * Unuse lighting program
 	 */
-	public void unUseProgram() {
+	protected void unUseProgram() {
 		isRunning = false;
+	}
+
+	/**
+	 * Pre link init
+	 * @param renderer
+	 * @param program id
+	 */
+	protected void preLinkInit(GLRenderer renderer, int programId) {
+		// map inputs to attributes
+		if (renderer.isSkinningAvailable() == true &&
+			renderer.isUsingProgramAttributeLocation() == true) {
+			renderer.setProgramAttributeLocation(programId, 4, "inSkinningVertexJoints");
+			renderer.setProgramAttributeLocation(programId, 5, "inSkinningVertexJointIdxs");
+			renderer.setProgramAttributeLocation(programId, 6, "inSkinningVertexJointWeights");
+		}
 	}
 
 	/**
@@ -48,7 +63,7 @@ public class SkinningShader {
 	 * @param renderer
 	 * @param program id
 	 */
-	public void init(GLRenderer renderer, int programId) {
+	protected void init(GLRenderer renderer, int programId) {
 		initialized = false;
 
 		// shader support for skinning
