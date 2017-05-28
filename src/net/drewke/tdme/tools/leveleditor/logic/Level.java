@@ -13,7 +13,6 @@ import net.drewke.tdme.engine.physics.World;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleEmitter;
-import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
@@ -28,6 +27,8 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.PointP
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.SphereParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
+import net.drewke.tdme.tools.shared.model.Properties;
+import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -238,6 +239,8 @@ public class Level {
 		// load level objects
 		for (int i = 0; i < level.getObjectCount(); i++) {
 			LevelEditorObject object = level.getObjectAt(i);
+			Properties properties = object.getTotalProperties();
+
 			// skip on empties or trigger
 			if (addEmpties == false && object.getEntity().getType() == EntityType.EMPTY) continue;
 			if (addTrigger == false && object.getEntity().getType() == EntityType.TRIGGER) continue;
@@ -262,7 +265,10 @@ public class Level {
 			}
 			// pickable
 			entity.setPickable(pickable);
-			entity.setDynamicShadowingEnabled(dynamicShadowing);
+			// dynamic shadowing
+			PropertyModelClass shadowingProperty = properties.getProperty("shadowing");
+			boolean omitShadowing = shadowingProperty != null && shadowingProperty.getValue().equalsIgnoreCase("false");
+			entity.setDynamicShadowingEnabled(omitShadowing == true?false:dynamicShadowing);
 			// do not scale empties
 			if (object.getEntity().getType() == EntityType.EMPTY) {
 				entity.getScale().set(
