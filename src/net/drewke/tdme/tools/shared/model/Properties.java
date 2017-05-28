@@ -10,9 +10,12 @@ import java.util.ArrayList;
  */
 public class Properties {
 
-	private HashMap<String, PropertyModelClass> propertiesByName;
-	private ArrayList<PropertyModelClass> properties;
+	protected HashMap<String, PropertyModelClass> propertiesByName;
+	protected ArrayList<PropertyModelClass> properties;
 
+	/**
+	 * Public constructor
+	 */
 	public Properties() {
 		this.properties = new ArrayList<PropertyModelClass>();
 		this.propertiesByName = new HashMap<String, PropertyModelClass>();

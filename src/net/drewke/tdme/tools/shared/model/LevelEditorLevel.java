@@ -389,4 +389,49 @@ public final class LevelEditorLevel extends Properties {
 		return objectsById.keySet().iterator();
 	}
 
+	/**
+	 * Clone level mainly with prefixed object names
+	 * 	Note: this is not a deep clone, it basically uses references to original level
+	 * @param object id prefix
+	 * @return cloned level
+	 */
+	public LevelEditorLevel clone(String objectIdPrefix) {
+		LevelEditorLevel level = new LevelEditorLevel();
+		level.propertiesByName = propertiesByName;
+		level.properties = properties;
+		level.gameRoot = gameRoot;
+		level.pathName = pathName;
+		level.fileName = fileName;
+		level.rotationOrder = rotationOrder;
+		level.lights = lights;
+		level.entityLibrary = entityLibrary;
+		level.objectsById = new HashMap<String, LevelEditorObject>();
+		level.objects = new ArrayList<LevelEditorObject>();
+		for (int i = 0; i < getObjectCount(); i++) {
+			LevelEditorObject object = getObjectAt(i).clone();
+			object.setId(objectIdPrefix != null?objectIdPrefix + object.getId():object.getId());
+			level.objectsById.put(object.getId(), object);
+			level.objects.add(object);
+		}
+		level.objectIdx = objectIdx;
+		level.boundingBox = boundingBox;
+		level.dimension = dimension;
+		return level;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.tools.shared.model.Properties#toString()
+	 */
+	public String toString() {
+		return "LevelEditorLevel [gameRoot=" + gameRoot + ", pathName="
+				+ pathName + ", fileName=" + fileName + ", rotationOrder="
+				+ rotationOrder + ", lights=" + lights + ", entityLibrary="
+				+ entityLibrary + ", objectsById=" + objectsById + ", objects="
+				+ objects + ", objectIdx=" + objectIdx + ", boundingBox="
+				+ boundingBox + ", dimension=" + dimension
+				+ ", propertiesByName=" + propertiesByName + ", properties="
+				+ properties + "]";
+	}
+
 }

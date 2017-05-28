@@ -15,6 +15,16 @@ public final class LevelEditorObject extends Properties {
 	private LevelEditorEntity entity;
 
 	/**
+	 * Private constructor used for cloning
+	 */
+	private LevelEditorObject() {
+		id = null;
+		description = null;
+		transformations = null;
+		entity = null;
+	}
+
+	/**
 	 * Public constructor
 	 * @param id
 	 * @param transformations
@@ -104,6 +114,19 @@ public final class LevelEditorObject extends Properties {
 
 		//
 		return properties;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	public LevelEditorObject clone() {
+		LevelEditorObject object = new LevelEditorObject();
+		object.id = id;
+		object.description = description;
+		object.transformations = transformations;
+		object.entity = entity;
+		return object;
 	}
 
 	/*
