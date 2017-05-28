@@ -24,7 +24,8 @@ import net.drewke.tdme.engine.subsystems.renderer.GL3Renderer;
 import net.drewke.tdme.engine.subsystems.renderer.GLES2Renderer;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMapping;
-import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMappingShader;
+import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMappingShaderPre;
+import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMappingShaderRender;
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
 import net.drewke.tdme.gui.renderer.GUIShader;
@@ -64,7 +65,8 @@ public final class Engine {
 	public enum AnimationProcessingTarget {GPU, CPU, CPU_NORENDERING};
 	public static AnimationProcessingTarget animationProcessingTarget = AnimationProcessingTarget.GPU;
 
-	private static ShadowMappingShader shadowMappingShader = null;
+	private static ShadowMappingShaderPre shadowMappingShaderPre = null;
+	private static ShadowMappingShaderRender shadowMappingShaderRender = null;
 	protected static LightingShader lightingShader = null;
 	protected static ParticlesShader particlesShader = null;
 	protected static GUIShader guiShader = null;
@@ -365,8 +367,15 @@ public final class Engine {
 	/**
 	 * @return shadow mapping shader
 	 */
-	public static ShadowMappingShader getShadowMappingShader() {
-		return shadowMappingShader;
+	public static ShadowMappingShaderPre getShadowMappingShaderPre() {
+		return shadowMappingShaderPre;
+	}
+
+	/**
+	 * @return shadow mapping shader
+	 */
+	public static ShadowMappingShaderRender getShadowMappingShaderRender() {
+		return shadowMappingShaderRender;
 	}
 
 	/**
@@ -710,8 +719,10 @@ public final class Engine {
 		// initialize shadow mapping
 		if (shadowMappingEnabled == true) {
 			System.out.println("TDME::Using shadow mapping");
-			shadowMappingShader = new ShadowMappingShader(renderer);
-			shadowMappingShader.init();
+			shadowMappingShaderPre = new ShadowMappingShaderPre(renderer);
+			shadowMappingShaderPre.init();
+			shadowMappingShaderRender = new ShadowMappingShaderRender(renderer);
+			shadowMappingShaderRender.init();
 			shadowMapping = new ShadowMapping(this, renderer, object3DVBORenderer);
 		} else {
 			System.out.println("TDME::Not using shadow mapping");
@@ -721,7 +732,8 @@ public final class Engine {
 		System.out.println("TDME: animation processing target: " + animationProcessingTarget);
 
 		// determine initialized from sub systems
-		initialized&= shadowMappingShader == null?true:shadowMappingShader.isInitialized();
+		initialized&= shadowMappingShaderPre == null?true:shadowMappingShaderPre.isInitialized();
+		initialized&= shadowMappingShaderRender == null?true:shadowMappingShaderRender.isInitialized();
 		initialized&= lightingShader.isInitialized();
 		initialized&= particlesShader.isInitialized();
 		initialized&= guiShader.isInitialized();

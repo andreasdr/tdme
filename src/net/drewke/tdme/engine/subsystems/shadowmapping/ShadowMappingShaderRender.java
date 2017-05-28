@@ -1,25 +1,18 @@
 package net.drewke.tdme.engine.subsystems.shadowmapping;
 
-import java.util.Arrays;
-
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.math.Vector4;
 
 /**
- * Shadow mapping shader
+ * Shadow mapping shader for render shadows pass
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class ShadowMappingShader {
+public final class ShadowMappingShaderRender {
 
 	private GLRenderer renderer;
 
-	private int preVertexShaderGlId;
-	private int preFragmentShaderGlId;
-	private int preUniformMVPMatrix;
-	private int preProgramGlId;
 	private int renderVertexShaderGlId;
 	private int renderFragmentShaderGlId;
 	private int renderProgramGlId;
@@ -43,7 +36,7 @@ public final class ShadowMappingShader {
 	/**
 	 * Constructor
 	 */
-	public ShadowMappingShader(GLRenderer renderer) {
+	public ShadowMappingShaderRender(GLRenderer renderer) {
 		this.renderer = renderer;
 		initialized = false;
 	}
@@ -61,22 +54,6 @@ public final class ShadowMappingShader {
 	public void init() {
 		String rendererVersion = renderer.getGLVersion();
 
-		// load shadow mapping shaders
-		//	pre render
-		preVertexShaderGlId = renderer.loadShader(
-			renderer.SHADER_VERTEX_SHADER,
-			"shader/" + rendererVersion + "/shadowmapping",
-			"pre_vertexshader.c"
-		);
-		if (preVertexShaderGlId == 0) return;
-
-		preFragmentShaderGlId = renderer.loadShader(
-			renderer.SHADER_FRAGMENT_SHADER,
-			"shader/" + rendererVersion + "/shadowmapping",
-			"pre_fragmentshader.c"
-		);
-		if (preFragmentShaderGlId == 0) return;
-
 		//	render
 		renderVertexShaderGlId = renderer.loadShader(
 			renderer.SHADER_VERTEX_SHADER,
@@ -91,26 +68,6 @@ public final class ShadowMappingShader {
 			"render_fragmentshader.c"
 		);
 		if (renderFragmentShaderGlId == 0) return;
-
-		// create shadow mapping render program
-		//	pre
-		preProgramGlId = renderer.createProgram();
-		renderer.attachShaderToProgram(preProgramGlId, preVertexShaderGlId);
-		renderer.attachShaderToProgram(preProgramGlId, preFragmentShaderGlId);
-
-		// map inputs to attributes
-		if (renderer.isUsingProgramAttributeLocation() == true) {
-			renderer.setProgramAttributeLocation(preProgramGlId, 0, "inVertex");
-			renderer.setProgramAttributeLocation(preProgramGlId, 1, "inNormal");
-			renderer.setProgramAttributeLocation(preProgramGlId, 2, "inTextureUV");
-		}
-
-		// link
-		if (renderer.linkProgram(preProgramGlId) == false) return;
-
-		//	uniforms
-		preUniformMVPMatrix = renderer.getProgramUniformLocation(preProgramGlId, "mvpMatrix");
-		if (preUniformMVPMatrix == -1) return;
 
 		//	render
 		renderProgramGlId = renderer.createProgram();
@@ -169,13 +126,6 @@ public final class ShadowMappingShader {
 	}
 
 	/**
-	 * Use pre render shadow mapping program
-	 */
-	public void usePreProgram() {
-		renderer.useProgram(preProgramGlId);
-	}
-
-	/**
 	 * Use render shadow mapping program
 	 */
 	public void useProgram() {
@@ -197,14 +147,6 @@ public final class ShadowMappingShader {
 	public void setProgramTexturePixelDimensions(float width, float height) {
 		renderer.setProgramUniformFloat(renderUniformTexturePixelWidth, width);
 		renderer.setProgramUniformFloat(renderUniformTexturePixelHeight, height);
-	}
-
-	/**
-	 * Set up pre program mvp matrix
-	 * @param mvp matrix
-	 */
-	public void setPreProgramMVPMatrix(Matrix4x4 mvpMatrix) {
-		renderer.setProgramUniformFloatMatrix4x4(preUniformMVPMatrix, mvpMatrix.getArray());
 	}
 
 	/**

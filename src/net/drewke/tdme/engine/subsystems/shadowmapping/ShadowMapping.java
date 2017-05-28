@@ -143,7 +143,7 @@ public final class ShadowMapping {
 		renderer.setCullFace(renderer.CULLFACE_FRONT);
 
 		// Use shadow mapping "pre programm"
-		Engine.getShadowMappingShader().usePreProgram();
+		Engine.getShadowMappingShaderPre().useProgram();
 
 		// render to shadow maps
 		for (int i = 0; i < engine.getLights().length; i++) {
@@ -185,7 +185,7 @@ public final class ShadowMapping {
 		runState = RunState.RENDER;
 
 		// render using shadow mapping program
-		ShadowMappingShader shader = Engine.getShadowMappingShader();
+		ShadowMappingShaderRender shader = Engine.getShadowMappingShaderRender();
 		shader.useProgram();
 		shader.setProgramTextureUnit(ShadowMap.TEXTUREUNIT);
 
@@ -343,13 +343,13 @@ public final class ShadowMapping {
 			transpose();
 
 		// upload
-		ShadowMappingShader shader = engine.getShadowMappingShader();
 		switch (runState) {
 			case PRE: {
-				shader.setPreProgramMVPMatrix(mvpMatrix);
+				Engine.getShadowMappingShaderPre().setProgramMVPMatrix(mvpMatrix);
 				break;
 			}
 			case RENDER: {
+				ShadowMappingShaderRender shader = Engine.getShadowMappingShaderRender();
 				shader.setProgramMVMatrix(mvMatrix);
 				shader.setProgramMVPMatrix(mvpMatrix);
 				shader.setProgramNormalMatrix(normalMatrix);
@@ -375,7 +375,7 @@ public final class ShadowMapping {
 		this.depthBiasMVPMatrix.set(depthBiasMVPMatrix);
 
 		// upload
-		engine.getShadowMappingShader().setProgramDepthBiasMVPMatrix(depthBiasMVPMatrix);
+		Engine.getShadowMappingShaderRender().setProgramDepthBiasMVPMatrix(depthBiasMVPMatrix);
 	}
 
 	/**
@@ -385,7 +385,7 @@ public final class ShadowMapping {
 		if (runState != RunState.RENDER) return;
 
 		// upload
-		engine.getShadowMappingShader().setProgramDepthBiasMVPMatrix(depthBiasMVPMatrix);
+		Engine.getShadowMappingShaderRender().setProgramDepthBiasMVPMatrix(depthBiasMVPMatrix);
 	}
 
 	/**
