@@ -172,6 +172,12 @@ abstract public class GLRenderer {
 	abstract public boolean isBufferObjectsAvailable();
 
 	/**
+	 * Checks if depth texture is available
+	 * @return depth texture is available
+	 */
+	abstract public boolean isDepthTextureAvailable();
+
+	/**
 	 * @return requires program attribute location
 	 */
 	abstract public boolean isUsingProgramAttributeLocation();

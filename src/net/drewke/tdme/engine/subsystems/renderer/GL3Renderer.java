@@ -122,6 +122,14 @@ public abstract class GL3Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isDepthTextureAvailable()
+	 */
+	final public boolean isDepthTextureAvailable() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isUsingProgramAttributeLocation()
 	 */
 	final public boolean isUsingProgramAttributeLocation() {

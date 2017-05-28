@@ -651,9 +651,18 @@ public final class Engine {
 			System.out.println("TDME::Using GLES2");
 			System.out.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
 			// engine defaults
-			shadowMappingEnabled = true;
-			animationProcessingTarget = AnimationProcessingTarget.CPU;
-			ShadowMapping.setShadowMapSize(512, 512);
+			// is shadow mapping available?
+			if (renderer.isBufferObjectsAvailable() == true &&
+				renderer.isDepthTextureAvailable() == true) {
+				// yep, nice
+				shadowMappingEnabled = true;
+				animationProcessingTarget = AnimationProcessingTarget.CPU;
+				ShadowMapping.setShadowMapSize(512, 512);
+			} else {
+				// nope, renderer skinning on GPU to speed up things and do not shadow mapping
+				shadowMappingEnabled = false;
+				animationProcessingTarget = AnimationProcessingTarget.GPU;
+			}
 		} else {
 			System.out.println("Engine::init(): unsupported GL!");
 			return;

@@ -109,6 +109,14 @@ public abstract class GLES2Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isDepthTextureAvailable()
+	 */
+	final public boolean isDepthTextureAvailable() {
+		return gl.glGetString(GL.GL_EXTENSIONS).indexOf("GL_OES_depth_texture") != -1;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isUsingProgramAttributeLocation()
 	 */
 	final public boolean isUsingProgramAttributeLocation() {
