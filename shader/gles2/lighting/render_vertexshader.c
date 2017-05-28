@@ -87,6 +87,7 @@ uniform vec4 effectColorMul;
 uniform Material material;
 uniform Light lights[MAX_LIGHTS];
 
+// skinning uniforms
 uniform mat4 skinningJointsTransformationsMatrices[MAX_JOINTS];
 uniform int skinningEnabled;
 
