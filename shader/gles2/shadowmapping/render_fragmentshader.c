@@ -11,14 +11,6 @@ uniform float texturePixelWidth;
 uniform float texturePixelHeight;
 
 uniform vec3 lightDirection;
-/*
-uniform vec3 lightPosition;
-uniform float lightSpotExponent;
-uniform float lightSpotCosCutoff;
-uniform float lightConstantAttenuation;
-uniform float lightLinearAttenuation;
-uniform float lightQuadraticAttenuation;
-*/
 
 varying vec3 vsPosition;
 varying vec4 vsShadowCoord;
@@ -30,33 +22,6 @@ void main() {
 		// return color to be blended with framebuffer
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 	} else {
-		/*
-		vec3 L = lightPosition.xyz - vsPosition.xyz;
-		float d = length(L);
-		L = normalize(L);
-
-		// compute attenuation
-		float attenuation =
-			1.0 /
-			(
-				lightConstantAttenuation +
-				lightLinearAttenuation * d +
-				lightQuadraticAttenuation * d * d
-			);
-	 
-		// see if point on surface is inside cone of illumination
-		float spotDot = dot(-L, normalize(lightDirection));
-		float spotAttenuation = 0.0;
-		if (spotDot >= lightSpotCosCutoff) {
-			spotAttenuation = pow(spotDot, lightSpotExponent);
-		}
-
-		// Combine the spotlight and distance attenuation.
-		attenuation *= spotAttenuation;
-		*/
-
-		float attenuation = 1.0;
-
 		// depth bias
 		float depthBias = 0.0;
 
@@ -69,6 +34,6 @@ void main() {
 		visibility = visibility / (SHADOWMAP_LOOKUPS * SHADOWMAP_LOOKUPS);
 
 		// return color to be blended with framebuffer
-		gl_FragColor = vec4(0.0, 0.0, 0.0, visibility * vsShadowIntensity * attenuation * 0.5);
+		gl_FragColor = vec4(0.0, 0.0, 0.0, visibility * vsShadowIntensity * 0.5);
 	}
 }

@@ -1,8 +1,7 @@
 package net.drewke.tdme.engine.subsystems.lighting;
 
-import net.drewke.tdme.engine.subsystems.object.Object3DGroupMesh;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
-import net.drewke.tdme.engine.subsystems.shader.SkinningShader;
+import net.drewke.tdme.engine.subsystems.skinning.SkinningShader;
 import net.drewke.tdme.math.Matrix4x4;
 
 /**
@@ -10,7 +9,7 @@ import net.drewke.tdme.math.Matrix4x4;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class LightingShader implements SkinningShader {
+public final class LightingShader extends SkinningShader {
 
 	public final static int MAX_LIGHTS = 8;
 
@@ -91,9 +90,6 @@ public final class LightingShader implements SkinningShader {
 	private int[] uniformLightConstantAttenuation;
 	private int[] uniformLightLinearAttenuation;
 	private int[] uniformLightQuadraticAttenuation;
-
-	private int uniformSkinningEnabled;
-	private int uniformSkinningJointsTransformationsMatrices;
 
 	private Matrix4x4 mvMatrix;
 	private Matrix4x4 mvpMatrix;
@@ -254,16 +250,9 @@ public final class LightingShader implements SkinningShader {
 			if (uniformLightQuadraticAttenuation[i] == -1) return;
 		}
 
-		// shader support for skinning
-		if (renderer.isSkinningAvailable() == true) {
-			uniformSkinningEnabled = renderer.getProgramUniformLocation(renderLightingProgramId, "skinningEnabled");
-			if (uniformSkinningEnabled == -1) return;
-			uniformSkinningJointsTransformationsMatrices = renderer.getProgramUniformLocation(renderLightingProgramId, "skinningJointsTransformationsMatrices");
-			if (uniformSkinningJointsTransformationsMatrices == -1) return;
-		} else {
-			uniformSkinningEnabled = -1;
-			uniformSkinningJointsTransformationsMatrices = -1;
-		}
+		// init skinning shader
+		super.init(renderer, renderLightingProgramId);
+		if (super.isInitialized() == false) return;
 
 		//
 		initialized = true;
@@ -273,6 +262,10 @@ public final class LightingShader implements SkinningShader {
 	 * Use lighting program
 	 */
 	public void useProgram() {
+		// use skinning shader
+		super.useProgram();
+
+		//
 		isRunning = true;
 		renderer.useProgram(renderLightingProgramId);
 		// initialize static uniforms
@@ -299,6 +292,9 @@ public final class LightingShader implements SkinningShader {
 	 * Unuse lighting program
 	 */
 	public void unUseProgram() {
+		// unuse skinning shader
+		super.unUseProgram();
+
 		// Engine.getInstance().renderer.useProgram(Engine.getInstance().renderer.ID_NONE);
 		isRunning = false;
 	}
@@ -435,35 +431,6 @@ public final class LightingShader implements SkinningShader {
 				renderer.setProgramUniformInteger(uniformDisplacementTextureAvailable, textureId == 0?0:1);
 				break;
 		}
-	}
-
-	/**
-	 * Initializes skinning
-	 * @param renderer
-	 * @param mesh
-	 */
-	public void initSkinning(GLRenderer renderer, Object3DGroupMesh mesh) {
-		// skip if not running
-		if (isRunning == false) return;
-
-		renderer.setProgramUniformInteger(uniformSkinningEnabled, 1);
-		renderer.setProgramUniformFloatMatrices4x4(
-			uniformSkinningJointsTransformationsMatrices,
-			mesh.getSkinningJoints(),
-			mesh.getSkinningJointsTransformationsMatricesFloatBuffer()
-		);
-	}
-
-	/**
-	 * Done skinning
-	 * @param renderer
-	 * @param mesh
-	 */
-	public void doneSkinning(GLRenderer renderer) {
-		// skip if not running
-		if (isRunning == false) return;
-
-		renderer.setProgramUniformInteger(uniformSkinningEnabled, 0);
 	}
 
 }

@@ -645,7 +645,7 @@ public final class Engine {
 			// shadowMappingEnabled = false;
 			// animationProcessingTarget = AnimationProcessingTarget.GPU;
 			shadowMappingEnabled = true;
-			animationProcessingTarget = AnimationProcessingTarget.CPU;
+			animationProcessingTarget = AnimationProcessingTarget.GPU;
 			ShadowMapping.setShadowMapSize(512, 512);
 		} else {
 			System.out.println("Engine::init(): unsupported GL!");
