@@ -3,6 +3,7 @@ package net.drewke.tdme.engine.subsystems.shadowmapping;
 import java.util.ArrayList;
 
 import net.drewke.tdme.engine.Camera;
+import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.FrameBuffer;
 import net.drewke.tdme.engine.Light;
@@ -32,8 +33,6 @@ public final class ShadowMap {
 	private Matrix4x4 biasMatrix;
 
 	private Matrix4x4 depthBiasMVPMatrix;
-
-
 
 	/**
 	 * Public constructor

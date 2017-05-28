@@ -167,6 +167,9 @@ public final class ShadowMapping {
 			}
 		}
 
+		// Un use shadow mapping "pre programm"
+		Engine.getShadowMappingShaderPre().unUseProgram();
+
 		// restore disable color rendering
 		renderer.setColorMask(true, true, true, true);
 
