@@ -10,7 +10,6 @@ uniform mat4 depthBiasMVPMatrix;
 uniform mat4 mvpMatrix;
 uniform mat4 mvMatrix;
 uniform mat4 normalMatrix;
-uniform vec4 lightPosition;
 uniform vec3 lightDirection;
 
 varying vec4 vsShadowCoord;

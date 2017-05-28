@@ -24,9 +24,6 @@ public final class ShadowMap {
 	private ArrayList<Object3D> visibleObjects;
 	private ShadowMapping shadowMapping;
 
-	private final static int SHADOWMAP_WIDTH = 2048;
-	private final static int SHADOWMAP_HEIGHT = 2048;
-
 	private Camera lightCamera;
 	private Vector3 lightDirection;
 	private Vector3 lightLookAt;
@@ -35,6 +32,8 @@ public final class ShadowMap {
 	private Matrix4x4 biasMatrix;
 
 	private Matrix4x4 depthBiasMVPMatrix;
+
+
 
 	/**
 	 * Public constructor
@@ -47,8 +46,8 @@ public final class ShadowMap {
 		lightCamera = new Camera(shadowMapping.renderer);
 		frameBuffer = new FrameBuffer(
 			shadowMapping.engine,
-			SHADOWMAP_WIDTH,
-			SHADOWMAP_HEIGHT,
+			width,
+			height,
 			FrameBuffer.FRAMEBUFFER_DEPTHBUFFER
 		);
 		biasMatrix = new Matrix4x4(	

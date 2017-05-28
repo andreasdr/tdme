@@ -142,20 +142,27 @@ public final class ShadowMappingShader {
 		if (renderUniformMVPMatrix == -1) return;
 		renderUniformNormalMatrix = renderer.getProgramUniformLocation(renderProgramGlId, "normalMatrix");
 		if (renderUniformNormalMatrix == -1) return;
-		renderUniformLightPosition = renderer.getProgramUniformLocation(renderProgramGlId, "lightPosition");
-		if (renderUniformLightPosition == -1) return;
+
+		// light
 		renderUniformLightDirection = renderer.getProgramUniformLocation(renderProgramGlId, "lightDirection");
 		if (renderUniformLightDirection == -1) return;
-		renderUniformLightSpotExponent = renderer.getProgramUniformLocation(renderProgramGlId, "lightSpotExponent");
-		if (renderUniformLightSpotExponent == -1) return;
-		renderUniformLightSpotCosCutoff = renderer.getProgramUniformLocation(renderProgramGlId, "lightSpotCosCutoff");
-		if (renderUniformLightSpotCosCutoff == -1) return;
-		renderUniformLightConstantAttenuation = renderer.getProgramUniformLocation(renderProgramGlId, "lightConstantAttenuation");
-		if (renderUniformLightConstantAttenuation == -1) return;
-		renderUniformLightLinearAttenuation = renderer.getProgramUniformLocation(renderProgramGlId, "lightLinearAttenuation");
-		if (renderUniformLightLinearAttenuation == -1) return;
-		renderUniformLightQuadraticAttenuation = renderer.getProgramUniformLocation(renderProgramGlId, "lightQuadraticAttenuation");
-		if (renderUniformLightQuadraticAttenuation == -1) return;
+
+		// additional light, shadow uniforms
+		// TODO: maybe find a better abstract way to determine if a renderer uses it or not
+		if (rendererVersion.equals("gles2") == false) {
+			renderUniformLightPosition = renderer.getProgramUniformLocation(renderProgramGlId, "lightPosition");
+			if (renderUniformLightPosition == -1) return;
+			renderUniformLightSpotExponent = renderer.getProgramUniformLocation(renderProgramGlId, "lightSpotExponent");
+			if (renderUniformLightSpotExponent == -1) return;
+			renderUniformLightSpotCosCutoff = renderer.getProgramUniformLocation(renderProgramGlId, "lightSpotCosCutoff");
+			if (renderUniformLightSpotCosCutoff == -1) return;
+			renderUniformLightConstantAttenuation = renderer.getProgramUniformLocation(renderProgramGlId, "lightConstantAttenuation");
+			if (renderUniformLightConstantAttenuation == -1) return;
+			renderUniformLightLinearAttenuation = renderer.getProgramUniformLocation(renderProgramGlId, "lightLinearAttenuation");
+			if (renderUniformLightLinearAttenuation == -1) return;
+			renderUniformLightQuadraticAttenuation = renderer.getProgramUniformLocation(renderProgramGlId, "lightQuadraticAttenuation");
+			if (renderUniformLightQuadraticAttenuation == -1) return;
+		}
 
 		//
 		initialized = true;

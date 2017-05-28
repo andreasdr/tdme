@@ -542,6 +542,7 @@ public final class Engine {
 			// engine defaults
 			shadowMappingEnabled = true;
 			animationProcessingTarget = AnimationProcessingTarget.CPU;
+			ShadowMapping.setShadowMapSize(2048, 2048);
 		} else
 		if (drawable.getGL().isGL2()) {
 			GL2 gl = (GL2)drawable.getGL().getGL2();
@@ -592,6 +593,7 @@ public final class Engine {
 			// engine defaults
 			shadowMappingEnabled = true;
 			animationProcessingTarget = AnimationProcessingTarget.CPU;
+			ShadowMapping.setShadowMapSize(2048, 2048);
 		} else
 		if (drawable.getGL().isGLES2()) {
 			GLES2 gl = (GLES2)drawable.getGL().getGLES2();
@@ -644,6 +646,7 @@ public final class Engine {
 			// animationProcessingTarget = AnimationProcessingTarget.GPU;
 			shadowMappingEnabled = true;
 			animationProcessingTarget = AnimationProcessingTarget.CPU;
+			ShadowMapping.setShadowMapSize(512, 512);
 		} else {
 			System.out.println("Engine::init(): unsupported GL!");
 			return;

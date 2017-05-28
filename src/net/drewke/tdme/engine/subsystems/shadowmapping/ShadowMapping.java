@@ -22,6 +22,9 @@ public final class ShadowMapping {
 
 	private enum RunState {NONE, PRE, RENDER};
 
+	private static int shadowMapWidth = 2048;
+	private static int shadowMapHeight = 2048;
+
 	protected GLRenderer renderer;
 	protected Object3DVBORenderer object3DVBORenderer;
 	
@@ -49,14 +52,24 @@ public final class ShadowMapping {
 	private RunState runState;
 
 	/**
+	 * Set shadow map size
+	 * @param width
+	 * @param height
+	 */
+	public static void setShadowMapSize(int width, int height) {
+		shadowMapWidth = width;
+		shadowMapHeight = height;
+	}
+
+	/**
 	 * Constructor
 	 * @param engine
 	 * @param renderer
 	 * @param object 3d vbo renderer
 	 */
 	public ShadowMapping(Engine engine, GLRenderer renderer, Object3DVBORenderer object3DVBORenderer) {
-		width = 0;
-		height = 0;
+		width = shadowMapWidth;
+		height = shadowMapHeight;
 		this.engine = engine;
 		this.renderer = renderer;
 		this.object3DVBORenderer = object3DVBORenderer;
@@ -107,12 +120,14 @@ public final class ShadowMapping {
 	 * @param height
 	 */
 	public void reshape(int width, int height) {
+		/*
 		this.width = width;
 		this.height = height;
 		//
 		for (int i = 0; i < shadowMaps.length; i++) {
 			if (shadowMaps[i] != null) shadowMaps[i].reshape(width, height);
 		}
+		*/
 	}
 
 	/**

@@ -10,13 +10,15 @@ uniform sampler2D textureUnit;
 uniform float texturePixelWidth;
 uniform float texturePixelHeight;
 
-uniform vec3 lightPosition;
 uniform vec3 lightDirection;
+/*
+uniform vec3 lightPosition;
 uniform float lightSpotExponent;
 uniform float lightSpotCosCutoff;
 uniform float lightConstantAttenuation;
 uniform float lightLinearAttenuation;
 uniform float lightQuadraticAttenuation;
+*/
 
 varying vec3 vsPosition;
 varying vec4 vsShadowCoord;
@@ -28,6 +30,7 @@ void main() {
 		// return color to be blended with framebuffer
 		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
 	} else {
+		/*
 		vec3 L = lightPosition.xyz - vsPosition.xyz;
 		float d = length(L);
 		L = normalize(L);
@@ -50,6 +53,9 @@ void main() {
 
 		// Combine the spotlight and distance attenuation.
 		attenuation *= spotAttenuation;
+		*/
+
+		float attenuation = 1.0;
 
 		// depth bias
 		float depthBias = 0.0;
