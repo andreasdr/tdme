@@ -88,6 +88,12 @@ public class ShadowMappingShaderPre {
 	}
 
 	/**
+	 * Un use pre render shadow mapping program
+	 */
+	public void unUseProgram() {
+	}
+
+	/**
 	 * Set up pre program mvp matrix
 	 * @param mvp matrix
 	 */

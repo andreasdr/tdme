@@ -133,6 +133,12 @@ public final class ShadowMappingShaderRender {
 	}
 
 	/**
+	 * Un use render shadow mapping program
+	 */
+	public void unUseProgram() {
+	}
+
+	/**
 	 * Set up program texture unit
 	 * @param texture unit
 	 */
