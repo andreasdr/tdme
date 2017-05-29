@@ -458,8 +458,8 @@ public final class Engine {
 	public void removeEntity(String id) {
 		Entity entity = entitiesById.remove(id);
 		if (entity != null) {
+			if (entity.isEnabled() == true) partition.removeEntity(entity);
 			entity.dispose();
-			partition.removeEntity(entity);
 			entity.setEngine(null);
 			entity.setRenderer(null);
 		}
