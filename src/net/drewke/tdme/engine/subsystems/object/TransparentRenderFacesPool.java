@@ -7,7 +7,7 @@ import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
-import net.drewke.tdme.utils.VectorIterator;
+import net.drewke.tdme.utils.Pool;
 
 /**
  * Transparent render faces pool
@@ -20,7 +20,7 @@ public final class TransparentRenderFacesPool {
 
 	private ArrayList<TransparentRenderFace> transparentRenderFaces = null;
 	private ArrayListIterator<TransparentRenderFace> transparentRenderFacesIterator = null;
-	private int poolIdx = 0;
+	private Pool<TransparentRenderFace> transparentRenderFacesPool = null;
 
 	private Vector3 tmpVector3;
 
@@ -30,12 +30,12 @@ public final class TransparentRenderFacesPool {
 	protected TransparentRenderFacesPool() {
 		tmpVector3 = new Vector3();
 		transparentRenderFaces = new ArrayList<TransparentRenderFace>();
-		for (int i = 0; i < FACES_MAX; i++) {
-			TransparentRenderFace face = new TransparentRenderFace();
-			face.acquired = false;
-			transparentRenderFaces.add(face);
-		}
 		transparentRenderFacesIterator = new ArrayListIterator<TransparentRenderFace>(transparentRenderFaces);
+		transparentRenderFacesPool = new Pool<TransparentRenderFace>() {
+			public TransparentRenderFace instantiate() {
+				return new TransparentRenderFace();
+			}
+		};
 	}
 
 	/**
@@ -60,7 +60,7 @@ public final class TransparentRenderFacesPool {
 		// create transparent render faces
 		for (int i = 0; i < faces.length; i++) {
 			// check for pool overflow
-			if (poolIdx >= FACES_MAX) {
+			if (size() >= FACES_MAX) {
 				System.out.println("TransparentRenderFacesPool::createTransparentRenderFaces(): Too many transparent render faces");
 				break;
 			}
@@ -75,24 +75,30 @@ public final class TransparentRenderFacesPool {
 			modelViewMatrix.multiply(tmpVector3, tmpVector3);
 			distanceFromCamera = -tmpVector3.getZ();
 
-			TransparentRenderFace transparentRenderFace = transparentRenderFaces.get(poolIdx++);
-			transparentRenderFace.acquired = true;
+			// create transparent render face
+			TransparentRenderFace transparentRenderFace = transparentRenderFacesPool.allocate();
 			transparentRenderFace.object3DGroup = object3DGroup;
 			transparentRenderFace.facesEntityIdx = facesEntityIdx;
 			transparentRenderFace.faceIdx = faceIdx;
 			transparentRenderFace.distanceFromCamera = distanceFromCamera;
+			transparentRenderFaces.add(transparentRenderFace);
 			faceIdx++;
 		}
+	}
+
+	/**
+	 * @return allocated faces
+	 */
+	public int size() {
+		return transparentRenderFacesPool.size();
 	}
 
 	/**
 	 * Reset
 	 */
 	protected void reset() {
-		poolIdx = 0;
-		for (TransparentRenderFace face: transparentRenderFacesIterator) {
-			face.acquired = false;
-		}
+		transparentRenderFacesPool.reset();
+		transparentRenderFaces.clear();
 	}
 
 	/**

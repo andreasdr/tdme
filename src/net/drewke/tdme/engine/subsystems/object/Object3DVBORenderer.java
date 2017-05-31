@@ -176,7 +176,7 @@ public final class Object3DVBORenderer {
 
 		// render transparent render faces if any exist
 		ArrayList<TransparentRenderFace> transparentRenderFaces = transparentRenderFacesPool.getTransparentRenderFaces();
-		if (transparentRenderFaces.get(0).acquired == true) {
+		if (transparentRenderFaces.size() > 0) {
 			// sort transparent render faces from far to near
 			QuickSort.sort(transparentRenderFaces);
 
@@ -192,10 +192,6 @@ public final class Object3DVBORenderer {
 
 			//
 			for (TransparentRenderFace transparentRenderFace: transparentRenderFacesPool.getTransparentRenderFacesIterator()) {
-
-				// skip if face is not in use
-				if (transparentRenderFace.acquired == false) break;
-
 				// do we have any faces yet?
 				if (groupTransparentRenderFaces.size() == 0) {
 					// nope, so add this one
