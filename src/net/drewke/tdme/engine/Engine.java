@@ -974,6 +974,7 @@ public final class Engine {
 		float mouseToProjectionX = (2.0f * mouseX / width) - 1.0f;
 		float mouseToProjectionY = 1.0f - (2.0f * mouseY / height);
 		float pixelDepth = renderer.readPixelDepth(mouseX, height - mouseY);
+		System.out.println(pixelDepth);
 		tmpMatrix4x4.multiply(
 			tmpVector4a.set(
 				mouseToProjectionX,

@@ -943,9 +943,12 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#readPixelDepth(int, int)
 	 */
 	final public float readPixelDepth(int x, int y) {
+		/*
 		FloatBuffer pixelDepthBuffer = FloatBuffer.allocate(1);
 		gl.glReadPixels(x, y, 1, 1, GLES2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, pixelDepthBuffer);
-		return pixelDepthBuffer.get();
+		*/
+		// TODO: GLES2 can not read from depth buffer
+		return 0.0f;
 	}
 
 	/*
