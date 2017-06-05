@@ -9,6 +9,7 @@ import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.Key;
 
 /**
@@ -124,7 +125,7 @@ public final class TransparentRenderFacesGroup {
 			// nope, add first one
 			BatchVBORendererTriangles batchVBORendererTriangles = object3DVBORenderer.acquireTrianglesBatchVBORenderer();
 			if (batchVBORendererTriangles == null) {
-				System.out.println("TransparentRenderFacesGroup::addVertex(): could not acquire triangles batch vbo renderer");
+				Console.println("TransparentRenderFacesGroup::addVertex(): could not acquire triangles batch vbo renderer");
 				return;
 			}
 			batchVBORenderers.add(batchVBORendererTriangles);
@@ -137,7 +138,7 @@ public final class TransparentRenderFacesGroup {
 		// failed, acquire additionally one
 		batchVBORendererTriangles = object3DVBORenderer.acquireTrianglesBatchVBORenderer();
 		if (batchVBORendererTriangles == null) {
-			System.out.println("TransparentRenderFacesGroup::addVertex(): could not acquire triangles batch vbo renderer");
+			Console.println("TransparentRenderFacesGroup::addVertex(): could not acquire triangles batch vbo renderer");
 			return;
 		}
 		// 	add it

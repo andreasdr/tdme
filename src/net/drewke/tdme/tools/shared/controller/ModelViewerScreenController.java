@@ -12,6 +12,7 @@ import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -376,13 +377,13 @@ public final class ModelViewerScreenController extends ScreenController implemen
 					if (node.getId().equals("button_pivot_apply")) {
 						onPivotApply();
 					} else {
-						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+						Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
 					break;
 				}
 			case PERFORMING:
 				{
-					// System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					// Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					break;
 				}
 		}

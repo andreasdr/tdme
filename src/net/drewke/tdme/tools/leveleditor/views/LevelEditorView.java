@@ -1054,7 +1054,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 			}
 		}
 		// some stats to check if its working
-		// System.out.println("readded: " + reAddedCells + ", added: " + addedCells + ", removed: " + removedCells + ", total:" + engine.getEntityCount());
+		// Console.println("readded: " + reAddedCells + ", added: " + addedCells + ", removed: " + removedCells + ", total:" + engine.getEntityCount());
 		if (gridCenterLast == null) gridCenterLast = new Vector3();
 		gridCenterLast.set(gridCenter);
 	}
@@ -1076,7 +1076,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 				engine.removeEntity(objectId);
 			}
 		}
-		// System.out.println("removed: " + removedCells + ", total:" + engine.getEntityCount());
+		// Console.println("removed: " + removedCells + ", total:" + engine.getEntityCount());
 		gridCenterLast = null;
 	}
 

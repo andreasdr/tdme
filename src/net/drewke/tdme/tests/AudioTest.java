@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import net.drewke.tdme.audio.Audio;
 import net.drewke.tdme.audio.AudioEntity;
+import net.drewke.tdme.utils.Console;
 
 
 public final class AudioTest {
@@ -23,7 +24,7 @@ public final class AudioTest {
 			}
 		};
 		audioUpdateThread.start();
-		System.out.println("Press 'enter' to quit");
+		Console.println("Press 'enter' to quit");
 		BufferedReader buf = new BufferedReader(new InputStreamReader(System.in));
 		buf.readLine();
 		audioUpdateThread.interrupt();

@@ -21,6 +21,7 @@ import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
@@ -148,7 +149,7 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 		world.synch(engine);
 		engine.display(drawable);
 		long end = System.currentTimeMillis();
-		System.out.println("PhysicsTest::display::" + (end-start) + "ms");
+		Console.println("PhysicsTest::display::" + (end-start) + "ms");
 	}
 
 	/*
@@ -344,7 +345,7 @@ public final class PhysicsTest3 implements GLEventListener, MouseListener, Mouse
 		Model capsuleBigModel = PrimitiveModel.createModel(capsuleBig, "capsulebig_model");
 		capsuleBigModel.getMaterials().get("tdme.primitive.material").getAmbientColor().set(1f,0.8f,0.8f,1f);
 		capsuleBigModel.getMaterials().get("tdme.primitive.material").getDiffuseColor().set(1f,0f,0f,1f);
-		System.out.println(capsuleBig.getCenter());
+		Console.println(capsuleBig.getCenter());
 
 		//
 		entity = new Object3D("capsulebig1", capsuleBigModel);

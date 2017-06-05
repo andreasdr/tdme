@@ -40,6 +40,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 import org.w3c.dom.Document;
@@ -269,7 +270,7 @@ public final class DAEReader {
 					// do we have a name now?
 					if (haveName == false) {
 						// nope, cant imagine this will happen 
-						System.out.println("DAEReader::readLevel(): Skipping model '" + modelName + "' as no name could be created for it.");
+						Console.println("DAEReader::readLevel(): Skipping model '" + modelName + "' as no name could be created for it.");
 						continue;
 					}
 
@@ -426,7 +427,7 @@ public final class DAEReader {
 						}
 						levelEditorEntity = emptyEntity;
 					} else {
-						System.out.println("DAEReader::readLevel(): unknown entity type. Skipping");
+						Console.println("DAEReader::readLevel(): unknown entity type. Skipping");
 						continue;
 					}
 
@@ -527,7 +528,7 @@ public final class DAEReader {
 					// set up import transformation matrix
 					model.getImportTransformationsMatrix().rotate(-90f, new Vector3(0f,1f,0f));
 				} else {
-					System.out.println("Warning: Unknown up axis: " + upAxis);
+					Console.println("Warning: Unknown up axis: " + upAxis);
 				}
 			}
 		}
@@ -735,7 +736,7 @@ public final class DAEReader {
 						float timeStamp;
 						for (timeStamp = timeStampLast; timeStamp < keyFrameTime; timeStamp+= 1.0f / fps) {
 							if (frameIdx >= frames) {
-								System.out.println("Warning: skipping frame: " + frameIdx);
+								Console.println("Warning: skipping frame: " + frameIdx);
 								frameIdx++;
 								continue;
 							}
@@ -1373,7 +1374,7 @@ public final class DAEReader {
 		}
 
 		if (xmlEffectId == null) {
-			System.out.println("Could not determine effect id for '" + xmlNodeId + "'");
+			Console.println("Could not determine effect id for '" + xmlNodeId + "'");
 			return null;
 		}
 
@@ -1621,7 +1622,7 @@ public final class DAEReader {
 			});
 			tmpFileNameCandidate = fileNameCandidates.length > 0?fileNameCandidates[0]:null;
 		} catch (IOException ioe) {
-			System.out.println("DAEReader::makeDisplacementFilenameCandidate::" + ioe);
+			Console.println("DAEReader::makeDisplacementFilenameCandidate::" + ioe);
 		}
 		
 		// we are done

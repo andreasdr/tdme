@@ -11,6 +11,7 @@ import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.nodes.GUIColor;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
+import net.drewke.tdme.utils.Console;
 
 /**
  * GUI
@@ -476,7 +477,7 @@ public final class GUIRenderer {
 	) {
 		// check quad count limit
 		if (quadCount > QUAD_COUNT) {
-			System.out.println("GUIRenderer::addQuad()::too many quads");
+			Console.println("GUIRenderer::addQuad()::too many quads");
 			return;
 		}
 
@@ -518,28 +519,24 @@ public final class GUIRenderer {
 		// check if quad bottom is > render area top
 		float quadBottom = y3;
 		if (quadBottom > renderAreaTop) {
-			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadBottom > renderAreaTop)");
 			return;			
 		} 
 
 		// check if quad top is < render area bottom
 		float quadTop = y1;
 		if (quadTop < renderAreaBottom) {
-			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadTop < renderAreaBottom)");
 			return;			
 		}
 
 		// check if quad left > render area right
 		float quadLeft = x1;
 		if (quadLeft > renderAreaRight) {
-			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadLeft > renderAreaRight)");
 			return;			
 		} 
 
 		// check if quad right < render area left
 		float quadRight = x2;
 		if (quadRight < renderAreaLeft) {
-			// System.out.println("GUIRenderer::addQuad()::not in viewport(quadRight < renderAreaLeft)");
 			return;			
 		} 
 

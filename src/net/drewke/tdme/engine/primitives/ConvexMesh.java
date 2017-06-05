@@ -9,6 +9,7 @@ import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.math.SeparatingAxisTheorem;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Convex mesh collision object
@@ -134,13 +135,13 @@ public final class ConvexMesh implements BoundingVolume {
 	public void fromBoundingVolume(BoundingVolume original) {
 		// check for same type of original
 		if (original instanceof ConvexMesh == false) {
-			System.out.println("Mesh::fromBoundingVolume(): original is not of same type");
+			Console.println("Mesh::fromBoundingVolume(): original is not of same type");
 			return;
 		}
 
 		ConvexMesh mesh = (ConvexMesh)original;
 		if (mesh.triangles.length != triangles.length) {
-			System.out.println("Mesh::fromBoundingVolume(): triangles count mismatch");
+			Console.println("Mesh::fromBoundingVolume(): triangles count mismatch");
 			return;			
 		}
 
@@ -163,13 +164,13 @@ public final class ConvexMesh implements BoundingVolume {
 	public void fromBoundingVolumeWithTransformations(BoundingVolume original, Transformations transformations) {
 		// check for same type of original
 		if (original instanceof ConvexMesh == false) {
-			System.out.println("Mesh::fromBoundingVolume(): original is not of same type");
+			Console.println("Mesh::fromBoundingVolume(): original is not of same type");
 			return;
 		}
 
 		ConvexMesh mesh = (ConvexMesh)original;
 		if (mesh.triangles.length != triangles.length) {
-			System.out.println("Mesh::fromBoundingVolume(): triangles count mismatch");
+			Console.println("Mesh::fromBoundingVolume(): triangles count mismatch");
 			return;			
 		}
 
@@ -260,7 +261,7 @@ public final class ConvexMesh implements BoundingVolume {
 		if (bv2 instanceof ConvexMesh) {
 			return CollisionDetection.getInstance().doCollide(this, (ConvexMesh)bv2, movement, collision);
 		} else {
-			System.out.println("Capsule::doesCollideWith(): unsupported bounding volume 2: " + bv2);
+			Console.println("Capsule::doesCollideWith(): unsupported bounding volume 2: " + bv2);
 			return false;
 		}
 	}

@@ -2,6 +2,7 @@ package net.drewke.tdme.engine.subsystems.manager;
 
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -144,7 +145,7 @@ public final class TextureManager {
 			}
 			return;
 		}
-		System.out.println("Warning: texture not loaded by texture manager");
+		Console.println("Warning: texture not loaded by texture manager");
 	}
 
 }

@@ -12,6 +12,7 @@ import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Shadow mapping
@@ -359,7 +360,7 @@ public final class ShadowMapping {
 				break;
 			}
 			default: {
-				System.out.println("ShadowMapping::updateMVPMatrices(): unsupported run state '" + runState + "'");
+				Console.println("ShadowMapping::updateMVPMatrices(): unsupported run state '" + runState + "'");
 				break;
 			}
 		}

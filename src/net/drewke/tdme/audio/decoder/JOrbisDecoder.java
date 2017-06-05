@@ -250,7 +250,6 @@ public final class JOrbisDecoder extends AudioDecoder {
 				}
 				case PACKET: {
 					int result = oggStreamState.packetout(oggPacket);
-//						System.out.println("packet out");
 					if (result == 0) {
 						// need more data
 						if (oggPage.eos() != 0) {
@@ -271,7 +270,6 @@ public final class JOrbisDecoder extends AudioDecoder {
 						if (oggBlock.synthesis(oggPacket) == 0) {
 							// success!
 							oggDspState.synthesis_blockin(oggBlock);
-//								System.out.println("synthesis");
 						}
 						oggReadState = OggReadState.SYNTHESIS;
 					}

@@ -19,6 +19,7 @@ import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -369,7 +370,7 @@ public class ParticleSystemView implements View, GUIInputEventHandler {
 	 */
 	private void loadParticleSystem() {
 		//
-		System.out.println("Particle system file: " + particleSystemFile);
+		Console.println("Particle system file: " + particleSystemFile);
 
 		// scene
 		try {

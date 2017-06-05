@@ -80,7 +80,6 @@ public final class VectorIteratorMultiple<E> implements Iterator<E>, Iterable<E>
 	 * @see java.util.Iterator#next()
 	 */
 	public E next() {
-		// System.out.println(vectorIdx + "(" + vectors.size() + ")" + "," + elementIdx + "(" + vectors.get(vectorIdx).size() + ")");
 		E element = vectors.get(vectorIdx).elementAt(elementIdx++);
 		if (elementIdx == vectors.get(vectorIdx).size()) {
 			elementIdx = 0;

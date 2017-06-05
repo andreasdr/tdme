@@ -7,6 +7,7 @@ import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.Pool;
 
 /**
@@ -61,7 +62,7 @@ public final class TransparentRenderFacesPool {
 		for (int i = 0; i < faces.length; i++) {
 			// check for pool overflow
 			if (size() >= FACES_MAX) {
-				System.out.println("TransparentRenderFacesPool::createTransparentRenderFaces(): Too many transparent render faces");
+				Console.println("TransparentRenderFacesPool::createTransparentRenderFaces(): Too many transparent render faces");
 				break;
 			}
 

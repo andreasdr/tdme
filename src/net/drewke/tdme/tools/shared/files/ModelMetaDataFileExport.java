@@ -19,15 +19,16 @@ import net.drewke.tdme.engine.primitives.Triangle;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.BoundingBoxParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.CircleParticleEmitterPlaneVelocity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.PointParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.SphereParticleEmitter;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -122,7 +123,7 @@ public final class ModelMetaDataFileExport {
 				jEntityRoot.put("thumbnail", thumbnail);
 				copyFile(new File("./tmp", entity.getThumbnail()), new File(Tools.getPath(entity.getFileName()), thumbnail));
 			} catch (IOException ioe) {
-				System.out.println("ModelMetaDataFileExport::export(): Could not copy thumbnail for '" + entity.getFileName() + "'");
+				Console.println("ModelMetaDataFileExport::export(): Could not copy thumbnail for '" + entity.getFileName() + "'");
 			}
 		}
 
@@ -186,7 +187,7 @@ public final class ModelMetaDataFileExport {
 					}
 				default:
 					{
-						System.out.println("ModelMetaDataFileExport::export(): unknown particle system type '" + particleSystem.getType() + "'");
+						Console.println("ModelMetaDataFileExport::export(): unknown particle system type '" + particleSystem.getType() + "'");
 						break;
 					}
 			}
@@ -367,7 +368,7 @@ public final class ModelMetaDataFileExport {
 						break;
 					}
 				default:
-					System.out.println("ModelMetaDataFileExport::export(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+					Console.println("ModelMetaDataFileExport::export(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
 			}
 
 			// add to file

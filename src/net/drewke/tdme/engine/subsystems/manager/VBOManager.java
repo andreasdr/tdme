@@ -3,6 +3,7 @@ package net.drewke.tdme.engine.subsystems.manager;
 import java.util.Arrays;
 
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -162,7 +163,7 @@ public final class VBOManager {
 			}
 			return;
 		}
-		System.out.println("Warning: vbo not managed by vbo manager");
+		Console.println("Warning: vbo not managed by vbo manager");
 	}
 
 }

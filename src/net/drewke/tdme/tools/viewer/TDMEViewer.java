@@ -8,6 +8,7 @@ import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ModelViewerView;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.event.WindowListener;
@@ -50,9 +51,9 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		String modelFileName = null;
 
 		//
-		System.out.println("TDMEViewer " + VERSION);
-		System.out.println("Programmed 2014,...,2017 by Andreas Drewke, drewke.net.");
-		System.out.println();
+		Console.println("TDMEViewer " + VERSION);
+		Console.println("Programmed 2014,...,2017 by Andreas Drewke, drewke.net.");
+		Console.println();
 
 		// no nifty logging
 		Logger.getLogger("").setLevel(Level.SEVERE);
@@ -60,8 +61,8 @@ public final class TDMEViewer implements GLEventListener, WindowListener {
 		// create GL caps
 		GLProfile glp = Engine.getProfile();
 		GLCapabilities caps = new GLCapabilities(glp);
-		System.out.println(glp);
-		System.out.println(caps);
+		Console.println(glp);
+		Console.println(caps);
 
 		// create GL window
 		GLWindow glWindow = GLWindow.create(caps);

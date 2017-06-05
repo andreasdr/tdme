@@ -1,7 +1,6 @@
 package net.drewke.tdme.engine.physics;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -15,6 +14,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.SeparatingAxisTheorem;
 import net.drewke.tdme.math.TriangleTriangleIntersection;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Collision detection
@@ -1680,10 +1680,10 @@ public final class CollisionDetection {
 		// we can not act with no movement provided
 		if (movement == null) {
 			if (VERBOSE) {
-				System.out.println("checkMovementFallback::fallback::movement = null");
+				Console.println("checkMovementFallback::fallback::movement = null");
 				StackTraceElement[] stackTraceElement = Thread.currentThread().getStackTrace();
 				for (int i = 2; i < 10 && i < stackTraceElement.length; i++) {
-					System.out.println(stackTraceElement[i].getClassName() + ":" + stackTraceElement[i].getLineNumber());
+					Console.println(stackTraceElement[i].getClassName() + ":" + stackTraceElement[i].getLineNumber());
 				}
 			}
 			return false;
@@ -1692,10 +1692,10 @@ public final class CollisionDetection {
 		// check if normal candidate is valid
 		if (normalCandidate.equals(zeroVector) == true) {
 			if (VERBOSE) {
-				System.out.println("checkMovementFallback::fallback");
+				Console.println("checkMovementFallback::fallback");
 				StackTraceElement[] stackTraceElement = Thread.currentThread().getStackTrace();
 				for (int i = 2; i < 10 && i < stackTraceElement.length; i++) {
-					System.out.println(stackTraceElement[i].getClassName() + ":" + stackTraceElement[i].getLineNumber());
+					Console.println(stackTraceElement[i].getClassName() + ":" + stackTraceElement[i].getLineNumber());
 				}
 			}
 			collision.reset();
@@ -1717,12 +1717,12 @@ public final class CollisionDetection {
 			Float.isNaN(normalXYZ[1]) == true ||
 			Float.isNaN(normalXYZ[2]) == true) {
 			//
-			System.out.print("CollisionDetection::checkCollision(): BROKEN NORMAL @ ");
+			Console.println("CollisionDetection::checkCollision(): BROKEN NORMAL @ ");
 			StackTraceElement[] stackTraceElement = Thread.currentThread().getStackTrace();
 			for (int i = 2; i < 10 && i < stackTraceElement.length; i++) {
-				System.out.println(stackTraceElement[i].getClassName() + ":" + stackTraceElement[i].getLineNumber());
+				Console.println(stackTraceElement[i].getClassName() + ":" + stackTraceElement[i].getLineNumber());
 			}
-			System.out.println();
+			Console.println();
 		}
 	}
 

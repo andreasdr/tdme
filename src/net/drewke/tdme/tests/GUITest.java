@@ -12,6 +12,7 @@ import net.drewke.tdme.gui.events.GUIActionListener;
 import net.drewke.tdme.gui.events.GUIChangeListener;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.MutableString;
 
@@ -64,12 +65,12 @@ public class GUITest implements GLEventListener, WindowListener {
 					// check if button 1 is pressed
 					if (type == Type.PERFORMED && node.getName().equals("button")) {
 						// action performed
-						System.out.println(node.getId() + ".actionPerformed()");
+						Console.println(node.getId() + ".actionPerformed()");
 	
 						// test get values
 						HashMap<String,MutableString> values = new HashMap<String,MutableString>();
 						node.getScreenNode().getValues(values);
-						System.out.println(values);
+						Console.println(values);
 	
 						// test set values
 						values.clear();
@@ -134,7 +135,7 @@ public class GUITest implements GLEventListener, WindowListener {
 			});
 			engine.getGUI().getScreen("test").addChangeListener(new GUIChangeListener() {
 				public void onValueChanged(GUIElementNode node) {
-					System.out.println(node.getName() + ":onValueChanged: " + node.getController().getValue());
+					Console.println(node.getName() + ":onValueChanged: " + node.getController().getValue());
 				}
 			});
 
@@ -254,8 +255,8 @@ public class GUITest implements GLEventListener, WindowListener {
 		caps.setBackgroundOpaque(true);
 		caps.setDepthBits(16);
 		caps.setDoubleBuffered(true);
-		System.out.println(glp);
-		System.out.println(caps);
+		Console.println(glp);
+		Console.println(caps);
 
 		// create GL window
 		GLWindow glWindow = GLWindow.create(caps);

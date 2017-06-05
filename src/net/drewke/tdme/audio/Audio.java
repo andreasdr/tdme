@@ -3,6 +3,7 @@ package net.drewke.tdme.audio;
 import java.util.ArrayList;
 
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 import com.jogamp.openal.AL;
@@ -108,7 +109,7 @@ public final class Audio {
 			audioEntities.put(id, stream);
 			return stream;
 		} else {
-			System.out.println(
+			Console.println(
 				"Audio stream: '" +
 				id + "' failed"
 			);
@@ -135,7 +136,7 @@ public final class Audio {
 			audioEntities.put(id, sound);
 			return sound;
 		} else {
-			System.out.println(
+			Console.println(
 				"Audio sound: '" +
 				id + "' failed"
 			);

@@ -19,6 +19,7 @@ import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Matrix4x4Negative;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
@@ -131,7 +132,7 @@ public final class Object3DVBORenderer {
 		}
 
 		// nope
-		System.out.println("Object3DVBORenderer::acquireTrianglesBatchVBORenderer()::failed");
+		Console.println("Object3DVBORenderer::acquireTrianglesBatchVBORenderer()::failed");
 		return null;
 	}
 
@@ -314,9 +315,9 @@ public final class Object3DVBORenderer {
 					hashtableKey,
 					trfGroup
 				) != null) {
-					System.out.println("Object3DVBORenderer::prepareTransparentFaces::key already exists");
-					System.out.println("-->" + transparentRenderFacesGroupKey);
-					System.out.println("-->" + hashtableKey);
+					Console.println("Object3DVBORenderer::prepareTransparentFaces::key already exists");
+					Console.println("-->" + transparentRenderFacesGroupKey);
+					Console.println("-->" + hashtableKey);
 				}
 			}
 

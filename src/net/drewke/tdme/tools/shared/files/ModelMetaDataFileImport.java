@@ -7,9 +7,7 @@ import java.io.InputStream;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
-import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
@@ -25,6 +23,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.PointP
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.SphereParticleEmitter;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityParticleSystem.Type;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -179,7 +178,7 @@ public final class ModelMetaDataFileImport {
 							objectParticleSystem.setModelFile(particleModelPath + "/" + Tools.getFileName(particleModelRelativeFileName));
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							System.out.println("ModelMetaDataFileImport::doImport(): Failed to set model file: " + exception.getMessage());
+							Console.println("ModelMetaDataFileImport::doImport(): Failed to set model file: " + exception.getMessage());
 						}
 						break;
 					}
@@ -192,7 +191,7 @@ public final class ModelMetaDataFileImport {
 					}
 				default:
 					{
-						System.out.println("ModelMetaDataFileExport::export(): unknown particle system type '" + particleSystem.getType() + "'");
+						Console.println("ModelMetaDataFileExport::export(): unknown particle system type '" + particleSystem.getType() + "'");
 						break;
 					}
 			}
@@ -368,7 +367,7 @@ public final class ModelMetaDataFileImport {
 						break;
 					}
 				default:
-					System.out.println("ModelMetaDataFileExport::export(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+					Console.println("ModelMetaDataFileExport::export(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
 			}
 		}
 

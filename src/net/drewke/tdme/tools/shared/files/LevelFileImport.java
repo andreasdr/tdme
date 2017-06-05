@@ -7,15 +7,12 @@ import java.io.InputStream;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.model.RotationOrder;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorLight;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
-import net.drewke.tdme.tools.shared.model.PropertyModelClass;
-import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.tools.Tools;
 
 import org.json.JSONArray;
@@ -217,7 +214,7 @@ public final class LevelFileImport {
 				LevelEditorObject _levelEditorObject = level.getObjectAt(j);
 				if (_levelEditorObject.getModel() == levelEditorObject.getModel() &&
 					_levelEditorObject.getTransformations().getTranslation().equals(levelEditorObject.getTransformations().getTranslation())) {
-					System.out.println("Skipping '" + levelEditorObject + "' as we already have a object with this model and translation.");
+					Console.println("Skipping '" + levelEditorObject + "' as we already have a object with this model and translation.");
 					// we already have a object with selected model on this translation
 					skipObject = true;
 					break;

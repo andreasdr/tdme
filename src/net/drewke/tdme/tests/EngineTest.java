@@ -38,6 +38,7 @@ import net.drewke.tdme.engine.subsystems.particlesystem.CircleParticleEmitter;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.engine.subsystems.particlesystem.SphereParticleEmitter;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
@@ -321,7 +322,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 				collision
 			) == true &&
 			collision.hasPenetration() == true) {
-			System.out.println("cube: " + collision);
+			Console.println("cube: " + collision);
 			// yep, move object out of collision 
 			player.getTranslation().sub(
 				collision.getNormal().clone().scale(collision.getPenetration())
@@ -338,7 +339,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 				collision
 			) == true &&
 			collision.hasPenetration() == true) {
-			System.out.println("barrel: " + collision);
+			Console.println("barrel: " + collision);
 			// yep, move object out of collision 
 			player.getTranslation().sub(
 				collision.getNormal().clone().scale(collision.getPenetration())
@@ -358,7 +359,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 					movement, 
 					collision
 				) == true && collision.hasPenetration()) {
-				System.out.println("player: " + collision);
+				Console.println("player: " + collision);
 
 				// yep, move object out of collision
 				player.getTranslation().sub(
@@ -746,7 +747,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 			((ParticleSystemEntity)engine.getEntity("firesmoke")).setPickable(true);
 		} catch (Exception exception) {
 			exception.printStackTrace();
-			System.out.println("Could not load object: " + exception.getMessage());
+			Console.println("Could not load object: " + exception.getMessage());
 		}
 	}
 

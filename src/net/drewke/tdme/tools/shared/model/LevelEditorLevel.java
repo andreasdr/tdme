@@ -9,6 +9,7 @@ import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Level
@@ -343,7 +344,7 @@ public final class LevelEditorLevel extends Properties {
 		LevelEditorObject _entity = objectsById.put(object.getId(), object);
 		if (_entity != null) {
 			objects.remove(_entity);
-			System.out.println("LevelEditorLevel::addObject():: object with id '" + object.getId() + "' already exists");
+			Console.println("LevelEditorLevel::addObject():: object with id '" + object.getId() + "' already exists");
 		}
 		objects.add(object);
 	}

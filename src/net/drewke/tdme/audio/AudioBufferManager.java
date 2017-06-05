@@ -1,5 +1,6 @@
 package net.drewke.tdme.audio;
 
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -138,7 +139,7 @@ public final class AudioBufferManager {
 			}
 		}
 		// should never happen
-		System.out.println("Warning: audio buffer not loaded by audio buffer manager");
+		Console.println("Warning: audio buffer not loaded by audio buffer manager");
 		return false;
 	}
 

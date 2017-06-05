@@ -53,7 +53,7 @@ abstract public class Pool<E> {
 				return;
 			}
 		}
-		System.out.println("Pool::release()::did not find:" + element);
+		Console.println("Pool::release()::did not find:" + element);
 	}
 
 	/**

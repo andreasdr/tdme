@@ -13,6 +13,7 @@ import net.drewke.tdme.gui.nodes.GUIParentNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -191,8 +192,8 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 		try {
 		if (node.getId().equals(files.getId()) == true) {
 			String selectedFile = node.getController().getValue().toString();
-			System.out.println(selectedFile);
-			System.out.println(cwd + ":" + selectedFile);
+			Console.println(selectedFile);
+			Console.println(cwd + ":" + selectedFile);
 			if (new File(cwd, selectedFile).isDirectory()) {
 				File file = new File(cwd, selectedFile);
 				try { cwd = file.getCanonicalFile().toString(); } catch (IOException ioe) {}

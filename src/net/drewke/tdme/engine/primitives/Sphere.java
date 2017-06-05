@@ -5,6 +5,7 @@ import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Sphere
@@ -56,7 +57,7 @@ public final class Sphere implements BoundingVolume {
 	public void fromBoundingVolume(BoundingVolume original) {
 		// check for same type of original
 		if (original instanceof Sphere == false) {
-			System.out.println("Sphere::fromBoundingVolumeWithTransformations(): original is not of same type");
+			Console.println("Sphere::fromBoundingVolumeWithTransformations(): original is not of same type");
 			return;
 		}
 
@@ -75,7 +76,7 @@ public final class Sphere implements BoundingVolume {
 	public void fromBoundingVolumeWithTransformations(BoundingVolume original, Transformations transformations) {
 		// check for same type of original
 		if (original instanceof Sphere == false) {
-			System.out.println("Sphere::fromBoundingVolumeWithTransformations(): original is not of same type");
+			Console.println("Sphere::fromBoundingVolumeWithTransformations(): original is not of same type");
 			return;
 		}
 
@@ -189,7 +190,7 @@ public final class Sphere implements BoundingVolume {
 		if (bv2 instanceof ConvexMesh) {
 			return CollisionDetection.getInstance().doCollide(this, (ConvexMesh)bv2, movement, collision);
 		} else {
-			System.out.println("Sphere::doesCollideWith(): unsupported bounding volume 2: " + bv2);
+			Console.println("Sphere::doesCollideWith(): unsupported bounding volume 2: " + bv2);
 			return false;
 		}
 	}

@@ -13,6 +13,7 @@ import java.nio.ShortBuffer;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
@@ -234,7 +235,7 @@ public abstract class GL3Renderer extends GLRenderer {
 		        String infoLogString = new String(infoLogBytes);
 
 		        // be verbose
-				System.out.println("[" + handle + "]" + pathName + "/" + fileName + ": failed: " + infoLogString);
+		        Console.println("[" + handle + "]" + pathName + "/" + fileName + ": failed: " + infoLogString);
 
 				// remove shader
 				gl.glDeleteShader(handle);
@@ -292,7 +293,7 @@ public abstract class GL3Renderer extends GLRenderer {
 		        String infoLogString = new String(infoLogBytes);
 
 		        // be verbose
-				System.out.println("[" + programId + "]: failed: " + infoLogString);
+		        Console.println("[" + programId + "]: failed: " + infoLogString);
 				//
 				return false;
 			}
@@ -710,7 +711,7 @@ public abstract class GL3Renderer extends GLRenderer {
 		// check FBO status
 		int fboStatus = gl.glCheckFramebufferStatus(GL3.GL_FRAMEBUFFER);
 		if (fboStatus != GL3.GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO: " + fboStatus);
+			Console.println("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO: " + fboStatus);
 		}
 
 		// switch back to window-system-provided framebuffer
@@ -1008,10 +1009,10 @@ public abstract class GL3Renderer extends GLRenderer {
 	private void checkGLError() {
 		int error = gl.glGetError();
 		if (error != GL.GL_NO_ERROR) {
-			System.out.println("OpenGL Error: (" + error + ") @:");
+			Console.println("OpenGL Error: (" + error + ") @:");
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			for (int i = 1; i < stackTrace.length; i++) {
-				System.out.println("\t" + stackTrace[i]);
+				Console.println("\t" + stackTrace[i]);
 			}
 		}
 	}

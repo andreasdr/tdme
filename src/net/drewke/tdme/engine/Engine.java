@@ -34,6 +34,7 @@ import net.drewke.tdme.math.Vector2;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.math.Vector4;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 import com.jogamp.opengl.DebugGL2;
@@ -135,7 +136,7 @@ public final class Engine {
 	 */
 	public static Engine createOffScreenInstance(GLAutoDrawable drawable, int width, int height) {
 		if (instance == null || instance.initialized == false) {
-			System.out.println("Engine::createOffScreenInstance(): Engine not created or not initialized.");
+			Console.println("Engine::createOffScreenInstance(): Engine not created or not initialized.");
 			return null;
 		}
 		// create off screen engine
@@ -171,21 +172,21 @@ public final class Engine {
 	public static GLProfile getProfile() {
 		GLProfile glp = null;
 		if (GLProfile.isAvailable(GLProfile.GL3)) {
-			System.out.println("TDME::Proposing GL3");
+			Console.println("TDME::Proposing GL3");
 			glp = GLProfile.get(GLProfile.GL3);
 		} else
 		if (GLProfile.isAvailable(GLProfile.GL2)) {
-			System.out.println("TDME::Proposing GL2");
+			Console.println("TDME::Proposing GL2");
 			glp = GLProfile.get(GLProfile.GL2);
 		} else
 		if (GLProfile.isAvailable(GLProfile.GLES2)) {
-			System.out.println("TDME::Proposing GLES2");
+			Console.println("TDME::Proposing GLES2");
 			glp = GLProfile.get(GLProfile.GLES2);
 		} else {
-			System.out.println("TDME::No suiting OpenGL profile available!");
+			Console.println("TDME::No suiting OpenGL profile available!");
 			return null;
 		}
-		System.out.println("TDME::Proposing " + glp + ", GL2 = " + glp.isGL2() + ", GLES2 = " + glp.isGLES2() + ", GL3 = " + glp.isGL3());
+		Console.println("TDME::Proposing " + glp + ", GL2 = " + glp.isGL2() + ", GLES2 = " + glp.isGLES2() + ", GL3 = " + glp.isGL3());
 		return glp;
 	}
 
@@ -209,7 +210,7 @@ public final class Engine {
 			// notify gl context to renderer
 			renderer.setGL(gl);
 		} else {
-			System.out.println("Engine::updateRenderer(): unsupported GL!");
+			Console.println("Engine::updateRenderer(): unsupported GL!");
 		}
 	}
 
@@ -546,8 +547,8 @@ public final class Engine {
 			// notify gl context to renderer
 			renderer.setGL(gl);
 			// print gl version, extensions
-			System.out.println("TDME::Using GL3");
-			System.out.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
+			Console.println("TDME::Using GL3");
+			Console.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
 			// engine defaults
 			shadowMappingEnabled = true;
 			animationProcessingTarget = AnimationProcessingTarget.CPU;
@@ -597,8 +598,8 @@ public final class Engine {
 			// notify gl context to renderer
 			renderer.setGL(gl);
 			// print gl version, extensions
-			System.out.println("TDME::Using GL2");
-			System.out.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
+			Console.println("TDME::Using GL2");
+			Console.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
 			// engine defaults
 			shadowMappingEnabled = true;
 			animationProcessingTarget = AnimationProcessingTarget.CPU;
@@ -648,8 +649,8 @@ public final class Engine {
 			// notify gl context to renderer
 			renderer.setGL(gl);
 			// print gl version, extensions
-			System.out.println("TDME::Using GLES2");
-			System.out.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
+			Console.println("TDME::Using GLES2");
+			Console.println("TDME::Extensions: " + gl.glGetString(GL.GL_EXTENSIONS));
 			// engine defaults
 			// is shadow mapping available?
 			if (renderer.isBufferObjectsAvailable() == true &&
@@ -664,7 +665,7 @@ public final class Engine {
 				animationProcessingTarget = AnimationProcessingTarget.GPU;
 			}
 		} else {
-			System.out.println("Engine::init(): unsupported GL!");
+			Console.println("Engine::init(): unsupported GL!");
 			return;
 		}
 
@@ -709,34 +710,34 @@ public final class Engine {
 
 		// check if VBOs are available
 		if (renderer.isBufferObjectsAvailable()) {
-			System.out.println("TDME::VBOs are available.");
+			Console.println("TDME::VBOs are available.");
 		} else {
-			System.out.println("TDME::VBOs are not available! Engine will not work!");
+			Console.println("TDME::VBOs are not available! Engine will not work!");
 			initialized = false;
 		}
 
 		// check FBO support
 		if (glContext.hasBasicFBOSupport() == false) {
-			System.out.println("TDME::Basic FBOs are not available!");
+			Console.println("TDME::Basic FBOs are not available!");
 			shadowMappingEnabled = false;
 		} else {
-			System.out.println("TDME::Basic FBOs are available.");
+			Console.println("TDME::Basic FBOs are available.");
 		}
 
 		// initialize shadow mapping
 		if (shadowMappingEnabled == true) {
-			System.out.println("TDME::Using shadow mapping");
+			Console.println("TDME::Using shadow mapping");
 			shadowMappingShaderPre = new ShadowMappingShaderPre(renderer);
 			shadowMappingShaderPre.init();
 			shadowMappingShaderRender = new ShadowMappingShaderRender(renderer);
 			shadowMappingShaderRender.init();
 			shadowMapping = new ShadowMapping(this, renderer, object3DVBORenderer);
 		} else {
-			System.out.println("TDME::Not using shadow mapping");
+			Console.println("TDME::Not using shadow mapping");
 		}
 
 		// print out animation processing target
-		System.out.println("TDME: animation processing target: " + animationProcessingTarget);
+		Console.println("TDME: animation processing target: " + animationProcessingTarget);
 
 		// determine initialized from sub systems
 		initialized&= shadowMappingShaderPre == null?true:shadowMappingShaderPre.isInitialized();
@@ -746,7 +747,7 @@ public final class Engine {
 		initialized&= guiShader.isInitialized();
 
 		//
-		System.out.println("TDME::initialized & ready: " + initialized);
+		Console.println("TDME::initialized & ready: " + initialized);
 	}
 
 	/**
@@ -974,7 +975,6 @@ public final class Engine {
 		float mouseToProjectionX = (2.0f * mouseX / width) - 1.0f;
 		float mouseToProjectionY = 1.0f - (2.0f * mouseY / height);
 		float pixelDepth = renderer.readPixelDepth(mouseX, height - mouseY);
-		System.out.println(pixelDepth);
 		tmpMatrix4x4.multiply(
 			tmpVector4a.set(
 				mouseToProjectionX,
@@ -1185,7 +1185,7 @@ public final class Engine {
 			fos = new FileOutputStream(pathName + File.separator + fileName);
 			PNG.save(width, height, pixels, fos);
 		} catch (IOException ioe) {
-			System.out.println("Engine::makeScreenshot(): failed: " + ioe.getMessage());
+			Console.println("Engine::makeScreenshot(): failed: " + ioe.getMessage());
 		} finally {
 			if (fos != null) try { fos.close(); } catch (IOException ioe2) {}
 		}

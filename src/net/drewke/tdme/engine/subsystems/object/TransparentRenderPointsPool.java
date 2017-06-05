@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.QuickSort;
 
 /**
@@ -41,7 +42,7 @@ public final class TransparentRenderPointsPool {
 	public void addPoint(Vector3 point, Color4 color, float distanceFromCamera) {
 		// check for pool overflow
 		if (poolIdx >= transparentRenderPoints.size()) {
-			System.out.println("TransparentRenderPointsPool::createTransparentRenderPoint(): Too many transparent render points");
+			Console.println("TransparentRenderPointsPool::createTransparentRenderPoint(): Too many transparent render points");
 			return;
 		}
 
@@ -66,7 +67,7 @@ public final class TransparentRenderPointsPool {
 
 			// check for pool overflow
 			if (poolIdx >= transparentRenderPoints.size()) {
-				System.out.println("TransparentRenderPointsPool::merge(): Too many transparent render points");
+				Console.println("TransparentRenderPointsPool::merge(): Too many transparent render points");
 				break;
 			}
 

@@ -4,6 +4,7 @@ import net.drewke.tdme.gui.events.GUIActionListener.Type;
 import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUIScreenNode;
 import net.drewke.tdme.tools.shared.views.EntityDisplayView;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -102,13 +103,13 @@ public class EntityDisplaySubScreenController {
 					if (node.getId().equals("button_display_apply")) {
 						onDisplayApply();
 					} else {
-						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+						Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
 					break;
 				}
 			case PERFORMING:
 				{
-					// System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					// Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					break;
 				}
 		}

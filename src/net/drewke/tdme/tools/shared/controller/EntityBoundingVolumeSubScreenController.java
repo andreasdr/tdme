@@ -21,6 +21,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.EntityBoundingVolumeView;
 import net.drewke.tdme.tools.shared.views.PopUps;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -197,7 +198,7 @@ public class EntityBoundingVolumeSubScreenController {
 				view.selectBoundingVolumeType(idx, 5);
 			} else {
 				// none known
-				System.out.println("ModelViewerScreenController::onTabSelected(): invalid bounding volume@" + idx + ": " + bv);
+				Console.println("ModelViewerScreenController::onTabSelected(): invalid bounding volume@" + idx + ": " + bv);
 			}
 		}
 	}
@@ -597,13 +598,13 @@ public class EntityBoundingVolumeSubScreenController {
 					if (node.getId().startsWith("button_boundingvolume_convexmesh_file_")) {
 						onBoundingVolumeConvexMeshFile(entity, Tools.convertToIntSilent(node.getId().substring(node.getId().lastIndexOf('_') + 1)));
 					} else {
-						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+						Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
 					break;
 				}
 			case PERFORMING:
 				{
-					// System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					// Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					break;
 				}
 		}

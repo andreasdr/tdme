@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import net.drewke.tdme.audio.decoder.AudioDecoder;
 import net.drewke.tdme.audio.decoder.AudioDecoderException;
 import net.drewke.tdme.audio.decoder.JOrbisDecoder;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.openal.AL;
 
@@ -68,9 +69,9 @@ public final class AudioStream extends AudioEntity {
 			//
 			decoder.reset();
 		} catch (IOException ioe) {
-			System.out.println("Audio stream: '" + id + "': " + ioe.getMessage());
+			Console.println("Audio stream: '" + id + "': " + ioe.getMessage());
 		} catch (AudioDecoderException ade) {
-			System.out.println("Audio stream: '" + id + "': " + ade.getMessage());
+			Console.println("Audio stream: '" + id + "': " + ade.getMessage());
 		}
 	}
 
@@ -97,13 +98,13 @@ public final class AudioStream extends AudioEntity {
 				// skip if no more data is available
 				if (bytesDecoded == 0) break;
 			} catch (IOException ioe) {
-				System.out.println("Audio stream: '" + id + "': " + ioe.getMessage());
+				Console.println("Audio stream: '" + id + "': " + ioe.getMessage());
 			} catch (AudioDecoderException ade) {
-				System.out.println("Audio stream: '" + id + "': " + ade.getMessage());
+				Console.println("Audio stream: '" + id + "': " + ade.getMessage());
 			}
 			Audio.al.alBufferData(alBufferIds[i], format, data, data.remaining(), frequency);
 			if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-				System.out.println("Audio stream: '" + id + "': Could not upload buffer");
+				Console.println("Audio stream: '" + id + "': Could not upload buffer");
 			}
 			buffersToPlay++;
 		}
@@ -111,11 +112,11 @@ public final class AudioStream extends AudioEntity {
 		//
 		Audio.al.alSourceQueueBuffers(alSourceId, buffersToPlay, alBufferIds, 0);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio stream: '" + id + "': Could not queue buffers");
+			Console.println("Audio stream: '" + id + "': Could not queue buffers");
 		}
 		Audio.al.alSourcePlay(alSourceId);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio stream: '" + id + "': Could not play source");
+			Console.println("Audio stream: '" + id + "': Could not play source");
 		}
 	}
 
@@ -127,7 +128,7 @@ public final class AudioStream extends AudioEntity {
 		if (initiated == false) return;
 		Audio.al.alSourcePause(alSourceId);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio sound: '" + id + "': Could not pause");
+			Console.println("Audio sound: '" + id + "': Could not pause");
 		}
 	}
 
@@ -139,14 +140,14 @@ public final class AudioStream extends AudioEntity {
 		if (initiated == false) return;
 		Audio.al.alSourceStop(alSourceId);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio sound: '" + id + "': Could not stop");
+			Console.println("Audio sound: '" + id + "': Could not stop");
 		}
 
 		// determine queued buffers
 		int[] queuedBuffersArray = new int[1];
 		Audio.al.alGetSourcei(alSourceId, AL.AL_BUFFERS_QUEUED, queuedBuffersArray, 0);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio stream: '" + id + "': Could not determine queued buffers");
+			Console.println("Audio stream: '" + id + "': Could not determine queued buffers");
 		}
 		int queuedBuffers = queuedBuffersArray[0];
 
@@ -155,7 +156,7 @@ public final class AudioStream extends AudioEntity {
 			int[] removedBuffers = new int[queuedBuffers];
 			Audio.al.alSourceUnqueueBuffers(alSourceId, queuedBuffers, removedBuffers, 0);
 			if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-				System.out.println("Audio stream: '" + id + "': Could not unqueue buffers");
+				Console.println("Audio stream: '" + id + "': Could not unqueue buffers");
 			}
 		}
 	}
@@ -170,7 +171,7 @@ public final class AudioStream extends AudioEntity {
 		try {
 			// decode ogg vorbis
 			decoder.openFile(pathName, fileName);
-			System.out.println(
+			Console.println(
 				"Audio stream: '" +
 				id + "' with " +
 				decoder.getBitsPerSample() +" bits per sample, " +
@@ -182,14 +183,14 @@ public final class AudioStream extends AudioEntity {
 				case(1): format = AL.AL_FORMAT_MONO16; break;
 				case(2): format = AL.AL_FORMAT_STEREO16; break;
 				default:
-					System.out.println("Audio stream: '" + id + "': Unsupported number of channels");
+					Console.println("Audio stream: '" + id + "': Unsupported number of channels");
 			}
 		} catch (IOException ioe) {
-			System.out.println("Audio stream: '" + id + "': " + ioe.getMessage());
+			Console.println("Audio stream: '" + id + "': " + ioe.getMessage());
 			decoder.close();
 			return false;
 		} catch (AudioDecoderException ade) {
-			System.out.println("Audio stream: '" + id + "': " + ade.getMessage());
+			Console.println("Audio stream: '" + id + "': " + ade.getMessage());
 			decoder.close();
 			return false;
 		}
@@ -197,7 +198,7 @@ public final class AudioStream extends AudioEntity {
 		alBufferIds = new int[BUFFER_COUNT];
 		Audio.al.alGenBuffers(alBufferIds.length, alBufferIds, 0);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio stream: '" + id + "': Could not generate buffer");
+			Console.println("Audio stream: '" + id + "': Could not generate buffer");
 			return false;
 		}
 
@@ -205,7 +206,7 @@ public final class AudioStream extends AudioEntity {
 		int[] sourceIds = new int[1];
 		Audio.al.alGenSources(1, sourceIds, 0);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio stream: '" + id + "': Could not generate source");
+			Console.println("Audio stream: '" + id + "': Could not generate source");
 			dispose();
 			return false;			
 		}
@@ -235,7 +236,7 @@ public final class AudioStream extends AudioEntity {
 		int[] processedBuffersArray = new int[1];
 		Audio.al.alGetSourcei(alSourceId, AL.AL_BUFFERS_PROCESSED, processedBuffersArray, 0);
 		if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-			System.out.println("Audio stream: '" + id + "': Could not determine processed buffers");
+			Console.println("Audio stream: '" + id + "': Could not determine processed buffers");
 		}
 		int processedBuffers = processedBuffersArray[0];
 
@@ -246,7 +247,7 @@ public final class AudioStream extends AudioEntity {
 				int[] processedBufferIdArray = new int[1];
 				Audio.al.alSourceUnqueueBuffers(alSourceId, 1, processedBufferIdArray, 0);
 				if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-					System.out.println("Audio stream: '" + id + "': Could not unqueue buffers");
+					Console.println("Audio stream: '" + id + "': Could not unqueue buffers");
 				}
 				int processedBufferId = processedBufferIdArray[0];
 	
@@ -261,9 +262,9 @@ public final class AudioStream extends AudioEntity {
 						bytesDecoded+= decoder.readFromStream(data);
 					}
 				} catch (IOException ioe) {
-					System.out.println("Audio stream: '" + id + "': " + ioe.getMessage());
+					Console.println("Audio stream: '" + id + "': " + ioe.getMessage());
 				} catch (AudioDecoderException ade) {
-					System.out.println("Audio stream: '" + id + "': " + ade.getMessage());
+					Console.println("Audio stream: '" + id + "': " + ade.getMessage());
 				}
 
 				// new buffer if we have any data left
@@ -271,13 +272,13 @@ public final class AudioStream extends AudioEntity {
 					// upload buffer data
 					Audio.al.alBufferData(processedBufferId, format, data, data.remaining(), frequency);
 					if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-						System.out.println("Audio stream: '" + id + "': Could not upload buffer");
+						Console.println("Audio stream: '" + id + "': Could not upload buffer");
 					}
 	
 					// queue it
 					Audio.al.alSourceQueueBuffers(alSourceId, 1, processedBufferIdArray, 0);
 					if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-						System.out.println("Audio stream: '" + id + "': Could not queue buffer");
+						Console.println("Audio stream: '" + id + "': Could not queue buffer");
 					}
 				}
 
@@ -317,7 +318,7 @@ public final class AudioStream extends AudioEntity {
 		if (alSourceId != Audio.ALSOURCEID_NONE) {
 			Audio.al.alDeleteSources(1, new int[]{alSourceId}, 0);
 			if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-				System.out.println("Audio sound: '" + id + "': Could not delete source");
+				Console.println("Audio sound: '" + id + "': Could not delete source");
 			}
 			alSourceId = Audio.ALSOURCEID_NONE;
 		}
@@ -325,7 +326,7 @@ public final class AudioStream extends AudioEntity {
 			//
 			Audio.al.alDeleteBuffers(alBufferIds.length, alBufferIds, 0);
 			if (Audio.al.alGetError() != AL.AL_NO_ERROR) {
-				System.out.println("Audio sound: '" + id + "': Could not delete buffers");
+				Console.println("Audio sound: '" + id + "': Could not delete buffers");
 			}
 			alBufferIds = null;
 		}

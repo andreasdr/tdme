@@ -3,12 +3,12 @@ package net.drewke.tdme.engine;
 import java.util.ArrayList;
 
 import net.drewke.tdme.engine.physics.CollisionDetection;
-import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
@@ -136,7 +136,6 @@ public final class PartitionQuadTree extends Partition {
 					z * partitionSize + partitionSize
 				)
 			);
-		// System.out.println(this.hashCode() + ":" + "FrumstumPartition::createPartition()::" + node.bv);
 		node.subNodes = null;
 		node.subNodesByCoordinate = null;
 		node.partitionObjects = null;
@@ -261,7 +260,7 @@ public final class PartitionQuadTree extends Partition {
 	protected void removeEntity(Entity entity) {
 		ArrayList<PartitionTreeNode> objectPartitionsVector = objectPartitionNodes.remove(entity.getId());
 		if (objectPartitionsVector == null) {
-			System.out.println("FrustumPartition::removeObject3D(): '" + entity.getId() + "' not registered");
+			Console.println("FrustumPartition::removeObject3D(): '" + entity.getId() + "' not registered");
 			return;
 		}
 		while (objectPartitionsVector.size() > 0) {
@@ -328,7 +327,6 @@ public final class PartitionQuadTree extends Partition {
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
 			lookUps+=doPartitionTreeLookUpVisibleObjects(frustum, treeRoot.subNodes.get(i), visibleEntities); 
 		}
-		// System.out.println("LooksUps: " + lookUps + ", " + visibleEntities.size());
 		return visibleEntitiesIterator;
 	}
 
@@ -352,8 +350,7 @@ public final class PartitionQuadTree extends Partition {
 				objectPartitionNodesVector = objectPartitionNodesPool.allocate();
 				objectPartitionNodes.put(entity.getId(), objectPartitionNodesVector);
 			}
-			objectPartitionNodesVector.add(node);
-			// if (entity.getId().equals("player.0")) System.out.println(this.hashCode() + ":" + "adding " + entity.getId() + " to " + node.x + "," + node.z + "," + node.partitionSize); 
+			objectPartitionNodesVector.add(node); 
 		} else
 		if (node.subNodes != null) {
 			// otherwise check sub nodes

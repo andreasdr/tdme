@@ -25,6 +25,7 @@ import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ParticleSystemView;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -459,7 +460,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 				ppsAutoEmit.getController().setValue(value.set(particleSystem.getPointParticleSystem().isAutoEmit() == true?"1":""));
 				break;
 			default:
-				System.out.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
+				Console.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
 				break;
 		}
 
@@ -491,7 +492,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					particleSystem.getPointParticleSystem().setAutoEmit(ppsAutoEmit.getController().getValue().equals("1"));
 					break;
 				default:
-					System.out.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
+					Console.println("ParticleSystemScreenController::setParticleSystemType(): unknown particle system type '" + particleSystem.getType() + "'");
 					break;
 			}
 		} catch (NumberFormatException exception) {
@@ -518,7 +519,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		if (particleSystemTypeString.equals(TYPE_POINTSPARTICLESYSTEM) == true) {
 			view.getEntity().getParticleSystem().setType(LevelEditorEntityParticleSystem.Type.POINT_PARTICLE_SYSTEM);
 		} else {
-			System.out.println("ParticleSystemScreenController::onParticleSystemTypeApply(): unknown particle system type '" + particleSystemTypeString + "'");
+			Console.println("ParticleSystemScreenController::onParticleSystemTypeApply(): unknown particle system type '" + particleSystemTypeString + "'");
 		}
 
 		//
@@ -556,7 +557,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		if (particleSystemEmitterString.equals(EMITTER_SPHEREPARTICLEEMITTER) == true) {
 			particleSystem.setEmitter(LevelEditorEntityParticleSystem.Emitter.SPHERE_PARTICLE_EMITTER);
 		} else {
-			System.out.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystemEmitterString + "'");
+			Console.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystemEmitterString + "'");
 		}
 
 		//
@@ -696,7 +697,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 						break;
 					}
 				default:
-					System.out.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+					Console.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
 			}
 		} catch (NumberFormatException exception) {
 			showErrorPopUp("Warning", "Invalid number entered");
@@ -842,7 +843,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 					break;
 				}
 			default:
-				System.out.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+				Console.println("ParticleSystemScreenController::onParticleSystemEmitterApply(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
 		}
 
 		// re init entity in view
@@ -1012,13 +1013,13 @@ public final class ParticleSystemScreenController extends ScreenController imple
 								}
 							);
 					} else {
-						System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+						Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					}
 					break;
 				}
 			case PERFORMING:
 				{
-					// System.out.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
+					// Console.println("ModelViewerScreenController::onActionPerformed()::unknown, type='" + type + "', id = '" + node.getId() + "'" + ", name = '" + node.getName() + "'");
 					break;
 				}
 		}

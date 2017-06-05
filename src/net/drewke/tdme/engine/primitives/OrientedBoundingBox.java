@@ -8,6 +8,7 @@ import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Oriented Bounding Box
@@ -181,7 +182,7 @@ public final class OrientedBoundingBox implements BoundingVolume {
 	public void fromBoundingVolume(BoundingVolume original) {
 		// check for same type of original
 		if (original instanceof OrientedBoundingBox == false) {
-			System.out.println("OrientedBoundingBox::fromBoundingVolumeWithTransformations(): original is not of same type");
+			Console.println("OrientedBoundingBox::fromBoundingVolumeWithTransformations(): original is not of same type");
 			return;
 		}
 
@@ -202,7 +203,7 @@ public final class OrientedBoundingBox implements BoundingVolume {
 	public void fromBoundingVolumeWithTransformations(BoundingVolume original, Transformations transformations) {
 		// check for same type of original
 		if (original instanceof OrientedBoundingBox == false) {
-			System.out.println("OrientedBoundingBox::fromBoundingVolumeWithTransformations(): original is not of same type");
+			Console.println("OrientedBoundingBox::fromBoundingVolumeWithTransformations(): original is not of same type");
 			return;
 		}
 
@@ -510,7 +511,7 @@ public final class OrientedBoundingBox implements BoundingVolume {
 		if (bv2 instanceof ConvexMesh) {
 			return CollisionDetection.getInstance().doCollide(this, (ConvexMesh)bv2, movement, collision);
 		} else {
-			System.out.println("OrientedBoundingBox::doesCollideWith(): unsupported bounding volume 2: " + bv2);
+			Console.println("OrientedBoundingBox::doesCollideWith(): unsupported bounding volume 2: " + bv2);
 			return false;
 		}
 	}

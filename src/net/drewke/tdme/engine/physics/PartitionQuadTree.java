@@ -150,19 +150,6 @@ public final class PartitionQuadTree {
 		key.append(node.z);
 		parent.subNodesByCoordinate.put(key, node);
 
-		/*
-		// 16
-		if (partitionSize == PARTITION_SIZE_MAX) System.out.print("");
-		// 8
-		if (partitionSize == PARTITION_SIZE_MAX / 2f) System.out.print("  ");
-		// 4
-		if (partitionSize == PARTITION_SIZE_MAX / 4f) System.out.print("    ");
-		// 2
-		if (partitionSize == PARTITION_SIZE_MAX / 8f) System.out.print("      ");
-		//
-		System.out.println("create partition (" + x + "/" + y + "/" + z + "/" + partitionSize + "): " + node.bv);
-		*/
-
 		// create sub nodes
 		if (partitionSize > PARTITION_SIZE_MIN) {
 			for (int _y = 0; _y < 2; _y++)

@@ -41,6 +41,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayListIterator;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
@@ -176,7 +177,6 @@ public final class World {
 
 			// skip on disabled, static
 			if (rigidBody.enabled == false) {
-				// System.out.println("World::update()::gravity::skipping " + rigidBody.id + "::disabled");
 				continue;
 			}
 
@@ -210,7 +210,6 @@ public final class World {
 
 			// skip on disabled
 			if (rigidBody1.enabled == false) {
-				// System.out.println("World::update()::collision::skipping " + rigidBody1.id + "::disabled");
 				continue;
 			}
 
@@ -226,7 +225,6 @@ public final class World {
 			for (RigidBody rigidBody2: partition.getObjectsNearTo(rigidBody1.cbv)) {
 				// skip on disabled
 				if (rigidBody2.enabled == false) {
-					// System.out.println("World::update()::collision::skipping " + rigidBody2.id + "::disabled");
 					continue;
 				}
 
@@ -337,7 +335,6 @@ public final class World {
 					constraintsSolver.allocateConstraintsEntity().set(rigidBody1, rigidBody2, constraintsSolver.allocateCollision().fromResponse(collision));
 				}
 			}
-			// System.out.println(rigidBody1.id + ":" + nearObjects);
 		}
 
 		// fire on collision end
@@ -438,7 +435,7 @@ public final class World {
 
 			Entity engineEntity = engine.getEntity(rigidBody.id);
 			if (engineEntity == null) {
-				System.out.println("World::entity '" + rigidBody.id + "' not found");
+				Console.println("World::entity '" + rigidBody.id + "' not found");
 				continue;
 			}
 			engineEntity.setEnabled(rigidBody.enabled);
@@ -756,7 +753,7 @@ public final class World {
 			RigidBody rigidBody = rigidBodiesDynamic.get(i);
 			RigidBody clonedRigidBody = world.rigidBodiesById.get(rigidBody.id);
 			if (clonedRigidBody == null) {
-				System.out.println("Cloned world::entity '" + rigidBody.id + "' not found");
+				Console.println("Cloned world::entity '" + rigidBody.id + "' not found");
 				continue;				
 			}
 

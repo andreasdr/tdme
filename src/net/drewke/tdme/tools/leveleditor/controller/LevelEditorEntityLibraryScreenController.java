@@ -20,6 +20,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -383,13 +384,13 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 					popUps.getInfoDialogScreenController().show("Error", "An error occurred: " + exception.getMessage());
 				}
 			} else {
-				System.out.println("LevelEditorEntityLibraryScreenController::onValueChanged: dropdown_model_create: " + node.getController().getValue());
+				Console.println("LevelEditorEntityLibraryScreenController::onValueChanged: dropdown_model_create: " + node.getController().getValue());
 			}
 
 			// reset
 			node.getController().setValue(dropdownEntityActionReset);
 		} else {
-			System.out.println("LevelEditorEntityLibraryScreenController::onValueChanged: " + node.getId());
+			Console.println("LevelEditorEntityLibraryScreenController::onValueChanged: " + node.getId());
 		}
 	}
 
@@ -405,7 +406,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 			if (node.getId().equals("button_level_edit") == true) {
 				onEditLevel();
 			} else {
-				System.out.println("LevelEditorScreenController::onActionPerformed: " + node.getId());
+				Console.println("LevelEditorScreenController::onActionPerformed: " + node.getId());
 			}
 		}
 	}

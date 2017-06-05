@@ -10,6 +10,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,7 +37,7 @@ public final class LevelPropertyPresets {
 			try {
 				instance = new LevelPropertyPresets("resources/tools/leveleditor/gd", "presets.xml");
 			} catch (Exception exception) {
-				System.out.println("Couldn't load level property presets: " + exception.getMessage());
+				Console.println("Couldn't load level property presets: " + exception.getMessage());
 			}
 		}
 		return instance;
@@ -139,7 +140,7 @@ public final class LevelPropertyPresets {
 			//
 			lightPresets.put(typeId, light);
 		}
-		System.out.println(lightPresets);
+		Console.println(lightPresets);
 	}
 
 	/**

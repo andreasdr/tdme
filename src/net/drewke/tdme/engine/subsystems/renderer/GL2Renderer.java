@@ -13,6 +13,7 @@ import java.nio.ShortBuffer;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
@@ -267,7 +268,7 @@ public abstract class GL2Renderer extends GLRenderer {
 		        String infoLogString = new String(infoLogBytes);
 
 		        // be verbose
-				System.out.println("[" + handle + "]" + pathName + "/" + fileName + ": failed: " + infoLogString);
+		        Console.println("[" + handle + "]" + pathName + "/" + fileName + ": failed: " + infoLogString);
 
 				// remove shader
 				gl.glDeleteShader(handle);
@@ -326,7 +327,7 @@ public abstract class GL2Renderer extends GLRenderer {
 		        String infoLogString = new String(infoLogBytes);
 
 		        // be verbose
-				System.out.println("[" + programId + "]: failed: " + infoLogString);
+		        Console.println("[" + programId + "]: failed: " + infoLogString);
 
 				//
 				return false;
@@ -747,7 +748,7 @@ public abstract class GL2Renderer extends GLRenderer {
 		// check FBO status
 		int fboStatus = gl.glCheckFramebufferStatus(GL2.GL_FRAMEBUFFER);
 		if (fboStatus != GL2.GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
+			Console.println("GL_FRAMEBUFFER_COMPLETE_EXT failed, CANNOT use FBO\n");
 		}
 
 		// switch back to window-system-provided framebuffer
@@ -862,7 +863,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#bindSkinningVerticesJointsBufferObject(int)
 	 */
 	final public void bindSkinningVerticesJointsBufferObject(int bufferObjectId) {
-		System.out.println("GL2Renderer::bindSkinningVerticesJointsBufferObject()::not implemented yet");
+		Console.println("GL2Renderer::bindSkinningVerticesJointsBufferObject()::not implemented yet");
 	}
 
 	/*
@@ -870,7 +871,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#bindSkinningVerticesVertexJointsIdxBufferObject(int)
 	 */
 	final public void bindSkinningVerticesVertexJointsIdxBufferObject(int bufferObjectId) {
-		System.out.println("GL2Renderer::bindSkinningVerticesVertexJointsIdxBufferObject()::not implemented yet");
+		Console.println("GL2Renderer::bindSkinningVerticesVertexJointsIdxBufferObject()::not implemented yet");
 	}
 
 	/*
@@ -878,7 +879,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#bindSkinningVerticesVertexJointsWeightBufferObject(int)
 	 */
 	final public void bindSkinningVerticesVertexJointsWeightBufferObject(int bufferObjectId) {
-		System.out.println("GL2Renderer::bindSkinningVerticesVertexJointsWeightBufferObject()::not implemented yet");
+		Console.println("GL2Renderer::bindSkinningVerticesVertexJointsWeightBufferObject()::not implemented yet");
 	}
 
 	/*
@@ -886,7 +887,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#bindTangentsBufferObject(int)
 	 */
 	final public void bindTangentsBufferObject(int bufferObjectId) {
-		System.out.println("GL2Renderer::bindTangentsBufferObject()::not implemented yet");	
+		Console.println("GL2Renderer::bindTangentsBufferObject()::not implemented yet");	
 	}
 
 	/*
@@ -894,7 +895,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#bindBitangentsBufferObject(int)
 	 */
 	final public void bindBitangentsBufferObject(int bufferObjectId) {
-		System.out.println("GL2Renderer::bindBitangentsBufferObject()::not implemented yet");	
+		Console.println("GL2Renderer::bindBitangentsBufferObject()::not implemented yet");	
 	}
 
 	/*

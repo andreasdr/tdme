@@ -13,6 +13,7 @@ import java.nio.ShortBuffer;
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.GL;
@@ -221,7 +222,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 		        String infoLogString = new String(infoLogBytes);
 
 		        // be verbose
-				System.out.println("[" + handle + "]" + pathName + "/" + fileName + ": failed: " + infoLogString);
+		        Console.println("[" + handle + "]" + pathName + "/" + fileName + ": failed: " + infoLogString);
 
 				// remove shader
 				gl.glDeleteShader(handle);
@@ -280,7 +281,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 		        String infoLogString = new String(infoLogBytes);
 
 		        // be verbose
-				System.out.println("[" + programId + "]: failed: " + infoLogString);
+		        Console.println("[" + programId + "]: failed: " + infoLogString);
 
 				//
 				return false;
@@ -703,7 +704,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 		// check FBO status
 		int fboStatus = gl.glCheckFramebufferStatus(GLES2.GL_FRAMEBUFFER);
 		if (fboStatus != GLES2.GL_FRAMEBUFFER_COMPLETE) {
-			System.out.println("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO: " + fboStatus);
+			Console.println("GL_FRAMEBUFFER_COMPLETE failed, CANNOT use FBO: " + fboStatus);
 		}
 
 		// switch back to window-system-provided framebuffer
@@ -853,7 +854,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#bindTangentsBufferObject(int)
 	 */
 	final public void bindTangentsBufferObject(int bufferObjectId) {
-		System.out.println("GLES2Renderer::bindTangentsBufferObject()::not implemented yet");	
+		Console.println("GLES2Renderer::bindTangentsBufferObject()::not implemented yet");	
 	}
 
 	/*
@@ -861,7 +862,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#bindBitangentsBufferObject(int)
 	 */
 	final public void bindBitangentsBufferObject(int bufferObjectId) {
-		System.out.println("GLES2Renderer::bindBitangentsBufferObject()::not implemented yet");	
+		Console.println("GLES2Renderer::bindBitangentsBufferObject()::not implemented yet");	
 	}
 
 	/*
@@ -991,10 +992,10 @@ public abstract class GLES2Renderer extends GLRenderer {
 	private void checkGLError() {
 		int error = gl.glGetError();
 		if (error != GL.GL_NO_ERROR) {
-			System.out.println("OpenGL Error: (" + error + ") @:");
+			Console.println("OpenGL Error: (" + error + ") @:");
 			StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
 			for (int i = 1; i < /*stackTrace.length*/4; i++) {
-				System.out.println("\t" + stackTrace[i]);
+				Console.println("\t" + stackTrace[i]);
 			}
 		}
 	}

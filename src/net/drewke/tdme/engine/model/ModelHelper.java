@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector2;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -414,10 +415,10 @@ public final class ModelHelper {
 		} else {
 			// check default animation setup
 			if (defaultAnimation.getStartFrame() != 0 || defaultAnimation.getEndFrame() != frames - 1) {
-				System.out.println("Warning: default animation mismatch");
+				Console.println("Warning: default animation mismatch");
 			}
 			if (frames - 1 > defaultAnimation.getEndFrame()) {
-				System.out.println("Warning: default animation mismatch, will be fixed");
+				Console.println("Warning: default animation mismatch, will be fixed");
 				model.addAnimationSetup(Model.ANIMATIONSETUP_DEFAULT, 0, frames - 1, true);
 			}
 		}

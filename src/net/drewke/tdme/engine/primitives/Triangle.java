@@ -8,6 +8,7 @@ import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Triangle primitive
@@ -71,7 +72,7 @@ public final class Triangle implements BoundingVolume {
 	public void fromBoundingVolume(BoundingVolume original) {
 		// check for same type of original
 		if (original instanceof Triangle == false) {
-			System.out.println("Triangle::fromBoundingVolumeWithTransformations(): original is not of same type");
+			Console.println("Triangle::fromBoundingVolumeWithTransformations(): original is not of same type");
 			return;
 		}
 
@@ -91,7 +92,7 @@ public final class Triangle implements BoundingVolume {
 	public void fromBoundingVolumeWithTransformations(BoundingVolume original, Transformations transformations) {
 		// check for same type of original
 		if (original instanceof Triangle == false) {
-			System.out.println("Triangle::fromBoundingVolumeWithTransformations(): original is not of same type");
+			Console.println("Triangle::fromBoundingVolumeWithTransformations(): original is not of same type");
 			return;
 		}
 
@@ -217,7 +218,7 @@ public final class Triangle implements BoundingVolume {
 		if (bv2 instanceof ConvexMesh) {
 			return CollisionDetection.getInstance().doCollide(this, (ConvexMesh)bv2, movement, collision);
 		} else {
-			System.out.println("Triangle::doesCollideWith(): unsupported bounding volume 2: " + bv2);
+			Console.println("Triangle::doesCollideWith(): unsupported bounding volume 2: " + bv2);
 			return false;
 		}
 	}

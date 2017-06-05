@@ -6,6 +6,7 @@ import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Level editor entity particle system
@@ -1189,7 +1190,7 @@ public class LevelEditorEntityParticleSystem {
 				pps = null;
 				break;
 			default:
-				System.out.println("LevelEditorEntityParticleSystem::setType(): unknown type '" + this.type + "'");
+				Console.println("LevelEditorEntityParticleSystem::setType(): unknown type '" + this.type + "'");
 		}
 
 		// new type
@@ -1206,7 +1207,7 @@ public class LevelEditorEntityParticleSystem {
 				pps = new PointParticleSystem();
 				break;
 			default:
-				System.out.println("LevelEditorEntityParticleSystem::setType(): unknown type '" + this.type + "'");
+				Console.println("LevelEditorEntityParticleSystem::setType(): unknown type '" + this.type + "'");
 		}
 	}
 
@@ -1256,7 +1257,7 @@ public class LevelEditorEntityParticleSystem {
 				spe = null;
 				break;
 			default:
-				System.out.println("LevelEditorEntityParticleSystem::setEmitter(): unknown emitter '" + this.emitter + "'");
+				Console.println("LevelEditorEntityParticleSystem::setEmitter(): unknown emitter '" + this.emitter + "'");
 		}
 
 		// new emitter
@@ -1282,7 +1283,7 @@ public class LevelEditorEntityParticleSystem {
 				spe = new SphereParticleEmitter();
 				break;
 			default:
-				System.out.println("LevelEditorEntityParticleSystem::setEmitter(): unknown emitter '" + this.emitter + "'");
+				Console.println("LevelEditorEntityParticleSystem::setEmitter(): unknown emitter '" + this.emitter + "'");
 			}
 	}
 

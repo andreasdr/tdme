@@ -82,7 +82,6 @@ public final class ArrayListIteratorMultiple<E> implements Iterator<E>, Iterable
 	 * @see java.util.Iterator#next()
 	 */
 	public E next() {
-		// System.out.println(vectorIdx + "(" + vectors.size() + ")" + "," + elementIdx + "(" + vectors.get(vectorIdx).size() + ")");
 		E element = arrayLists.get(vectorIdx).get(elementIdx++);
 		if (elementIdx == arrayLists.get(vectorIdx).size()) {
 			elementIdx = 0;

@@ -28,7 +28,6 @@ package net.drewke.tdme.engine.physics;
 
 import java.util.ArrayList;
 
-import net.drewke.tdme.engine.Partition;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -37,6 +36,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Rigid Body class
@@ -461,7 +461,7 @@ public final class RigidBody {
 		// angular
 		distance.set(forceOrigin).sub(position);
 		if (distance.computeLength() < MathTools.EPSILON) {
-			System.out.println("RigidBody::addForce(): " + id + ": Must not equals position");
+			Console.println("RigidBody::addForce(): " + id + ": Must not equals position");
 		}
 		Vector3.computeCrossProduct(force, distance, tmpVector3);
 		this.torque.add(tmpVector3);

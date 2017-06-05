@@ -1,6 +1,5 @@
 package net.drewke.tdme.utils;
 
-import java.util.Arrays;
 
 /**
  * Key
@@ -37,7 +36,7 @@ public final class Key {
 	 */
 	public void append(String string) {
 		if (length + string.length() > LENGTH_MAX) {
-			System.out.println("Key.append: key too long");
+			Console.println("Key.append: key too long");
 		}
 		string.getChars(0, string.length(), data, length);
 		length+= string.length();
@@ -50,7 +49,7 @@ public final class Key {
 	 */
 	public void append(float value) {
 		if (length + 4 > LENGTH_MAX) {
-			System.out.println("Key.append: key too long");
+			Console.println("Key.append: key too long");
 		}
 		int intValue = Float.floatToIntBits(value);
 		data[length++] = (char)((intValue) & 0xFF);
@@ -66,7 +65,7 @@ public final class Key {
 	 */
 	public void append(int value) {
 		if (length + 4 > LENGTH_MAX) {
-			System.out.println("Key.append: key too long");
+			Console.println("Key.append: key too long");
 		}
 		data[length++] = (char)((value) & 0xFF);
 		data[length++] = (char)((value >> 8) & 0xFF);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 
 /**
  * Collision response
@@ -65,7 +66,7 @@ public final class CollisionResponse {
 				if (hitPoints.get(i).equals(hitPoint, 0.1f)) return;
 			}
 			if (hitPointsCount == HITPOINT_COUNT) {
-				System.out.println("CollisionResponse::Entity::too many hit points");
+				Console.println("CollisionResponse::Entity::too many hit points");
 				return;
 			}
 			hitPoints.get(hitPointsCount++).set(hitPoint);
@@ -153,7 +154,7 @@ public final class CollisionResponse {
 	 */
 	public Entity addResponse(float distance) {
 		if (entityCount == ENTITY_COUNT) {
-			System.out.println("CollisionResponse::too many entities");
+			Console.println("CollisionResponse::too many entities");
 			return null;
 		}
 

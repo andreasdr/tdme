@@ -29,6 +29,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.Properties;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -190,7 +191,7 @@ public class Level {
 					break;
 				}
 			default:
-				System.out.println("Level::createParticleSystem(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
+				Console.println("Level::createParticleSystem(): unknown particle system emitter '" + particleSystem.getEmitter() + "'");
 				return null;
 		}
 
@@ -220,7 +221,7 @@ public class Level {
 					pointParticleSystem.isAutoEmit()
 				);
 			default:
-				System.out.println("Level::createParticleSystem(): unknown particle system type '" + particleSystem.getType() + "'");
+				Console.println("Level::createParticleSystem(): unknown particle system type '" + particleSystem.getType() + "'");
 				return null;
 		}
 	}

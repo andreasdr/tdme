@@ -25,6 +25,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
 /**
@@ -1232,7 +1233,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 		if (node.getId().equals("object_properties_listbox") == true) {
 			onObjectPropertiesSelectionChanged();
 		} else {
-			System.out.println("LevelEditorScreenController::onValueChanged: " + node.getId());
+			Console.println("LevelEditorScreenController::onValueChanged: " + node.getId());
 		}
 	}
 
@@ -1335,7 +1336,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 			if (node.getId().equals("button_light3_apply") == true) {
 				onLight3Apply();
 			} else {
-				System.out.println("LevelEditorScreenController::onActionPerformed: " + node.getId());
+				Console.println("LevelEditorScreenController::onActionPerformed: " + node.getId());
 			}
 		}
 	}
@@ -1344,7 +1345,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 	 * Shows the error pop up
 	 */
 	public void showErrorPopUp(String caption, String message) {
-		System.out.println(caption + ":" + message);
+		Console.println(caption + ":" + message);
 		view.getPopUps().getInfoDialogScreenController().show(caption, message);
 	}
 

@@ -13,6 +13,7 @@ import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -495,7 +496,7 @@ public final class PrimitiveModel {
 		if (boundingVolume instanceof Capsule) {
 			return PrimitiveModel.createCapsuleModel((Capsule)boundingVolume, id, CAPSULE_SEGMENTS_X, CAPSULE_SEGMENTS_Y);
 		} else {
-			System.out.println("PrimitiveModel::createModel(): unsupported bounding volume");
+			Console.println("PrimitiveModel::createModel(): unsupported bounding volume");
 			return null;
 		}
 	}

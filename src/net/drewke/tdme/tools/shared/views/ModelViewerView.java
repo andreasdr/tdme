@@ -12,16 +12,15 @@ import net.drewke.tdme.engine.PartitionNone;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.gui.events.GUIInputEventHandler;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.tools.shared.controller.EntityBoundingVolumeSubScreenController;
 import net.drewke.tdme.tools.shared.controller.ModelViewerScreenController;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileExport;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.Console;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
@@ -334,7 +333,7 @@ public class ModelViewerView implements View, GUIInputEventHandler {
 	 */
 	private void loadModel() {
 		//
-		System.out.println("Model file: " + modelFile);
+		Console.println("Model file: " + modelFile);
 
 		// scene
 		try {

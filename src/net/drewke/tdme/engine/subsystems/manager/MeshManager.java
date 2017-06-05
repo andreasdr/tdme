@@ -1,6 +1,7 @@
 package net.drewke.tdme.engine.subsystems.manager;
 
 import net.drewke.tdme.engine.subsystems.object.Object3DGroupMesh;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
 /**
@@ -141,7 +142,7 @@ public final class MeshManager {
 			}
 			return;
 		}
-		System.out.println("Warning: mesh not managed by mesh manager: " + meshId);
+		Console.println("Warning: mesh not managed by mesh manager: " + meshId);
 	}
 
 }
