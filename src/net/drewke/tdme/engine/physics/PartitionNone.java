@@ -58,7 +58,7 @@ public final class PartitionNone {
 	 */
 	public ArrayListIteratorMultiple<RigidBody> getObjectsNearTo(BoundingVolume cbv) {
 		arrayListIteratorMultiple.clear();
-		arrayListIteratorMultiple.addVector(bodies);
+		arrayListIteratorMultiple.addArrayList(bodies);
 		return arrayListIteratorMultiple;
 	}
 
@@ -69,7 +69,7 @@ public final class PartitionNone {
 	 */
 	public ArrayListIteratorMultiple<RigidBody> getObjectsNearTo(Vector3 center) {
 		arrayListIteratorMultiple.clear();
-		arrayListIteratorMultiple.addVector(bodies);
+		arrayListIteratorMultiple.addArrayList(bodies);
 		return arrayListIteratorMultiple;
 	}
 

@@ -17,7 +17,6 @@ import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Matrix4x4Negative;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayList;
-import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
@@ -39,7 +38,6 @@ public final class Object3DVBORenderer {
 	protected GLRenderer renderer;
 
 	protected ArrayList<BatchVBORendererTriangles> trianglesBatchVBORenderers;
-	protected ArrayListIterator<BatchVBORendererTriangles> trianglesBatchVBORenderersIterator;
 
 	private HashMap<String, ArrayList<Object3D>> visibleObjectsByModels = null;
 	private Pool<Key> keyPool = null;
@@ -72,7 +70,6 @@ public final class Object3DVBORenderer {
 		this.engine = engine;
 		this.renderer = renderer;
 		trianglesBatchVBORenderers = new ArrayList<BatchVBORendererTriangles>();
-		trianglesBatchVBORenderersIterator = new ArrayListIterator<BatchVBORendererTriangles>(trianglesBatchVBORenderers);
 		visibleObjectsByModels = new HashMap<String, ArrayList<Object3D>>();
 		keyPool = new Pool<Key>() {
 			public Key instantiate() {
@@ -104,7 +101,7 @@ public final class Object3DVBORenderer {
 	 */
 	public void dispose() {
 		// dispose batch vbo renderer
-		for (BatchVBORendererTriangles batchVBORenderer: trianglesBatchVBORenderersIterator) {
+		for (BatchVBORendererTriangles batchVBORenderer: trianglesBatchVBORenderers) {
 			batchVBORenderer.dispose();
 			batchVBORenderer.release();
 		}
@@ -117,7 +114,7 @@ public final class Object3DVBORenderer {
 	public BatchVBORendererTriangles acquireTrianglesBatchVBORenderer() {
 		// check for free batch vbo renderer 
 		int i = 0;
-		for (BatchVBORendererTriangles batchVBORenderer: trianglesBatchVBORenderersIterator) {
+		for (BatchVBORendererTriangles batchVBORenderer: trianglesBatchVBORenderers) {
 			if (batchVBORenderer.acquire()) return batchVBORenderer;
 			i++;
 		}
@@ -191,7 +188,7 @@ public final class Object3DVBORenderer {
 			renderer.setFrontFace(renderer.FRONTFACE_CCW);
 
 			//
-			for (TransparentRenderFace transparentRenderFace: transparentRenderFacesPool.getTransparentRenderFacesIterator()) {
+			for (TransparentRenderFace transparentRenderFace: transparentRenderFacesPool.getTransparentRenderFaces()) {
 				// do we have any faces yet?
 				if (groupTransparentRenderFaces.size() == 0) {
 					// nope, so add this one
@@ -799,7 +796,7 @@ public final class Object3DVBORenderer {
 			if (pseSort == true) pseTransparentRenderPointsPool.sort();
 	
 			// put sorted points into batch renderer
-			for (TransparentRenderPoint point: pseTransparentRenderPointsPool.getTransparentRenderPointsIterator()) {
+			for (TransparentRenderPoint point: pseTransparentRenderPointsPool.getTransparentRenderPoints()) {
 				if (point.acquired == false) break;
 				psePointBatchVBORenderer.addPoint(point);
 			}

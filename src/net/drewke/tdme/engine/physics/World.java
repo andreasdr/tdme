@@ -39,7 +39,6 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayList;
-import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
@@ -96,7 +95,6 @@ public final class World {
 	private Vector3 heightPointDest = new Vector3();
 
 	private ArrayList<RigidBody> collidedRigidBodies = new ArrayList<RigidBody>();
-	private ArrayListIterator<RigidBody> collidedRigidBodiesIterator = new ArrayListIterator<RigidBody>(collidedRigidBodies);
 
 	/**
 	 * Constructor
@@ -646,9 +644,9 @@ public final class World {
 	 * Check if world collides with given bounding volume
 	 * @param type ids
 	 * @param bounding volume
-	 * @return rigid bodies iterator
+	 * @return collided rigid bodies
 	 */
-	public ArrayListIterator<RigidBody> doesCollideWith(int typeIds, BoundingVolume boundingVolume) {
+	public ArrayList<RigidBody> doesCollideWith(int typeIds, BoundingVolume boundingVolume) {
 		collidedRigidBodies.clear();
 		// 
 		for (RigidBody rigidBody: partition.getObjectsNearTo(boundingVolume)) {
@@ -660,7 +658,7 @@ public final class World {
 				collidedRigidBodies.add(rigidBody);
 			}
 		}
-		return collidedRigidBodiesIterator;
+		return collidedRigidBodies;
 	}
 
 	/**

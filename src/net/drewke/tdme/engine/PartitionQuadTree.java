@@ -5,7 +5,6 @@ import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayList;
-import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
@@ -60,7 +59,6 @@ public final class PartitionQuadTree extends Partition {
 	private Pool<ArrayList<PartitionTreeNode>> objectPartitionNodesPool;
 	private HashMap<String, ArrayList<PartitionTreeNode>> objectPartitionNodes;
 	private ArrayList<Entity> visibleEntities;
-	private ArrayListIterator<Entity> visibleEntitiesIterator;
 	private PartitionTreeNode treeRoot = null;
 
 	public final static float PARTITION_SIZE_MIN = 4f;
@@ -81,8 +79,9 @@ public final class PartitionQuadTree extends Partition {
 		reset();
 	}
 
-	/**
-	 * Reset
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#reset()
 	 */
 	protected void reset() {
 		this.objectPartitionNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
@@ -92,7 +91,6 @@ public final class PartitionQuadTree extends Partition {
 		};
 		this.objectPartitionNodes = new HashMap<String, ArrayList<PartitionTreeNode>>();
 		this.visibleEntities = new ArrayList<Entity>();
-		this.visibleEntitiesIterator = new ArrayListIterator<Entity>(visibleEntities);
 		this.treeRoot = new PartitionTreeNode();
 		this.treeRoot.partitionSize = -1;
 		this.treeRoot.x = -1;
@@ -179,9 +177,9 @@ public final class PartitionQuadTree extends Partition {
 		return node;
 	}
 
-	/**
-	 * Adds a object
-	 * @param entity
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#addEntity(net.drewke.tdme.engine.Entity)
 	 */
 	protected void addEntity(Entity entity) {
 		// update if already exists
@@ -244,17 +242,17 @@ public final class PartitionQuadTree extends Partition {
 		addToPartitionTree(entity, boundingBox);
 	}
 
-	/**
-	 * Updates a object
-	 * @param entity
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#updateEntity(net.drewke.tdme.engine.Entity)
 	 */
 	protected void updateEntity(Entity entity) {
 		addEntity(entity);
 	}
 
-	/**
-	 * Removes a entity
-	 * @param entity
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#removeEntity(net.drewke.tdme.engine.Entity)
 	 */
 	protected void removeEntity(Entity entity) {
 		ArrayList<PartitionTreeNode> objectPartitionsVector = objectPartitionNodes.remove(entity.getId());
@@ -275,7 +273,7 @@ public final class PartitionQuadTree extends Partition {
 	 * @param frustum
 	 * @param node
 	 * @param visible entities
-	 * @return
+	 * @return number of look ups
 	 */
 	private int doPartitionTreeLookUpVisibleObjects(Frustum frustum, PartitionTreeNode node, ArrayList<Entity> visibleEntities) {
 		int lookUps = 1;
@@ -314,19 +312,18 @@ public final class PartitionQuadTree extends Partition {
 		return lookUps;
 	}
 
-	/**
-	 * Get static bounding volumes iterator
-	 * @param frustum
-	 * @return vector iterator
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#getVisibleEntities(net.drewke.tdme.engine.Frustum)
 	 */
-	public ArrayListIterator<Entity> getVisibleEntities(Frustum frustum) {
+	public ArrayList<Entity> getVisibleEntities(Frustum frustum) {
 		// convert to aabb for fast collision tests
 		visibleEntities.clear();
 		int lookUps = 0;
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
 			lookUps+=doPartitionTreeLookUpVisibleObjects(frustum, treeRoot.subNodes.get(i), visibleEntities); 
 		}
-		return visibleEntitiesIterator;
+		return visibleEntities;
 	}
 
 	/**
@@ -382,7 +379,7 @@ public final class PartitionQuadTree extends Partition {
 
 		// if this node already has the partition cbvs add it to the iterator
 		if (node.partitionObjects != null) {
-			objectsIterator.addVector(node.partitionObjects);
+			objectsIterator.addArrayList(node.partitionObjects);
 			return 1;
 		} else {
 			int lookUps = 1;
@@ -394,10 +391,9 @@ public final class PartitionQuadTree extends Partition {
 		}
 	}
 
-	/**
-	 * Get objects near to
-	 * @param cbv
-	 * @return objects near to cbv
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#getObjectsNearTo(net.drewke.tdme.engine.primitives.BoundingVolume)
 	 */
 	public ArrayListIteratorMultiple<Entity> getObjectsNearTo(BoundingVolume cbv) {
 		Vector3 center = cbv.getCenter();
@@ -419,10 +415,9 @@ public final class PartitionQuadTree extends Partition {
 		return entityIterator;
 	}
 
-	/**
-	 * Get objects near to
-	 * @param cbv
-	 * @return objects near to cbv
+	/*
+	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.Partition#getObjectsNearTo(net.drewke.tdme.math.Vector3)
 	 */
 	public ArrayListIteratorMultiple<Entity> getObjectsNearTo(Vector3 center) {
 		halfExtension.set(

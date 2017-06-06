@@ -8,14 +8,14 @@ import java.util.Iterator;
  * @version $Id$
  */
 public final class ArrayListIteratorMultiple<E> implements Iterator<E>, Iterable<E> {
-	int vectorIdx;
-	int elementIdx;
-	int length;
-	ArrayList<ArrayList<E>> arrayLists;
+
+	private int vectorIdx;
+	private int elementIdx;
+	private int length;
+	private ArrayList<ArrayList<E>> arrayLists;
 
 	/**
 	 * Public constructor
-	 * @param vector
 	 */
 	public ArrayListIteratorMultiple() {
 		this.arrayLists = new ArrayList<ArrayList<E>>();
@@ -24,31 +24,31 @@ public final class ArrayListIteratorMultiple<E> implements Iterator<E>, Iterable
 
 	/**
 	 * Public constructor
-	 * @param vector
+	 * @param array lists
 	 */
-	public ArrayListIteratorMultiple(ArrayList<ArrayList<E>> vectors) {
-		this.arrayLists = vectors;
+	public ArrayListIteratorMultiple(ArrayList<ArrayList<E>> arrayLists) {
+		this.arrayLists = arrayLists;
 		reset();
 	}
 
 	/**
-	 * Clears list of vectors to iterate
+	 * Clears list of array lists to iterate
 	 */
 	public void clear() {
 		arrayLists.clear();
 	}
 
 	/**
-	 * Adds a vector to iterate
-	 * @param vector
+	 * Adds array lists to iterate
+	 * @param array lists
 	 */
-	public void addVector(ArrayList<E> vector) {
-		if (vector == null) return;
-		if (vector.size() == 0) return;
+	public void addArrayList(ArrayList<E> _arrayLists) {
+		if (_arrayLists == null) return;
+		if (_arrayLists.size() == 0) return;
 		for (int i = 0; i < arrayLists.size(); i++) {
-			if (arrayLists.get(i) == vector) return;
+			if (arrayLists.get(i) == _arrayLists) return;
 		}
-		arrayLists.add(vector);
+		arrayLists.add(_arrayLists);
 	}
 
 	/**

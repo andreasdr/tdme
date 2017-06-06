@@ -5,7 +5,6 @@ import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayList;
-import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.Pool;
 
@@ -19,7 +18,6 @@ public final class TransparentRenderFacesPool {
 	private final static int FACES_MAX = 16384;
 
 	private ArrayList<TransparentRenderFace> transparentRenderFaces = null;
-	private ArrayListIterator<TransparentRenderFace> transparentRenderFacesIterator = null;
 	private Pool<TransparentRenderFace> transparentRenderFacesPool = null;
 
 	private Vector3 tmpVector3;
@@ -30,7 +28,6 @@ public final class TransparentRenderFacesPool {
 	protected TransparentRenderFacesPool() {
 		tmpVector3 = new Vector3();
 		transparentRenderFaces = new ArrayList<TransparentRenderFace>();
-		transparentRenderFacesIterator = new ArrayListIterator<TransparentRenderFace>(transparentRenderFaces);
 		transparentRenderFacesPool = new Pool<TransparentRenderFace>() {
 			public TransparentRenderFace instantiate() {
 				return new TransparentRenderFace();
@@ -106,13 +103,6 @@ public final class TransparentRenderFacesPool {
 	 */
 	protected ArrayList<TransparentRenderFace> getTransparentRenderFaces() {
 		return transparentRenderFaces;
-	}
-
-	/**
-	 * @return transparent render faces iterator
-	 */
-	protected ArrayListIterator<TransparentRenderFace> getTransparentRenderFacesIterator() {
-		return transparentRenderFacesIterator;
 	}
 
 }

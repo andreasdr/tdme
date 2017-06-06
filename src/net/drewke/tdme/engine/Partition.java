@@ -2,7 +2,7 @@ package net.drewke.tdme.engine;
 
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.utils.ArrayListIterator;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
 
 /**
@@ -36,23 +36,23 @@ abstract public class Partition {
 	abstract protected void removeEntity(Entity entity);
 
 	/**
-	 * Get static bounding volumes iterator
+	 * Get visible entities
 	 * @param frustum
-	 * @return vector iterator
+	 * @return visible entities
 	 */
-	abstract public ArrayListIterator<Entity> getVisibleEntities(Frustum frustum);
+	abstract public ArrayList<Entity> getVisibleEntities(Frustum frustum);
 
 	/**
-	 * Get objects near to
+	 * Get objects near to bounding volume
 	 * @param cbv
 	 * @return objects near to cbv
 	 */
 	abstract public ArrayListIteratorMultiple<Entity> getObjectsNearTo(BoundingVolume cbv);
 
 	/**
-	 * Get objects near to
+	 * Get objects near to given world position
 	 * @param center
-	 * @return objects near to center
+	 * @return objects near to given world position
 	 */
 	abstract public ArrayListIteratorMultiple<Entity> getObjectsNearTo(Vector3 center);
 

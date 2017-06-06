@@ -314,7 +314,7 @@ public final class PartitionQuadTree {
 
 		// if this node already has the partition cbvs add it to the iterator
 		if (node.partitionRidigBodies != null) {
-			objectsIterator.addVector(node.partitionRidigBodies);
+			objectsIterator.addArrayList(node.partitionRidigBodies);
 			return 1;
 		} else {
 			int lookUps = 1;
