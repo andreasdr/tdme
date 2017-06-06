@@ -3,7 +3,6 @@ package net.drewke.tdme.engine.fileio.models;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +39,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorEntityLibrary;
 import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 
@@ -124,11 +124,11 @@ public final class DAEReader {
 				float fps = 30f;
 
 				// parse frames per second
-				List<Element> xmlExtraNodes = getChildrenByTagName(xmlLibraryVisualScene, "extra");
+				ArrayList<Element> xmlExtraNodes = getChildrenByTagName(xmlLibraryVisualScene, "extra");
 				if (xmlExtraNodes.isEmpty() == false) {
 					Element xmlExtraNode = xmlExtraNodes.get(0);
 					for (Element xmlTechnique: getChildrenByTagName(xmlExtraNode, "technique")) {
-						List<Element> xmlFrameRateNodes = getChildrenByTagName(xmlTechnique, "frame_rate");
+						ArrayList<Element> xmlFrameRateNodes = getChildrenByTagName(xmlTechnique, "frame_rate");
 						if (xmlFrameRateNodes.isEmpty() == false) {
 							fps = Float.parseFloat(xmlFrameRateNodes.get(0).getTextContent());
 							break;
@@ -222,11 +222,11 @@ public final class DAEReader {
 				float fps = 30f;
 
 				// parse frames per second
-				List<Element> xmlExtraNodes = getChildrenByTagName(xmlLibraryVisualScene, "extra");
+				ArrayList<Element> xmlExtraNodes = getChildrenByTagName(xmlLibraryVisualScene, "extra");
 				if (xmlExtraNodes.isEmpty() == false) {
 					Element xmlExtraNode = xmlExtraNodes.get(0);
 					for (Element xmlTechnique: getChildrenByTagName(xmlExtraNode, "technique")) {
-						List<Element> xmlFrameRateNodes = getChildrenByTagName(xmlTechnique, "frame_rate");
+						ArrayList<Element> xmlFrameRateNodes = getChildrenByTagName(xmlTechnique, "frame_rate");
 						if (xmlFrameRateNodes.isEmpty() == false) {
 							fps = Float.parseFloat(xmlFrameRateNodes.get(0).getTextContent());
 							break;
@@ -298,7 +298,7 @@ public final class DAEReader {
 
 					// set up local transformations matrix
 					Matrix4x4 nodeTransformationsMatrix = null;
-					List<Element> xmlMatrixElements = getChildrenByTagName(xmlNode, "matrix");
+					ArrayList<Element> xmlMatrixElements = getChildrenByTagName(xmlNode, "matrix");
 					if (xmlMatrixElements.size() == 1) {
 						String xmlMatrix = xmlMatrixElements.get(0).getTextContent();
 						StringTokenizer t = new StringTokenizer(xmlMatrix, " \n\r");
@@ -564,7 +564,7 @@ public final class DAEReader {
 	 * @return group
 	 */
 	private static Group readVisualSceneNode(AuthoringTool authoringTool, String pathName, Model model, Group parentGroup, Element xmlRoot, Element xmlNode, float fps) throws Exception {
-		List<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
+		ArrayList<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
 		if (xmlInstanceControllers.isEmpty() == false) {
 			return readVisualSceneInstanceController(authoringTool, pathName, model, parentGroup, xmlRoot, xmlNode);
 		} else {
@@ -595,7 +595,7 @@ public final class DAEReader {
 		Matrix4x4 transformationsMatrix = null;
 
 		// set up local transformations matrix
-		List<Element> xmlMatrixElements = getChildrenByTagName(xmlNode, "matrix");
+		ArrayList<Element> xmlMatrixElements = getChildrenByTagName(xmlNode, "matrix");
 		if (xmlMatrixElements.size() == 1) {
 			String xmlMatrix = getChildrenByTagName(xmlNode, "matrix").get(0).getTextContent();
 			t = new StringTokenizer(xmlMatrix, " \n\r");
@@ -627,12 +627,12 @@ public final class DAEReader {
 		}
 
 		// parse animations
-		List<Element> xmlAnimationsLibrary = getChildrenByTagName(xmlRoot, "library_animations");
+		ArrayList<Element> xmlAnimationsLibrary = getChildrenByTagName(xmlRoot, "library_animations");
 		if (xmlAnimationsLibrary.isEmpty() == false) {
-			List<Element> xmlAnimations = getChildrenByTagName(xmlAnimationsLibrary.get(0), "animation");
+			ArrayList<Element> xmlAnimations = getChildrenByTagName(xmlAnimationsLibrary.get(0), "animation");
 			for (Element xmlAnimation: xmlAnimations) {
 				// older DAE has animation/animation xml nodes
-				List<Element> _xmlAnimation = getChildrenByTagName(xmlAnimation, "animation");
+				ArrayList<Element> _xmlAnimation = getChildrenByTagName(xmlAnimation, "animation");
 				if (_xmlAnimation.isEmpty() == false) {
 					xmlAnimation = _xmlAnimation.get(0);
 				}
@@ -767,7 +767,7 @@ public final class DAEReader {
 
 		// check for geometry data
 		String xmlInstanceGeometryId = null;
-		List<Element> xmlInstanceGeometryElements = getChildrenByTagName(xmlNode, "instance_geometry");
+		ArrayList<Element> xmlInstanceGeometryElements = getChildrenByTagName(xmlNode, "instance_geometry");
 		if (xmlInstanceGeometryElements.isEmpty() == false) {
 			Element xmlInstanceGeometryElement = xmlInstanceGeometryElements.get(0);
 
@@ -859,7 +859,7 @@ public final class DAEReader {
 		String xmlGeometryId = null;
 
 		// parse library controllers, find our controller
-		List<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
+		ArrayList<Element> xmlInstanceControllers = getChildrenByTagName(xmlNode, "instance_controller");
 		Element xmlSkin = null;
 		Element xmlInstanceController = xmlInstanceControllers.get(0);
 
@@ -879,7 +879,7 @@ public final class DAEReader {
 			// our controller ?
 			if (xmlLibraryController.getAttribute("id").equals(xmlInstanceControllerId)) {
 				// parse skin
-				List<Element> xmlSkins = getChildrenByTagName(xmlLibraryController, "skin");
+				ArrayList<Element> xmlSkins = getChildrenByTagName(xmlLibraryController, "skin");
 				if (xmlSkins.isEmpty() == false) {
 					xmlSkin = xmlSkins.get(0);
 				}
@@ -990,7 +990,7 @@ public final class DAEReader {
 		int xmlWeightOffset = -1;
 		String xmlWeightsSource = null;
 		Element xmlVertexWeights = getChildrenByTagName(xmlSkin, "vertex_weights").get(0);
-		List<Element> xmlVertexWeightInputs = getChildrenByTagName(xmlVertexWeights, "input");
+		ArrayList<Element> xmlVertexWeightInputs = getChildrenByTagName(xmlVertexWeights, "input");
 		for(Element xmlVertexWeightInput: xmlVertexWeightInputs) {
 			if (xmlVertexWeightInput.getAttribute("semantic").equals("JOINT")) {
 				if (xmlVertexWeightInput.getAttribute("source").substring(1).equals(xmlJointsSource) == false) {
@@ -1076,13 +1076,13 @@ public final class DAEReader {
 
 		//
 		FacesEntity facesEntity = null;
-		ArrayList<FacesEntity> facesEntities = new ArrayList<FacesEntity>(Arrays.asList(group.getFacesEntities()));
+		ArrayList<FacesEntity> facesEntities = new ArrayList<FacesEntity>(group.getFacesEntities());
 
 		int verticesOffset = group.getVertices().length;
-		ArrayList<Vector3> vertices = new ArrayList<Vector3>(Arrays.asList(group.getVertices()));
+		ArrayList<Vector3> vertices = new ArrayList<Vector3>(group.getVertices());
 
 		int normalsOffset = group.getNormals().length;
-		ArrayList<Vector3> normals = new ArrayList<Vector3>(Arrays.asList(group.getNormals()));
+		ArrayList<Vector3> normals = new ArrayList<Vector3>(group.getNormals());
 
 		int textureCoordinatesOffset =
 			group.getTextureCoordinates() != null?
@@ -1090,7 +1090,7 @@ public final class DAEReader {
 			0;
 		ArrayList<TextureCoordinate> textureCoordinates =
 			group.getTextureCoordinates() != null?
-			new ArrayList<TextureCoordinate>(Arrays.asList(group.getTextureCoordinates())):
+			new ArrayList<TextureCoordinate>(group.getTextureCoordinates()):
 			new ArrayList<TextureCoordinate>();
 
 		Element xmlLibraryGeometries = getChildrenByTagName(xmlRoot, "library_geometries").get(0);
@@ -1684,8 +1684,8 @@ public final class DAEReader {
 	 * @param name
 	 * @return children with given name
 	 */
-	public static List<Element> getChildrenByTagName(Element parent, String name) {
-		List<Element> nodeList = new ArrayList<Element>();
+	public static ArrayList<Element> getChildrenByTagName(Element parent, String name) {
+		ArrayList<Element> nodeList = new ArrayList<Element>();
 		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
 			if (child.getNodeType() == Node.ELEMENT_NODE && name.equals(child.getNodeName())) {
 				nodeList.add((Element) child);

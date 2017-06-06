@@ -15,7 +15,7 @@ public final class QuickSort {
 	 * Quick sort
 	 * @param array
 	 */
-	public static void sort(List array) {
+	public static void sort(ArrayList array) {
 		quickSort(array, 0, array.size() - 1);
 	}
 
@@ -25,7 +25,7 @@ public final class QuickSort {
 	 * @param low
 	 * @param high
 	 */
-	private static void quickSort(List<Comparable> array, int low, int high) {
+	private static void quickSort(ArrayList<Comparable> array, int low, int high) {
 		if (array == null || array.size() == 0)
 			return;
 
@@ -69,7 +69,7 @@ public final class QuickSort {
 	 * @param array
 	 * @param comparator
 	 */
-	public static void sort(List array, Comparator comparator) {
+	public static void sort(ArrayList array, Comparator comparator) {
 		quickSort(array, comparator, 0, array.size() - 1);
 	}
 
@@ -80,7 +80,7 @@ public final class QuickSort {
 	 * @param high
 	 * @param comparator
 	 */
-	private static void quickSort(List array, Comparator comparator, int low, int high) {
+	private static void quickSort(ArrayList array, Comparator comparator, int low, int high) {
 		if (array == null || array.size() == 0)
 			return;
 

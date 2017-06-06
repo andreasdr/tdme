@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Properties;
 
 import net.drewke.tdme.engine.Engine;
@@ -19,6 +18,7 @@ import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 import com.jogamp.opengl.GLAutoDrawable;

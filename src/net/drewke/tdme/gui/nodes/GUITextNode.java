@@ -1,10 +1,9 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.renderer.GUIFont;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.MutableString;
 
 /**

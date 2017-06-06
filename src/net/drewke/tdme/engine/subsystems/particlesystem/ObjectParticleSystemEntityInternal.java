@@ -1,6 +1,5 @@
 package net.drewke.tdme.engine.subsystems.particlesystem;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.drewke.tdme.engine.Engine;
@@ -12,6 +11,7 @@ import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Particle system which displays objects as particles

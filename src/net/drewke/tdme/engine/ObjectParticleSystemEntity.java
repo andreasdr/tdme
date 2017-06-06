@@ -1,12 +1,11 @@
 package net.drewke.tdme.engine;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.particlesystem.ObjectParticleSystemEntityInternal;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleEmitter;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Object particle system entity to be used with engine class

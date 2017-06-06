@@ -1,7 +1,5 @@
 package net.drewke.tdme.engine;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;

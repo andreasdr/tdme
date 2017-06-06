@@ -1,6 +1,5 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import net.drewke.tdme.gui.GUIParserException;
@@ -9,6 +8,7 @@ import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.nodes.GUIParentNode.Overflow;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * GUI Node class

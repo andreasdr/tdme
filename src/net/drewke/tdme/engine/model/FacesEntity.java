@@ -1,7 +1,8 @@
 package net.drewke.tdme.engine.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Group faces entity

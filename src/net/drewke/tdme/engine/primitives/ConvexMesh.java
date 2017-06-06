@@ -1,6 +1,5 @@
 package net.drewke.tdme.engine.primitives;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.drewke.tdme.engine.Object3DModel;
@@ -9,6 +8,7 @@ import net.drewke.tdme.engine.physics.CollisionDetection;
 import net.drewke.tdme.engine.physics.CollisionResponse;
 import net.drewke.tdme.math.SeparatingAxisTheorem;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 /**

@@ -26,10 +26,9 @@
 
 package net.drewke.tdme.engine.physics;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
 

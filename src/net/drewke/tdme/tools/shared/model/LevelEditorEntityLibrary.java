@@ -1,19 +1,17 @@
 package net.drewke.tdme.tools.shared.model;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.drewke.tdme.engine.ModelUtilities;
 import net.drewke.tdme.engine.fileio.models.DAEReader;
 import net.drewke.tdme.engine.fileio.models.TMReader;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.BoundingBox;
-import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.files.ModelMetaDataFileImport;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Model Editor Entity Library

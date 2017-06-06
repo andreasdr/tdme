@@ -1,7 +1,5 @@
 package net.drewke.tdme.gui.elements;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
@@ -9,6 +7,7 @@ import net.drewke.tdme.gui.nodes.GUIElementNode;
 import net.drewke.tdme.gui.nodes.GUINode;
 import net.drewke.tdme.gui.nodes.GUINodeConditions;
 import net.drewke.tdme.gui.nodes.GUINodeController;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.MutableString;
 

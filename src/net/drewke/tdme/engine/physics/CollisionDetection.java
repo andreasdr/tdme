@@ -1,7 +1,5 @@
 package net.drewke.tdme.engine.physics;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.engine.primitives.Capsule;
@@ -14,6 +12,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.SeparatingAxisTheorem;
 import net.drewke.tdme.math.TriangleTriangleIntersection;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 /**

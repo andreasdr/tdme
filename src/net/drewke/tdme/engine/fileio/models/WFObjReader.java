@@ -5,7 +5,6 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import net.drewke.tdme.engine.model.Face;
@@ -19,6 +18,7 @@ import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 
 /**

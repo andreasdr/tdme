@@ -1,7 +1,5 @@
 package net.drewke.tdme.engine.subsystems.object;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.model.Material;
 import net.drewke.tdme.engine.model.Model;
@@ -9,6 +7,7 @@ import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.Key;
 

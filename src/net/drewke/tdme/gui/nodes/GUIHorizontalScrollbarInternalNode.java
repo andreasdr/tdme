@@ -1,9 +1,13 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.ArrayList;
 
+/**
+ * GUI horizontal scrollbar internal node
+ * @author Andreas Drewke
+ * @version $Id$
+ */
 public class GUIHorizontalScrollbarInternalNode extends GUINode {
 
 	private GUIColor barColorNone;

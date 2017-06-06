@@ -1,7 +1,6 @@
 package net.drewke.tdme.tests;
 
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +20,7 @@ import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
 import net.drewke.tdme.engine.primitives.PrimitiveModel;
 import net.drewke.tdme.engine.primitives.Sphere;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 import com.jogamp.newt.event.KeyEvent;

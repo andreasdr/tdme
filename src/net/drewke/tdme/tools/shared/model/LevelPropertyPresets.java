@@ -1,6 +1,5 @@
 package net.drewke.tdme.tools.shared.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.drewke.tdme.os.FileSystem;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 import org.w3c.dom.Document;
@@ -170,8 +170,8 @@ public final class LevelPropertyPresets {
 	 * @param name
 	 * @return children with given name
 	 */
-	private static List<Element> getChildrenByTagName(Element parent, String name) {
-		List<Element> nodeList = new ArrayList<Element>();
+	private static ArrayList<Element> getChildrenByTagName(Element parent, String name) {
+		ArrayList<Element> nodeList = new ArrayList<Element>();
 		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
 			if (child.getNodeType() == Node.ELEMENT_NODE && name.equals(child.getNodeName())) {
 				nodeList.add((Element) child);

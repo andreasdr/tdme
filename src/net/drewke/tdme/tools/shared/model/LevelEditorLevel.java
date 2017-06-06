@@ -1,6 +1,5 @@
 package net.drewke.tdme.tools.shared.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -9,6 +8,7 @@ import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 /**

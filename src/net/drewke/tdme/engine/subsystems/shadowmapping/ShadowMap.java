@@ -1,9 +1,6 @@
 package net.drewke.tdme.engine.subsystems.shadowmapping;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.Camera;
-import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.FrameBuffer;
 import net.drewke.tdme.engine.Light;
@@ -12,6 +9,7 @@ import net.drewke.tdme.engine.ObjectParticleSystemEntity;
 import net.drewke.tdme.engine.subsystems.object.Object3DVBORenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Shadow map class

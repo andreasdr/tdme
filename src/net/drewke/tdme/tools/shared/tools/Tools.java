@@ -1,7 +1,6 @@
 package net.drewke.tdme.tools.shared.tools;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -32,6 +31,7 @@ import net.drewke.tdme.tools.leveleditor.logic.Level;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity.EntityType;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntityBoundingVolume;
+import net.drewke.tdme.utils.ArrayList;
 
 import com.jogamp.opengl.GLAutoDrawable;
 

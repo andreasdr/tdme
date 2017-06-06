@@ -1,7 +1,6 @@
 package net.drewke.tdme.utils;
 
 import java.util.Iterator;
-import java.util.ArrayList;
 
 /**
  * Reusable not threadsafe array list iterator 

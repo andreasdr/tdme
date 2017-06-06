@@ -1,15 +1,13 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.gui.GUIParser;
 import net.drewke.tdme.gui.GUIParserException;
 import net.drewke.tdme.gui.events.GUIKeyboardEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.events.GUIMouseEvent.Type;
-import net.drewke.tdme.gui.nodes.GUINode.Flow;
 import net.drewke.tdme.gui.nodes.GUINode.RequestedConstraints.RequestedConstraintsType;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * A parent node supporting child notes

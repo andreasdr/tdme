@@ -1,11 +1,10 @@
 package net.drewke.tdme.engine.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.drewke.tdme.math.Matrix4x4;
-import net.drewke.tdme.math.Vector2;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 
 /**

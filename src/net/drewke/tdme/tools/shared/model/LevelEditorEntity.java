@@ -1,10 +1,8 @@
 package net.drewke.tdme.tools.shared.model;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.model.Model;
-import net.drewke.tdme.engine.primitives.BoundingBox;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Level Editor Model

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -52,6 +51,7 @@ import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.PopUps;
 import net.drewke.tdme.tools.shared.views.View;
+import net.drewke.tdme.utils.ArrayList;
 
 import com.jogamp.opengl.GLAutoDrawable;
 

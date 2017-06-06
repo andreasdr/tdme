@@ -1,6 +1,5 @@
  package net.drewke.tdme.tools.leveleditor.controller;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -25,6 +24,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 

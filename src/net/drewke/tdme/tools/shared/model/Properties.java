@@ -1,7 +1,8 @@
 package net.drewke.tdme.tools.shared.model;
 
 import java.util.HashMap;
-import java.util.ArrayList;
+
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Properties

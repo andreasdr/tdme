@@ -1,7 +1,6 @@
 package net.drewke.tdme.tools.shared.model;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import net.drewke.tdme.engine.Object3DModel;
 import net.drewke.tdme.engine.fileio.models.DAEReader;

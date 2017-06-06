@@ -1,7 +1,5 @@
 package net.drewke.tdme.utils;
 
-import java.util.ArrayList;
-
 /**
  * Pool 
  * @author Andreas Drewke

@@ -1,8 +1,6 @@
 package net.drewke.tdme.utils;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * Hashmap which keeps track of keys and values in a array list

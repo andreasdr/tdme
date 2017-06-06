@@ -1,6 +1,5 @@
 package net.drewke.tdme.tests;
 
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +37,7 @@ import net.drewke.tdme.engine.subsystems.particlesystem.CircleParticleEmitter;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.engine.subsystems.particlesystem.SphereParticleEmitter;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 import com.jogamp.newt.event.KeyEvent;

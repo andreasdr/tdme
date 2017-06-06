@@ -1,7 +1,5 @@
 package net.drewke.tdme.tools.shared.controller;
 
-import java.util.Collection;
-
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.OrientedBoundingBox;
@@ -25,6 +23,7 @@ import net.drewke.tdme.tools.shared.model.PropertyModelClass;
 import net.drewke.tdme.tools.shared.tools.Tools;
 import net.drewke.tdme.tools.shared.views.ParticleSystemView;
 import net.drewke.tdme.tools.viewer.TDMEViewer;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 
@@ -373,7 +372,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 * Set up particle system types
 	 * @param particle system types
 	 */
-	public void setParticleSystemTypes(Collection<String> particleSystemTypesCollection) {
+	public void setParticleSystemTypes(ArrayList<String> particleSystemTypesCollection) {
 		// particle system types inner node
 		GUIParentNode particleSystemTypesInnerNode = (GUIParentNode)(particleSystemTypes.getScreenNode().getNodeById(particleSystemTypes.getId() + "_inner"));
 
@@ -402,7 +401,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 * Set up emitters
 	 * @param emitters
 	 */
-	public void setParticleSystemEmitters(Collection<String> emittersCollection) {
+	public void setParticleSystemEmitters(ArrayList<String> emittersCollection) {
 		// particle system emitters inner node
 		GUIParentNode particleSystemEmittersInnerNode = (GUIParentNode)(particleSystemEmitters.getScreenNode().getNodeById(particleSystemEmitters.getId() + "_inner"));
 

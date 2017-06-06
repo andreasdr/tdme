@@ -1,8 +1,7 @@
 package net.drewke.tdme.engine;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.math.Quaternion;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Rotations
@@ -40,8 +39,8 @@ public final class Rotations {
 	 * @param e
 	 * @return
 	 */
-	public boolean add(Rotation rotation) {
-		return rotations.add(rotation);
+	public void add(Rotation rotation) {
+		rotations.add(rotation);
 	}
 
 	/**
@@ -50,8 +49,8 @@ public final class Rotations {
 	 * @param element
 	 * @return rotation
 	 */
-	public Rotation set(int index, Rotation rotation) {
-		return rotations.set(index, rotation);
+	public void set(int index, Rotation rotation) {
+		rotations.set(index, rotation);
 	}
 
 	/**

@@ -4,7 +4,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.ArrayList;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.model.Face;
@@ -16,6 +15,7 @@ import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 
 public final class Object3DGroupMesh {

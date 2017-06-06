@@ -26,8 +26,6 @@
 
 package net.drewke.tdme.engine.physics;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Transformations;
 import net.drewke.tdme.engine.primitives.BoundingVolume;
@@ -36,6 +34,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 
 /**

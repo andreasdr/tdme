@@ -2,7 +2,6 @@ package net.drewke.tdme.gui;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,8 +33,6 @@ import net.drewke.tdme.gui.nodes.GUIImageNode;
 import net.drewke.tdme.gui.nodes.GUIInputInternalNode;
 import net.drewke.tdme.gui.nodes.GUILayoutNode;
 import net.drewke.tdme.gui.nodes.GUINode;
-import net.drewke.tdme.gui.nodes.GUINode.AlignmentHorizontal;
-import net.drewke.tdme.gui.nodes.GUINode.AlignmentVertical;
 import net.drewke.tdme.gui.nodes.GUINodeController;
 import net.drewke.tdme.gui.nodes.GUIPanelNode;
 import net.drewke.tdme.gui.nodes.GUIParentNode;
@@ -44,6 +41,7 @@ import net.drewke.tdme.gui.nodes.GUISpaceNode;
 import net.drewke.tdme.gui.nodes.GUITextNode;
 import net.drewke.tdme.gui.nodes.GUIVerticalScrollbarInternalNode;
 import net.drewke.tdme.os.FileSystem;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.MutableString;
 
@@ -740,8 +738,8 @@ public final class GUIParser {
 	 * @param parent
 	 * @return children
 	 */
-	private static List<Element> getChildrenTags(Element parent) {
-		List<Element> nodeList = new ArrayList<Element>();
+	private static ArrayList<Element> getChildrenTags(Element parent) {
+		ArrayList<Element> nodeList = new ArrayList<Element>();
 		for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
 			if (child.getNodeType() == Node.ELEMENT_NODE) {
 				nodeList.add((Element) child);

@@ -12,9 +12,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.security.CodeSource;
-import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import net.drewke.tdme.utils.ArrayList;
 
 public final class StandardFileSystem implements FileSystemInterface {
 

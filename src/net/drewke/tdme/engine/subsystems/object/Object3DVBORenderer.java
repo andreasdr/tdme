@@ -1,7 +1,5 @@
 package net.drewke.tdme.engine.subsystems.object;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.PointsParticleSystemEntity;
@@ -18,6 +16,7 @@ import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Matrix4x4Negative;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.ArrayListIterator;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;

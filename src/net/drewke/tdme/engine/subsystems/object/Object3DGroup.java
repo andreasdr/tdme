@@ -1,7 +1,5 @@
 package net.drewke.tdme.engine.subsystems.object;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Engine.AnimationProcessingTarget;
 import net.drewke.tdme.engine.model.FacesEntity;
@@ -14,6 +12,7 @@ import net.drewke.tdme.engine.subsystems.manager.MeshManager;
 import net.drewke.tdme.engine.subsystems.manager.TextureManager;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 
 /**

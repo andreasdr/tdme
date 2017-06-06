@@ -1,11 +1,10 @@
 package net.drewke.tdme.tools.shared.views;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.tools.shared.controller.EntityBaseSubScreenController;
 import net.drewke.tdme.tools.shared.model.LevelEditorEntity;
 import net.drewke.tdme.tools.shared.model.LevelPropertyPresets;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.utils.ArrayList;
 
 /**
  * Model base biew

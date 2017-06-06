@@ -1,7 +1,5 @@
 package net.drewke.tdme.engine.primitives;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
@@ -13,6 +11,7 @@ import net.drewke.tdme.engine.model.RotationOrder;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Quaternion;
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 

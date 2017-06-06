@@ -1,7 +1,5 @@
 package net.drewke.tdme.tools.leveleditor.logic;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.Object3D;
@@ -29,6 +27,7 @@ import net.drewke.tdme.tools.shared.model.LevelEditorLevel;
 import net.drewke.tdme.tools.shared.model.LevelEditorObject;
 import net.drewke.tdme.tools.shared.model.Properties;
 import net.drewke.tdme.tools.shared.model.PropertyModelClass;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.MutableString;
 

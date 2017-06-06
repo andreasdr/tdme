@@ -1,8 +1,7 @@
 package net.drewke.tdme.audio;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.math.Vector3;
+import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 

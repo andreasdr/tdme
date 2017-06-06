@@ -1,13 +1,11 @@
 package net.drewke.tdme.gui.nodes;
 
-import java.util.ArrayList;
-
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.fileio.textures.Texture;
 import net.drewke.tdme.gui.GUI;
 import net.drewke.tdme.gui.GUIParserException;
-import net.drewke.tdme.gui.events.GUIMouseEvent;
 import net.drewke.tdme.gui.renderer.GUIRenderer;
+import net.drewke.tdme.utils.ArrayList;
 
 
 /**
