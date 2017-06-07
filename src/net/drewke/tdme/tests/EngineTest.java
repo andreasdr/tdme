@@ -384,7 +384,7 @@ public final class EngineTest implements GLEventListener, MouseListener, KeyList
 	 * @see com.jogamp.opengl.GLEventListener#init(com.jogamp.opengl.GLAutoDrawable)
 	 */
 	public void init(GLAutoDrawable drawable) {
-		engine.init(drawable);
+		engine.initialize(drawable);
 		if (osEngine == null) {
 			osEngine = Engine.createOffScreenInstance(drawable, 512, 512);
 

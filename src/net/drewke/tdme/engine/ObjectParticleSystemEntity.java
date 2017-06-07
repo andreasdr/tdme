@@ -32,7 +32,7 @@ public final class ObjectParticleSystemEntity extends ObjectParticleSystemEntity
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.Entity#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// no op
 	}
 

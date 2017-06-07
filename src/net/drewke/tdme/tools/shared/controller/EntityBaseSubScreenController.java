@@ -57,7 +57,7 @@ public class EntityBaseSubScreenController {
 	 * Init
 	 * @param screen node
 	 */
-	public void init(GUIScreenNode screenNode) {
+	public void initialize(GUIScreenNode screenNode) {
 		// load screen node
 		try {
 			entityName = (GUIElementNode)screenNode.getNodeById("entity_name");

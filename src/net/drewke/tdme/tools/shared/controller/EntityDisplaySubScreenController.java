@@ -41,7 +41,7 @@ public class EntityDisplaySubScreenController {
 	 * Init
 	 * @param screen node
 	 */
-	public void init(GUIScreenNode screenNode) {
+	public void initialize(GUIScreenNode screenNode) {
 		// load screen node
 		try {
 			displayBoundingVolume = (GUIElementNode)screenNode.getNodeById("display_boundingvolume");

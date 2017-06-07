@@ -469,7 +469,7 @@ public class Object3DBase extends Transformations {
 	/**
 	 * Initiates this object3d 
 	 */
-	public void init() {
+	public void initialize() {
 		MeshManager meshManager = Engine.getInstance().getMeshManager();
 
 		// init mesh

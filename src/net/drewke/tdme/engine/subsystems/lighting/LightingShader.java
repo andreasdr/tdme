@@ -136,7 +136,7 @@ public final class LightingShader extends SkinningShader {
 	/**
 	 * Initialize renderer
 	 */
-	public void init() {
+	public void initialize() {
 		String rendererVersion = renderer.getGLVersion();
 
 		// lighting
@@ -250,7 +250,7 @@ public final class LightingShader extends SkinningShader {
 		}
 
 		// init skinning shader
-		super.init(renderer, renderLightingProgramId);
+		super.initialize(renderer, renderLightingProgramId);
 		if (super.isInitialized() == false) return;
 
 		//

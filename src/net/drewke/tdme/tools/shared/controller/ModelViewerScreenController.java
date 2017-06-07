@@ -97,7 +97,7 @@ public final class ModelViewerScreenController extends ScreenController implemen
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
 	 */
-	public void init() {
+	public void initialize() {
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/viewer/gui", "screen_modelviewer.xml");
@@ -121,13 +121,13 @@ public final class ModelViewerScreenController extends ScreenController implemen
 		}
 
 		// init entity base sub screen controller
-		entityBaseSubScreenController.init(screenNode);
+		entityBaseSubScreenController.initialize(screenNode);
 
 		// init display sub screen controller
-		entityDisplaySubScreenController.init(screenNode);
+		entityDisplaySubScreenController.initialize(screenNode);
 
 		// init bounding volume sub screen controller
-		entityBoundingVolumeSubScreenController.init(screenNode);
+		entityBoundingVolumeSubScreenController.initialize(screenNode);
 
 		//
 		value = new MutableString();

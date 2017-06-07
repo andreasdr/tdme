@@ -55,7 +55,7 @@ public final class FrameBuffer {
 	 * 	currently only depth buffer rendering is enabled, can be extended to color buffer easily
 	 * @param gl
 	 */
-	public void init() {
+	public void initialize() {
 		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) depthBufferTextureGlId = Engine.renderer.createDepthBufferTexture(width, height);
 		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) colorBufferTextureGlId = Engine.renderer.createColorBufferTexture(width, height);
 		frameBufferGlId = Engine.renderer.createFramebufferObject(depthBufferTextureGlId, colorBufferTextureGlId);

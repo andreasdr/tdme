@@ -239,11 +239,11 @@ public class ModelViewerView implements View, GUIInputEventHandler {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init() {
+	public void initialize() {
 		//
 		try {
 			modelViewerScreenController = new ModelViewerScreenController(this);
-			modelViewerScreenController.init();
+			modelViewerScreenController.initialize();
 			entityDisplayView = modelViewerScreenController.getEntityDisplaySubScreenController().getView();
 			entityBoundingVolumeView = modelViewerScreenController.getEntityBoundingVolumeSubScreenController().getView();
 			engine.getGUI().addScreen(modelViewerScreenController.getScreenNode().getId(), modelViewerScreenController.getScreenNode());
@@ -259,7 +259,7 @@ public class ModelViewerView implements View, GUIInputEventHandler {
 		modelViewerScreenController.getEntityDisplaySubScreenController().setupDisplay();
 
 		//
-		entityBoundingVolumeView.init();
+		entityBoundingVolumeView.initialize();
 
 		// set up gui
 		updateGUIElements();

@@ -203,11 +203,11 @@ public class TriggerView implements View, GUIInputEventHandler {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init() {
+	public void initialize() {
 		//
 		try {
 			triggerScreenController = new TriggerScreenController(this);
-			triggerScreenController.init();
+			triggerScreenController.initialize();
 			engine.getGUI().addScreen(triggerScreenController.getScreenNode().getId(), triggerScreenController.getScreenNode());
 			triggerScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {

@@ -63,7 +63,7 @@ public final class GUIInputInternalController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		inputNode = (GUIElementNode)node.getParentControllerNode();
 	}
 

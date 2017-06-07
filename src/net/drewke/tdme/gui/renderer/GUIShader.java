@@ -41,7 +41,7 @@ public final class GUIShader {
 	/**
 	 * Init shadow mapping
 	 */
-	public void init() {
+	public void initialize() {
 		String rendererVersion = renderer.getGLVersion();
 
 		// render shader

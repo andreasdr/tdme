@@ -106,7 +106,7 @@ public final class Sound extends AudioEntity {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.audio.AudioEntity#init()
 	 */
-	protected boolean init() {
+	protected boolean initialize() {
 		// check if we already have this buffer
 		AudioBufferManager.AudioBufferManaged audioBufferManaged = Audio.instance.audioBufferManager.addAudioBuffer(bufferId);
 		if (audioBufferManaged.alId == Audio.ALBUFFERID_NONE) {

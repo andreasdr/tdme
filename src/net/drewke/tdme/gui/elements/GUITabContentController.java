@@ -70,7 +70,7 @@ public final class GUITabContentController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// set initial state
 		setSelected(selected);
 	}

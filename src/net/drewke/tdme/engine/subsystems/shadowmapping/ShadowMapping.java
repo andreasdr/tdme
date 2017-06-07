@@ -153,7 +153,7 @@ public final class ShadowMapping {
 				// create shadow map for light, if required
 				if (shadowMaps[i] == null) {
 					ShadowMap shadowMap = new ShadowMap(this, width, height);
-					shadowMap.init();
+					shadowMap.initialize();
 					shadowMaps[i] = shadowMap;
 				}
 

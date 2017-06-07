@@ -47,7 +47,7 @@ public class EntityBoundingVolumeView {
 	/**
 	 * Init
 	 */
-	public void init() {
+	public void initialize() {
 		// set up bounding volume types
 		for (int i = 0; i < EntityBoundingVolumeSubScreenController.MODEL_BOUNDINGVOLUME_COUNT; i++) {
 			modelViewerScreenController.setupBoundingVolumeTypes(

@@ -26,7 +26,7 @@ public class EntityBaseView {
 	/**
 	 * Init
 	 */
-	public void init() {
+	public void initialize() {
 		// set up model properties presets
 		entityBaseSubScreenController.setEntityPresetIds(LevelPropertyPresets.getInstance().getObjectPropertiesPresets().keySet());
 	}

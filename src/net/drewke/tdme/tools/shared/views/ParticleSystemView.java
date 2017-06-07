@@ -255,11 +255,11 @@ public class ParticleSystemView implements View, GUIInputEventHandler {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init() {
+	public void initialize() {
 		//
 		try {
 			particleSystemScreenController = new ParticleSystemScreenController(this);
-			particleSystemScreenController.init();
+			particleSystemScreenController.initialize();
 			entityDisplayView = particleSystemScreenController.getEntityDisplaySubScreenController().getView();
 			entityBoundingVolumeView = particleSystemScreenController.getEntityBoundingVolumeSubScreenController().getView();
 			engine.getGUI().addScreen(particleSystemScreenController.getScreenNode().getId(), particleSystemScreenController.getScreenNode());
@@ -272,7 +272,7 @@ public class ParticleSystemView implements View, GUIInputEventHandler {
 		loadSettings();
 
 		// init entity bounding volume view
-		entityBoundingVolumeView.init();
+		entityBoundingVolumeView.initialize();
 
 		// particle system types
 		ArrayList<String> particleSystemTypes = new ArrayList<String>();

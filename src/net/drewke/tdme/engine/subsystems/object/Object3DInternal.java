@@ -213,8 +213,8 @@ public class Object3DInternal extends Object3DBase {
 	/**
 	 * Initiates this object3d 
 	 */
-	public void init() {
-		super.init();
+	public void initialize() {
+		super.initialize();
 		// we currently initiate stuff to render this object on demand, means when beeing first rendered
 		// could be changed as this takes some serious time on not that fast machines
 	}

@@ -146,13 +146,13 @@ public final class Engine {
 		offScreenEngine.gui = new GUI(offScreenEngine, guiRenderer);
 		// create object 3d vbo renderer
 		offScreenEngine.object3DVBORenderer = new Object3DVBORenderer(offScreenEngine, renderer);
-		offScreenEngine.object3DVBORenderer.init();
+		offScreenEngine.object3DVBORenderer.initialize();
 		offScreenEngine.frameBuffer = new FrameBuffer(
 			offScreenEngine,
 			width, height,
 			FrameBuffer.FRAMEBUFFER_DEPTHBUFFER | FrameBuffer.FRAMEBUFFER_COLORBUFFER
 		);
-		offScreenEngine.frameBuffer.init();
+		offScreenEngine.frameBuffer.initialize();
 		// create camera, frustum partition
 		offScreenEngine.camera = new Camera(renderer);
 		offScreenEngine.partition = new PartitionQuadTree();
@@ -438,7 +438,7 @@ public final class Engine {
 		// init object
 		entity.setEngine(this);
 		entity.setRenderer(renderer);
-		entity.init();
+		entity.initialize();
 
 		// dispose old object if any did exist in engine with same id
 		Entity oldEntity = entitiesById.put(entity.getId(), entity);
@@ -488,8 +488,8 @@ public final class Engine {
 	 * Initialize render engine
 	 * @param drawable
 	 */
-	public void init(GLAutoDrawable drawable) {
-		init(drawable, false);
+	public void initialize(GLAutoDrawable drawable) {
+		initialize(drawable, false);
 	}
 
 	/**
@@ -497,7 +497,7 @@ public final class Engine {
 	 * @param drawable
 	 * @param debug
 	 */
-	public void init(GLAutoDrawable drawable, boolean debug) {
+	public void initialize(GLAutoDrawable drawable, boolean debug) {
 		// exit if already initialized like a offscreen engine instance
 		if (initialized == true) return;
 
@@ -671,7 +671,7 @@ public final class Engine {
 
 		// init
 		initialized = true;
-		renderer.init();
+		renderer.initialize();
 		renderer.renderingTexturingClientState = false;
 
 		// create manager
@@ -681,13 +681,13 @@ public final class Engine {
 
 		// create object 3d vbo renderer
 		object3DVBORenderer = new Object3DVBORenderer(this, renderer);
-		object3DVBORenderer.init();
+		object3DVBORenderer.initialize();
 
 		// create GUI
 		guiRenderer = new GUIRenderer(renderer);
-		guiRenderer.init();
+		guiRenderer.initialize();
 		gui = new GUI(this, guiRenderer);
-		gui.init();
+		gui.initialize();
 
 		// create camera
 		camera = new Camera(renderer);
@@ -698,15 +698,15 @@ public final class Engine {
 
 		// create lighting shader
 		lightingShader = new LightingShader(renderer);
-		lightingShader.init();
+		lightingShader.initialize();
 
 		// create particles shader
 		particlesShader = new ParticlesShader(this, renderer);
-		particlesShader.init();
+		particlesShader.initialize();
 
 		// create GUI shader
 		guiShader = new GUIShader(renderer);
-		guiShader.init();
+		guiShader.initialize();
 
 		// check if VBOs are available
 		if (renderer.isBufferObjectsAvailable()) {
@@ -728,9 +728,9 @@ public final class Engine {
 		if (shadowMappingEnabled == true) {
 			Console.println("TDME::Using shadow mapping");
 			shadowMappingShaderPre = new ShadowMappingShaderPre(renderer);
-			shadowMappingShaderPre.init();
+			shadowMappingShaderPre.initialize();
 			shadowMappingShaderRender = new ShadowMappingShaderRender(renderer);
-			shadowMappingShaderRender.init();
+			shadowMappingShaderRender.initialize();
 			shadowMapping = new ShadowMapping(this, renderer, object3DVBORenderer);
 		} else {
 			Console.println("TDME::Not using shadow mapping");
@@ -869,7 +869,7 @@ public final class Engine {
 		if (renderingComputedTransformations == false) computeTransformations(drawable);
 
 		// init frame
-		Engine.renderer.initFrame();
+		Engine.renderer.initializeFrame();
 
 		// enable vertex and normal arrays, we always have them
 		Engine.renderer.enableClientState(Engine.renderer.CLIENTSTATE_VERTEX_ARRAY);

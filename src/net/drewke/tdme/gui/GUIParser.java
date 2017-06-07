@@ -729,7 +729,7 @@ public final class GUIParser {
 
 		// if we have a GUI element controller just init it, after element has been loaded
 		if (guiElementController != null) {
-			guiElementController.init();
+			guiElementController.initialize();
 		}
 	}
 

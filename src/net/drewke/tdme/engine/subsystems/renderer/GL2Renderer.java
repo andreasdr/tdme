@@ -114,7 +114,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#init()
 	 */
-	final public void init() {
+	final public void initialize() {
 		gl.glGetError();
 
 		// get default framebuffer
@@ -144,7 +144,7 @@ public abstract class GL2Renderer extends GLRenderer {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#initFrame()
 	 */
-	final public void initFrame() {
+	final public void initializeFrame() {
 		if (gl.getContext().isCurrent() == false) gl.getContext().makeCurrent();
 	}
 

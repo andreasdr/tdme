@@ -50,7 +50,7 @@ public class GUITest implements GLEventListener, WindowListener {
 	 */
 	public void init(GLAutoDrawable drawable) {
 		// init engine
-		engine.init(drawable);
+		engine.initialize(drawable);
 		
 		// register gui to mouse, keyboard events
 		glWindow.addMouseListener(engine.getGUI());

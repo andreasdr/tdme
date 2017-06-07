@@ -12,7 +12,7 @@ public interface View {
 	/**
 	 * Initiates the view
 	 */
-	abstract public void init();
+	abstract public void initialize();
 
 	/**
 	 * Activate view

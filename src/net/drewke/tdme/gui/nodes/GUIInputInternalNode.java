@@ -81,11 +81,11 @@ public final class GUIInputInternalNode extends GUINode {
 		this.maxLength = maxLength;
 
 		// init font
-		this.font.init();
+		this.font.initialize();
 
 		// controller
 		this.controller = new GUIInputInternalController(this);
-		this.controller.init();
+		this.controller.initialize();
 	}
 
 	/**

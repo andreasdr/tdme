@@ -153,12 +153,12 @@ abstract public class GLRenderer {
 	/**
 	 * Initialize renderer
 	 */
-	abstract public void init();
+	abstract public void initialize();
 
 	/**
 	 * Pre Frame Initialization
 	 */
-	abstract public void initFrame();
+	abstract public void initializeFrame();
 
 	/**
 	 * @return renderer version e.g. gl2, gl3 or gles2

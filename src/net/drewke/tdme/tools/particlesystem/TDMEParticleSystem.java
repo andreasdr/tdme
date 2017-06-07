@@ -145,7 +145,7 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 		// do view init, render
 		if (view != null) {
 			if (viewInitialized == false) {
-				view.init();
+				view.initialize();
 				view.activate();
 				viewInitialized = true;
 			}
@@ -188,7 +188,7 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 	 */
 	public void init(GLAutoDrawable drawable) {
 		// init engine
-		engine.init(drawable);
+		engine.initialize(drawable);
 		
 		// register gui to mouse, keyboard events
 		glWindow.addMouseListener(engine.getGUI());
@@ -198,7 +198,7 @@ public final class TDMEParticleSystem implements GLEventListener, WindowListener
 		Tools.oseInit(drawable);
 
 		// pop ups
-		popUps.init();
+		popUps.initialize();
 
 		// view
 		setView(new ParticleSystemView(popUps));

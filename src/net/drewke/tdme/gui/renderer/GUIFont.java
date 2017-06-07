@@ -252,7 +252,7 @@ public final class GUIFont {
 	/**
 	 * Init
 	 */
-	public void init() {
+	public void initialize() {
 		textureId = Engine.getInstance().getTextureManager().addTexture(texture);
 	}
 

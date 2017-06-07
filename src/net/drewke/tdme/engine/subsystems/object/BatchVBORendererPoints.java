@@ -65,7 +65,7 @@ public final class BatchVBORendererPoints {
 	/**
 	 * Init
 	 */
-	public void init() {
+	public void initialize() {
 		// initialize if not yet done
 		if (vboIds == null) {
 			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO("tdme.batchvborendererpoints." + id, 2);

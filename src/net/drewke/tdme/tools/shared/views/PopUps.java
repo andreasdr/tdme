@@ -37,11 +37,11 @@ public class PopUps {
 	/**
 	 * Init
 	 */
-	public void init() {
+	public void initialize() {
 		fileDialogScreenController = new FileDialogScreenController();
-		fileDialogScreenController.init();
+		fileDialogScreenController.initialize();
 		infoDialogScreenController = new InfoDialogScreenController();
-		infoDialogScreenController.init();
+		infoDialogScreenController.initialize();
 		Engine.getInstance().getGUI().addScreen(fileDialogScreenController.getScreenNode().getId(), fileDialogScreenController.getScreenNode());
 		Engine.getInstance().getGUI().addScreen(infoDialogScreenController.getScreenNode().getId(), infoDialogScreenController.getScreenNode());
 	}

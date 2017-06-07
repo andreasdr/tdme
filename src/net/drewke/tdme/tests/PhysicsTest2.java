@@ -112,7 +112,7 @@ public final class PhysicsTest2 implements GLEventListener, MouseListener, Mouse
 	 */
 	public void init(GLAutoDrawable drawable) {
 		drawable.getGL().setSwapInterval(0);
-		engine.init(drawable);
+		engine.initialize(drawable);
 		Object3D entity;
 
 		// cam

@@ -78,7 +78,7 @@ public class LevelEditorEntityLibraryScreenController extends ScreenController i
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		try {
 			screenNode = GUIParser.parse("resources/tools/leveleditor/gui", "screen_leveleditor_entitylibrary.xml");
 			screenNode.addActionListener(this);

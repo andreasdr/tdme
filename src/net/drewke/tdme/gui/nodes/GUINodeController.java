@@ -31,7 +31,7 @@ public abstract class GUINodeController {
 	/**
 	 * Initialize controller after element has been created
 	 */
-	public abstract void init();
+	public abstract void initialize();
 
 	/**
 	 * Dispose controller

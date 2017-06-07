@@ -203,7 +203,7 @@ public final class ParticleSystemScreenController extends ScreenController imple
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
 	 */
-	public void init() {
+	public void initialize() {
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/particlesystem/gui", "screen_particlesystem.xml");
@@ -306,13 +306,13 @@ public final class ParticleSystemScreenController extends ScreenController imple
 		}
 
 		// init entity base sub screen controller
-		entityBaseSubScreenController.init(screenNode);
+		entityBaseSubScreenController.initialize(screenNode);
 
 		// init display sub screen controller
-		entityDisplaySubScreenController.init(screenNode);
+		entityDisplaySubScreenController.initialize(screenNode);
 
 		// init bounding volume sub screen controller
-		entityBoundingVolumeSubScreenController.init(screenNode);
+		entityBoundingVolumeSubScreenController.initialize(screenNode);
 	}
 
 	/*

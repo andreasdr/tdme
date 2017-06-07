@@ -165,7 +165,7 @@ public final class AudioStream extends AudioEntity {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.audio.AudioEntity#init()
 	 */
-	protected boolean init() {
+	protected boolean initialize() {
 		// decode audio stream
 		decoder = new JOrbisDecoder();
 		try {

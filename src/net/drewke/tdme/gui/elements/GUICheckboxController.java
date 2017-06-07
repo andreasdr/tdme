@@ -80,7 +80,7 @@ public final class GUICheckboxController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		setChecked(checked);
 		setDisabled(disabled);
 	}

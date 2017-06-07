@@ -77,8 +77,8 @@ public final class ShadowMap {
 	 * Init frame buffer
 	 * @param gl
 	 */
-	protected void init() {
-		frameBuffer.init();
+	protected void initialize() {
+		frameBuffer.initialize();
 	}
 
 	/**

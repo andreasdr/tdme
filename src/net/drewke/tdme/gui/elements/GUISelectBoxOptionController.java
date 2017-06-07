@@ -99,7 +99,7 @@ public final class GUISelectBoxOptionController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// determine drop down node
 		selectBoxNode = node.getParentControllerNode();
 		while(true == true) {

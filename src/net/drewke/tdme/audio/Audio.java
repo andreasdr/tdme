@@ -103,7 +103,7 @@ public final class Audio {
 			pathName,
 			fileName
 		);
-		if (stream.init() == true) {
+		if (stream.initialize() == true) {
 			removeEntity(id);
 			audioEntities.put(id, stream);
 			return stream;
@@ -130,7 +130,7 @@ public final class Audio {
 			pathName,
 			fileName
 		);
-		if (sound.init() == true) {
+		if (sound.initialize() == true) {
 			removeEntity(id);
 			audioEntities.put(id, sound);
 			return sound;

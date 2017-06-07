@@ -44,7 +44,7 @@ public class GUIScrollAreaController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.nodes.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		final GUIParentNode contentNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_inner");
 		final GUIElementNode upArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_up");
 		final GUIElementNode downArrowNode = (GUIElementNode)node.getScreenNode().getNodeById(node.getId() + "_scrollbar_vertical_layout_down");

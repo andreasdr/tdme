@@ -109,7 +109,7 @@ public final class GUI implements MouseListener, KeyListener {
 	/**
 	 * Init
 	 */
-	public void init() {
+	public void initialize() {
 	}
 
 	/**

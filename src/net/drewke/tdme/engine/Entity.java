@@ -96,7 +96,7 @@ public interface Entity {
 	/**
 	 * Initiates this object 3d 
 	 */
-	public void init();
+	public void initialize();
 
 	/**
 	 * Dispose this object 3d

@@ -67,7 +67,7 @@ public final class GUISelectBoxMultipleController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// Focus last selected
 		if (getFocussedOptionIdx() == -1) {
 			// could do better here for sure

@@ -51,7 +51,7 @@ public final class ShadowMappingShaderRender {
 	/**
 	 * Init shadow mapping
 	 */
-	public void init() {
+	public void initialize() {
 		String rendererVersion = renderer.getGLVersion();
 
 		//	render

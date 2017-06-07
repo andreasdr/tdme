@@ -82,7 +82,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// load screen node
 		try {
 			screenNode = GUIParser.parse("resources/tools/shared/gui", "filedialog.xml");

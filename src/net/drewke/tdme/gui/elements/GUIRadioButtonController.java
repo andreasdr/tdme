@@ -110,7 +110,7 @@ public final class GUIRadioButtonController extends GUINodeController {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		GUINodeConditions nodeConditions = ((GUIElementNode)node).getActiveConditions();
 		nodeConditions.add(this.selected == true?CONDITION_SELECTED:CONDITION_UNSELECTED);
 		setDisabled(disabled);

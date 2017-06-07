@@ -812,7 +812,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// reset engine and partition
 		engine.reset();
 		engine.setPartition(new PartitionQuadTree());
@@ -820,7 +820,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 		//
 		try {
 			levelEditorScreenController = new LevelEditorScreenController(this);
-			levelEditorScreenController.init();
+			levelEditorScreenController.initialize();
 			levelEditorScreenController.getScreenNode().setInputEventHandler(this);
 			engine.getGUI().addScreen(levelEditorScreenController.getScreenNode().getId(), levelEditorScreenController.getScreenNode()); 
 		} catch (Exception e) {

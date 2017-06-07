@@ -88,7 +88,7 @@ public class EntityBoundingVolumeSubScreenController {
 	 * Init
 	 * @param screen node
 	 */
-	public void init(GUIScreenNode screenNode) {
+	public void initialize(GUIScreenNode screenNode) {
 		value = new MutableString();
 
 		// load screen node

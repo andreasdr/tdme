@@ -150,11 +150,11 @@ public class EmptyView implements View, GUIInputEventHandler {
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.tools.shared.views.View#init()
 	 */
-	public void init() {
+	public void initialize() {
 		//
 		try {
 			emptyScreenController = new EmptyScreenController(this);
-			emptyScreenController.init();
+			emptyScreenController.initialize();
 			engine.getGUI().addScreen(emptyScreenController.getScreenNode().getId(), emptyScreenController.getScreenNode());
 			emptyScreenController.getScreenNode().setInputEventHandler(this);
 		} catch (Exception e) {

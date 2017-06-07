@@ -145,7 +145,7 @@ public final class GUISelectBoxMultipleOptionController extends GUINodeControlle
 	 * (non-Javadoc)
 	 * @see net.drewke.tdme.gui.GUINodeController#init()
 	 */
-	public void init() {
+	public void initialize() {
 		// determine drop down node
 		selectBoxMultipleNode = node.getParentControllerNode();
 		while(true == true) {

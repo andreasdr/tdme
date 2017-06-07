@@ -84,7 +84,7 @@ public final class GUIElementNode extends GUIParentNode {
 
 		// controller
 		this.controller = ignoreEvents == true?new GUIElementIgnoreEventsController(this):new GUIElementController(this);
-		this.controller.init();
+		this.controller.initialize();
 	}
 
 	/**

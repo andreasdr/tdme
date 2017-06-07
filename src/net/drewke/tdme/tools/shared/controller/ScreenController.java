@@ -18,7 +18,7 @@ public abstract class ScreenController {
 	/**
 	 * Init
 	 */
-	public abstract void init();
+	public abstract void initialize();
 
 	/**
 	 * Dispose

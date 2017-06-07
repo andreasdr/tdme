@@ -141,7 +141,7 @@ public abstract class AudioEntity {
 	/**
 	 * Initiates this OpenAL entity to OpenAl
 	 */
-	protected abstract boolean init();
+	protected abstract boolean initialize();
 
 	/**
 	 * Commits properties to OpenAl

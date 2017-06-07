@@ -58,7 +58,7 @@ public final class GUITextNode extends GUINode {
 		this.text = text;
 
 		// init font
-		this.font.init();
+		this.font.initialize();
 	}
 
 	/**

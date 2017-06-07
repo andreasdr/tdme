@@ -215,7 +215,7 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 	 * Initialize tdme level editor
 	 */
 	public void init(GLAutoDrawable drawable) {
-		engine.init(drawable);
+		engine.initialize(drawable);
 
 		// register gui to mouse, keyboard events
 		glWindow.addMouseListener(engine.getGUI());
@@ -226,23 +226,23 @@ public final class TDMELevelEditor implements GLEventListener, WindowListener {
 
 		// level editor model library screen controller
 		levelEditorEntityLibraryScreenController = new LevelEditorEntityLibraryScreenController(popUps);
-		levelEditorEntityLibraryScreenController.init();
+		levelEditorEntityLibraryScreenController.initialize();
 		engine.getGUI().addScreen(levelEditorEntityLibraryScreenController.getScreenNode().getId(), levelEditorEntityLibraryScreenController.getScreenNode());
 
 		// pop ups
-		popUps.init();
+		popUps.initialize();
 
 		//
 		levelEditorView = new LevelEditorView(popUps);
-		levelEditorView.init();
+		levelEditorView.initialize();
 		modelViewerView = new ModelViewerView(popUps);
-		modelViewerView.init();
+		modelViewerView.initialize();
 		triggerView = new TriggerView(popUps);
-		triggerView.init();
+		triggerView.initialize();
 		emptyView = new EmptyView(popUps);
-		emptyView.init();
+		emptyView.initialize();
 		particleSystemView = new ParticleSystemView(popUps);
-		particleSystemView.init();
+		particleSystemView.initialize();
 
 		// show up level editor view
 		setView(levelEditorView);

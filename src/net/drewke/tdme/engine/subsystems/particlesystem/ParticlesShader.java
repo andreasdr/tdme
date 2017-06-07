@@ -54,7 +54,7 @@ public final class ParticlesShader {
 	/**
 	 * Initialize renderer
 	 */
-	public void init() {
+	public void initialize() {
 		String rendererVersion = renderer.getGLVersion();
 
 		// lighting

@@ -63,7 +63,7 @@ public class SkinningShader {
 	 * @param renderer
 	 * @param program id
 	 */
-	protected void init(GLRenderer renderer, int programId) {
+	protected void initialize(GLRenderer renderer, int programId) {
 		initialized = false;
 
 		// shader support for skinning

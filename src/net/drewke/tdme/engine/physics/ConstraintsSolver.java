@@ -178,7 +178,7 @@ public final class ConstraintsSolver {
 	 * @param constraints
 	 * @param rigid bodies
 	 */
-	private void init(float dt) {
+	private void initialize(float dt) {
 		//
 		constraintsCount = 0;
 		for (int i = 0; i < constraintsEntityCount; i++) {
@@ -646,7 +646,7 @@ public final class ConstraintsSolver {
 	protected void compute(float dt) {
 		if (constraintsEntityCount == 0) return;
 		checkVelocityConstraint();
-		init(dt);
+		initialize(dt);
 		fillMatrices();
 		computeVectorB(dt);
 		computeMatrixB();

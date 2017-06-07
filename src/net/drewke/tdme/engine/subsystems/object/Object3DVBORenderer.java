@@ -92,8 +92,8 @@ public final class Object3DVBORenderer {
 	/**
 	 * Init
 	 */
-	public void init() {
-		psePointBatchVBORenderer.init();
+	public void initialize() {
+		psePointBatchVBORenderer.initialize();
 	}
 
 	/**
@@ -122,7 +122,7 @@ public final class Object3DVBORenderer {
 		// try to add one
 		if (i < BATCHVBORENDERER_MAX) {
 			BatchVBORendererTriangles batchVBORenderer = new BatchVBORendererTriangles(renderer, i);
-			batchVBORenderer.init();
+			batchVBORenderer.initialize();
 			trianglesBatchVBORenderers.add(batchVBORenderer);
 			if (batchVBORenderer.acquire()) return batchVBORenderer;
 		}
