@@ -118,6 +118,7 @@ public final class ArrayList<V> implements Iterator<V>, Iterable<V> {
 	public V remove(int idx) {
 		V value = elements[idx];
 		System.arraycopy(elements, idx + 1, elements, idx, size - idx - 1);
+		elements[size - 1] = null;
 		size--;
 		return value;
 	}
