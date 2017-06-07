@@ -128,7 +128,7 @@ public final class LevelEditorScreenController extends ScreenController implemen
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#initialize()
 	 */
 	public void initialize() {
 		try {

@@ -25,7 +25,7 @@ public final class PointsParticleSystemEntity extends PointsParticleSystemEntity
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.engine.Entity#init()
+	 * @see net.drewke.tdme.engine.Entity#initialize()
 	 */
 	public void initialize() {
 		// no op

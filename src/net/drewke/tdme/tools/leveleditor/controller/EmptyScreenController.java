@@ -57,7 +57,7 @@ public final class EmptyScreenController extends ScreenController implements GUI
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#initialize(net.drewke.tdme.gui.events.GUIActionListener, net.drewke.tdme.gui.events.GUIChangeListener)
 	 */
 	public void initialize() {
 		// load screen node

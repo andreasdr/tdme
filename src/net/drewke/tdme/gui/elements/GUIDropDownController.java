@@ -75,7 +75,7 @@ public final class GUIDropDownController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		dropDownNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_layout_horizontal");

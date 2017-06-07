@@ -42,7 +42,7 @@ public class GUIScrollAreaVerticalController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		final GUIParentNode contentNode = (GUIParentNode)node.getScreenNode().getNodeById(node.getId() + "_inner");

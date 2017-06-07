@@ -62,7 +62,7 @@ public final class GUISelectBoxController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		// no op

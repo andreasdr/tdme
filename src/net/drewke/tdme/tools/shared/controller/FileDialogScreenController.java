@@ -80,7 +80,7 @@ public class FileDialogScreenController extends ScreenController implements GUIA
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#init()
+	 * @see net.drewke.tdme.tools.shared.controller.ScreenController#initialize()
 	 */
 	public void initialize() {
 		// load screen node

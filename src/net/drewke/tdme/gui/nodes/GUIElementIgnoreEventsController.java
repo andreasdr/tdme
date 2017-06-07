@@ -49,7 +49,7 @@ public class GUIElementIgnoreEventsController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		setDisabled(disabled);

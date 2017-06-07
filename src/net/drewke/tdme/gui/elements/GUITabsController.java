@@ -44,7 +44,7 @@ public final class GUITabsController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		// child nodes

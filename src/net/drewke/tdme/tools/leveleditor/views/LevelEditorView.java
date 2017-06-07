@@ -810,7 +810,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.views.View#init()
+	 * @see net.drewke.tdme.tools.shared.views.View#initialize()
 	 */
 	public void initialize() {
 		// reset engine and partition

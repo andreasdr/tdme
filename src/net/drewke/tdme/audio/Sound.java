@@ -104,7 +104,7 @@ public final class Sound extends AudioEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.audio.AudioEntity#init()
+	 * @see net.drewke.tdme.audio.AudioEntity#initialize()
 	 */
 	protected boolean initialize() {
 		// check if we already have this buffer

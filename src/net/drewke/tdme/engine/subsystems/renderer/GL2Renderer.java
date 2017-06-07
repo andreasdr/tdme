@@ -112,7 +112,7 @@ public abstract class GL2Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.engine.GLRenderer#init()
+	 * @see net.drewke.tdme.engine.GLRenderer#initialize()
 	 */
 	final public void initialize() {
 		gl.glGetError();

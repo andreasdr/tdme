@@ -45,7 +45,7 @@ public class GUIHorizontalScrollbarInternalController extends GUINodeController 
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.nodes.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.nodes.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		// no op

@@ -54,7 +54,7 @@ public final class GUIInputController extends GUINodeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.gui.GUINodeController#init()
+	 * @see net.drewke.tdme.gui.GUINodeController#initialize()
 	 */
 	public void initialize() {
 		textInputNode = (GUIInputInternalNode)node.getScreenNode().getNodeById(node.getId() + "_text-input");

@@ -148,7 +148,7 @@ public class EmptyView implements View, GUIInputEventHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.tools.shared.views.View#init()
+	 * @see net.drewke.tdme.tools.shared.views.View#initialize()
 	 */
 	public void initialize() {
 		//
