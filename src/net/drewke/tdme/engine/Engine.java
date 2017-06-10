@@ -1029,7 +1029,7 @@ public final class Engine {
 						entity.getBoundingBoxTransformed().getMax()
 					).sub(
 						entity.getBoundingBoxTransformed().getMin()
-					).computeLength();
+					).computeVolume();
 				// check if not yet selected entity or its volume smaller than previous match
 				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
 					selectedEntity = entity;
@@ -1050,7 +1050,7 @@ public final class Engine {
 						entity.getBoundingBoxTransformed().getMax()
 					).sub(
 						entity.getBoundingBoxTransformed().getMin()
-					).computeLength();
+					).computeVolume();
 				// check if not yet selected entity or its volume smaller than previous match
 				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
 					selectedEntity = entity;
@@ -1071,7 +1071,7 @@ public final class Engine {
 						entity.getBoundingBoxTransformed().getMax()
 					).sub(
 						entity.getBoundingBoxTransformed().getMin()
-					).computeLength();
+					).computeVolume();
 				// check if not yet selected entity or its volume smaller than previous match
 				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
 					selectedEntity = entity;
