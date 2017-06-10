@@ -157,6 +157,14 @@ public abstract class GLES2Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isDepthMapReadAvailable()
+	 */
+	public boolean isDepthMapReadAvailable() {
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#getTextureUnits()
 	 */
 	final public int getTextureUnits() {

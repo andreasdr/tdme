@@ -197,6 +197,14 @@ public abstract class GL2Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
+	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isDepthMapReadAvailable()
+	 */
+	final public boolean isDepthMapReadAvailable() {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#getTextureUnits()
 	 */
 	final public int getTextureUnits() {

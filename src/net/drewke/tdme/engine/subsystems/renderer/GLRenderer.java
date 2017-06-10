@@ -203,6 +203,11 @@ abstract public class GLRenderer {
 	abstract public boolean isSkinningAvailable();
 
 	/**
+	 * @return if deth map reading is available
+	 */
+	abstract public boolean isDepthMapReadAvailable();
+
+	/**
 	 * @return number of texture units
 	 */
 	abstract public int getTextureUnits();
