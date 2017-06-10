@@ -11,12 +11,11 @@ public final class FrameBuffer {
 	public final static int FRAMEBUFFER_DEPTHBUFFER = 1;
 	public final static int FRAMEBUFFER_COLORBUFFER = 2;
 
-	private Engine engine;
 	private int width;
 	private int height;
-	private int frameBufferGlId;
-	private int depthBufferTextureGlId;
-	private int colorBufferTextureGlId;
+	private int frameBufferId;
+	private int depthBufferTextureId;
+	private int colorBufferTextureId;
 	private int buffers;
 
 	/**
@@ -26,14 +25,13 @@ public final class FrameBuffer {
 	 * @param height
 	 * @param buffers (see FrameBuffer::FRAMEBUFFER_*)
 	 */
-	public FrameBuffer(Engine engine, int width, int height, int buffers) {
-		this.engine = engine;
+	public FrameBuffer(int width, int height, int buffers) {
 		this.width = width;
 		this.height = height;
 		this.buffers = buffers;
-		frameBufferGlId = -1;
-		depthBufferTextureGlId = Engine.renderer.ID_NONE;
-		colorBufferTextureGlId = Engine.renderer.ID_NONE;
+		frameBufferId = -1;
+		depthBufferTextureId = Engine.renderer.ID_NONE;
+		colorBufferTextureId = Engine.renderer.ID_NONE;
 	}
 
 	/**
@@ -56,9 +54,9 @@ public final class FrameBuffer {
 	 * @param gl
 	 */
 	public void initialize() {
-		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) depthBufferTextureGlId = Engine.renderer.createDepthBufferTexture(width, height);
-		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) colorBufferTextureGlId = Engine.renderer.createColorBufferTexture(width, height);
-		frameBufferGlId = Engine.renderer.createFramebufferObject(depthBufferTextureGlId, colorBufferTextureGlId);
+		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) depthBufferTextureId = Engine.renderer.createDepthBufferTexture(width, height);
+		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) colorBufferTextureId = Engine.renderer.createColorBufferTexture(width, height);
+		frameBufferId = Engine.renderer.createFramebufferObject(depthBufferTextureId, colorBufferTextureId);
 	}
 
 	/**
@@ -66,8 +64,8 @@ public final class FrameBuffer {
 	 * @param gl
 	 */
 	public void reshape(int width, int height) {
-		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) Engine.renderer.resizeDepthBufferTexture(depthBufferTextureGlId, width, height);
-		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) Engine.renderer.resizeColorBufferTexture(colorBufferTextureGlId, width, height);
+		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) Engine.renderer.resizeDepthBufferTexture(depthBufferTextureId, width, height);
+		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) Engine.renderer.resizeColorBufferTexture(colorBufferTextureId, width, height);
 		this.width = width;
 		this.height = height;
 	}
@@ -77,9 +75,9 @@ public final class FrameBuffer {
 	 * @param gl
 	 */
 	public void dispose() {
-		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) Engine.renderer.disposeTexture(depthBufferTextureGlId);
-		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) Engine.renderer.disposeTexture(colorBufferTextureGlId);
-		Engine.renderer.disposeFrameBufferObject(frameBufferGlId);
+		if ((buffers & FRAMEBUFFER_DEPTHBUFFER) == FRAMEBUFFER_DEPTHBUFFER) Engine.renderer.disposeTexture(depthBufferTextureId);
+		if ((buffers & FRAMEBUFFER_COLORBUFFER) == FRAMEBUFFER_COLORBUFFER) Engine.renderer.disposeTexture(colorBufferTextureId);
+		Engine.renderer.disposeFrameBufferObject(frameBufferId);
 	}
 
 	/**
@@ -87,7 +85,7 @@ public final class FrameBuffer {
 	 * @param gl
 	 */
 	public void enableFrameBuffer() {
-		Engine.renderer.bindFrameBuffer(frameBufferGlId);
+		Engine.renderer.bindFrameBuffer(frameBufferId);
 		Engine.renderer.setViewPort(0, 0, width, height);
 		Engine.renderer.updateViewPort();
 	}
@@ -107,14 +105,14 @@ public final class FrameBuffer {
 	 * @param gl
 	 */
 	public void bindDepthBufferTexture() {
-		Engine.renderer.bindTexture(depthBufferTextureGlId);
+		Engine.renderer.bindTexture(depthBufferTextureId);
 	}
 
 	/**
 	 * @return color buffer texture id
 	 */
 	public int getColorBufferTextureId() {
-		return colorBufferTextureGlId;
+		return colorBufferTextureId;
 	}
 
 	/*
@@ -123,9 +121,9 @@ public final class FrameBuffer {
 	 */
 	public String toString() {
 		return "FrameBuffer [width=" + width + ", height=" + height
-				+ ", frameBufferGlId=" + frameBufferGlId
-				+ ", depthBufferTextureGlId=" + depthBufferTextureGlId
-				+ ", colorBufferTextureGlId=" + colorBufferTextureGlId
+				+ ", frameBufferId=" + frameBufferId
+				+ ", depthBufferTextureId=" + depthBufferTextureId
+				+ ", colorBufferTextureId=" + colorBufferTextureId
 				+ ", buffers=" + buffers + "]";
 	}
 

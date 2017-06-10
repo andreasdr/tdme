@@ -18,8 +18,6 @@ import net.drewke.tdme.engine.subsystems.manager.VBOManager;
 import net.drewke.tdme.engine.subsystems.object.Object3DVBORenderer;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticleSystemEntity;
 import net.drewke.tdme.engine.subsystems.particlesystem.ParticlesShader;
-import net.drewke.tdme.engine.subsystems.picking.DepthMap;
-import net.drewke.tdme.engine.subsystems.picking.DepthMapShaderObjects;
 import net.drewke.tdme.engine.subsystems.renderer.GL2Renderer;
 import net.drewke.tdme.engine.subsystems.renderer.GL3Renderer;
 import net.drewke.tdme.engine.subsystems.renderer.GLES2Renderer;
@@ -73,7 +71,6 @@ public final class Engine {
 	protected static LightingShader lightingShader = null;
 	protected static ParticlesShader particlesShader = null;
 	protected static GUIShader guiShader = null;
-	protected static DepthMapShaderObjects depthMapShaderObjects = null; 
 
 	private int width;
 	private int height;
@@ -88,7 +85,6 @@ public final class Engine {
 
 	private FrameBuffer frameBuffer;
 	private ShadowMapping shadowMapping;
-	private DepthMap depthMap;
 
 	private HashMap<String,Entity> entitiesById;
 
@@ -152,7 +148,6 @@ public final class Engine {
 		offScreenEngine.object3DVBORenderer = new Object3DVBORenderer(offScreenEngine, renderer);
 		offScreenEngine.object3DVBORenderer.initialize();
 		offScreenEngine.frameBuffer = new FrameBuffer(
-			offScreenEngine,
 			width, height,
 			FrameBuffer.FRAMEBUFFER_DEPTHBUFFER | FrameBuffer.FRAMEBUFFER_COLORBUFFER
 		);
@@ -405,13 +400,6 @@ public final class Engine {
 	}
 
 	/**
-	 * @return depth map shader objects
-	 */
-	public static DepthMapShaderObjects getDepthMapShaderObjects() {
-		return depthMapShaderObjects;
-	}
-
-	/**
 	 * @return object 3d vbo renderer
 	 */
 	public Object3DVBORenderer getObject3DVBORenderer() {
@@ -525,19 +513,16 @@ public final class Engine {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onUpdateCameraMatrix() {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onUpdateModelViewMatrix() {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onBindTexture(int textureId) {
 					if (lightingShader != null) lightingShader.bindTexture(this, textureId);
@@ -579,19 +564,16 @@ public final class Engine {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onUpdateCameraMatrix() {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onUpdateModelViewMatrix() {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onBindTexture(int textureId) {
 					if (lightingShader != null) lightingShader.bindTexture(this, textureId);
@@ -633,19 +615,16 @@ public final class Engine {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onUpdateCameraMatrix() {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onUpdateModelViewMatrix() {
 					if (lightingShader != null) lightingShader.updateMatrices(this);
 					if (particlesShader != null) particlesShader.updateMatrices(this);
 					if (shadowMapping != null) shadowMapping.updateMVPMatrices(this);
-					if (depthMapShaderObjects != null) depthMapShaderObjects.updateMatrices();
 				}
 				final public void onBindTexture(int textureId) {
 					if (lightingShader != null) lightingShader.bindTexture(this, textureId);
@@ -759,21 +738,12 @@ public final class Engine {
 		// print out animation processing target
 		Console.println("TDME: animation processing target: " + animationProcessingTarget);
 
-		// depth map reading available
-		if (renderer.isDepthMapReadAvailable() == false) {
-			Console.println("TDME::Using alternative depth map for picking");
-			depthMapShaderObjects = new DepthMapShaderObjects(renderer);
-			depthMapShaderObjects.initialize();
-			depthMap = new DepthMap(renderer, this);			
-		}
-
 		// determine initialized from sub systems
 		initialized&= shadowMappingShaderPre == null?true:shadowMappingShaderPre.isInitialized();
 		initialized&= shadowMappingShaderRender == null?true:shadowMappingShaderRender.isInitialized();
 		initialized&= lightingShader.isInitialized();
 		initialized&= particlesShader.isInitialized();
 		initialized&= guiShader.isInitialized();
-		initialized&= depthMapShaderObjects == null?true:depthMapShaderObjects.isInitialized();
 
 		//
 		Console.println("TDME::initialized & ready: " + initialized);
@@ -889,27 +859,6 @@ public final class Engine {
 	}
 
 	/**
-	 * @return visible objects
-	 */
-	public ArrayList<Object3D> getVisibleObjects() {
-		return visibleObjects;
-	}
-
-	/**
-	 * @return visible object particle system entities
-	 */
-	public ArrayList<ObjectParticleSystemEntity> getVisibleOpses() {
-		return visibleOpses;
-	}
-
-	/**
-	 * @return visible particle system entities
-	 */
-	public ArrayList<PointsParticleSystemEntity> getVisiblePpses() {
-		return visiblePpses;
-	}
-
-	/**
 	 * Renders the scene
 	 * @param drawable
 	 */
@@ -1005,11 +954,6 @@ public final class Engine {
 		// store matrices
 		modelViewMatrix.set(renderer.getModelViewMatrix());
 		projectionMatrix.set(renderer.getProjectionMatrix());
-
-		// render depth map if required 
-		if (depthMap != null) {
-			depthMap.render();
-		}
 
 		// unuse framebuffer if we have one
 		if (frameBuffer != null) FrameBuffer.disableFrameBuffer();
