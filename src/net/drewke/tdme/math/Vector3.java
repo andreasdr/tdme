@@ -252,6 +252,13 @@ public final class Vector3 {
 	}
 
 	/**
+	 * @return the vectors volume if it would span a box
+	 */
+	public float computeVolume() {
+		return data[0] * data[1] * data[2];
+	}
+
+	/**
 	 * @return the vectors length squared
 	 */
 	public float computeLengthSquared() {

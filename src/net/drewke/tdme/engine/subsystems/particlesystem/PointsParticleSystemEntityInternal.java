@@ -313,8 +313,8 @@ public class PointsParticleSystemEntityInternal extends Transformations implemen
 		}
 
 		// scale a bit up to make picking work better
-		boundingBoxTransformed.getMin().sub(0.1f);
-		boundingBoxTransformed.getMax().add(0.1f);
+		boundingBoxTransformed.getMin().sub(0.05f);
+		boundingBoxTransformed.getMax().add(0.05f);
 
 		// compute bounding boxes
 		boundingBoxTransformed.update();
