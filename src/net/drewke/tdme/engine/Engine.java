@@ -1053,12 +1053,11 @@ public final class Engine {
 			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
 			if (lineSegment.doesBoundingBoxCollideWithLineSegment(entity.getBoundingBoxTransformed(), tmpVector3a, tmpVector3b, tmpVector3c, tmpVector3d) == true) { 
-				Triangle[] entityTriangles = entity.getFaceTrianglesTransformed();
-				for (Triangle triangle: entityTriangles) {
+				for (Vector3[] vertices: entity.getTransformedFacesIterator()) {
 					if (lineSegment.doesLineSegmentCollideWithTriangle(
-						triangle.getVertices()[0],
-						triangle.getVertices()[1],
-						triangle.getVertices()[2],
+						vertices[0],
+						vertices[1],
+						vertices[2],
 						tmpVector3a,
 						tmpVector3b,
 						tmpVector3e

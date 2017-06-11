@@ -1,5 +1,7 @@
 package net.drewke.tdme.engine.subsystems.object;
 
+import java.util.Iterator;
+
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Timing;
 import net.drewke.tdme.engine.Transformations;
@@ -22,6 +24,120 @@ import net.drewke.tdme.utils.HashMap;
  */
 public class Object3DBase extends Transformations {
 
+	/**
+	 * Transformed faces iterator
+	 * @author Andreas Drewke
+	 * @version $Id$
+	 */
+	public static class TransformedFacesIterator implements Iterator<Vector3[]>, Iterable<Vector3[]> {
+		private Object3DBase object3DBase;
+		private Vector3[] vertices;
+		private Matrix4x4 matrix;
+		private int faceCount;
+		private int faceIdxTotal;
+		private int faceIdx;
+		private int object3DGroupIdx;
+		private int facesEntityIdx;
+
+		/**
+		 * Protected constructor
+		 */
+		protected TransformedFacesIterator(Object3DBase object3DBase) {
+			this.object3DBase = object3DBase;
+			this.vertices = new Vector3[3];
+			this.vertices[0] = new Vector3();
+			this.vertices[1] = new Vector3();
+			this.vertices[2] = new Vector3();
+			this.matrix = new Matrix4x4();
+			reset();
+		}
+
+		/**
+		 * Reset
+		 */
+		private void reset() {
+			faceCount = 0;
+			for (Object3DGroup object3DGroup: object3DBase.object3dGroups) {
+				for (FacesEntity facesEntity: object3DGroup.group.getFacesEntities()) {
+					faceCount+= facesEntity.getFaces().length;
+				}
+			}
+			faceIdx = 0;
+			faceIdxTotal = 0;
+			object3DGroupIdx = 0;
+			facesEntityIdx = 0;
+			Object3DGroup object3DGroup = object3DBase.object3dGroups[object3DGroupIdx];
+			matrix = 
+				(object3DGroup.mesh.skinning == true?
+					matrix.identity():
+					matrix.set(object3DGroup.groupTransformationsMatrix)
+				).
+				multiply(object3DBase.transformationsMatrix);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.lang.Iterable#iterator()
+		 */
+		public Iterator<Vector3[]> iterator() {
+			reset();
+			return this;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.util.Iterator#hasNext()
+		 */
+		public boolean hasNext() {
+			return faceIdxTotal < faceCount;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see java.util.Iterator#next()
+		 */
+		public Vector3[] next() {
+			Object3DGroup object3DGroup = object3DBase.object3dGroups[object3DGroupIdx];
+			FacesEntity[] facesEntities = object3DGroup.group.getFacesEntities();
+			FacesEntity facesEntity = facesEntities[facesEntityIdx];
+			Face[] faces = facesEntity.getFaces();
+			Face face = faces[faceIdx];
+
+			// compute vertices 
+			int[] faceVertexIndices = face.getVertexIndices();
+			Vector3[] groupVerticesTransformed = object3DGroup.mesh.transformedVertices;
+			matrix.multiply(groupVerticesTransformed[faceVertexIndices[0]], vertices[0]);
+			matrix.multiply(groupVerticesTransformed[faceVertexIndices[1]], vertices[1]);
+			matrix.multiply(groupVerticesTransformed[faceVertexIndices[2]], vertices[2]);
+
+			// increment to next face
+			faceIdxTotal++;
+			faceIdx++;
+
+			// check if idxes over flow, if not yet finished
+			if (faceIdxTotal < faceCount) {
+				if (faceIdx == faces.length) {
+					faceIdx = 0;
+					facesEntityIdx++;
+					if (facesEntityIdx == facesEntities.length) {
+						facesEntityIdx = 0;
+						object3DGroupIdx++;
+						object3DGroup = object3DBase.object3dGroups[object3DGroupIdx];
+						matrix = 
+							(object3DGroup.mesh.skinning == true?
+								matrix.identity():
+								matrix.set(object3DGroup.groupTransformationsMatrix)
+							).
+							multiply(object3DBase.transformationsMatrix);
+					}
+				}
+			}
+
+			//
+			return vertices;
+		}
+	}
+
 	protected Model model;
 	protected HashMap<String, Matrix4x4> transformationsMatrices;
 	protected Matrix4x4 parentTransformationsMatrix;
@@ -39,6 +155,8 @@ public class Object3DBase extends Transformations {
 	protected Engine.AnimationProcessingTarget animationProcessingTarget;
 
 	private ArrayList<AnimationState> overlayAnimationsToRemove;
+
+	private TransformedFacesIterator transformedFacesIterator;
 
 	/**
 	 * Public constructor
@@ -60,6 +178,7 @@ public class Object3DBase extends Transformations {
 		parentTransformationsMatrix = new Matrix4x4();
 		transformationsMatrix = super.getTransformationsMatrix();
 		tmpMatrix1 = new Matrix4x4();
+		transformedFacesIterator = null;
 
 		// animation
 		setAnimation(Model.ANIMATIONSETUP_DEFAULT);
@@ -455,34 +574,13 @@ public class Object3DBase extends Transformations {
 	}
 
 	/**
-	 * Retrieves complete list of face triangles for all render groups transformed into word space 
-	 * @return faces
+	 * @return transformed faces iterator
 	 */
-	public Triangle[] getFaceTrianglesTransformed() {
-		ArrayList<Triangle> triangles = new ArrayList<Triangle>();
-		for (Object3DGroup object3DGroup: object3dGroups) {
-			Vector3[] groupVerticesTransformed = object3DGroup.mesh.transformedVertices;
-			tmpMatrix1 = 
-				(object3DGroup.mesh.skinning == true?
-					tmpMatrix1.identity():
-					tmpMatrix1.set(object3DGroup.groupTransformationsMatrix)
-				).
-				multiply(transformationsMatrix);
-			for (FacesEntity facesEntity: object3DGroup.group.getFacesEntities())
-			for (Face face: facesEntity.getFaces()) {
-				int[] faceVertexIndices = face.getVertexIndices();
-				triangles.add(
-					new Triangle(
-						tmpMatrix1.multiply(groupVerticesTransformed[faceVertexIndices[0]], new Vector3()),
-						tmpMatrix1.multiply(groupVerticesTransformed[faceVertexIndices[1]], new Vector3()),
-						tmpMatrix1.multiply(groupVerticesTransformed[faceVertexIndices[2]], new Vector3())
-					)
-				);
-			}
+	public TransformedFacesIterator getTransformedFacesIterator() {
+		if (transformedFacesIterator == null) {
+			transformedFacesIterator = new TransformedFacesIterator(this);
 		}
-		Triangle[] triangleArray = new Triangle[triangles.size()];
-		triangles.toArray(triangleArray);
-		return triangleArray;
+		return transformedFacesIterator;
 	}
 
 	/**
