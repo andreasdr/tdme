@@ -1194,15 +1194,18 @@ public final class Engine {
 	/**
 	 * Creates a PNG file from current screen
 	 * TODO:
-	 * 	this does not seem to work with GLES2 and offscreen engines 
+	 * 	this does not seem to work with GLES2 and offscreen engines
+	 * @param path name 
 	 * @param file name
+	 * @return success
 	 */
-	public void makeScreenshot(String pathName, String fileName) {
+	public boolean makeScreenshot(String pathName, String fileName) {
 		// use framebuffer if we have one
 		if (frameBuffer != null) frameBuffer.enableFrameBuffer();
 
 		// fetch pixel
 		ByteBuffer pixels = renderer.readPixels(0, 0, width, height);
+		if (pixels == null) return false;
 
 		// 
 		FileOutputStream fos = null;
@@ -1211,12 +1214,16 @@ public final class Engine {
 			PNG.save(width, height, pixels, fos);
 		} catch (IOException ioe) {
 			Console.println("Engine::makeScreenshot(): failed: " + ioe.getMessage());
+			return false;
 		} finally {
 			if (fos != null) try { fos.close(); } catch (IOException ioe2) {}
 		}
 
 		// unuse framebuffer if we have one
 		if (frameBuffer != null) FrameBuffer.disableFrameBuffer();
+		
+		//
+		return true;
 	}
 
 	/**
