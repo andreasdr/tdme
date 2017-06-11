@@ -2,9 +2,9 @@
 
 #version 100
 
-#define SHADOWMAP_LOOKUPS	2.0
-
 precision highp float;
+
+#define SHADOWMAP_LOOKUPS	2.0
 
 uniform sampler2D textureUnit;
 uniform float texturePixelWidth;
