@@ -11,6 +11,10 @@ import java.util.Iterator;
 import net.drewke.tdme.engine.fileio.textures.PNG;
 import net.drewke.tdme.engine.model.Color4;
 import net.drewke.tdme.engine.physics.CollisionDetection;
+import net.drewke.tdme.engine.primitives.ConvexMesh;
+import net.drewke.tdme.engine.primitives.LineSegment;
+import net.drewke.tdme.engine.primitives.PrimitiveModel;
+import net.drewke.tdme.engine.primitives.Triangle;
 import net.drewke.tdme.engine.subsystems.lighting.LightingShader;
 import net.drewke.tdme.engine.subsystems.manager.MeshManager;
 import net.drewke.tdme.engine.subsystems.manager.TextureManager;
@@ -110,8 +114,14 @@ public final class Engine {
 	private Matrix4x4 tmpMatrix4x4;
 	private Vector3 tmpVector3a;
 	private Vector3 tmpVector3b;
+	private Vector3 tmpVector3c;
+	private Vector3 tmpVector3d;
+	private Vector3 tmpVector3f;
+	private Vector3 tmpVector3e;
 	private Vector4 tmpVector4a;
 	private Vector4 tmpVector4b;
+
+	private LineSegment lineSegment;
 
 	protected boolean initialized;
 
@@ -248,8 +258,16 @@ public final class Engine {
 		tmpMatrix4x4 = new Matrix4x4();
 		tmpVector3a = new Vector3();
 		tmpVector3b = new Vector3();
+		tmpVector3c = new Vector3();
+		tmpVector3d = new Vector3();
+		tmpVector3e = new Vector3();
+		tmpVector3f = new Vector3();
+
 		tmpVector4a = new Vector4();
 		tmpVector4b = new Vector4();
+
+		// line segment
+		lineSegment = new LineSegment();
 
 		//
 		initialized = false;
@@ -960,6 +978,29 @@ public final class Engine {
 	}
 
 	/**
+	 * Compute world coordinate from mouse position and z value
+	 * @param mouse x
+	 * @param mouse y
+	 * @param z
+	 * @param world coordinate
+	 */
+	public void computeWorldCoordinateByMousePosition(int mouseX, int mouseY, float z, Vector3 worldCoordinate) {
+		// http://stackoverflow.com/questions/7692988/opengl-math-projecting-screen-space-to-world-space-coords-solved
+		tmpMatrix4x4.set(modelViewMatrix).multiply(projectionMatrix).invert();
+		tmpMatrix4x4.multiply(
+			tmpVector4a.set(
+				(2.0f * mouseX / width) - 1.0f,
+				1.0f - (2.0f * mouseY / height),
+				2.0f * z - 1.0f,
+				1.0f
+			),
+			tmpVector4b
+		);
+		tmpVector4b.scale(1.0f / tmpVector4b.getW());
+		worldCoordinate.set(tmpVector4b.getArray());
+	}
+
+	/**
 	 * Compute world coordinate from mouse position
 	 * @param mouse x
 	 * @param mouse y
@@ -970,26 +1011,13 @@ public final class Engine {
 		if (frameBuffer != null) frameBuffer.enableFrameBuffer();
 
 		// http://stackoverflow.com/questions/7692988/opengl-math-projecting-screen-space-to-world-space-coords-solved
-		tmpMatrix4x4.set(modelViewMatrix).multiply(projectionMatrix).invert();
-		float mouseToProjectionX = (2.0f * mouseX / width) - 1.0f;
-		float mouseToProjectionY = 1.0f - (2.0f * mouseY / height);
-		float pixelDepth = renderer.readPixelDepth(mouseX, height - mouseY);
-		tmpMatrix4x4.multiply(
-			tmpVector4a.set(
-				mouseToProjectionX,
-				mouseToProjectionY,
-				2.0f * pixelDepth - 1.0f,
-				1.0f
-			),
-			tmpVector4b
-		);
-		tmpVector4b.scale(1.0f / tmpVector4b.getW());
+		float z = renderer.readPixelDepth(mouseX, height - mouseY);
 
 		// unuse framebuffer if we have one
 		if (frameBuffer != null) FrameBuffer.disableFrameBuffer();
 
 		//
-		worldCoordinate.set(tmpVector4b.getArray());
+		computeWorldCoordinateByMousePosition(mouseX, mouseY, z, worldCoordinate);
 	}
 
 	/**
@@ -1010,10 +1038,11 @@ public final class Engine {
 	 * @return entity or null
 	 */
 	public Entity getObjectByMousePosition(int mouseX, int mouseY, EntityPickingFilter filter) {
-		// get world coordinate
-		computeWorldCoordinateByMousePosition(mouseX, mouseY, tmpVector3a);
+		computeWorldCoordinateByMousePosition(mouseX, mouseY, 0f, tmpVector3a);
+		computeWorldCoordinateByMousePosition(mouseX, mouseY, 1f, tmpVector3b);
 
-		float selectedEntityVolume = Float.MAX_VALUE;
+		// selected entity
+		float selectedEntityDistance = Float.MAX_VALUE;
 		Entity selectedEntity = null;
 
 		// iterate visible objects
@@ -1021,18 +1050,24 @@ public final class Engine {
 			Object3D entity = visibleObjects.get(i);
 			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
-			if (entity.getBoundingBoxTransformed().containsPoint(tmpVector3a) == true) {
-				// yep, got one, its pickable and mouse world coordinate is in bounding volume
-				float entityVolume =
-					tmpVector3b.set(
-						entity.getBoundingBoxTransformed().getMax()
-					).sub(
-						entity.getBoundingBoxTransformed().getMin()
-					).computeVolume();
-				// check if not yet selected entity or its volume smaller than previous match
-				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
-					selectedEntity = entity;
-					selectedEntityVolume = entityVolume;
+			if (lineSegment.doesBoundingBoxCollideWithLineSegment(entity.getBoundingBoxTransformed(), tmpVector3a, tmpVector3b, tmpVector3c, tmpVector3d) == true) { 
+				Triangle[] entityTriangles = entity.getFaceTrianglesTransformed();
+				for (Triangle triangle: entityTriangles) {
+					if (lineSegment.doesLineSegmentCollideWithTriangle(
+						triangle.getVertices()[0],
+						triangle.getVertices()[1],
+						triangle.getVertices()[2],
+						tmpVector3a,
+						tmpVector3b,
+						tmpVector3e
+					) == true) {
+						float entityDistance = tmpVector3e.sub(tmpVector3a).computeLength();
+						// check if not yet selected entity or its distance smaller than previous match
+						if (selectedEntity == null || entityDistance < selectedEntityDistance) {
+							selectedEntity = entity;
+							selectedEntityDistance = entityDistance;
+						}
+					}
 				}
 			}
 		}
@@ -1042,39 +1077,27 @@ public final class Engine {
 			ObjectParticleSystemEntity entity = visibleOpses.get(i);
 			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
-			if (entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
-				// yep, got one, its pickable and mouse world coordinate is in bounding volume
-				float entityVolume =
-					tmpVector3b.set(
-						entity.getBoundingBoxTransformed().getMax()
-					).sub(
-						entity.getBoundingBoxTransformed().getMin()
-					).computeVolume();
-				// check if not yet selected entity or its volume smaller than previous match
-				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
+			if (lineSegment.doesBoundingBoxCollideWithLineSegment(entity.getBoundingBoxTransformed(), tmpVector3a, tmpVector3b, tmpVector3c, tmpVector3d) == true) {
+				float entityDistance = tmpVector3e.set(entity.getBoundingBoxTransformed().getCenter()).sub(tmpVector3a).computeLength();
+				// check if not yet selected entity or its distance smaller than previous match
+				if (selectedEntity == null || entityDistance < selectedEntityDistance) {
 					selectedEntity = entity;
-					selectedEntityVolume = entityVolume;
+					selectedEntityDistance = entityDistance;
 				}
 			}
 		}
 
-		// iterate visible pointparticle system entities
+		// iterate visible point particle system entities
 		for (int i = 0; i < visiblePpses.size(); i++) {
 			PointsParticleSystemEntity entity = visiblePpses.get(i);
 			if (entity.isPickable() == false) continue;
 			if (filter != null && filter.filterEntity(entity) == false) continue;
-			if (entity.getBoundingBoxTransformed().containsPoint(tmpVector3a)) {
-				// yep, got one, its pickable and mouse world coordinate is in bounding volume
-				float entityVolume =
-					tmpVector3b.set(
-						entity.getBoundingBoxTransformed().getMax()
-					).sub(
-						entity.getBoundingBoxTransformed().getMin()
-					).computeVolume();
-				// check if not yet selected entity or its volume smaller than previous match
-				if (selectedEntity == null || entityVolume < selectedEntityVolume) {
+			if (lineSegment.doesBoundingBoxCollideWithLineSegment(entity.getBoundingBoxTransformed(), tmpVector3a, tmpVector3b, tmpVector3c, tmpVector3d) == true) {
+				float entityDistance = tmpVector3e.set(entity.getBoundingBoxTransformed().getCenter()).sub(tmpVector3a).computeLength();
+				// check if not yet selected entity or its distance smaller than previous match
+				if (selectedEntity == null || entityDistance < selectedEntityDistance) {
 					selectedEntity = entity;
-					selectedEntityVolume = entityVolume;
+					selectedEntityDistance = entityDistance;
 				}
 			}
 		}

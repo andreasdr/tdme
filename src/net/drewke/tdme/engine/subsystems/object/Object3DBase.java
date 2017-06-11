@@ -427,7 +427,10 @@ public class Object3DBase extends Transformations {
 	}
 
 	/**
-	 * Retrieves complete list of face triangles for all render groups 
+	 * Retrieves complete list of face triangles for all render groups
+	 * TODO: 
+	 * 	these are untransformed, so even without group transformation, check later if this makes really sense in all cases
+	 * 	as it is working with physics test 1 + 3 I currently leave it as it is
 	 * @return faces
 	 */
 	public Triangle[] getFaceTriangles() {
@@ -442,6 +445,37 @@ public class Object3DBase extends Transformations {
 						groupVerticesTransformed[faceVertexIndices[0]].clone(),
 						groupVerticesTransformed[faceVertexIndices[1]].clone(),
 						groupVerticesTransformed[faceVertexIndices[2]].clone()
+					)
+				);
+			}
+		}
+		Triangle[] triangleArray = new Triangle[triangles.size()];
+		triangles.toArray(triangleArray);
+		return triangleArray;
+	}
+
+	/**
+	 * Retrieves complete list of face triangles for all render groups transformed into word space 
+	 * @return faces
+	 */
+	public Triangle[] getFaceTrianglesTransformed() {
+		ArrayList<Triangle> triangles = new ArrayList<Triangle>();
+		for (Object3DGroup object3DGroup: object3dGroups) {
+			Vector3[] groupVerticesTransformed = object3DGroup.mesh.transformedVertices;
+			tmpMatrix1 = 
+				(object3DGroup.mesh.skinning == true?
+					tmpMatrix1.identity():
+					tmpMatrix1.set(object3DGroup.groupTransformationsMatrix)
+				).
+				multiply(transformationsMatrix);
+			for (FacesEntity facesEntity: object3DGroup.group.getFacesEntities())
+			for (Face face: facesEntity.getFaces()) {
+				int[] faceVertexIndices = face.getVertexIndices();
+				triangles.add(
+					new Triangle(
+						tmpMatrix1.multiply(groupVerticesTransformed[faceVertexIndices[0]], new Vector3()),
+						tmpMatrix1.multiply(groupVerticesTransformed[faceVertexIndices[1]], new Vector3()),
+						tmpMatrix1.multiply(groupVerticesTransformed[faceVertexIndices[2]], new Vector3())
 					)
 				);
 			}
