@@ -11,12 +11,14 @@ import net.drewke.tdme.math.Vector3;
  */
 public final class LineSegment {
 
-	private Vector3 direction = new Vector3();
+	private Vector3 d = new Vector3();
 	private Vector3 d1 = new Vector3();
 	private Vector3 d2 = new Vector3();
 	private Vector3 r = new Vector3();
 	private Vector3 c1 = new Vector3();
 	private Vector3 c2 = new Vector3();
+	private Vector3 n = new Vector3();
+	private Vector3 t = new Vector3();
 
 	/**
 	 * Does line segments collide
@@ -120,8 +122,8 @@ public final class LineSegment {
 		float tmax = 1.0f;
 		float minXYZ[] = boundingBox.min.getArray();
 		float maxXYZ[] = boundingBox.max.getArray();
-		direction.set(q).sub(p); 
-		float directionXYZ[] = direction.getArray();
+		d.set(q).sub(p); 
+		float directionXYZ[] = d.getArray();
 		float pointXYZ[] = p.getArray();
 		for (int i = 0; i < 3; i++) {
 			if (Math.abs(directionXYZ[i]) < MathTools.EPSILON &&
@@ -147,8 +149,8 @@ public final class LineSegment {
 		if (tmin > 1.0) return false;
 
 		// compute contact points
-		contactMin.set(p).add(d1.set(direction).scale(tmin));
-		contactMax.set(p).add(d2.set(direction).scale(tmax));
+		contactMin.set(p).add(d1.set(d).scale(tmin));
+		contactMax.set(p).add(d2.set(d).scale(tmax));
 
 		// we have a collision
 		return true;
@@ -174,9 +176,9 @@ public final class LineSegment {
 		Vector3 obbCenter = orientedBoundingBox.center;
 		Vector3 obbHalfExtension = orientedBoundingBox.halfExtension;
 		float obbHalfExtensionXYZ[] = obbHalfExtension.getArray();
-		direction.set(q).sub(p);
+		d.set(q).sub(p);
 		for (int i = 0; i < 3; i++) {
-			float directionLengthOnAxis = Vector3.computeDotProduct(direction, obbAxes[i]);
+			float directionLengthOnAxis = Vector3.computeDotProduct(d, obbAxes[i]);
 			float obbExtensionLengthOnAxis = obbHalfExtensionXYZ[i];
 			float obbCenterLengthOnAxis = Vector3.computeDotProduct(obbCenter, obbAxes[i]);
 			float pointLengthOnAxis = Vector3.computeDotProduct(p, obbAxes[i]);
@@ -203,10 +205,65 @@ public final class LineSegment {
 		if (tmin > 1.0) return false;
 
 		// compute contact points
-		contactMin.set(p).add(d1.set(direction).scale(tmin));
-		contactMax.set(p).add(d2.set(direction).scale(tmax));
+		contactMin.set(p).add(d1.set(d).scale(tmin));
+		contactMax.set(p).add(d2.set(d).scale(tmax));
 
 		// we have a collision
+		return true;
+	}
+
+	/**
+	 * Does line segment collides with triangle
+	 * @param p1 triangle point 1
+	 * @param p2 triangle point 2
+	 * @param p3 triangle point 3
+	 * @param r1 line segment point 1
+	 * @param r2 line segment point 2
+	 * @param pip point of intersection
+	 * @return line segment collides with triangle
+	 * @see https://gamedev.stackexchange.com/questions/5585/line-triangle-intersection-last-bits
+	 */
+	public boolean doesLineSegmentCollideWithTriangle(Vector3 p1, Vector3 p2, Vector3 p3, Vector3 r1, Vector3 r2, Vector3 contact) {
+		// find triangle normal
+		Vector3.computeCrossProduct(d1.set(p2).sub(p1), d2.set(p3).sub(p1), n).normalize();
+
+		// find distance from LP1 and LP2 to the plane defined by the triangle
+		float dist1 = Vector3.computeDotProduct(d1.set(r1).sub(p1), n);
+		float dist2 = Vector3.computeDotProduct(d2.set(r2).sub(p1), n);
+
+		// check if line doesn't cross the triangle.
+		if (dist1 * dist2 >= 0.0f) {  
+			return false; 
+		}
+
+		// line and plane are parallel
+		if (Math.abs(dist1 - dist2) < MathTools.EPSILON) {  
+			return false; 
+		}
+
+		// Find point on the line that intersects with the plane
+	    contact.set(r2).sub(r1).scale(-dist1 / (dist2-dist1));
+	    contact.add(r1);
+
+	    // check intersection p2-p1
+	    Vector3.computeCrossProduct(n, d1.set(p2).sub(p1), t);
+	    if (Vector3.computeDotProduct(t, d2.set(contact).sub(p1)) < 0f) {
+	    	return false;
+	    }
+
+	    // check intersection p3-p2
+	    Vector3.computeCrossProduct(n, d1.set(p3).sub(p2), t);
+	    if (Vector3.computeDotProduct(t, d2.set(contact).sub(p2)) < 0f) {
+	    	return false;
+	    }
+
+	    // check intersection p1-p3
+	    Vector3.computeCrossProduct(n, d1.set(p1).sub(p3), t);
+	    if (Vector3.computeDotProduct(t, d2.set(contact).sub(p1)) < 0f) {
+	    	return false;
+	    }
+
+		// intersection
 		return true;
 	}
 
