@@ -42,7 +42,6 @@ public final class ShadowMap {
 		this.shadowMapping = shadowMapping;
 		lightCamera = new Camera(shadowMapping.renderer);
 		frameBuffer = new FrameBuffer(
-			shadowMapping.engine,
 			width,
 			height,
 			FrameBuffer.FRAMEBUFFER_DEPTHBUFFER
