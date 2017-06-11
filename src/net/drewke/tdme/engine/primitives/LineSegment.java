@@ -219,7 +219,7 @@ public final class LineSegment {
 	 * @param p3 triangle point 3
 	 * @param r1 line segment point 1
 	 * @param r2 line segment point 2
-	 * @param pip point of intersection
+	 * @param point of intersection
 	 * @return line segment collides with triangle
 	 * @see https://gamedev.stackexchange.com/questions/5585/line-triangle-intersection-last-bits
 	 */
