@@ -93,6 +93,8 @@ abstract public class GLRenderer {
 
 	public float pointSize;
 
+	protected FloatBuffer pixelDepthBuffer = FloatBuffer.allocate(1);
+
 	/**
 	 * public constructor
 	 */
@@ -201,11 +203,6 @@ abstract public class GLRenderer {
 	 * @return if skinning is supported
 	 */
 	abstract public boolean isSkinningAvailable();
-
-	/**
-	 * @return if deth map reading is available
-	 */
-	abstract public boolean isDepthMapReadAvailable();
 
 	/**
 	 * @return number of texture units

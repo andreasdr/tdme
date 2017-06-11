@@ -1002,6 +1002,8 @@ public final class Engine {
 
 	/**
 	 * Compute world coordinate from mouse position
+	 * TODO:
+	 * 	this does not work with GLES2
 	 * @param mouse x
 	 * @param mouse y
 	 * @param world coordinate
@@ -1192,6 +1194,8 @@ public final class Engine {
 
 	/**
 	 * Creates a PNG file from current screen
+	 * TODO:
+	 * 	this does not seem to work with GLES2 and offscreen engines 
 	 * @param file name
 	 */
 	public void makeScreenshot(String pathName, String fileName) {

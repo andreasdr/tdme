@@ -157,14 +157,6 @@ public abstract class GLES2Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isDepthMapReadAvailable()
-	 */
-	public boolean isDepthMapReadAvailable() {
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#getTextureUnits()
 	 */
 	final public int getTextureUnits() {
@@ -951,10 +943,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#readPixelDepth(int, int)
 	 */
 	final public float readPixelDepth(int x, int y) {
-		// TODO: GLES2 can not read from depth buffer
-		FloatBuffer pixelDepthBuffer = FloatBuffer.allocate(1);
-		gl.glReadPixels(x, y, 1, 1, GLES2.GL_DEPTH_COMPONENT, GL.GL_FLOAT, pixelDepthBuffer);
-		return 0.0f;
+		return -1f;
 	}
 
 	/*
@@ -962,11 +951,7 @@ public abstract class GLES2Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#readPixels(int, int, int, int)
 	 */
 	final public ByteBuffer readPixels(int x, int y, int width, int height) {
-		// TODO: Doesnt work on my ARM GLES2 machine
-		ByteBuffer pixelBuffer = ByteBuffer.allocateDirect(width * height * Byte.SIZE * 4).order(ByteOrder.nativeOrder());
-		gl.glPixelStorei(GLES2.GL_PACK_ALIGNMENT, 1);
-		gl.glReadPixels(x, y, width, height, GLES2.GL_RGBA, GLES2.GL_UNSIGNED_BYTE, pixelBuffer);
-		return pixelBuffer;
+		return null;
 	}
 
 	/*

@@ -170,14 +170,6 @@ public abstract class GL3Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isDepthMapReadAvailable()
-	 */
-	final public boolean isDepthMapReadAvailable() {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#getTextureUnits()
 	 */
 	final public int getTextureUnits() {
@@ -970,7 +962,7 @@ public abstract class GL3Renderer extends GLRenderer {
 	 * @see net.drewke.tdme.engine.GLRenderer#readPixelDepth(int, int)
 	 */
 	final public float readPixelDepth(int x, int y) {
-		FloatBuffer pixelDepthBuffer = FloatBuffer.allocate(1);
+		pixelDepthBuffer.clear();
 		gl.glReadPixels(x, y, 1, 1, GL3.GL_DEPTH_COMPONENT, GL.GL_FLOAT, pixelDepthBuffer);
 		return pixelDepthBuffer.get();
 	}

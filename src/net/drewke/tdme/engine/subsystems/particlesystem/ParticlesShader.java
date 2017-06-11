@@ -119,7 +119,7 @@ public final class ParticlesShader {
 		isRunning = true;
 		renderer.useProgram(renderProgramId);
 		renderer.setProgramUniformInteger(uniformDiffuseTextureUnit, 0);
-		if (uniformPointSize != -1) renderer.setProgramUniformFloat(uniformPointSize, renderer.pointSize);
+		renderer.setProgramUniformFloat(uniformPointSize, renderer.pointSize);
 		renderer.bindTexture(pointTextureId);
 		
 	}
