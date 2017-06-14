@@ -21,7 +21,7 @@ import net.drewke.tdme.utils.Console;
 public final class GUIRenderer {
 
 	// quad count
-	private final static int QUAD_COUNT = 16384; 
+	private final static int QUAD_COUNT = 1024;
 
 	// full screen corner coordinates
 	private final static float SCREEN_LEFT = -1f;

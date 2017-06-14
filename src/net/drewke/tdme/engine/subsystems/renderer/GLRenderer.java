@@ -198,11 +198,6 @@ abstract public class GLRenderer {
 	 * @return if displacement mapping is supported
 	 */
 	abstract public boolean isDisplacementMappingAvailable();
-	
-	/**
-	 * @return if skinning is supported
-	 */
-	abstract public boolean isSkinningAvailable();
 
 	/**
 	 * @return number of texture units

@@ -95,21 +95,21 @@ public final class BatchVBORendererTriangles {
 		// upload vertices
 		renderer.uploadBufferObject(
 			vboIds[0],
-			fbVertices.limit() * Float.SIZE / Byte.SIZE,
+			fbVertices.remaining() * Float.SIZE / Byte.SIZE,
 			fbVertices
 		);
 
 		// upload normals
 		renderer.uploadBufferObject(
 			vboIds[1],
-			fbNormals.limit() * Float.SIZE / Byte.SIZE,
+			fbNormals.remaining() * Float.SIZE / Byte.SIZE,
 			fbNormals
 		);
 
 		// upload texture coordinates
 		renderer.uploadBufferObject(
 			vboIds[2],
-			fbTextureCoordinates.limit() * Float.SIZE / Byte.SIZE,
+			fbTextureCoordinates.remaining() * Float.SIZE / Byte.SIZE,
 			fbTextureCoordinates
 		);
 

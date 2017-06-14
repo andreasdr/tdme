@@ -41,17 +41,10 @@
 
 #version 330
 
-#define MAX_JOINTS	60
-
 // standard layouts
 layout (location = 0) in vec3 inVertex;
 layout (location = 1) in vec3 inNormal;
 layout (location = 2) in vec2 inTextureUV;
-
-// skinning layouts
-layout (location = 4) in float inSkinningVertexJoints;
-layout (location = 5) in vec4 inSkinningVertexJointIdxs;
-layout (location = 6) in vec4 inSkinningVertexJointWeights;
 
 // normal mapping
 layout (location = 7) in vec3 inTangent;
@@ -67,9 +60,6 @@ uniform mat4 mvpMatrix;
 uniform mat4 mvMatrix;
 uniform mat4 normalMatrix;
 
-uniform mat4 skinningJointsTransformationsMatrices[MAX_JOINTS];
-uniform int skinningEnabled;
-
 // will be passed to fragment shader
 out vec2 vsFragTextureUV;
 out vec3 vsPosition;
@@ -80,41 +70,6 @@ out vec3 vsBitangent;
 void main(void) {
 	// pass texture uv to fragment shader
 	vsFragTextureUV = inTextureUV;
-
-	// do skinning
-	vec4 skinnedInVertex = vec4(0.0, 0.0, 0.0, 0.0);
-	vec3 skinnedInNormal = vec3(0.0, 0.0, 0.0);
-	if (skinningEnabled == 1) {
-		float totalWeights = 0.0;
-		int _inSkinningVertexJoints = int(inSkinningVertexJoints);
-		for (int i = 0; i < 4; i++) {
-			if (_inSkinningVertexJoints > i) {
-				int inSkinningVertexJointIdx = int(inSkinningVertexJointIdxs[i]);
-				mat4 transformationsMatrix =
-					skinningJointsTransformationsMatrices[inSkinningVertexJointIdx];
-				skinnedInVertex+=
-						(transformationsMatrix * vec4(inVertex, 1.0)) * inSkinningVertexJointWeights[i];
-				skinnedInNormal+=
-						(mat3(transformationsMatrix) * inNormal) * inSkinningVertexJointWeights[i];
-				totalWeights+= inSkinningVertexJointWeights[i];
-			}
-		}
-
-		// scale to full weight
-		if (totalWeights != 1.0) {
-			float weightNormalized = totalWeights != 0.0?1.0 / totalWeights:0.0;
-
-			// vertex
-			skinnedInVertex*= weightNormalized;
-			skinnedInNormal*= weightNormalized;
-		}
-
-		// this is a vertex now
-		skinnedInVertex.w = 1.0;
-	} else {
-		skinnedInVertex = vec4(inVertex, 1.0);
-		skinnedInNormal = vec3(inNormal);
-	}
 
 	// compute gl position
 	if (displacementTextureAvailable == 1) {
@@ -127,14 +82,14 @@ void main(void) {
 	}
 
 	//
-	gl_Position = mvpMatrix * skinnedInVertex;
+	gl_Position = mvpMatrix * vec4(inVertex, 1.0);
 
 	// Eye-coordinate position of vertex, needed in various calculations
-	vec4 vsPosition4 = mvMatrix * skinnedInVertex;
+	vec4 vsPosition4 = mvMatrix * vec4(inVertex, 1.0);
 	vsPosition = vsPosition4.xyz / vsPosition4.w;
 
 	// compute the normal
-	vsNormal = normalize(vec3(normalMatrix * vec4(skinnedInNormal, 0.0)));
+	vsNormal = normalize(vec3(normalMatrix * vec4(inNormal, 0.0)));
 
 	//
 	if (normalTextureAvailable == 1) {

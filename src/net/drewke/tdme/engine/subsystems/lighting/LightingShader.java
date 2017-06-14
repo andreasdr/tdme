@@ -1,7 +1,6 @@
 package net.drewke.tdme.engine.subsystems.lighting;
 
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
-import net.drewke.tdme.engine.subsystems.skinning.SkinningShader;
 import net.drewke.tdme.math.Matrix4x4;
 
 /**
@@ -9,7 +8,7 @@ import net.drewke.tdme.math.Matrix4x4;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class LightingShader extends SkinningShader {
+public final class LightingShader {
 
 	public final static int MAX_LIGHTS = 8;
 
@@ -168,9 +167,6 @@ public final class LightingShader extends SkinningShader {
 			renderer.setProgramAttributeLocation(renderLightingProgramId, 2, "inTextureUV");
 		}
 
-		// pre link init skinning shader
-		super.preLinkInit(renderer, renderLightingProgramId);
-
 		// link program
 		if (renderer.linkProgram(renderLightingProgramId) == false) return;
 
@@ -249,10 +245,6 @@ public final class LightingShader extends SkinningShader {
 			if (uniformLightQuadraticAttenuation[i] == -1) return;
 		}
 
-		// init skinning shader
-		super.initialize(renderer, renderLightingProgramId);
-		if (super.isInitialized() == false) return;
-
 		//
 		initialized = true;
 	}
@@ -261,9 +253,6 @@ public final class LightingShader extends SkinningShader {
 	 * Use lighting program
 	 */
 	public void useProgram() {
-		// use skinning shader
-		super.useProgram();
-
 		//
 		isRunning = true;
 		renderer.useProgram(renderLightingProgramId);
@@ -291,9 +280,6 @@ public final class LightingShader extends SkinningShader {
 	 * Unuse lighting program
 	 */
 	public void unUseProgram() {
-		// unuse skinning shader
-		super.unUseProgram();
-
 		// Engine.getInstance().renderer.useProgram(Engine.getInstance().renderer.ID_NONE);
 		isRunning = false;
 	}

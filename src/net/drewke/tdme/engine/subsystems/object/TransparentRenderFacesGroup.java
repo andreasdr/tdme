@@ -129,7 +129,7 @@ public final class TransparentRenderFacesGroup {
 			}
 			batchVBORenderers.add(batchVBORendererTriangles);
 		}
-		
+
 		// try to add vertex
 		BatchVBORendererTriangles batchVBORendererTriangles = batchVBORenderers.get(batchVBORenderers.size() - 1);
 		if (batchVBORendererTriangles.addVertex(vertex, normal, textureCoordinate) == true) return;

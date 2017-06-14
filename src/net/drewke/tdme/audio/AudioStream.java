@@ -26,9 +26,9 @@ public final class AudioStream extends AudioEntity {
 	private int[] alBufferIds;
 	private int alSourceId;
 	private AudioDecoder decoder;
-	int format;
-	int frequency;
-	ByteBuffer data;
+	private int format;
+	private int frequency;
+	private ByteBuffer data;
 
 	/**
 	 * Protected constructor
@@ -219,7 +219,7 @@ public final class AudioStream extends AudioEntity {
 
 		//
 		data = ByteBuffer.allocateDirect(BUFFER_SIZE);
-		
+
 		//
 		initiated = true;
 		return true;

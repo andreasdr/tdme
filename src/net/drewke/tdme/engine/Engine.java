@@ -67,8 +67,8 @@ public final class Engine {
 	private static MeshManager meshManager = null;
 	private static GUIRenderer guiRenderer = null;
 
-	public enum AnimationProcessingTarget {GPU, CPU, CPU_NORENDERING};
-	public static AnimationProcessingTarget animationProcessingTarget = AnimationProcessingTarget.GPU;
+	public enum AnimationProcessingTarget {CPU, CPU_NORENDERING};
+	public static AnimationProcessingTarget animationProcessingTarget = AnimationProcessingTarget.CPU;
 
 	protected static ShadowMappingShaderPre shadowMappingShaderPre = null;
 	protected static ShadowMappingShaderRender shadowMappingShaderRender = null;
@@ -679,7 +679,7 @@ public final class Engine {
 			} else {
 				// nope, renderer skinning on GPU to speed up things and do not shadow mapping
 				shadowMappingEnabled = false;
-				animationProcessingTarget = AnimationProcessingTarget.GPU;
+				animationProcessingTarget = AnimationProcessingTarget.CPU;
 			}
 		} else {
 			Console.println("Engine::initialize(): unsupported GL!");
@@ -933,7 +933,7 @@ public final class Engine {
 		}
 
 		// render objects
-		object3DVBORenderer.render(visibleObjects, true, Object3DVBORenderer.DepthBufferMode.NORMAL, lightingShader);
+		object3DVBORenderer.render(visibleObjects, true, Object3DVBORenderer.DepthBufferMode.NORMAL);
 
 		// setup up gl3 stuff
 		if (lightingShader != null) {

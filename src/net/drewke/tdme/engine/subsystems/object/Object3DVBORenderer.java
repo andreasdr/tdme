@@ -11,7 +11,6 @@ import net.drewke.tdme.engine.subsystems.lighting.LightingShader;
 import net.drewke.tdme.engine.subsystems.particlesystem.PointsParticleSystemEntityInternal;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.engine.subsystems.shadowmapping.ShadowMapping;
-import net.drewke.tdme.engine.subsystems.skinning.SkinningShader;
 import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Matrix4x4Negative;
@@ -143,10 +142,9 @@ public final class Object3DVBORenderer {
 	 * Renders all given objects
 	 * @param objects
 	 * @param render transparent faces
-	 * @param depth buffer mode
-	 * @param skinning shader  
+	 * @param depth buffer mode  
 	 */
-	public void render(ArrayList<Object3D> objects, boolean renderTransparentFaces, DepthBufferMode depthBufferMode, SkinningShader skinningShader) {
+	public void render(ArrayList<Object3D> objects, boolean renderTransparentFaces, DepthBufferMode depthBufferMode) {
 		// clear transparent render faces data
 		transparentRenderFacesPool.reset();
 		releaseTransparentFacesGroups();
@@ -166,7 +164,7 @@ public final class Object3DVBORenderer {
 		// render objects
 		for (ArrayList<Object3D> objectsByModel: visibleObjectsByModels.getValuesIterator()) {
 			if (objectsByModel.size() > 0) {
-				renderObjectsOfSameType(objectsByModel, renderTransparentFaces, skinningShader);
+				renderObjectsOfSameType(objectsByModel, renderTransparentFaces);
 				objectsByModel.clear();
 			}
 		}
@@ -363,7 +361,7 @@ public final class Object3DVBORenderer {
 	 * @param collect render faces
 	 * @param skinning shader
 	 */
-	protected void renderObjectsOfSameType(ArrayList<Object3D> objects, boolean collectTransparentFaces, SkinningShader skinningShader) {
+	protected void renderObjectsOfSameType(ArrayList<Object3D> objects, boolean collectTransparentFaces) {
 		// do pre render steps
 		for (int i = 0; i < objects.size(); i++) {
 			Object3D object = objects.get(i);
@@ -524,21 +522,6 @@ public final class Object3DVBORenderer {
 						renderer.bindBitangentsBufferObject(currentVBOTangentBitangentIds[1]);
 					}
 
-					// set up GPU skinning, if required
-					if (Engine.animationProcessingTarget == Engine.AnimationProcessingTarget.GPU &&
-						_object3DGroup.mesh.skinning == true &&
-						skinningShader != null) {
-						_object3DGroup.mesh.setupSkinningTransformationsMatrices(_object3DGroup.groupTransformationsMatricesVector);
-						skinningShader.initSkinning(renderer, _object3DGroup.mesh);
-						int[] currentSkinningIds = ((Object3DGroupVBORenderer)_object3DGroup.renderer).vboSkinningIds;
-						if (boundSkinningIds != currentSkinningIds) {
-							boundSkinningIds = currentSkinningIds;
-							renderer.bindSkinningVerticesJointsBufferObject(currentSkinningIds[0]);
-							renderer.bindSkinningVerticesVertexJointsIdxBufferObject(currentSkinningIds[1]);
-							renderer.bindSkinningVerticesVertexJointsWeightBufferObject(currentSkinningIds[2]);
-						}
-					}
-
 					// set up local -> world transformations matrix
 					renderer.getModelViewMatrix().set(
 						(_object3DGroup.mesh.skinning == true?
@@ -580,11 +563,6 @@ public final class Object3DVBORenderer {
 					if (shadowMapping != null) {
 						shadowMapping.endObjectTransformations();
 					}
-				}
-
-				// done skinning
-				if (skinningShader != null) {
-					skinningShader.doneSkinning(renderer);
 				}
 
 				// keep track of rendered faces

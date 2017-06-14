@@ -1,9 +1,8 @@
 package net.drewke.tdme.engine.subsystems.object;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
+import java.util.Arrays;
 
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.model.Face;
@@ -22,7 +21,8 @@ public final class Object3DGroupMesh {
 
 	protected static final int MAX_VERTEX_JOINTS = 5;
 
-	private int faces;
+	protected Group group;
+	protected int faceCount;
 
 	protected short indices[] = null;
 	protected Vector3 transformedVertices[] = null;
@@ -33,16 +33,6 @@ public final class Object3DGroupMesh {
 	protected TextureCoordinate textureCoordinates[] = null;
 
 	protected Engine.AnimationProcessingTarget animationProcessingTarget;
-	protected ShortBuffer sbIndices = null;
-	protected FloatBuffer fbVertices = null;
-	protected FloatBuffer fbNormals = null;
-	protected FloatBuffer fbTextureCoordinates = null;
-	protected FloatBuffer fbTangents = null;
-	protected FloatBuffer fbBitangents = null;
-	protected FloatBuffer gIbSkinningVerticesJoints = null;
-	protected FloatBuffer gFbSkinningVerticesVertexJointsIdxs = null;
-	protected FloatBuffer gFbSkinningVerticesVertexJointsWeights = null;
-	protected FloatBuffer gFbSkinningJointsTransformationsMatrices = null;
 	protected ArrayList<Matrix4x4> gSkinningJointBindMatrices = null;
 	protected Matrix4x4 gFbSkinningTransformationMatrix = null;
 
@@ -71,18 +61,17 @@ public final class Object3DGroupMesh {
 	protected static Object3DGroupMesh createMesh(Engine.AnimationProcessingTarget animationProcessingTarget, Group group, HashMap<String, Matrix4x4> transformationMatrices) {
 		Object3DGroupMesh mesh = new Object3DGroupMesh();
 
+		//
+		mesh.group = group;
+
 		// group data
 		Vector3[] groupVertices = group.getVertices();
 		Vector3[] groupNormals = group.getNormals();
-		TextureCoordinate[] groupTextureCoordinates = group.getTextureCoordinates();
 		Vector3[] groupTangents = group.getTangents();
 		Vector3[] groupBitangents = group.getBitangents();
 
 		// determine face count
-		int faceCount = group.getFaceCount();
-
-		// set up face count
-		mesh.faces = faceCount;
+		mesh.faceCount = group.getFaceCount();
 
 		// animation processing target
 		mesh.animationProcessingTarget = animationProcessingTarget;
@@ -101,14 +90,6 @@ public final class Object3DGroupMesh {
 		mesh.transformedNormals = new Vector3[groupNormals.length];
 		for(int j = 0; j < mesh.transformedNormals.length; j++) {
 			mesh.transformedNormals[j] = new Vector3().set(groupNormals[j]);
-		}
-
-		// texture coordinates
-		if (groupTextureCoordinates != null) {
-			mesh.textureCoordinates = new TextureCoordinate[groupTextureCoordinates.length];
-			for(int j = 0; j < mesh.textureCoordinates.length; j++) {
-				mesh.textureCoordinates[j] = new TextureCoordinate(groupTextureCoordinates[j]);
-			}
 		}
 
 		// transformed mesh tangents
@@ -145,33 +126,6 @@ public final class Object3DGroupMesh {
 
 		//
 		mesh.recreatedBuffers = false;
-
-		// create mesh upload buffers
-		if (mesh.animationProcessingTarget != Engine.AnimationProcessingTarget.CPU_NORENDERING) {
-			mesh.sbIndices = ByteBuffer.allocateDirect(mesh.faces * 3 * Short.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asShortBuffer();
-			mesh.fbVertices = ByteBuffer.allocateDirect(groupVertices.length * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-			mesh.fbNormals = ByteBuffer.allocateDirect(groupNormals.length * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-			mesh.fbTextureCoordinates = groupTextureCoordinates != null?ByteBuffer.allocateDirect(groupTextureCoordinates.length * 2 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer():null;
-			mesh.fbTangents = groupTangents != null?ByteBuffer.allocateDirect(groupTangents.length * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer():null;
-			mesh.fbBitangents = groupBitangents != null?ByteBuffer.allocateDirect(groupBitangents.length * 3 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer():null;
-
-			// create face vertex indices, will never be changed in engine
-			for (FacesEntity facesEntity: group.getFacesEntities())
-			for (Face face: facesEntity.getFaces())
-			for (int vertexIndex: face.getVertexIndices()) {
-				mesh.sbIndices.put((short)vertexIndex);
-			}
-			mesh.sbIndices.flip();
-
-			// create texture coordinates buffer, will never be changed in engine
-			if (mesh.fbTextureCoordinates != null) {
-				// construct texture coordinates byte buffer as this will not change usually
-				for (TextureCoordinate textureCoordinate: groupTextureCoordinates) {
-					mesh.fbTextureCoordinates.put(textureCoordinate.getArray());
-				}
-				mesh.fbTextureCoordinates.flip();
-			}
-		}
 
 		// group transformations matrix
 		if (mesh.animationProcessingTarget == Engine.AnimationProcessingTarget.CPU ||
@@ -213,51 +167,6 @@ public final class Object3DGroupMesh {
 						jointWeightIdx++;
 					}
 				}
-			} else
-			// GPU setup
-			if (mesh.animationProcessingTarget == Engine.AnimationProcessingTarget.GPU) {
-				// create skinning buffers
-				mesh.gIbSkinningVerticesJoints = ByteBuffer.allocateDirect(groupVertices.length * 1 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-				mesh.gFbSkinningVerticesVertexJointsIdxs = ByteBuffer.allocateDirect(groupVertices.length * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-				mesh.gFbSkinningVerticesVertexJointsWeights = ByteBuffer.allocateDirect(groupVertices.length * 4 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-				mesh.gFbSkinningJointsTransformationsMatrices = ByteBuffer.allocateDirect(60 * 16 * Float.SIZE / Byte.SIZE).order(ByteOrder.nativeOrder()).asFloatBuffer();
-				mesh.gFbSkinningTransformationMatrix = new Matrix4x4();
-
-				// fill skinning buffers, joint bind matrices
-				mesh.skinningJoints = skinning.getJoints().length;
-				mesh.gSkinningJointBindMatrices = new ArrayList<Matrix4x4>();
-				for (Joint joint: skinning.getJoints()) {
-					mesh.gSkinningJointBindMatrices.add(joint.getBindMatrix());					
-				}
-
-				//
-				JointWeight[][] jointsWeights = skinning.getVerticesJointsWeights();
-				float[] weights = skinning.getWeights();
-				for (int groupVertexIndex = 0; groupVertexIndex < groupVertices.length; groupVertexIndex++) {
-					int vertexJoints = jointsWeights[groupVertexIndex].length;
-
-					// put number of joints
-					mesh.gIbSkinningVerticesJoints.put((float)vertexJoints);
- 
-					// vertex joint idx 1..4
-					for (int i = 0; i < 4; i++) {
-						mesh.gFbSkinningVerticesVertexJointsIdxs.put((float)(vertexJoints > i?jointsWeights[groupVertexIndex][i].getJointIndex():-1));
-					}
-
-					// vertex joint weight 1..4
-					for (int i = 0; i < 4; i++) {
-						mesh.gFbSkinningVerticesVertexJointsWeights.put(vertexJoints > i?weights[jointsWeights[groupVertexIndex][i].getWeightIndex()]:0.0f);
-					}
-				}
-
-				// put number of joints
-				mesh.gIbSkinningVerticesJoints.flip();
-
-				// vertex joint idx 1..4
-				mesh.gFbSkinningVerticesVertexJointsIdxs.flip();
-
-				// vertex joint weight 1..4
-				mesh.gFbSkinningVerticesVertexJointsWeights.flip();
 			}
 		}
 
@@ -265,7 +174,7 @@ public final class Object3DGroupMesh {
 		mesh.tmpVector3 = new Vector3();
 
 		// issue a recreate buffer and upload to graphics board
-		mesh.recreateBuffers(group);
+		mesh.recreateBuffers();
 
 		//
 		return mesh;
@@ -364,7 +273,7 @@ public final class Object3DGroupMesh {
 				}
 
 				// recreate buffers
-				recreateBuffers(group);
+				recreateBuffers();
 			}
 		} else {
 			if (animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) {
@@ -380,58 +289,15 @@ public final class Object3DGroupMesh {
 				}
 
 				// recreate buffers
-				recreateBuffers(group);
+				recreateBuffers();
 			}
 		}
 	}
 
 	/**
-	 * Set ups or fills skinning transformation matrices
-	 */
-	protected void setupSkinningTransformationsMatrices(ArrayList<Matrix4x4> gSkinningJointTransformationsMatrices) {
-		gFbSkinningJointsTransformationsMatrices.clear();
-		for (int jointIdx = 0; jointIdx < skinningJoints; jointIdx++) {
-			gFbSkinningTransformationMatrix.set(gSkinningJointBindMatrices.get(jointIdx));
-			gFbSkinningTransformationMatrix.multiply(gSkinningJointTransformationsMatrices.get(jointIdx));
-			gFbSkinningJointsTransformationsMatrices.put(
-				gFbSkinningTransformationMatrix.getArray()
-			);
-		}
-		gFbSkinningJointsTransformationsMatrices.flip();
-	}
-
-	/**
 	 * Recreates group float buffers
-	 * @param group
 	 */
-	protected void recreateBuffers(Group group) {
-		if (animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) return;
-
-		// flip buffers for reusage
-		fbVertices.clear();
-		fbNormals.clear();
-
-		// (re)create buffers
-		//	vertices, normals
-		int vertices = transformedVertices.length;
-		for (int vertexIndex = 0; vertexIndex < vertices; vertexIndex++) {
-			fbVertices.put(transformedVertices[vertexIndex].getArray());
-			fbNormals.put(transformedNormals[vertexIndex].getArray());
-		}
-		//	tangents, bitangents
-		if (fbTangents != null && fbBitangents != null)
-		for (int vertexIndex = 0; vertexIndex < vertices; vertexIndex++) {
-			fbTangents.put(transformedTangents[vertexIndex].getArray());
-			fbBitangents.put(transformedBitangents[vertexIndex].getArray());
-		}
-
-		// flip buffers
-		fbVertices.flip();
-		fbNormals.flip();
-		if (fbTangents != null) fbTangents.flip();
-		if (fbBitangents != null) fbBitangents.flip();
-
-		//
+	protected void recreateBuffers() {
 		recreatedBuffers = true;
 	}
 
@@ -448,24 +314,122 @@ public final class Object3DGroupMesh {
 	}
 
 	/**
-	 * @return transformed vertices
+	 * Set up vertex indices buffer
+	 * @return vertex indices buffer
 	 */
-	public Vector3[] getTransformedVertices() {
-		return transformedVertices;
+	protected ShortBuffer setupVertexIndicesBuffer() {
+		ShortBuffer sbIndices = Buffer.getByteBuffer(faceCount * 3 * Short.SIZE / Byte.SIZE).asShortBuffer();
+
+		// create face vertex indices, will never be changed in engine
+		for (short index: indices) {
+			sbIndices.put(index);
+		}
+
+		// done
+		sbIndices.flip();
+		return sbIndices;
 	}
 
 	/**
-	 * @return number of skinning joints
+	 * Set up texture coordinates buffer
+	 * @return texture coordinates buffer
 	 */
-	public int getSkinningJoints() {
-		return skinningJoints;
+	protected FloatBuffer setupTextureCoordinatesBuffer() {
+		// check if we have texture coordinates
+		TextureCoordinate[] groupTextureCoordinates = group.getTextureCoordinates();
+		if (groupTextureCoordinates == null) return null;
+
+		// create texture coordinates buffer, will never be changed in engine
+		FloatBuffer fbTextureCoordinates = Buffer.getByteBuffer(groupTextureCoordinates.length * 2 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+
+		// construct texture coordinates byte buffer as this will not change usually
+		for (TextureCoordinate textureCoordinate: groupTextureCoordinates) {
+			fbTextureCoordinates.put(textureCoordinate.getArray());
+		}
+
+		// done
+		fbTextureCoordinates.flip();
+		return fbTextureCoordinates;
 	}
 
 	/**
-	 * @return skinning joints transformations matrices float buffer
+	 * Set up vertices buffer
+	 * @return vertices buffer
 	 */
-	public FloatBuffer getSkinningJointsTransformationsMatricesFloatBuffer() {
-		return gFbSkinningJointsTransformationsMatrices;
+	protected FloatBuffer setupVerticesBuffer() {
+		FloatBuffer fbVertices = Buffer.getByteBuffer(transformedVertices.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+
+		// create vertices buffers
+		for (Vector3 vertex: transformedVertices) {
+			fbVertices.put(vertex.getArray());
+		}
+
+		// done
+		fbVertices.flip();
+		return fbVertices;
+	}
+
+	/**
+	 * Set up normals buffer
+	 * @return normals buffer
+	 */
+	protected FloatBuffer setupNormalsBuffer() {
+		FloatBuffer fbNormals = Buffer.getByteBuffer(transformedNormals.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+
+		// create vertices buffers
+		for (Vector3 normal: transformedNormals) {
+			fbNormals.put(normal.getArray());
+		}
+
+		// done
+		fbNormals.flip();
+		return fbNormals;
+	}
+
+	/**
+	 * Set up tangents buffer
+	 * @return tangents buffer
+	 */
+	protected FloatBuffer setupTangentsBuffer() {
+		// check if we have tangents
+		if (transformedTangents == null) {
+			return null;
+		}
+
+		//
+		FloatBuffer fbTangents = Buffer.getByteBuffer(transformedTangents.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+
+		// create tangents buffers
+		for (Vector3 tangent: transformedTangents) {
+			fbTangents.put(tangent.getArray());
+		}
+
+		// done
+		fbTangents.flip();
+		return fbTangents;
+	}
+
+	/**
+	 * Set up bitangents buffer
+	 * @return bitangents buffer
+	 */
+	protected FloatBuffer setupBitangentsBuffer() {
+		// check if we have tangents
+		if (transformedBitangents == null) {
+			return null;
+		}
+
+		//
+		FloatBuffer fbBitangents = Buffer.getByteBuffer(transformedBitangents.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+
+		// create tangents buffers
+		for (Vector3 bitangent: transformedBitangents) {
+			fbBitangents.put(bitangent.getArray());
+		}
+
+		// done
+		fbBitangents.flip();
+		return fbBitangents;
 	}
 
 }

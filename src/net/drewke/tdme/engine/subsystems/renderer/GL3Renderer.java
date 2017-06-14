@@ -162,14 +162,6 @@ public abstract class GL3Renderer extends GLRenderer {
 
 	/*
 	 * (non-Javadoc)
-	 * @see net.drewke.tdme.engine.subsystems.renderer.GLRenderer#isSkinningAvailable()
-	 */
-	final public boolean isSkinningAvailable() {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see net.drewke.tdme.engine.GLRenderer#getTextureUnits()
 	 */
 	final public int getTextureUnits() {

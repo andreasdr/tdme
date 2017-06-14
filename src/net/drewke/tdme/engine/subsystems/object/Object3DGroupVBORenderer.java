@@ -1,5 +1,8 @@
 package net.drewke.tdme.engine.subsystems.object;
 
+import java.nio.FloatBuffer;
+import java.nio.ShortBuffer;
+
 import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.subsystems.manager.VBOManager;
 
@@ -35,96 +38,73 @@ public final class Object3DGroupVBORenderer {
 
 		// initialize if not yet done
 		if (vboBaseIds == null) {
-			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO(object3DGroup.id, object3DGroup.mesh.fbTextureCoordinates != null?4:3);
+			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO(object3DGroup.id, object3DGroup.mesh.group.getTextureCoordinates() != null?4:3);
 			vboBaseIds = vboManaged.getVBOGlIds();
 			meshUploaded = vboManaged.isUploaded();
 		}
-		
+
 		// initialize tangents, bitangents
 		if (object3DVBORenderer.renderer.isNormalMappingAvailable() &&
-			object3DGroup.mesh.fbTangents != null &&
-			object3DGroup.mesh.fbBitangents != null &&
+			object3DGroup.mesh.group.getTangents() != null &&
+			object3DGroup.mesh.group.getBitangents() != null &&
 			vboTangentBitangentIds == null) {
 			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO(object3DGroup.id + ".tangentbitangent", 2);
 			vboTangentBitangentIds = vboManaged.getVBOGlIds();
-		}
-
-		// initialize skinning if not yet done
-		if (Engine.animationProcessingTarget == Engine.AnimationProcessingTarget.GPU &&
-			object3DGroup.mesh.skinning == true &&
-			vboSkinningIds == null) {
-			//
-			VBOManager.VBOManaged vboManaged = Engine.getInstance().getVBOManager().addVBO(object3DGroup.id + ".skinning", 3);
-			vboSkinningIds = vboManaged.getVBOGlIds();
-
-			// upload if required
-			if (vboManaged.isUploaded() == false) {
-				// upload skinning buffers
-				object3DVBORenderer.renderer.uploadBufferObject(
-					vboSkinningIds[0],
-					object3DGroup.mesh.gIbSkinningVerticesJoints.capacity() * Float.SIZE / Byte.SIZE,
-					object3DGroup.mesh.gIbSkinningVerticesJoints
-				);
-				object3DVBORenderer.renderer.uploadBufferObject(
-					vboSkinningIds[1],
-					object3DGroup.mesh.gFbSkinningVerticesVertexJointsIdxs.capacity() * Float.SIZE / Byte.SIZE,
-					object3DGroup.mesh.gFbSkinningVerticesVertexJointsIdxs
-				);				
-				object3DVBORenderer.renderer.uploadBufferObject(
-					vboSkinningIds[2],
-					object3DGroup.mesh.gFbSkinningVerticesVertexJointsWeights.capacity() * Float.SIZE / Byte.SIZE,
-					object3DGroup.mesh.gFbSkinningVerticesVertexJointsWeights
-				);
-			}
 		}
 
 		// check if to upload new mesh
 		if (object3DGroup.mesh.hasRecreatedBuffers() == true || meshUploaded == false) {
 			if (meshUploaded == false) {
 				// upload indices
+				ShortBuffer sbIndices = object3DGroup.mesh.setupVertexIndicesBuffer();
 				object3DVBORenderer.renderer.uploadIndicesBufferObject(
 					vboBaseIds[0],
-					object3DGroup.mesh.sbIndices.capacity() * Short.SIZE / Byte.SIZE,
-					object3DGroup.mesh.sbIndices
+					sbIndices.remaining() * Short.SIZE / Byte.SIZE,
+					sbIndices
 				);
 
 				// upload texture coordinates
-				if (object3DGroup.mesh.fbTextureCoordinates != null) {
+				if (object3DGroup.mesh.group.getTextureCoordinates() != null) {
+					FloatBuffer fbTextureCoordinates = object3DGroup.mesh.setupTextureCoordinatesBuffer(); 
 					object3DVBORenderer.renderer.uploadBufferObject(
 						vboBaseIds[3],
-						object3DGroup.mesh.fbTextureCoordinates.capacity() * Float.SIZE / Byte.SIZE,
-						object3DGroup.mesh.fbTextureCoordinates
+						fbTextureCoordinates.remaining() * Float.SIZE / Byte.SIZE,
+						fbTextureCoordinates
 					);
 				}
 			}
 
 			// upload vertices
+			FloatBuffer fbVertices = object3DGroup.mesh.setupVerticesBuffer();
 			object3DVBORenderer.renderer.uploadBufferObject(
 				vboBaseIds[1],
-				object3DGroup.mesh.fbVertices.capacity() * Float.SIZE / Byte.SIZE,
-				object3DGroup.mesh.fbVertices
+				fbVertices.remaining() * Float.SIZE / Byte.SIZE,
+				fbVertices
 			);
 
 			// upload normals
+			FloatBuffer fbNormals = object3DGroup.mesh.setupNormalsBuffer();
 			object3DVBORenderer.renderer.uploadBufferObject(
 				vboBaseIds[2],
-				object3DGroup.mesh.fbNormals.capacity() * Float.SIZE / Byte.SIZE,
-				object3DGroup.mesh.fbNormals
+				fbNormals.remaining() * Float.SIZE / Byte.SIZE,
+				fbNormals
 			);
 
 			// tangents, bitangents
 			if (vboTangentBitangentIds != null) {
 				// upload tangents
+				FloatBuffer fbTangents = object3DGroup.mesh.setupTangentsBuffer();
 				object3DVBORenderer.renderer.uploadBufferObject(
 					vboTangentBitangentIds[0],
-					object3DGroup.mesh.fbTangents.capacity() * Float.SIZE / Byte.SIZE,
-					object3DGroup.mesh.fbTangents
+					fbTangents.remaining() * Float.SIZE / Byte.SIZE,
+					fbTangents
 				);
 				// upload bitangents
+				FloatBuffer fbBitangents = object3DGroup.mesh.setupBitangentsBuffer();
 				object3DVBORenderer.renderer.uploadBufferObject(
 					vboTangentBitangentIds[1],
-					object3DGroup.mesh.fbBitangents.capacity() * Float.SIZE / Byte.SIZE,
-					object3DGroup.mesh.fbBitangents
+					fbBitangents.remaining() * Float.SIZE / Byte.SIZE,
+					fbBitangents
 				);
 			}
 		}
