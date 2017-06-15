@@ -319,8 +319,8 @@ public final class Object3DVBORenderer {
 			for (int vertexIdx = 0; vertexIdx < 3; vertexIdx++) {
 				short arrayIdx = transparentRenderFace.object3DGroup.mesh.indices[transparentRenderFace.faceIdx * 3 + vertexIdx];
 				trfGroup.addVertex(
-					modelViewMatrix.multiply(transparentRenderFace.object3DGroup.mesh.transformedVertices[arrayIdx], transformedVertex),
-					modelViewMatrix.multiplyNoTranslation(transparentRenderFace.object3DGroup.mesh.transformedNormals[arrayIdx], transformedNormal),
+					modelViewMatrix.multiply(transparentRenderFace.object3DGroup.mesh.vertices[arrayIdx], transformedVertex),
+					modelViewMatrix.multiplyNoTranslation(transparentRenderFace.object3DGroup.mesh.normals[arrayIdx], transformedNormal),
 					transparentRenderFace.object3DGroup.mesh.textureCoordinates != null?transparentRenderFace.object3DGroup.mesh.textureCoordinates[arrayIdx]:null
 				);
 			}

@@ -105,7 +105,7 @@ public class Object3DBase extends Transformations {
 
 			// compute vertices 
 			int[] faceVertexIndices = face.getVertexIndices();
-			Vector3[] groupVerticesTransformed = object3DGroup.mesh.transformedVertices;
+			Vector3[] groupVerticesTransformed = object3DGroup.mesh.vertices;
 			matrix.multiply(groupVerticesTransformed[faceVertexIndices[0]], vertices[0]);
 			matrix.multiply(groupVerticesTransformed[faceVertexIndices[1]], vertices[1]);
 			matrix.multiply(groupVerticesTransformed[faceVertexIndices[2]], vertices[2]);
@@ -555,7 +555,7 @@ public class Object3DBase extends Transformations {
 	public Triangle[] getFaceTriangles() {
 		ArrayList<Triangle> triangles = new ArrayList<Triangle>();
 		for (Object3DGroup object3DGroup: object3dGroups) {
-			Vector3[] groupVerticesTransformed = object3DGroup.mesh.transformedVertices;
+			Vector3[] groupVerticesTransformed = object3DGroup.mesh.vertices;
 			for (FacesEntity facesEntity: object3DGroup.group.getFacesEntities())
 			for (Face face: facesEntity.getFaces()) {
 				int[] faceVertexIndices = face.getVertexIndices();

@@ -2,9 +2,9 @@ package net.drewke.tdme.engine.subsystems.object;
 
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
-import java.util.Arrays;
 
 import net.drewke.tdme.engine.Engine;
+import net.drewke.tdme.engine.Engine.AnimationProcessingTarget;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
@@ -14,27 +14,23 @@ import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
-import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.HashMap;
 
 public final class Object3DGroupMesh {
 
-	protected static final int MAX_VERTEX_JOINTS = 5;
-
 	protected Group group;
+
 	protected int faceCount;
 
 	protected short indices[] = null;
-	protected Vector3 transformedVertices[] = null;
-	protected Vector3 transformedNormals[] = null;
-	protected Vector3 transformedTangents[] = null;
-	protected Vector3 transformedBitangents[] = null;
+	protected Vector3 vertices[] = null;
+	protected Vector3 normals[] = null;
+	protected Vector3 tangents[] = null;
+	protected Vector3 bitangents[] = null;
 
 	protected TextureCoordinate textureCoordinates[] = null;
 
 	protected Engine.AnimationProcessingTarget animationProcessingTarget;
-	protected ArrayList<Matrix4x4> gSkinningJointBindMatrices = null;
-	protected Matrix4x4 gFbSkinningTransformationMatrix = null;
 
 	private int cSkinningMaxVertexWeights = -1;
 	private float cSkinningJointWeight[][] = null;
@@ -80,32 +76,46 @@ public final class Object3DGroupMesh {
 		Skinning skinning = group.getSkinning();
 		mesh.skinning = skinning != null;
 
-		// transformed mesh vertices
-		mesh.transformedVertices = new Vector3[groupVertices.length];
-		for(int j = 0; j < mesh.transformedVertices.length; j++) {
-			mesh.transformedVertices[j] = new Vector3().set(groupVertices[j]);
-		}
+		// set up transformed vertices, normals and friends
+		if ((skinning != null && animationProcessingTarget == AnimationProcessingTarget.CPU) || 
+			animationProcessingTarget == AnimationProcessingTarget.CPU_NORENDERING) {
+			// transformed mesh vertices
+			mesh.vertices = new Vector3[groupVertices.length];
+			for(int j = 0; j < mesh.vertices.length; j++) {
+				mesh.vertices[j] = new Vector3().set(groupVertices[j]);
+			}
 
-		// transformed mesh normals
-		mesh.transformedNormals = new Vector3[groupNormals.length];
-		for(int j = 0; j < mesh.transformedNormals.length; j++) {
-			mesh.transformedNormals[j] = new Vector3().set(groupNormals[j]);
-		}
-
-		// transformed mesh tangents
-		if (groupTangents != null) {
-			mesh.transformedTangents = new Vector3[groupTangents.length];
-			for(int j = 0; j < mesh.transformedTangents.length; j++) {
-				mesh.transformedTangents[j] = new Vector3().set(groupTangents[j]);
-			}			
-		}
-
-		// transformed mesh bitangents
-		if (groupBitangents != null) {
-			mesh.transformedBitangents = new Vector3[groupBitangents.length];
-			for(int j = 0; j < mesh.transformedBitangents.length; j++) {
-				mesh.transformedBitangents[j] = new Vector3().set(groupBitangents[j]);
-			}			
+			// transformed mesh normals
+			mesh.normals = new Vector3[groupNormals.length];
+			for(int j = 0; j < mesh.normals.length; j++) {
+				mesh.normals[j] = new Vector3().set(groupNormals[j]);
+			}
+	
+			// transformed mesh tangents
+			if (groupTangents != null) {
+				mesh.tangents = new Vector3[groupTangents.length];
+				for(int j = 0; j < mesh.tangents.length; j++) {
+					mesh.tangents[j] = new Vector3().set(groupTangents[j]);
+				}			
+			}
+	
+			// transformed mesh bitangents
+			if (groupBitangents != null) {
+				mesh.bitangents = new Vector3[groupBitangents.length];
+				for(int j = 0; j < mesh.bitangents.length; j++) {
+					mesh.bitangents[j] = new Vector3().set(groupBitangents[j]);
+				}			
+			}
+		} else {
+			// no transformations on CPU, we can use model data
+			mesh.vertices = groupVertices;
+			mesh.normals = groupNormals;
+			if (groupTangents != null) {
+				mesh.tangents = groupTangents;
+			}
+			if (groupBitangents != null) {
+				mesh.bitangents = groupBitangents;
+			}
 		}
 
 		// indices
@@ -136,7 +146,7 @@ public final class Object3DGroupMesh {
 		}
 
 		// skinning
-		if (skinning != null) {
+		if ((skinning != null && (animationProcessingTarget == AnimationProcessingTarget.CPU || animationProcessingTarget == AnimationProcessingTarget.CPU_NORENDERING))) {
 			// skinning computation caches if computing skinning on CPU
 			if (mesh.animationProcessingTarget == Engine.AnimationProcessingTarget.CPU ||
 				mesh.animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) {
@@ -192,7 +202,7 @@ public final class Object3DGroupMesh {
 
 		// transformations for skinned meshes
 		Skinning skinning = group.getSkinning();
-		if (skinning != null) {
+		if (skinning != null && (animationProcessingTarget == AnimationProcessingTarget.CPU || animationProcessingTarget == AnimationProcessingTarget.CPU_NORENDERING)) {
 			// compute skinning on CPU if required
 			if (animationProcessingTarget == Engine.AnimationProcessingTarget.CPU ||
 				animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) {
@@ -210,13 +220,13 @@ public final class Object3DGroupMesh {
 				for (int vertexIndex = 0; vertexIndex < groupVertices.length; vertexIndex++) {
 					// do vertices
 					vertex = groupVertices[vertexIndex];
-					transformedVertex = transformedVertices[vertexIndex].set(0f,0f,0f);
+					transformedVertex = vertices[vertexIndex].set(0f,0f,0f);
 					normal = groupNormals[vertexIndex];
-					transformedNormal = transformedNormals[vertexIndex].set(0f,0f,0f);
+					transformedNormal = normals[vertexIndex].set(0f,0f,0f);
 					tangent = groupTangent != null?groupTangent[vertexIndex]:null;
-					transformedTangent = transformedTangents != null?transformedTangents[vertexIndex].set(0f,0f,0f):null;
+					transformedTangent = tangents != null?tangents[vertexIndex].set(0f,0f,0f):null;
 					bitangent = groupTangent != null?groupBitangent[vertexIndex]:null;
-					transformedBitangent = transformedBitangents != null?transformedBitangents[vertexIndex].set(0f,0f,0f):null;
+					transformedBitangent = bitangents != null?bitangents[vertexIndex].set(0f,0f,0f):null;
 		
 					// compute every influence on vertex and vertex normals
 					totalWeights = 0f;
@@ -275,22 +285,23 @@ public final class Object3DGroupMesh {
 				// recreate buffers
 				recreateBuffers();
 			}
-		} else {
-			if (animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) {
-				// transformations for non skinned rendering
-				//	vertices
-				for (int vertexIndex = 0; vertexIndex < groupVertices.length; vertexIndex++) {
-					transformedVertices[vertexIndex].set(cGroupTransformationsMatrix.multiply(groupVertices[vertexIndex], tmpVector3));
-				}
-
-				//	normals
-				for (int normalIndex = 0; normalIndex < groupNormals.length; normalIndex++) {
-					transformedNormals[normalIndex].set(cGroupTransformationsMatrix.multiplyNoTranslation(groupNormals[normalIndex], tmpVector3).normalize());
-				}
-
-				// recreate buffers
-				recreateBuffers();
+		} else
+		if (animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) {
+			// transformations for non skinned rendering
+			//	vertices
+			for (int vertexIndex = 0; vertexIndex < groupVertices.length; vertexIndex++) {
+				vertices[vertexIndex].set(cGroupTransformationsMatrix.multiply(groupVertices[vertexIndex], tmpVector3));
 			}
+
+			//	normals
+			for (int normalIndex = 0; normalIndex < groupNormals.length; normalIndex++) {
+				normals[normalIndex].set(cGroupTransformationsMatrix.multiplyNoTranslation(groupNormals[normalIndex], tmpVector3).normalize());
+			}
+
+			//	TODO: tangents, bitangents, but actually it is only in use for computing bounding volumes, so I am not in a hurry
+
+			// recreate buffers
+			recreateBuffers();
 		}
 	}
 
@@ -357,10 +368,10 @@ public final class Object3DGroupMesh {
 	 * @return vertices buffer
 	 */
 	protected FloatBuffer setupVerticesBuffer() {
-		FloatBuffer fbVertices = Buffer.getByteBuffer(transformedVertices.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+		FloatBuffer fbVertices = Buffer.getByteBuffer(vertices.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
 
 		// create vertices buffers
-		for (Vector3 vertex: transformedVertices) {
+		for (Vector3 vertex: vertices) {
 			fbVertices.put(vertex.getArray());
 		}
 
@@ -374,10 +385,10 @@ public final class Object3DGroupMesh {
 	 * @return normals buffer
 	 */
 	protected FloatBuffer setupNormalsBuffer() {
-		FloatBuffer fbNormals = Buffer.getByteBuffer(transformedNormals.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+		FloatBuffer fbNormals = Buffer.getByteBuffer(normals.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
 
 		// create vertices buffers
-		for (Vector3 normal: transformedNormals) {
+		for (Vector3 normal: normals) {
 			fbNormals.put(normal.getArray());
 		}
 
@@ -392,15 +403,15 @@ public final class Object3DGroupMesh {
 	 */
 	protected FloatBuffer setupTangentsBuffer() {
 		// check if we have tangents
-		if (transformedTangents == null) {
+		if (tangents == null) {
 			return null;
 		}
 
 		//
-		FloatBuffer fbTangents = Buffer.getByteBuffer(transformedTangents.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+		FloatBuffer fbTangents = Buffer.getByteBuffer(tangents.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
 
 		// create tangents buffers
-		for (Vector3 tangent: transformedTangents) {
+		for (Vector3 tangent: tangents) {
 			fbTangents.put(tangent.getArray());
 		}
 
@@ -415,15 +426,15 @@ public final class Object3DGroupMesh {
 	 */
 	protected FloatBuffer setupBitangentsBuffer() {
 		// check if we have tangents
-		if (transformedBitangents == null) {
+		if (bitangents == null) {
 			return null;
 		}
 
 		//
-		FloatBuffer fbBitangents = Buffer.getByteBuffer(transformedBitangents.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
+		FloatBuffer fbBitangents = Buffer.getByteBuffer(bitangents.length * 3 * Float.SIZE / Byte.SIZE).asFloatBuffer();
 
 		// create tangents buffers
-		for (Vector3 bitangent: transformedBitangents) {
+		for (Vector3 bitangent: bitangents) {
 			fbBitangents.put(bitangent.getArray());
 		}
 

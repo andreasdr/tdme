@@ -49,7 +49,7 @@ public final class TransparentRenderFacesPool {
 		FacesEntity[] facesEntities = object3DGroup.group.getFacesEntities();
 		FacesEntity facesEntity = facesEntities[facesEntityIdx];
 		Face[] faces = facesEntity.getFaces();		
-		Vector3[] groupTransformedVertices = object3DGroup.mesh.transformedVertices;
+		Vector3[] groupTransformedVertices = object3DGroup.mesh.vertices;
 
 		// objects we will use for calculations
 		float distanceFromCamera;

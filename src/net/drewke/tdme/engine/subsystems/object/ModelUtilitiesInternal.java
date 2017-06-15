@@ -123,7 +123,7 @@ public class ModelUtilitiesInternal {
 
 			// parse through object groups to determine min, max
 			for(Object3DGroup object3DGroup: object3DModelInternal.object3dGroups) {
-				for(Vector3 vertex: object3DGroup.mesh.transformedVertices) {
+				for(Vector3 vertex: object3DGroup.mesh.vertices) {
 					// vertex xyz array
 					float[] vertexXYZ = vertex.getArray();
 					// determine min, max
