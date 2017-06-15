@@ -246,6 +246,18 @@ public final class HashMap<K,V> {
 	}
 
 	/**
+	 * Get the key of given object / key
+	 */
+	public K getKey(K key) {
+		ArrayList<Pair<K,V>> bucket = buckets.get(Math.abs(key.hashCode()) % capacity);
+		for (int i = 0; i < bucket.size(); i++) {
+			Pair<K,V> keyValuePair = bucket.get(i);
+			if (keyValuePair.key.equals(key)) return keyValuePair.key;  
+		}
+		return null;
+	}
+
+	/**
 	 * Put given value with associated key into this hash map
 	 */
 	public V put(K key, V value) {

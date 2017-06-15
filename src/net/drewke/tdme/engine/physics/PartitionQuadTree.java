@@ -5,6 +5,7 @@ import net.drewke.tdme.engine.primitives.BoundingVolume;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.ArrayList;
 import net.drewke.tdme.utils.ArrayListIteratorMultiple;
+import net.drewke.tdme.utils.Console;
 import net.drewke.tdme.utils.HashMap;
 import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
@@ -54,7 +55,13 @@ public final class PartitionQuadTree {
 	private Vector3 sideVector;
 	private Vector3 forwardVector;
 	private Vector3 upVector;
+	private Pool<BoundingBox> boundingBoxPool;
+	private Pool<PartitionTreeNode> partitionTreeNodePool;
+	private Pool<ArrayList<PartitionTreeNode>> subNodesPool;
+	private Pool<HashMap<Key, PartitionTreeNode>> subNodesByCoordinatePool;
 	private Pool<ArrayList<PartitionTreeNode>> rigidBodyPartitionNodesPool;
+	private Pool<ArrayList<RigidBody>> partitionRigidBodyPool;
+	private Pool<Key> keyPool;
 	private HashMap<String, ArrayList<PartitionTreeNode>> rigidBodyPartitionNodes;
 	private PartitionTreeNode treeRoot = null;
 
@@ -84,6 +91,37 @@ public final class PartitionQuadTree {
 				return new ArrayList<PartitionTreeNode>();
 			}
 		};
+		this.boundingBoxPool = new Pool<BoundingBox>() {
+			public BoundingBox instantiate() {
+				return new BoundingBox();
+			}
+		};
+		this.partitionTreeNodePool = new Pool<PartitionQuadTree.PartitionTreeNode>() {
+			public PartitionTreeNode instantiate() {
+				return new PartitionTreeNode();
+			}
+		};
+		this.subNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
+			public ArrayList<PartitionTreeNode> instantiate() {
+				return new ArrayList<PartitionTreeNode>();
+			}
+			
+		};
+		this.subNodesByCoordinatePool = new Pool<HashMap<Key,PartitionTreeNode>>() {
+			public HashMap<Key, PartitionTreeNode> instantiate() {
+				return new HashMap<Key, PartitionTreeNode>();
+			}
+		};
+		this.partitionRigidBodyPool = new Pool<ArrayList<RigidBody>>() {
+			public ArrayList<RigidBody> instantiate() {
+				return new ArrayList<RigidBody>();
+			}
+		};
+		this.keyPool = new Pool<Key>() {
+			public Key instantiate() {
+				return new Key();
+			}
+		};
 		this.rigidBodyPartitionNodes = new HashMap<String, ArrayList<PartitionTreeNode>>();
 		this.treeRoot = new PartitionTreeNode();
 		this.treeRoot.partitionSize = -1;
@@ -107,40 +145,39 @@ public final class PartitionQuadTree {
 	 */
 	public PartitionTreeNode createPartition(PartitionTreeNode parent, int x, int y, int z, float partitionSize) {
 		PartitionTreeNode node; 
-		node = new PartitionTreeNode();
+		node = partitionTreeNodePool.allocate();
 		node.partitionSize = partitionSize;
 		node.x = x;
 		node.y = y;
 		node.z = z;
 		node.parent = parent;
-		node.bv =
-			new BoundingBox(
-				new Vector3(
-					x * partitionSize,
-					y * partitionSize,
-					z * partitionSize
-				),
-				new Vector3(
-					x * partitionSize + partitionSize,
-					y * partitionSize + partitionSize,
-					z * partitionSize + partitionSize
-				)
-			);
+		node.bv = boundingBoxPool.allocate();
+		node.bv.getMin().set(
+			x * partitionSize,
+			y * partitionSize,
+			z * partitionSize
+		);
+		node.bv.getMax().set(
+			x * partitionSize + partitionSize,
+			y * partitionSize + partitionSize,
+			z * partitionSize + partitionSize
+		);
+		node.bv.update();
 		node.subNodes = null;
 		node.subNodesByCoordinate = null;
 		node.partitionRidigBodies = null;
 
 		// register in parent sub nodes
 		if (parent.subNodes == null) {
-			parent.subNodes = new ArrayList<PartitionTreeNode>();
+			parent.subNodes = subNodesPool.allocate();
 		}
 		parent.subNodes.add(node);
 
 		// register in parent sub nodes by coordinate 
 		if (parent.subNodesByCoordinate == null) {
-			parent.subNodesByCoordinate = new HashMap<Key, PartitionTreeNode>();
+			parent.subNodesByCoordinate = subNodesByCoordinatePool.allocate();
 		}
-		Key key = new Key();
+		Key key = keyPool.allocate();
 		key.reset();
 		key.append(node.x);
 		key.append(",");
@@ -163,7 +200,7 @@ public final class PartitionQuadTree {
 				);
 			}
 		} else {
-			node.partitionRidigBodies = new ArrayList<RigidBody>();
+			node.partitionRidigBodies = partitionRigidBodyPool.allocate();
 		}
 
 		//
@@ -176,13 +213,9 @@ public final class PartitionQuadTree {
 	 */
 	protected void addRigidBody(RigidBody rigidBody) {
 		// update if already exists
-		ArrayList<PartitionTreeNode> objectPartitionsVector = rigidBodyPartitionNodes.get(rigidBody.getId());
-		if (objectPartitionsVector != null) {
-			while (objectPartitionsVector.size() > 0) {
-				int lastIdx = objectPartitionsVector.size() - 1; 
-				objectPartitionsVector.get(lastIdx).partitionRidigBodies.remove(rigidBody);
-				objectPartitionsVector.remove(lastIdx);
-			}
+		ArrayList<PartitionTreeNode> thisRigidBodyPartitions = rigidBodyPartitionNodes.get(rigidBody.getId());
+		if (thisRigidBodyPartitions != null && thisRigidBodyPartitions.isEmpty() == false) {
+			removeRigidBody(rigidBody);
 		}
 
 		// determine max first level partition dimension
@@ -244,21 +277,97 @@ public final class PartitionQuadTree {
 	}
 
 	/**
-	 * Removes a rigidBody
-	 * @param rigidBody
+	 * Removes a rigid body
+	 * @param rigid body
 	 */
 	protected void removeRigidBody(RigidBody rigidBody) {
-		ArrayList<PartitionTreeNode> objectPartitionsVector = rigidBodyPartitionNodes.remove(rigidBody.getId());
-		if (objectPartitionsVector == null) {
-			// rigid body not registered
+		ArrayList<PartitionTreeNode> rigidBodyPartitionsVector = rigidBodyPartitionNodes.remove(rigidBody.getId());
+		if (rigidBodyPartitionsVector == null || rigidBodyPartitionsVector.isEmpty() == true) {
+			Console.println("PartitionQuadTree::removeRigidBody(): '" + rigidBody.getId() + "' not registered");
 			return;
 		}
-		while (objectPartitionsVector.size() > 0) {
-			int lastIdx = objectPartitionsVector.size() - 1;
-			objectPartitionsVector.get(lastIdx).partitionRidigBodies.remove(rigidBody);
-			objectPartitionsVector.remove(lastIdx);
+		while (rigidBodyPartitionsVector.size() > 0) {
+			// remove object from assigned partitions
+			int lastIdx = rigidBodyPartitionsVector.size() - 1;
+			PartitionTreeNode partitionTreeNode = rigidBodyPartitionsVector.get(lastIdx);
+			ArrayList<RigidBody> partitionRigidBody = partitionTreeNode.partitionRidigBodies;
+			partitionRigidBody.remove(rigidBody);
+			rigidBodyPartitionsVector.remove(lastIdx);
+
+			// check if whole top level partition is empty
+			if (partitionRigidBody.isEmpty() == true) {
+				PartitionTreeNode rootPartitionTreeNode = partitionTreeNode.parent.parent;
+				if (isPartitionNodeEmpty(rootPartitionTreeNode) == true) {
+					removePartitionNode(rootPartitionTreeNode);
+					treeRoot.subNodes.remove(rootPartitionTreeNode);
+					key.reset();
+					key.append(rootPartitionTreeNode.x);
+					key.append(",");
+					key.append(rootPartitionTreeNode.y);
+					key.append(",");
+					key.append(rootPartitionTreeNode.z);
+					keyPool.release(treeRoot.subNodesByCoordinate.getKey(key));
+					treeRoot.subNodesByCoordinate.remove(key);
+				}
+			}
 		}
-		rigidBodyPartitionNodesPool.release(objectPartitionsVector);
+		rigidBodyPartitionNodesPool.release(rigidBodyPartitionsVector);
+	}
+
+	/**
+	 * Is partition empty
+	 * @param node
+	 * @return partition empty
+	 */
+	private boolean isPartitionNodeEmpty(PartitionTreeNode node) {
+		// lowest level node has objects attached?
+		if (node.partitionRidigBodies != null) {
+			return node.partitionRidigBodies.size() == 0;
+		} else {
+			// otherwise check top level node sub nodes
+			for (int i = 0; i < node.subNodes.size(); i++) {
+				if (isPartitionNodeEmpty(node.subNodes.get(i)) == false) return false;
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * Remove partition node, should be empty
+	 * @param node
+	 */
+	private void removePartitionNode(PartitionTreeNode node) {
+		// lowest level node has objects attached?
+		if (node.partitionRidigBodies != null) {
+			if (node.partitionRidigBodies.size() > 0) {
+				System.out.println("PartitionQuadTree::removePartitionNode(): partition has objects attached!!!");
+				node.partitionRidigBodies.clear();
+			}
+			partitionRigidBodyPool.release(node.partitionRidigBodies);
+			node.partitionRidigBodies = null;
+		} else {
+			// otherwise check top level node sub nodes
+			for (int i = 0; i < node.subNodes.size(); i++) {
+				PartitionTreeNode subNode = node.subNodes.get(i);
+				removePartitionNode(subNode);
+			}
+			// release sub nodes
+			node.subNodes.clear();
+			subNodesPool.release(node.subNodes);
+			node.subNodes = null;
+			// release sub nodes by coordinate
+			for (Key key: node.subNodesByCoordinate.getKeysIterator()) {
+				keyPool.release(key);
+			}
+			node.subNodesByCoordinate.clear();
+			subNodesByCoordinatePool.release(node.subNodesByCoordinate);
+			node.subNodesByCoordinate = null;
+		}
+		// release bv
+		boundingBoxPool.release(node.bv);
+		node.bv = null;
+		// release node itself
+		partitionTreeNodePool.release(node);
 	}
 
 	/**

@@ -236,6 +236,21 @@ public class Level {
 	 * @param translation
 	 */
 	public static void addLevel(Engine engine, LevelEditorLevel level, boolean addEmpties, boolean addTrigger, boolean dynamicShadowing, boolean pickable, Vector3 translation) {
+		addLevel(engine, level, addEmpties, addTrigger, dynamicShadowing, pickable, translation, true);
+	}
+
+	/**
+	 * Add level to engine
+	 * @param engine
+	 * @param level
+	 * @param add empties
+	 * @param add trigger
+	 * @param dynamic shadowing 
+	 * @param pickable
+	 * @param translation
+	 * @param enable
+	 */
+	public static void addLevel(Engine engine, LevelEditorLevel level, boolean addEmpties, boolean addTrigger, boolean dynamicShadowing, boolean pickable, Vector3 translation, boolean enable) {
 		// load level objects
 		for (int i = 0; i < level.getObjectCount(); i++) {
 			LevelEditorObject object = level.getObjectAt(i);
@@ -279,6 +294,8 @@ public class Level {
 			}
 			// update
 			entity.update();
+			// enable
+			entity.setEnabled(enable);
 			// add
 			engine.addEntity(entity);
 		}
@@ -292,6 +309,17 @@ public class Level {
 	 * @param translation
 	 */
 	public static void addLevel(World world, LevelEditorLevel level, ArrayList<RigidBody> rigidBodies, Vector3 translation) {
+		addLevel(world, level, rigidBodies, translation, true);
+	}
+
+	/**
+	 * Add level to physics world
+	 * @param world
+	 * @param level
+	 * @param rigid bodies (will be filled by logic)
+	 * @param translation
+	 */
+	public static void addLevel(World world, LevelEditorLevel level, ArrayList<RigidBody> rigidBodies, Vector3 translation, boolean enable) {
 		// load level objects
 		for (int i = 0; i < level.getObjectCount(); i++) {
 			LevelEditorObject object = level.getObjectAt(i);
@@ -321,7 +349,7 @@ public class Level {
 				// add to physics world
 				RigidBody rigidBody = world.addStaticRigidBody(
 					worldId,
-					true,
+					enable,
 					RIGIDBODY_TYPEID_STATIC,
 					transformations,
 					entityBv.getBoundingVolume(),

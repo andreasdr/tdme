@@ -379,7 +379,6 @@ public final class World {
 
 			// skip if enabled and remove partition
 			if (rigidBody.enabled == false) {
-				partition.removeRigidBody(rigidBody);
 				continue;
 			}
 

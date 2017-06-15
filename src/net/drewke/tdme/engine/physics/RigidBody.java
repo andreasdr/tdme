@@ -254,11 +254,17 @@ public final class RigidBody {
 	 * @param enabled
 	 */
 	public void setEnabled(boolean enabled) {
+		// return if enable state has not changed
+		if (this.enabled == enabled) return;
+
+		//
 		if (enabled == true) {
 			partition.addRigidBody(this);
 		} else {
 			partition.removeRigidBody(this);
 		}
+
+		//
 		this.enabled = enabled;
 	}
 
