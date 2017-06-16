@@ -12,14 +12,14 @@ import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
 
 /**
- * PartitionQuadTree implementation
+ * Partition oct tree implementation
  * @author Andreas Drewke
  * @version $Id$
  */
 public final class PartitionQuadTree extends Partition {
 
 	/**
-	 * PartitionQuadTree tree node
+	 * Partition oct tree node
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
@@ -35,22 +35,21 @@ public final class PartitionQuadTree extends Partition {
 		// parent node
 		private PartitionTreeNode parent;
 
-		// our tree node has a bounding volume
+		// node bounding volume
 		private BoundingBox bv;
 
-		// it has sub nodes of quad tree nodes
+		// sub nodes of oct tree nodes
 		private ArrayList<PartitionTreeNode> subNodes;
 
-		// it has sub nodes of quad tree nodes
+		// sub nodes of oct tree nodes by partition coordinate, only used in root node
 		private HashMap<Key, PartitionTreeNode> subNodesByCoordinate;
 
-		// or finally our static bounding volumes
+		// or finally our partition entities
 		private ArrayList<Entity> partitionEntities;
 	}
 
 	private Key key;
 	private ArrayListIteratorMultiple<Entity> entityIterator;
-
 	private BoundingBox boundingBox;
 	private Vector3 halfExtension;
 	private Vector3 sideVector;
@@ -60,7 +59,6 @@ public final class PartitionQuadTree extends Partition {
 	private Pool<BoundingBox> boundingBoxPool;
 	private Pool<PartitionTreeNode> partitionTreeNodePool;
 	private Pool<ArrayList<PartitionTreeNode>> subNodesPool;
-	private Pool<HashMap<Key, PartitionTreeNode>> subNodesByCoordinatePool;
 	private Pool<ArrayList<Entity>> partitionEntitiesPool;
 	private Pool<Key> keyPool;
 	private HashMap<String, ArrayList<PartitionTreeNode>> entityPartitionNodes;
@@ -111,11 +109,6 @@ public final class PartitionQuadTree extends Partition {
 			}
 			
 		};
-		this.subNodesByCoordinatePool = new Pool<HashMap<Key,PartitionTreeNode>>() {
-			protected HashMap<Key, PartitionTreeNode> instantiate() {
-				return new HashMap<Key, PartitionTreeNode>();
-			}
-		};
 		this.partitionEntitiesPool = new Pool<ArrayList<Entity>>() {
 			protected ArrayList<Entity> instantiate() {
 				return new ArrayList<Entity>();
@@ -149,9 +142,8 @@ public final class PartitionQuadTree extends Partition {
 	 * @param partition size
 	 * @return partition tree node
 	 */
-	public PartitionTreeNode createPartition(PartitionTreeNode parent, int x, int y, int z, float partitionSize) {
-		PartitionTreeNode node; 
-		node = partitionTreeNodePool.allocate();
+	public PartitionTreeNode createPartition(PartitionTreeNode parent, int x, int y, int z, float partitionSize) { 
+		PartitionTreeNode node = partitionTreeNodePool.allocate();
 		node.partitionSize = partitionSize;
 		node.x = x;
 		node.y = y;
@@ -179,18 +171,17 @@ public final class PartitionQuadTree extends Partition {
 		}
 		parent.subNodes.add(node);
 
-		// register in parent sub nodes by coordinate 
-		if (parent.subNodesByCoordinate == null) {
-			parent.subNodesByCoordinate = subNodesByCoordinatePool.allocate();
+		// register in parent sub nodes by coordinate, if root node
+		if (parent == treeRoot) {
+			Key key = keyPool.allocate();
+			key.reset();
+			key.append(node.x);
+			key.append(",");
+			key.append(node.y);
+			key.append(",");
+			key.append(node.z);
+			parent.subNodesByCoordinate.put(key, node);
 		}
-		Key key = keyPool.allocate();
-		key.reset();
-		key.append(node.x);
-		key.append(",");
-		key.append(node.y);
-		key.append(",");
-		key.append(node.z);
-		parent.subNodesByCoordinate.put(key, node);
 
 		// create sub nodes
 		if (partitionSize > PARTITION_SIZE_MIN) {
@@ -224,20 +215,8 @@ public final class PartitionQuadTree extends Partition {
 			removeEntity(entity);
 		}
 
-		// determine max first level partition dimension
-		// convert to aabb for fast collision tests
-		BoundingVolume cbv = entity.getBoundingBoxTransformed();
-		Vector3 center = cbv.getCenter();
-		halfExtension.set(
-			cbv.computeDimensionOnAxis(sideVector) + 0.2f,
-			cbv.computeDimensionOnAxis(upVector) + 0.2f,
-			cbv.computeDimensionOnAxis(forwardVector) + 0.2f
-		).scale(0.5f);
-		boundingBox.getMin().set(center);
-		boundingBox.getMin().sub(halfExtension);
-		boundingBox.getMax().set(center);
-		boundingBox.getMax().add(halfExtension);
-		boundingBox.update();
+		// frustum bounding box
+		BoundingBox boundingBox = entity.getBoundingBoxTransformed();
 
 		// find, create root nodes if not exists
 		int minXPartition = (int)Math.floor(boundingBox.getMin().getX() / PARTITION_SIZE_MAX);
@@ -249,8 +228,7 @@ public final class PartitionQuadTree extends Partition {
 		for (int yPartition = minYPartition; yPartition <= maxYPartition; yPartition++)
 		for (int xPartition = minXPartition; xPartition <= maxXPartition; xPartition++)
 		for (int zPartition = minZPartition; zPartition <= maxZPartition; zPartition++) {
-
-			// try to find node by key
+			// check if first level node has been created already
 			key.reset();
 			key.append(xPartition);
 			key.append(",");
@@ -258,7 +236,6 @@ public final class PartitionQuadTree extends Partition {
 			key.append(",");
 			key.append(zPartition);
 			PartitionTreeNode node = treeRoot.subNodesByCoordinate.get(key);
-
 			if (node == null) {
 				node = createPartition(
 					treeRoot,
@@ -287,6 +264,7 @@ public final class PartitionQuadTree extends Partition {
 	 * @see net.drewke.tdme.engine.Partition#removeEntity(net.drewke.tdme.engine.Entity)
 	 */
 	protected void removeEntity(Entity entity) {
+		// check if we have entity in quad tree
 		ArrayList<PartitionTreeNode> objectPartitionsVector = entityPartitionNodes.remove(entity.getId());
 		if (objectPartitionsVector == null || objectPartitionsVector.isEmpty() == true) {
 			Console.println("PartitionQuadTree::removeEntity(): '" + entity.getId() + "' not registered");
@@ -303,6 +281,7 @@ public final class PartitionQuadTree extends Partition {
 			// check if whole top level partition is empty
 			if (partitionObjects.isEmpty() == true) {
 				PartitionTreeNode rootPartitionTreeNode = partitionTreeNode.parent.parent;
+				// yep, remove it
 				if (isPartitionNodeEmpty(rootPartitionTreeNode) == true) {
 					removePartitionNode(rootPartitionTreeNode);
 					treeRoot.subNodes.remove(rootPartitionTreeNode);
@@ -346,7 +325,7 @@ public final class PartitionQuadTree extends Partition {
 		// lowest level node has objects attached?
 		if (node.partitionEntities != null) {
 			if (node.partitionEntities.size() > 0) {
-				System.out.println("PartitionQuadTree::removePartitionNode(): partition has objects attached!!!");
+				Console.println("PartitionQuadTree::removePartitionNode(): partition has objects attached!!!");
 				node.partitionEntities.clear();
 			}
 			partitionEntitiesPool.release(node.partitionEntities);
@@ -361,13 +340,6 @@ public final class PartitionQuadTree extends Partition {
 			node.subNodes.clear();
 			subNodesPool.release(node.subNodes);
 			node.subNodes = null;
-			// release sub nodes by coordinate
-			for (Key key: node.subNodesByCoordinate.getKeysIterator()) {
-				keyPool.release(key);
-			}
-			node.subNodesByCoordinate.clear();
-			subNodesByCoordinatePool.release(node.subNodesByCoordinate);
-			node.subNodesByCoordinate = null;
 		}
 		// release bv
 		boundingBoxPool.release(node.bv);
@@ -425,7 +397,6 @@ public final class PartitionQuadTree extends Partition {
 	 * @see net.drewke.tdme.engine.Partition#getVisibleEntities(net.drewke.tdme.engine.Frustum)
 	 */
 	public ArrayList<Entity> getVisibleEntities(Frustum frustum) {
-		// convert to aabb for fast collision tests
 		visibleEntities.clear();
 		int lookUps = 0;
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
@@ -466,7 +437,7 @@ public final class PartitionQuadTree extends Partition {
 	/**
 	 * Add entity to tree
 	 */
-	protected void addToPartitionTree(Entity entity, BoundingBox cbv) {
+	private void addToPartitionTree(Entity entity, BoundingBox cbv) {
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
 			addToPartitionTree(treeRoot.subNodes.get(i), entity, cbv); 
 		}
@@ -478,7 +449,7 @@ public final class PartitionQuadTree extends Partition {
 	 * @param cbv
 	 * @param entity iterator
 	 */
-	private int doPartitionTreeLookUpNearEntities(PartitionTreeNode node, BoundingBox cbv, ArrayListIteratorMultiple<Entity> objectsIterator) {
+	private int doPartitionTreeLookUpNearEntities(PartitionTreeNode node, BoundingBox cbv, ArrayListIteratorMultiple<Entity> entityIterator) {
 		// check if given cbv collides with partition node bv
 		if (CollisionDetection.doCollideAABBvsAABBFast(cbv, node.bv) == false) {
 			return 1;
@@ -486,13 +457,13 @@ public final class PartitionQuadTree extends Partition {
 
 		// if this node already has the partition cbvs add it to the iterator
 		if (node.partitionEntities != null) {
-			objectsIterator.addArrayList(node.partitionEntities);
+			entityIterator.addArrayList(node.partitionEntities);
 			return 1;
 		} else {
 			int lookUps = 1;
 			// otherwise check sub nodes
 			for (int i = 0; i < node.subNodes.size(); i++) {
-				lookUps+= doPartitionTreeLookUpNearEntities(node.subNodes.get(i), cbv, objectsIterator);
+				lookUps+= doPartitionTreeLookUpNearEntities(node.subNodes.get(i), cbv, entityIterator);
 			}
 			return lookUps;
 		}
