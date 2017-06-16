@@ -39,7 +39,7 @@ import net.drewke.tdme.utils.Key;
  */
 public final class ConstraintsSolver {
 
-	protected final static int BODIES_MAX = 4096;
+	protected final static int BODIES_MAX = 256;
 	protected final static int CONSTRAINTS_MAX = BODIES_MAX * 3;
 
 	private int constraintsEntityCount = 0;
