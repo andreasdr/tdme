@@ -91,38 +91,38 @@ public final class PartitionQuadTree extends Partition {
 	 */
 	protected void reset() {
 		this.entityPartitionNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
-			public ArrayList<PartitionTreeNode> instantiate() {
+			protected ArrayList<PartitionTreeNode> instantiate() {
 				return new ArrayList<PartitionTreeNode>();
 			}
 		};
 		this.boundingBoxPool = new Pool<BoundingBox>() {
-			public BoundingBox instantiate() {
+			protected BoundingBox instantiate() {
 				return new BoundingBox();
 			}
 		};
 		this.partitionTreeNodePool = new Pool<PartitionQuadTree.PartitionTreeNode>() {
-			public PartitionTreeNode instantiate() {
+			protected PartitionTreeNode instantiate() {
 				return new PartitionTreeNode();
 			}
 		};
 		this.subNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
-			public ArrayList<PartitionTreeNode> instantiate() {
+			protected ArrayList<PartitionTreeNode> instantiate() {
 				return new ArrayList<PartitionTreeNode>();
 			}
 			
 		};
 		this.subNodesByCoordinatePool = new Pool<HashMap<Key,PartitionTreeNode>>() {
-			public HashMap<Key, PartitionTreeNode> instantiate() {
+			protected HashMap<Key, PartitionTreeNode> instantiate() {
 				return new HashMap<Key, PartitionTreeNode>();
 			}
 		};
 		this.partitionEntitiesPool = new Pool<ArrayList<Entity>>() {
-			public ArrayList<Entity> instantiate() {
+			protected ArrayList<Entity> instantiate() {
 				return new ArrayList<Entity>();
 			}
 		};
 		this.keyPool = new Pool<Key>() {
-			public Key instantiate() {
+			protected Key instantiate() {
 				return new Key();
 			}
 		};

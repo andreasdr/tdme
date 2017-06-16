@@ -87,38 +87,38 @@ public final class PartitionQuadTree {
 	 */
 	protected void reset() {
 		this.rigidBodyPartitionNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
-			public ArrayList<PartitionTreeNode> instantiate() {
+			protected ArrayList<PartitionTreeNode> instantiate() {
 				return new ArrayList<PartitionTreeNode>();
 			}
 		};
 		this.boundingBoxPool = new Pool<BoundingBox>() {
-			public BoundingBox instantiate() {
+			protected BoundingBox instantiate() {
 				return new BoundingBox();
 			}
 		};
 		this.partitionTreeNodePool = new Pool<PartitionQuadTree.PartitionTreeNode>() {
-			public PartitionTreeNode instantiate() {
+			protected PartitionTreeNode instantiate() {
 				return new PartitionTreeNode();
 			}
 		};
 		this.subNodesPool = new Pool<ArrayList<PartitionTreeNode>>() {
-			public ArrayList<PartitionTreeNode> instantiate() {
+			protected ArrayList<PartitionTreeNode> instantiate() {
 				return new ArrayList<PartitionTreeNode>();
 			}
 			
 		};
 		this.subNodesByCoordinatePool = new Pool<HashMap<Key,PartitionTreeNode>>() {
-			public HashMap<Key, PartitionTreeNode> instantiate() {
+			protected HashMap<Key, PartitionTreeNode> instantiate() {
 				return new HashMap<Key, PartitionTreeNode>();
 			}
 		};
 		this.partitionRigidBodyPool = new Pool<ArrayList<RigidBody>>() {
-			public ArrayList<RigidBody> instantiate() {
+			protected ArrayList<RigidBody> instantiate() {
 				return new ArrayList<RigidBody>();
 			}
 		};
 		this.keyPool = new Pool<Key>() {
-			public Key instantiate() {
+			protected Key instantiate() {
 				return new Key();
 			}
 		};

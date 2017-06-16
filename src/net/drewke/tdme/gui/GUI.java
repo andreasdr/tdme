@@ -52,14 +52,14 @@ public final class GUI implements MouseListener, KeyListener {
 	private GUIColor unfocussedNodeBorderBottomColor = null;
 
 	private Pool<GUIMouseEvent> mouseEventsPool = new Pool<GUIMouseEvent>() {
-		public GUIMouseEvent instantiate() {
+		protected GUIMouseEvent instantiate() {
 			return new GUIMouseEvent();
 		}
 	};
 	private ArrayList<GUIMouseEvent> mouseEvents = new ArrayList<GUIMouseEvent>(); 
 
 	private Pool<GUIKeyboardEvent> keyboardEventsPool = new Pool<GUIKeyboardEvent>() {
-		public GUIKeyboardEvent instantiate() {
+		protected GUIKeyboardEvent instantiate() {
 			return new GUIKeyboardEvent();
 		}
 	};

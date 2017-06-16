@@ -46,7 +46,7 @@ public final class Object3DVBORenderer {
 	private HashMap<Key, TransparentRenderFacesGroup> transparentRenderFacesGroups = null;
 
 	private Pool<Key> pseKeyPool = new Pool<Key>() {
-		public Key instantiate() {
+		protected Key instantiate() {
 			return new Key();
 		}
 	};
@@ -71,13 +71,13 @@ public final class Object3DVBORenderer {
 		trianglesBatchVBORenderers = new ArrayList<BatchVBORendererTriangles>();
 		visibleObjectsByModels = new HashMap<String, ArrayList<Object3D>>();
 		keyPool = new Pool<Key>() {
-			public Key instantiate() {
+			protected Key instantiate() {
 				return new Key();
 			}
 		};
 		groupTransparentRenderFaces = new ArrayList<TransparentRenderFace>();
 		transparentRenderFacesGroupPool = new Pool<TransparentRenderFacesGroup>() {
-			public TransparentRenderFacesGroup instantiate() {
+			protected TransparentRenderFacesGroup instantiate() {
 				return new TransparentRenderFacesGroup();
 			}
 			

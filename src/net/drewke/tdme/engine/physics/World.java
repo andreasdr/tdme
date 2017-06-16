@@ -59,14 +59,14 @@ public final class World {
 	private HashMap<Key, Key> rigidBodyTestedCollisions = new HashMap<Key, Key>();
 
 	private Pool<Key> rigidBodyCollisionsKeyPoolCurrentFrame = new Pool<Key>() {
-		public Key instantiate() {
+		protected Key instantiate() {
 			return new Key();
 		}
 	};
 	private HashMap<Key, Key> rigidBodyCollisionsCurrentFrame = new HashMap<Key, Key>();
 
 	private Pool<Key> rigidBodyCollisionsKeyPoolLastFrame = new Pool<Key>() {
-		public Key instantiate() {
+		protected Key instantiate() {
 			return new Key();
 		}
 	};

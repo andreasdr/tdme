@@ -37,7 +37,7 @@ abstract public class Pool<E> {
 	/**
 	 * Instantiate element
 	 */
-	abstract public E instantiate(); 
+	abstract protected E instantiate(); 
 
 	/**
 	 * Release element in pool for being reused

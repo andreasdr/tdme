@@ -29,7 +29,7 @@ public final class TransparentRenderFacesPool {
 		tmpVector3 = new Vector3();
 		transparentRenderFaces = new ArrayList<TransparentRenderFace>();
 		transparentRenderFacesPool = new Pool<TransparentRenderFace>() {
-			public TransparentRenderFace instantiate() {
+			protected TransparentRenderFace instantiate() {
 				return new TransparentRenderFace();
 			}
 		};

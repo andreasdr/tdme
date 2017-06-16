@@ -165,7 +165,7 @@ public final class HashMap<K,V> {
 	private HashMap.ValuesIterator<K,V> valuesIterator = new ValuesIterator<K,V>(this);
 	private HashMap.KeysIterator<K,V> keysIterator = new KeysIterator<K,V>(this);
 	private Pool<Pair<K,V>> pairPool = new Pool<Pair<K,V>>() {
-		public Pair<K, V> instantiate() {
+		protected Pair<K, V> instantiate() {
 			return new Pair<K, V>();
 		}
 		
