@@ -164,7 +164,7 @@ public final class Engine {
 		offScreenEngine.frameBuffer.initialize();
 		// create camera, frustum partition
 		offScreenEngine.camera = new Camera(renderer);
-		offScreenEngine.partition = new PartitionQuadTree();
+		offScreenEngine.partition = new PartitionOctTree();
 		// create lights
 		for (int i = 0; i < offScreenEngine.lights.length; i++) offScreenEngine.lights[i] = new Light(renderer, i);
 		// create shadow mapping
@@ -708,7 +708,7 @@ public final class Engine {
 
 		// create camera
 		camera = new Camera(renderer);
-		partition = new PartitionQuadTree();
+		partition = new PartitionOctTree();
 
 		// create lights
 		for (int i = 0; i < lights.length; i++) lights[i] = new Light(renderer, i);

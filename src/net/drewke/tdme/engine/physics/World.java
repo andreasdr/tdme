@@ -72,7 +72,7 @@ public final class World {
 	};
 	private HashMap<Key, Key> rigidBodyCollisionsLastFrame = new HashMap<Key, Key>();
 
-	private PartitionQuadTree partition = new PartitionQuadTree();
+	private PartitionOctTree partition = new PartitionOctTree();
 
 	//
 	private Vector3 collisionMovement = new Vector3();

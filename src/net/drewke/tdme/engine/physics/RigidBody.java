@@ -50,7 +50,7 @@ public final class RigidBody {
 	private final static float VELOCITY_SLEEPTOLERANCE = 1.0f;
 	private final static int SLEEPING_FRAMES = 5 * 60;
 
-	protected PartitionQuadTree partition;
+	protected PartitionOctTree partition;
 
 	protected int idx;
 	protected String id;
@@ -179,7 +179,7 @@ public final class RigidBody {
 	 * @param restitution
 	 * @param mass in kg
 	 */
-	public RigidBody(PartitionQuadTree partition, int idx, String id, boolean enabled, int typeId, BoundingVolume obv, Transformations transformations, float restitution, float friction, float mass, Matrix4x4 inverseInertia) {
+	public RigidBody(PartitionOctTree partition, int idx, String id, boolean enabled, int typeId, BoundingVolume obv, Transformations transformations, float restitution, float friction, float mass, Matrix4x4 inverseInertia) {
 		this.partition = partition;
 		this.idx = idx;
 		this.id = id;

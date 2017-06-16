@@ -13,7 +13,7 @@ import net.drewke.tdme.engine.Entity;
 import net.drewke.tdme.engine.EntityPickingFilter;
 import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
-import net.drewke.tdme.engine.PartitionQuadTree;
+import net.drewke.tdme.engine.PartitionOctTree;
 import net.drewke.tdme.engine.Rotation;
 import net.drewke.tdme.engine.Timing;
 import net.drewke.tdme.engine.Transformations;
@@ -815,7 +815,7 @@ public final class LevelEditorView implements View, GUIInputEventHandler  {
 	public void initialize() {
 		// reset engine and partition
 		engine.reset();
-		engine.setPartition(new PartitionQuadTree());
+		engine.setPartition(new PartitionOctTree());
 
 		//
 		try {
