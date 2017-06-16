@@ -11,14 +11,14 @@ import net.drewke.tdme.utils.Key;
 import net.drewke.tdme.utils.Pool;
 
 /**
- * Partition quad tree implementation
+ * Partition oct tree implementation
  * @author Andreas Drewke
  * @version $Id$
  */
 public final class PartitionQuadTree {
 
 	/**
-	 * Partition tree node
+	 * Partition oct tree node
 	 * @author Andreas Drewke
 	 * @version $Id$
 	 */
@@ -34,16 +34,16 @@ public final class PartitionQuadTree {
 		// parent node
 		private PartitionTreeNode parent;
 
-		// our tree node has a bounding volume
+		// node bounding volume
 		private BoundingBox bv;
 
-		// it has sub nodes of quad tree nodes
+		// sub nodes of oct tree node
 		private ArrayList<PartitionTreeNode> subNodes;
 
-		// it has sub nodes of quad tree nodes
+		// sub node of oct tree nodes by partition coordinate, only used in root node
 		private HashMap<Key, PartitionTreeNode> subNodesByCoordinate;
 
-		// or finally our static bounding volumes
+		// partition rigid bodies
 		private ArrayList<RigidBody> partitionRidigBodies;
 	}
 
@@ -58,7 +58,6 @@ public final class PartitionQuadTree {
 	private Pool<BoundingBox> boundingBoxPool;
 	private Pool<PartitionTreeNode> partitionTreeNodePool;
 	private Pool<ArrayList<PartitionTreeNode>> subNodesPool;
-	private Pool<HashMap<Key, PartitionTreeNode>> subNodesByCoordinatePool;
 	private Pool<ArrayList<PartitionTreeNode>> rigidBodyPartitionNodesPool;
 	private Pool<ArrayList<RigidBody>> partitionRigidBodyPool;
 	private Pool<Key> keyPool;
@@ -107,11 +106,6 @@ public final class PartitionQuadTree {
 			}
 			
 		};
-		this.subNodesByCoordinatePool = new Pool<HashMap<Key,PartitionTreeNode>>() {
-			protected HashMap<Key, PartitionTreeNode> instantiate() {
-				return new HashMap<Key, PartitionTreeNode>();
-			}
-		};
 		this.partitionRigidBodyPool = new Pool<ArrayList<RigidBody>>() {
 			protected ArrayList<RigidBody> instantiate() {
 				return new ArrayList<RigidBody>();
@@ -143,9 +137,8 @@ public final class PartitionQuadTree {
 	 * @param partition size
 	 * @return partition tree node
 	 */
-	public PartitionTreeNode createPartition(PartitionTreeNode parent, int x, int y, int z, float partitionSize) {
-		PartitionTreeNode node; 
-		node = partitionTreeNodePool.allocate();
+	public PartitionTreeNode createPartition(PartitionTreeNode parent, int x, int y, int z, float partitionSize) { 
+		PartitionTreeNode node = partitionTreeNodePool.allocate();
 		node.partitionSize = partitionSize;
 		node.x = x;
 		node.y = y;
@@ -173,18 +166,17 @@ public final class PartitionQuadTree {
 		}
 		parent.subNodes.add(node);
 
-		// register in parent sub nodes by coordinate 
-		if (parent.subNodesByCoordinate == null) {
-			parent.subNodesByCoordinate = subNodesByCoordinatePool.allocate();
+		// register in parent sub nodes by coordinate, if root node
+		if (parent == treeRoot) {
+			Key key = keyPool.allocate();
+			key.reset();
+			key.append(node.x);
+			key.append(",");
+			key.append(node.y);
+			key.append(",");
+			key.append(node.z);
+			parent.subNodesByCoordinate.put(key, node);
 		}
-		Key key = keyPool.allocate();
-		key.reset();
-		key.append(node.x);
-		key.append(",");
-		key.append(node.y);
-		key.append(",");
-		key.append(node.z);
-		parent.subNodesByCoordinate.put(key, node);
 
 		// create sub nodes
 		if (partitionSize > PARTITION_SIZE_MIN) {
@@ -243,8 +235,7 @@ public final class PartitionQuadTree {
 		for (int yPartition = minYPartition; yPartition <= maxYPartition; yPartition++)
 		for (int xPartition = minXPartition; xPartition <= maxXPartition; xPartition++)
 		for (int zPartition = minZPartition; zPartition <= maxZPartition; zPartition++) {
-
-			// try to find node by key
+			// check if first level node has been created already
 			key.reset();
 			key.append(xPartition);
 			key.append(",");
@@ -283,7 +274,7 @@ public final class PartitionQuadTree {
 	protected void removeRigidBody(RigidBody rigidBody) {
 		ArrayList<PartitionTreeNode> rigidBodyPartitionsVector = rigidBodyPartitionNodes.remove(rigidBody.getId());
 		if (rigidBodyPartitionsVector == null || rigidBodyPartitionsVector.isEmpty() == true) {
-			Console.println("PartitionQuadTree::removeRigidBody(): '" + rigidBody.getId() + "' not registered");
+			Console.println("PartitionOctTree::removeRigidBody(): '" + rigidBody.getId() + "' not registered");
 			return;
 		}
 		while (rigidBodyPartitionsVector.size() > 0) {
@@ -340,7 +331,7 @@ public final class PartitionQuadTree {
 		// lowest level node has objects attached?
 		if (node.partitionRidigBodies != null) {
 			if (node.partitionRidigBodies.size() > 0) {
-				System.out.println("PartitionQuadTree::removePartitionNode(): partition has objects attached!!!");
+				System.out.println("PartitionOctTree::removePartitionNode(): partition has objects attached!!!");
 				node.partitionRidigBodies.clear();
 			}
 			partitionRigidBodyPool.release(node.partitionRidigBodies);
@@ -355,13 +346,6 @@ public final class PartitionQuadTree {
 			node.subNodes.clear();
 			subNodesPool.release(node.subNodes);
 			node.subNodes = null;
-			// release sub nodes by coordinate
-			for (Key key: node.subNodesByCoordinate.getKeysIterator()) {
-				keyPool.release(key);
-			}
-			node.subNodesByCoordinate.clear();
-			subNodesByCoordinatePool.release(node.subNodesByCoordinate);
-			node.subNodesByCoordinate = null;
 		}
 		// release bv
 		boundingBoxPool.release(node.bv);
@@ -403,7 +387,7 @@ public final class PartitionQuadTree {
 	/**
 	 * Add rigidBody to tree
 	 */
-	protected void addToPartitionTree(RigidBody rigidBody, BoundingBox cbv) {
+	private void addToPartitionTree(RigidBody rigidBody, BoundingBox cbv) {
 		for (int i = 0; i < treeRoot.subNodes.size(); i++) {
 			addToPartitionTree(treeRoot.subNodes.get(i), rigidBody, cbv); 
 		}
@@ -415,7 +399,7 @@ public final class PartitionQuadTree {
 	 * @param cbv
 	 * @param rigidBody iterator
 	 */
-	private int doPartitionTreeLookUpNearEntities(PartitionTreeNode node, BoundingBox cbv, ArrayListIteratorMultiple<RigidBody> objectsIterator) {
+	private int doPartitionTreeLookUpNearEntities(PartitionTreeNode node, BoundingBox cbv, ArrayListIteratorMultiple<RigidBody> rigidBodyIterator) {
 		// check if given cbv collides with partition node bv
 		if (CollisionDetection.doCollideAABBvsAABBFast(cbv, node.bv) == false) {
 			return 1;
@@ -423,13 +407,13 @@ public final class PartitionQuadTree {
 
 		// if this node already has the partition cbvs add it to the iterator
 		if (node.partitionRidigBodies != null) {
-			objectsIterator.addArrayList(node.partitionRidigBodies);
+			rigidBodyIterator.addArrayList(node.partitionRidigBodies);
 			return 1;
 		} else {
 			int lookUps = 1;
 			// otherwise check sub nodes
 			for (int i = 0; i < node.subNodes.size(); i++) {
-				lookUps+= doPartitionTreeLookUpNearEntities(node.subNodes.get(i), cbv, objectsIterator);
+				lookUps+= doPartitionTreeLookUpNearEntities(node.subNodes.get(i), cbv, rigidBodyIterator);
 			}
 			return lookUps;
 		}
@@ -512,7 +496,7 @@ public final class PartitionQuadTree {
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		String result = "PartitionQuadTree\n";
+		String result = "PartitionOctTree\n";
 		for (PartitionTreeNode subNode: treeRoot.subNodes) {
 			result += toString("  ", subNode);
 		}

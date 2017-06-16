@@ -267,7 +267,7 @@ public final class PartitionQuadTree extends Partition {
 		// check if we have entity in quad tree
 		ArrayList<PartitionTreeNode> objectPartitionsVector = entityPartitionNodes.remove(entity.getId());
 		if (objectPartitionsVector == null || objectPartitionsVector.isEmpty() == true) {
-			Console.println("PartitionQuadTree::removeEntity(): '" + entity.getId() + "' not registered");
+			Console.println("PartitionOctTree::removeEntity(): '" + entity.getId() + "' not registered");
 			return;
 		}
 		while (objectPartitionsVector.size() > 0) {
@@ -325,7 +325,7 @@ public final class PartitionQuadTree extends Partition {
 		// lowest level node has objects attached?
 		if (node.partitionEntities != null) {
 			if (node.partitionEntities.size() > 0) {
-				Console.println("PartitionQuadTree::removePartitionNode(): partition has objects attached!!!");
+				Console.println("PartitionOctTree::removePartitionNode(): partition has objects attached!!!");
 				node.partitionEntities.clear();
 			}
 			partitionEntitiesPool.release(node.partitionEntities);
