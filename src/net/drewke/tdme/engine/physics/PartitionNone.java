@@ -10,7 +10,7 @@ import net.drewke.tdme.utils.ArrayListIteratorMultiple;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class PartitionNone {
+public final class PartitionNone extends Partition {
 
 	private ArrayList<RigidBody> bodies = new ArrayList<RigidBody>();
 	private ArrayListIteratorMultiple<RigidBody> arrayListIteratorMultiple = new ArrayListIteratorMultiple<RigidBody>();

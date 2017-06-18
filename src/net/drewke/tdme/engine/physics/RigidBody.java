@@ -50,7 +50,7 @@ public final class RigidBody {
 	private final static float VELOCITY_SLEEPTOLERANCE = 1.0f;
 	private final static int SLEEPING_FRAMES = 5 * 60;
 
-	protected PartitionOctTree partition;
+	protected World world;
 
 	protected int idx;
 	protected String id;
@@ -168,7 +168,7 @@ public final class RigidBody {
 	}
 
 	/**
-	 * Constructor
+	 * Protected constructor
 	 * @param partition
 	 * @param idx
 	 * @param id
@@ -179,8 +179,8 @@ public final class RigidBody {
 	 * @param restitution
 	 * @param mass in kg
 	 */
-	public RigidBody(PartitionOctTree partition, int idx, String id, boolean enabled, int typeId, BoundingVolume obv, Transformations transformations, float restitution, float friction, float mass, Matrix4x4 inverseInertia) {
-		this.partition = partition;
+	protected RigidBody(World world, int idx, String id, boolean enabled, int typeId, BoundingVolume obv, Transformations transformations, float restitution, float friction, float mass, Matrix4x4 inverseInertia) {
+		this.world = world;
 		this.idx = idx;
 		this.id = id;
 		this.enabled = enabled;
@@ -259,9 +259,9 @@ public final class RigidBody {
 
 		//
 		if (enabled == true) {
-			partition.addRigidBody(this);
+			world.partition.addRigidBody(this);
 		} else {
-			partition.removeRigidBody(this);
+			world.partition.removeRigidBody(this);
 		}
 
 		//

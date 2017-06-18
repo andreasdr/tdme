@@ -51,6 +51,9 @@ import net.drewke.tdme.utils.Pool;
  */
 public final class World {
 
+	// partition
+	protected Partition partition = new PartitionOctTree();
+
 	// rigid bodies, pool
 	private ArrayList<RigidBody> rigidBodies = new ArrayList<RigidBody>();
 	private ArrayList<RigidBody> rigidBodiesDynamic = new ArrayList<RigidBody>();
@@ -71,8 +74,6 @@ public final class World {
 		}
 	};
 	private HashMap<Key, Key> rigidBodyCollisionsLastFrame = new HashMap<Key, Key>();
-
-	private PartitionOctTree partition = new PartitionOctTree();
 
 	//
 	private Vector3 collisionMovement = new Vector3();
@@ -111,6 +112,21 @@ public final class World {
 	}
 
 	/**
+	 * @return partition algorithm
+	 */
+	public Partition getPartition() {
+		return partition;
+	}
+
+	/**
+	 * Set partition algorithm
+	 * @param partition
+	 */
+	public void setPartition(Partition partition) {
+		this.partition = partition;
+	}
+
+	/**
 	 * Add a rigid body
 	 * @param id
 	 * @param enabled
@@ -123,7 +139,7 @@ public final class World {
 	 * @return rigid body
 	 */
 	public RigidBody addRigidBody(String id, boolean enabled, int typeId, Transformations transformations, BoundingVolume obv, float restitution, float friction, float mass, Matrix4x4 inertiaMatrix) {
-		RigidBody rigidBody = new RigidBody(partition, rigidBodies.size(), id, enabled, typeId, obv, transformations, restitution, friction, mass, inertiaMatrix);
+		RigidBody rigidBody = new RigidBody(this, rigidBodies.size(), id, enabled, typeId, obv, transformations, restitution, friction, mass, inertiaMatrix);
 		rigidBodies.add(rigidBody);
 		rigidBodiesDynamic.add(rigidBody);
 		rigidBodiesById.put(id, rigidBody);
@@ -141,7 +157,7 @@ public final class World {
 	 * @return rigid body
 	 */
 	public RigidBody addStaticRigidBody(String id, boolean enabled, int typeId, Transformations transformations, BoundingVolume obv, float friction) {
-		RigidBody rigidBody = new RigidBody(partition, rigidBodies.size(), id, enabled, typeId, obv, transformations, 0f, friction, 0f, RigidBody.computeInertiaMatrix(obv, 0f,  0f,  0f,  0f));
+		RigidBody rigidBody = new RigidBody(this, rigidBodies.size(), id, enabled, typeId, obv, transformations, 0f, friction, 0f, RigidBody.computeInertiaMatrix(obv, 0f,  0f,  0f,  0f));
 		rigidBodies.add(rigidBody);
 		rigidBodiesById.put(id, rigidBody);
 		if (enabled == true) partition.addRigidBody(rigidBody);

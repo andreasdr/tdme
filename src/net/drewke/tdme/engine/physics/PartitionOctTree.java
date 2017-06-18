@@ -15,7 +15,7 @@ import net.drewke.tdme.utils.Pool;
  * @author Andreas Drewke
  * @version $Id$
  */
-public final class PartitionOctTree {
+public final class PartitionOctTree extends Partition {
 
 	/**
 	 * Partition oct tree node
