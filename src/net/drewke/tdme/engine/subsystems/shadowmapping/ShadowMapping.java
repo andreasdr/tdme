@@ -262,13 +262,13 @@ public final class ShadowMapping {
 			renderer.disableBlending();
 		}
 
-		// restore gl texture matrix on texture unit
+		// restore texture unit
 		int textureUnit = renderer.getTextureUnit();
 		renderer.setTextureUnit(ShadowMap.TEXTUREUNIT);
 		renderer.bindTexture(renderer.ID_NONE);
 		renderer.setTextureUnit(textureUnit);
 
-		// restore gl defaults
+		// restore render defaults
 		renderer.disableBlending();
 		renderer.enableDepthBuffer();
 		renderer.setDepthFunction(renderer.DEPTHFUNCTION_LESSEQUAL);
