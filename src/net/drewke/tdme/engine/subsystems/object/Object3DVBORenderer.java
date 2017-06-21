@@ -174,6 +174,7 @@ public final class Object3DVBORenderer {
 
 			// second render pass, draw color buffer for transparent objects
 			// 	set up blending, but no culling and no depth buffer
+			//	TODO: enabling depth buffer let shadow disappear
 			renderer.disableDepthBuffer();
 			renderer.disableCulling();
 			renderer.enableBlending();
