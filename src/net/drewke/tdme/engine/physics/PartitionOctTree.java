@@ -331,7 +331,7 @@ public final class PartitionOctTree extends Partition {
 		// lowest level node has objects attached?
 		if (node.partitionRidigBodies != null) {
 			if (node.partitionRidigBodies.size() > 0) {
-				System.out.println("PartitionOctTree::removePartitionNode(): partition has objects attached!!!");
+				Console.println("PartitionOctTree::removePartitionNode(): partition has objects attached!!!");
 				node.partitionRidigBodies.clear();
 			}
 			partitionRigidBodyPool.release(node.partitionRidigBodies);
