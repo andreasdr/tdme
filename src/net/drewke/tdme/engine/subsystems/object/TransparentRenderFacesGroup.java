@@ -27,7 +27,6 @@ public final class TransparentRenderFacesGroup {
 	private int facesEntityIdx;
 	protected Color4 effectColorAdd;
 	protected Color4 effectColorMul;
-	private boolean depthBuffer;
 	private Material material;
 	private boolean textureCoordinates;
 
@@ -42,7 +41,6 @@ public final class TransparentRenderFacesGroup {
 		this.facesEntityIdx = -1;
 		this.effectColorAdd = null;
 		this.effectColorMul = null;
-		this.depthBuffer = false;
 		this.material = null;
 		this.textureCoordinates = false;
 	}
@@ -56,11 +54,10 @@ public final class TransparentRenderFacesGroup {
 	 * @param faces entity idx
 	 * @param effect color add
 	 * @param effect color mul
-	 * @param depth buffer
 	 * @param material
 	 * @param texture coordinates
 	 */
-	protected void set(Object3DVBORenderer object3DVBORenderer, Model model, Object3DGroup object3DGroup, int facesEntityIdx, Color4 effectColorAdd, Color4 effectColorMul, boolean depthBuffer, Material material, boolean textureCoordinates) {
+	protected void set(Object3DVBORenderer object3DVBORenderer, Model model, Object3DGroup object3DGroup, int facesEntityIdx, Color4 effectColorAdd, Color4 effectColorMul, Material material, boolean textureCoordinates) {
 		this.object3DVBORenderer = object3DVBORenderer;
 		this.batchVBORenderers.clear();
 		this.model = model;
@@ -68,7 +65,6 @@ public final class TransparentRenderFacesGroup {
 		this.facesEntityIdx = facesEntityIdx;
 		this.effectColorAdd = effectColorAdd;
 		this.effectColorMul = effectColorMul;
-		this.depthBuffer = depthBuffer;
 		this.material = material;
 		this.textureCoordinates = textureCoordinates;
 	}
@@ -80,12 +76,11 @@ public final class TransparentRenderFacesGroup {
 	 * @param faces entity idx
 	 * @param effect color add
 	 * @param effect color mul
-	 * @param depth buffer
 	 * @param material
 	 * @param texture coordinates
 	 * @return
 	 */
-	protected static void createKey(Key key, Model model, Object3DGroup object3DGroup, int facesEntityIdx, Color4 effectColorAdd, Color4 effectColorMul, boolean depthBuffer, Material material, boolean textureCoordinates) {
+	protected static void createKey(Key key, Model model, Object3DGroup object3DGroup, int facesEntityIdx, Color4 effectColorAdd, Color4 effectColorMul, Material material, boolean textureCoordinates) {
 		float[] efcmData = effectColorMul.getArray();
 		float[] efcaData = effectColorAdd.getArray();
 		key.reset();
@@ -104,8 +99,6 @@ public final class TransparentRenderFacesGroup {
 		key.append(efcaData[1]);
 		key.append(efcaData[2]);
 		key.append(efcaData[3]);
-		key.append(",");
-		key.append((depthBuffer == true?"DBT":"DBF"));
 		key.append(",");
 		key.append((material == null?"tdme.material.none":material.getId()));
 		key.append(",");
@@ -149,9 +142,8 @@ public final class TransparentRenderFacesGroup {
 	/**
 	 * Render this transparent render faces group
 	 * @param renderer
-	 * @param depth buffer mode
 	 */
-	protected void render(GLRenderer renderer, Object3DVBORenderer.DepthBufferMode depthBufferMode) {
+	protected void render(GLRenderer renderer) {
 		// store model view matrix
 		modelViewMatrix.set(renderer.getModelViewMatrix());
 
@@ -175,15 +167,6 @@ public final class TransparentRenderFacesGroup {
 		renderer.setEffectColorAdd(effectColorAdd.getArray());
 		renderer.onUpdateEffect();
 
-		// depth buffer
-		if (depthBufferMode != Object3DVBORenderer.DepthBufferMode.IGNORE) {
-			if (depthBuffer || depthBufferMode == Object3DVBORenderer.DepthBufferMode.FORCE) {
-				renderer.enableDepthBuffer();
-			} else {
-				renderer.disableDepthBuffer();
-			}
-		}
-
 		// material
 		object3DVBORenderer.setupMaterial(object3DGroup, facesEntityIdx);
 
@@ -200,10 +183,7 @@ public final class TransparentRenderFacesGroup {
 		}
 		batchVBORenderers.clear();
 
-		// restore gl state
-		if (depthBufferMode != Object3DVBORenderer.DepthBufferMode.IGNORE) {
-			renderer.disableDepthBuffer();
-		}
+		//
 		renderer.unbindBufferObjects();
 		renderer.getModelViewMatrix().set(modelViewMatrix);
 		renderer.onUpdateModelViewMatrix();

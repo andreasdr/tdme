@@ -29,8 +29,6 @@ import net.drewke.tdme.utils.QuickSort;
  */
 public final class Object3DVBORenderer {
 
-	public enum DepthBufferMode{IGNORE, FORCE, NORMAL};
-
 	private static final int BATCHVBORENDERER_MAX = 256;
 
 	protected Engine engine;
@@ -141,10 +139,9 @@ public final class Object3DVBORenderer {
 	/**
 	 * Renders all given objects
 	 * @param objects
-	 * @param render transparent faces
-	 * @param depth buffer mode  
+	 * @param render transparent faces  
 	 */
-	public void render(ArrayList<Object3D> objects, boolean renderTransparentFaces, DepthBufferMode depthBufferMode) {
+	public void render(ArrayList<Object3D> objects, boolean renderTransparentFaces) {
 		// clear transparent render faces data
 		transparentRenderFacesPool.reset();
 		releaseTransparentFacesGroups();
@@ -216,7 +213,7 @@ public final class Object3DVBORenderer {
 			}
 
 			// render transparent faces groups
-			renderTransparentFacesGroups(transparentRenderFacesGroups, depthBufferMode);
+			renderTransparentFacesGroups(transparentRenderFacesGroups);
 
 			//	no blending, but culling and depth buffer
 			renderer.disableBlending();
@@ -264,9 +261,6 @@ public final class Object3DVBORenderer {
 			TransparentRenderFace transparentRenderFace = transparentRenderFaces.get(i);
 			int facesEntityIdx = transparentRenderFace.facesEntityIdx;
 
-			// check if to use depth buffer
-			depthBuffer = ((Object3D)transparentRenderFace.object3DGroup.object).isPickable();
-
 			// determine if faces entity and so material did switch between last face and current face
 			if (facesEntity != facesEntities[facesEntityIdx]) {
 				facesEntity = facesEntities[facesEntityIdx];
@@ -282,7 +276,6 @@ public final class Object3DVBORenderer {
 				facesEntityIdx,
 				effectColorAdd,
 				effectColorMul,
-				depthBuffer,
 				material,
 				textureCoordinates
 			);
@@ -299,7 +292,6 @@ public final class Object3DVBORenderer {
 					facesEntityIdx,
 					effectColorAdd,
 					effectColorMul,
-					depthBuffer,
 					material,
 					textureCoordinates
 				);
@@ -333,9 +325,9 @@ public final class Object3DVBORenderer {
 	 * @param transparent render faces groups
 	 * @param depth buffer mode
 	 */
-	protected void renderTransparentFacesGroups(HashMap<Key, TransparentRenderFacesGroup> transparentRenderFacesGroups, DepthBufferMode depthBufferMode) {
+	protected void renderTransparentFacesGroups(HashMap<Key, TransparentRenderFacesGroup> transparentRenderFacesGroups) {
 		for (TransparentRenderFacesGroup transparentRenderFacesGroup: transparentRenderFacesGroups.getValuesIterator()) {
-			transparentRenderFacesGroup.render(renderer, depthBufferMode);
+			transparentRenderFacesGroup.render(renderer);
 		}
 	}
 

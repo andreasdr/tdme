@@ -6,7 +6,6 @@ import net.drewke.tdme.engine.Engine;
 import net.drewke.tdme.engine.Light;
 import net.drewke.tdme.engine.Object3D;
 import net.drewke.tdme.engine.subsystems.object.Object3DVBORenderer;
-import net.drewke.tdme.engine.subsystems.object.Object3DVBORenderer.DepthBufferMode;
 import net.drewke.tdme.engine.subsystems.renderer.GLRenderer;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
@@ -256,7 +255,7 @@ public final class ShadowMapping {
 			renderer.enableBlending();
 
 			// 	only opaque face entities as shadows will not be produced on transparent faces
-			object3DVBORenderer.render(visibleObjects, true, DepthBufferMode.IGNORE);
+			object3DVBORenderer.render(visibleObjects, true);
 
 			// disable blending
 			renderer.disableBlending();

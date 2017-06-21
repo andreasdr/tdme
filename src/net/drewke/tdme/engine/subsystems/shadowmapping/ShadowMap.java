@@ -169,7 +169,7 @@ public final class ShadowMap {
 		computeDepthBiasMVPMatrix();
 
 		// only draw opaque face entities as shadows will not be produced from transparent objects
-		shadowMapping.object3DVBORenderer.render(visibleObjects, true, Object3DVBORenderer.DepthBufferMode.FORCE);
+		shadowMapping.object3DVBORenderer.render(visibleObjects, true);
 	}
 
 	/**

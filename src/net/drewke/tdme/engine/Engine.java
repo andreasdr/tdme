@@ -933,7 +933,7 @@ public final class Engine {
 		}
 
 		// render objects
-		object3DVBORenderer.render(visibleObjects, true, Object3DVBORenderer.DepthBufferMode.NORMAL);
+		object3DVBORenderer.render(visibleObjects, true);
 
 		// setup up gl3 stuff
 		if (lightingShader != null) {
