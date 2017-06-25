@@ -232,14 +232,14 @@ public final class Object3DGroupMesh {
 					totalWeights = 0f;
 					for (int vertexJointWeightIdx = 0; vertexJointWeightIdx < jointsWeights[vertexIndex].length; vertexJointWeightIdx++) {
 						float weight = cSkinningJointWeight[vertexIndex][vertexJointWeightIdx];
-	
-						// 
+
+						// current vertex transformations matrices
 						cTransformationsMatrix.set(cSkinningJointBindMatrices[vertexIndex][vertexJointWeightIdx]);
 						cTransformationsMatrix.multiply(cSkinningJointTransformationsMatrices[vertexIndex][vertexJointWeightIdx]);
-	
+
 						// vertex
 						transformedVertex.add(cTransformationsMatrix.multiply(vertex, tmpVector3).scale(weight));
-	
+
 						// normals
 						transformedNormal.add(cTransformationsMatrix.multiplyNoTranslation(normal, tmpVector3).scale(weight));
 
