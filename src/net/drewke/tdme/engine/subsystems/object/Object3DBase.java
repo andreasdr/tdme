@@ -10,6 +10,7 @@ import net.drewke.tdme.engine.model.AnimationSetup;
 import net.drewke.tdme.engine.model.Face;
 import net.drewke.tdme.engine.model.FacesEntity;
 import net.drewke.tdme.engine.model.Group;
+import net.drewke.tdme.engine.model.Joint;
 import net.drewke.tdme.engine.model.Model;
 import net.drewke.tdme.engine.primitives.Triangle;
 import net.drewke.tdme.engine.subsystems.manager.MeshManager;
@@ -145,6 +146,10 @@ public class Object3DBase extends Transformations {
 	protected Matrix4x4[] transformationsMatricesStack;
 	protected Matrix4x4 tmpMatrix1;
 
+	protected boolean hasSkinning;
+	protected HashMap<String, Matrix4x4>[] skinningGroupsMatrices;
+	protected Group[] skinningGroups;
+
 	protected AnimationState baseAnimation;
 	protected HashMap<String, AnimationState> overlayAnimationsById;
 	protected HashMap<String, AnimationState> overlayAnimationsByJointId; 
@@ -180,11 +185,26 @@ public class Object3DBase extends Transformations {
 		tmpMatrix1 = new Matrix4x4();
 		transformedFacesIterator = null;
 
+		// skinning
+		hasSkinning = false;
+		skinningGroupsMatrices = null;
+		skinningGroups = null;
+		if (model.hasSkinning() == true) {
+			hasSkinning = true;
+			skinningGroups = new Group[determineSkinnedGroupCount(model.getSubGroups())];
+			determineSkinnedGroups(model.getSubGroups(), skinningGroups, 0);
+			skinningGroupsMatrices = new HashMap[skinningGroups.length];
+			for (int i = 0; i < skinningGroups.length; i++) {
+				skinningGroupsMatrices[i] = new HashMap<String, Matrix4x4>();
+				createTransformationsMatrices(skinningGroupsMatrices[i], model.getSubGroups());
+			}
+		}
+
 		// animation
 		setAnimation(Model.ANIMATIONSETUP_DEFAULT);
 
 		// create transformations matrices
-		createTransformationsMatrices(model.getSubGroups());
+		createTransformationsMatrices(transformationsMatrices, model.getSubGroups());
 
 		// object 3d groups
 		object3dGroups = Object3DGroup.createGroups(this, useMeshManager, animationProcessingTarget);
@@ -350,19 +370,20 @@ public class Object3DBase extends Transformations {
 
 	/**
 	 * Creates all groups transformation matrices
+	 * @param matrices
 	 * @param groups
-	 * @depth
 	 */
-	protected void createTransformationsMatrices(HashMap<String, Group> groups) {
+	protected void createTransformationsMatrices(HashMap<String, Matrix4x4> matrices, HashMap<String, Group> groups) {
 		// iterate through groups
 		for (Group group: groups.getValuesIterator()) {
 			// put and associate transformation matrices with group
-			transformationsMatrices.put(group.getId(), new Matrix4x4().identity());
+			matrices.put(group.getId(), new Matrix4x4().identity());
 
 			// calculate sub groups
 			HashMap<String,Group> subGroups = group.getSubGroups(); 
 			if (subGroups.size() > 0) {
 				createTransformationsMatrices(
+					matrices,
 					subGroups
 				);
 			}
@@ -440,6 +461,19 @@ public class Object3DBase extends Transformations {
 
 			// put and associate transformation matrices with group
 			transformationsMatrices.get(group.getId()).set(transformationsMatrix);
+			if (hasSkinning == true) {
+				for (int i = 0; i < skinningGroups.length; i++) {
+					Joint skinningJoint = skinningGroups[i].getSkinning().getJointByName(group.getId());
+					if (skinningJoint == null) {
+						skinningGroupsMatrices[i].get(group.getId()).
+							set(transformationsMatrix);
+					} else {
+						skinningGroupsMatrices[i].get(group.getId()).
+							set(skinningJoint.getBindMatrix()).
+							multiply(transformationsMatrix);
+					}
+				}
+			}
 
 			// calculate for sub groups
 			HashMap<String,Group> subGroups = group.getSubGroups(); 
@@ -599,6 +633,80 @@ public class Object3DBase extends Transformations {
 	}
 
 	/**
+	 * Determine skinned group count
+	 * @param groups
+	 * @param current count
+	 */
+	private int determineSkinnedGroupCount(HashMap<String, Group> groups) {
+		return determineSkinnedGroupCount(groups, 0);
+	}
+
+	/**
+	 * Determine skinned group count
+	 * @param groups
+	 * @param current count
+	 */
+	private int determineSkinnedGroupCount(HashMap<String, Group> groups, int count) {
+		// iterate through groups
+		for (Group group: groups.getValuesIterator()) {
+			// 
+			if (group.getSkinning() != null) count++;
+
+			// calculate sub groups
+			HashMap<String,Group> subGroups = group.getSubGroups(); 
+			if (subGroups.size() > 0) {
+				count = determineSkinnedGroupCount(
+					subGroups,
+					count
+				);
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Determine skinned groups
+	 * @param groups
+	 * @param skinning groups
+	 * @param idx
+	 */
+	private int determineSkinnedGroups(HashMap<String, Group> groups, Group[] skinningGroups, int idx) {
+		// iterate through groups
+		for (Group group: groups.getValuesIterator()) {
+			// fetch skinning groups
+			if (group.getSkinning() != null) {
+				skinningGroups[idx++] = group;
+			}
+
+			// calculate sub groups
+			HashMap<String,Group> subGroups = group.getSubGroups(); 
+			if (subGroups.size() > 0) {
+				idx = determineSkinnedGroups(
+					subGroups,
+					skinningGroups,
+					idx
+				);
+			}
+		}
+		return idx;
+	}
+
+	/**
+	 * Get skinning groups matrices
+	 * @param group
+	 * @return matrices
+	 */
+	protected HashMap<String, Matrix4x4> getSkinningGroupsMatrices(Group group) {
+		if (hasSkinning == false) return null;
+		for (int i = 0; i < skinningGroups.length; i++) {
+			if (skinningGroups[i] == group) {
+				return skinningGroupsMatrices[i];
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Initiates this object3d 
 	 */
 	public void initialize() {
@@ -613,11 +721,20 @@ public class Object3DBase extends Transformations {
 				if (usesMeshManager == true) {
 					object3DGroup.mesh = meshManager.getMesh(object3DGroup.id);
 					if (object3DGroup.mesh == null) {
-						object3DGroup.mesh = Object3DGroupMesh.createMesh(animationProcessingTarget, object3DGroup.group, object3DGroup.object.transformationsMatrices);
-						meshManager.addMesh(object3DGroup.id, object3DGroup.mesh);
+						object3DGroup.mesh = Object3DGroupMesh.createMesh(
+							animationProcessingTarget, 
+							object3DGroup.group, 
+							object3DGroup.object.transformationsMatrices, 
+							getSkinningGroupsMatrices(object3DGroup.group)
+						);
 					}
 				} else {
-					object3DGroup.mesh = Object3DGroupMesh.createMesh(animationProcessingTarget, object3DGroup.group, object3DGroup.object.transformationsMatrices);
+					object3DGroup.mesh = Object3DGroupMesh.createMesh(
+						animationProcessingTarget, 
+						object3DGroup.group, 
+						object3DGroup.object.transformationsMatrices, 
+						getSkinningGroupsMatrices(object3DGroup.group)
+					);
 				}			
 			}
 		}

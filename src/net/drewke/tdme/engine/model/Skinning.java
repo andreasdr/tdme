@@ -3,6 +3,7 @@ package net.drewke.tdme.engine.model;
 import java.util.Arrays;
 
 import net.drewke.tdme.utils.ArrayList;
+import net.drewke.tdme.utils.HashMap;
 
 /**
  * Skinning definition for groups
@@ -20,6 +21,9 @@ public final class Skinning {
 	// for each vertex we have a set of joints with a corresponding weight
 	private JointWeight[][] verticesJointsWeights;
 
+	// joints by name
+	private HashMap<String, Joint> jointsByName;
+
 	/**
 	 * Public constructor
 	 */
@@ -27,6 +31,7 @@ public final class Skinning {
 		weights = new float[0];
 		joints = new Joint[0];
 		verticesJointsWeights = new JointWeight[0][0];
+		jointsByName = new HashMap<String, Joint>();
 	}
 
 	/**
@@ -68,6 +73,7 @@ public final class Skinning {
 	 */
 	public void setJoints(Joint[] joints) {
 		this.joints = joints;
+		setupJointsByName();
 	}
 
 	/**
@@ -76,6 +82,7 @@ public final class Skinning {
 	 */
 	public void setJoints(ArrayList<Joint> joints) {
 		this.joints = joints.toArray(new Joint[joints.size()]);
+		setupJointsByName();
 	}
 
 	/**
@@ -105,6 +112,25 @@ public final class Skinning {
 				this.verticesJointsWeights[i][j] = verticesJointsWeights.get(i).get(j);
 			}
 		}
+	}
+
+	/**
+	 * Set up joints by name
+	 */
+	private void setupJointsByName() {
+		for (int i = 0; i < joints.length; i++) {
+			Joint joint = joints[i];
+			jointsByName.put(joint.getGroupId(), joint);
+		}
+	}
+
+	/**
+	 * Get joint by name
+	 * @param name
+	 * @return joint
+	 */
+	public Joint getJointByName(String name) {
+		return jointsByName.get(name);
 	}
 
 	/**

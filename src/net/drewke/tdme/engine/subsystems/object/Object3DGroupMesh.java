@@ -37,9 +37,7 @@ public final class Object3DGroupMesh {
 	private float cSkinningJointWeight[][] = null;
 
 	protected Matrix4x4 cGroupTransformationsMatrix = null;
-	private Matrix4x4 cSkinningJointBindMatrices[][] = null;
 	private Matrix4x4 cSkinningJointTransformationsMatrices[][] = null;
-	private Matrix4x4 cTransformationsMatrix = new Matrix4x4();
 	private Vector3 tmpVector3;
 
 
@@ -53,9 +51,10 @@ public final class Object3DGroupMesh {
 	 * @param animation processing target
 	 * @param group
 	 * @param transformationm matrices
+	 * @param skinning matrices 
 	 * @return object 3d group mesh
 	 */
-	protected static Object3DGroupMesh createMesh(Engine.AnimationProcessingTarget animationProcessingTarget, Group group, HashMap<String, Matrix4x4> transformationMatrices) {
+	protected static Object3DGroupMesh createMesh(Engine.AnimationProcessingTarget animationProcessingTarget, Group group, HashMap<String, Matrix4x4> transformationMatrices, HashMap<String, Matrix4x4> skinningMatrices) {
 		Object3DGroupMesh mesh = new Object3DGroupMesh();
 
 		//
@@ -152,9 +151,7 @@ public final class Object3DGroupMesh {
 			if (mesh.animationProcessingTarget == Engine.AnimationProcessingTarget.CPU ||
 				mesh.animationProcessingTarget == Engine.AnimationProcessingTarget.CPU_NORENDERING) {
 				mesh.cSkinningJointWeight = new float[groupVertices.length][];
-				mesh.cSkinningJointBindMatrices = new Matrix4x4[groupVertices.length][];
 				mesh.cSkinningJointTransformationsMatrices = new Matrix4x4[groupVertices.length][];
-				mesh.cTransformationsMatrix = new Matrix4x4();
 	
 				// compute joint weight caches
 				Joint[] joints = skinning.getJoints();
@@ -164,15 +161,13 @@ public final class Object3DGroupMesh {
 					int vertexJointWeights = jointsWeights[vertexIndex].length;
 					if (vertexJointWeights > mesh.cSkinningMaxVertexWeights) mesh.cSkinningMaxVertexWeights = vertexJointWeights;
 					mesh.cSkinningJointWeight[vertexIndex] = new float[vertexJointWeights];
-					mesh.cSkinningJointBindMatrices[vertexIndex] = new Matrix4x4[vertexJointWeights];
 					mesh.cSkinningJointTransformationsMatrices[vertexIndex] = new Matrix4x4[vertexJointWeights];
 					int jointWeightIdx = 0;
 					for (JointWeight jointWeight : jointsWeights[vertexIndex]) {
 						Joint joint = joints[jointWeight.getJointIndex()];
 						// 
 						mesh.cSkinningJointWeight[vertexIndex][jointWeightIdx] = weights[jointWeight.getWeightIndex()]; 
-						mesh.cSkinningJointBindMatrices[vertexIndex][jointWeightIdx] = joint.getBindMatrix();
-						mesh.cSkinningJointTransformationsMatrices[vertexIndex][jointWeightIdx] = transformationMatrices.get(joint.getGroupId());
+						mesh.cSkinningJointTransformationsMatrices[vertexIndex][jointWeightIdx] = skinningMatrices.get(joint.getGroupId());
 	
 						// next
 						jointWeightIdx++;
@@ -234,9 +229,8 @@ public final class Object3DGroupMesh {
 					for (int vertexJointWeightIdx = 0; vertexJointWeightIdx < jointsWeights[vertexIndex].length; vertexJointWeightIdx++) {
 						float weight = cSkinningJointWeight[vertexIndex][vertexJointWeightIdx];
 
-						// current vertex transformations matrices
-						cTransformationsMatrix.set(cSkinningJointBindMatrices[vertexIndex][vertexJointWeightIdx]);
-						cTransformationsMatrix.multiply(cSkinningJointTransformationsMatrices[vertexIndex][vertexJointWeightIdx]);
+						// skinning transformation matrix
+						Matrix4x4 cTransformationsMatrix = cSkinningJointTransformationsMatrices[vertexIndex][vertexJointWeightIdx];
 
 						// vertex
 						transformedVertex.add(cTransformationsMatrix.multiply(vertex, tmpVector3).scale(weight));

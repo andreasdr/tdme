@@ -250,6 +250,7 @@ public final class Group {
 	 */
 	public Skinning createSkinning() {
 		skinning = new Skinning();
+		model.setHasSkinning(true);
 		return skinning;
 	}
 

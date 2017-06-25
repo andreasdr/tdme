@@ -98,11 +98,21 @@ public final class Object3DGroup {
 					MeshManager meshManager = Engine.getInstance().getMeshManager();
 					object3DGroup.mesh = meshManager.getMesh(object3DGroup.id);
 					if (object3DGroup.mesh == null) {
-						object3DGroup.mesh = Object3DGroupMesh.createMesh(animationProcessingTarget, group, object3D.transformationsMatrices);
+						object3DGroup.mesh = Object3DGroupMesh.createMesh(
+							animationProcessingTarget, 
+							group, 
+							object3D.transformationsMatrices, 
+							object3D.getSkinningGroupsMatrices(group)
+						);
 						meshManager.addMesh(object3DGroup.id, object3DGroup.mesh);
 					}
 				} else {
-					object3DGroup.mesh = Object3DGroupMesh.createMesh(animationProcessingTarget, group, object3D.transformationsMatrices);
+					object3DGroup.mesh = Object3DGroupMesh.createMesh(
+						animationProcessingTarget, 
+						group, 
+						object3D.transformationsMatrices, 
+						object3D.getSkinningGroupsMatrices(group)
+					);
 				}
 				object3DGroup.materialDiffuseTextureIdsByEntities = new int[group.getFacesEntities().length];
 				object3DGroup.dynamicDiffuseTextureIdsByEntities = new int[group.getFacesEntities().length];

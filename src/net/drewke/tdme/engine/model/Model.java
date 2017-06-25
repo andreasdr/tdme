@@ -33,6 +33,8 @@ public final class Model {
 	private HashMap<String, Group> groups;
 	private HashMap<String, Group> subGroups;
 
+	private boolean hasSkinning;
+
 	private float fps;
 	private HashMap<String, AnimationSetup> animationSetups;
 
@@ -56,6 +58,7 @@ public final class Model {
 		materials = new HashMap<String, Material>();
 		groups = new HashMap<String, Group>();
 		subGroups = new HashMap<String, Group>();
+		hasSkinning = false;
 		fps = FPS_DEFAULT;
 		animationSetups = new HashMap<String, AnimationSetup>();
 		importTransformationsMatrix = new Matrix4x4().identity();
@@ -138,6 +141,21 @@ public final class Model {
 	 */
 	public Group getSubGroupById(String id) {
 		return subGroups.get(id);
+	}
+
+	/**
+	 * @return has skinning
+	 */
+	public boolean hasSkinning() {
+		return hasSkinning;
+	}
+
+	/**
+	 * Set up if model has skinning
+	 * @param has skinning
+	 */
+	protected void setHasSkinning(boolean hasSkinning) {
+		this.hasSkinning = hasSkinning;
 	}
 
 	/**
