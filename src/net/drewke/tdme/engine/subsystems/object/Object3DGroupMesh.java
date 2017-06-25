@@ -12,6 +12,7 @@ import net.drewke.tdme.engine.model.Joint;
 import net.drewke.tdme.engine.model.JointWeight;
 import net.drewke.tdme.engine.model.Skinning;
 import net.drewke.tdme.engine.model.TextureCoordinate;
+import net.drewke.tdme.math.MathTools;
 import net.drewke.tdme.math.Matrix4x4;
 import net.drewke.tdme.math.Vector3;
 import net.drewke.tdme.utils.HashMap;
@@ -258,7 +259,7 @@ public final class Object3DGroupMesh {
 					}
 	
 					// scale to full weight
-					if (totalWeights != 1f) {
+					if (Math.abs(totalWeights - 1f) > MathTools.EPSILON) {
 						weightNormalized = 1f / totalWeights;
 	
 						// vertex
