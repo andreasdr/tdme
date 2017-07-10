@@ -1170,13 +1170,13 @@ public final class DAEReader {
 							xmlNormalsOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
 							xmlNormalsSource = xmlTrianglesInput.getAttribute("source").substring(1);
 							xmlInputSet.add(xmlNormalsOffset);
-						}
+						} else
 						// check for texture coordinate sources
 						if (xmlTrianglesInput.getAttribute("semantic").equals("TEXCOORD")) {
 							xmlTexCoordOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));
 							xmlTexCoordSource = xmlTrianglesInput.getAttribute("source").substring(1);
 							xmlInputSet.add(xmlTexCoordOffset);
-						}
+						} else
 						// check for color coordinate sources
 						if (xmlTrianglesInput.getAttribute("semantic").equals("COLOR")) {
 							xmlColorOffset = Integer.parseInt(xmlTrianglesInput.getAttribute("offset"));

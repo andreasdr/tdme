@@ -63,6 +63,7 @@ public final class Object3DGroupMesh {
 		// group data
 		Vector3[] groupVertices = group.getVertices();
 		Vector3[] groupNormals = group.getNormals();
+		TextureCoordinate[] groupTextureCoordinates = group.getTextureCoordinates();
 		Vector3[] groupTangents = group.getTangents();
 		Vector3[] groupBitangents = group.getBitangents();
 
@@ -117,6 +118,9 @@ public final class Object3DGroupMesh {
 				mesh.bitangents = groupBitangents;
 			}
 		}
+
+		// texture coordinates
+		mesh.textureCoordinates = groupTextureCoordinates;
 
 		// indices
 		int indicesCount = 0; 
