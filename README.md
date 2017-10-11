@@ -128,8 +128,8 @@ TDME
 
     - Tools
         - TDME Model Viewer, see README-Viewer.md
+        - TDME Particle System Editor, see README-ParticleSystemEditor.md
         - TDME Level Editor, see README-LevelEditor.md
-        - TDME Particle System Editor, mo .MD yet
 
     - Links
         - <youtube link here>
