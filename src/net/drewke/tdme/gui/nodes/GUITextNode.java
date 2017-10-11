@@ -91,7 +91,14 @@ public final class GUITextNode extends GUINode {
 	public int getContentHeight() {
 		return font.getLineHeight() + border.top + border.bottom + padding.top + padding.bottom;
 	}
-	
+
+	/**
+	 * @return color
+	 */
+	public GUIColor getColor() {
+		return color;
+	}
+
 	/**
 	 * @return text
 	 */

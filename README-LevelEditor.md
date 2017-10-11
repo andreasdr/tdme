@@ -16,6 +16,7 @@ TDMELevelEditor
                 - render with generated ground, shadowing, bounding volume
                 - setting up the model pivot
                 - see statistics
+            - particle systems
             - empties
             - trigger
         - level editor
@@ -28,7 +29,7 @@ TDMELevelEditor
             - objects
                  - set up name, description
                  - see model name, center
-             - setting up object transformations for a single or multiple objects
+            - setting up object transformations for a single or multiple objects
                  - translation
                  - scaling
                  - rotation
@@ -37,16 +38,13 @@ TDMELevelEditor
                  - remove objects
              - setting up object properties
                  - key, value map for what ever reason
-            - set up up to 4 lights (for now)
-            - see and select entities(models, empties and trigger) from entity library to place them on map
+            - set up up to 8 lights (for now)
+            - see and select entities(models, particle systems, empties and trigger) from entity library to place them on map
             - rotate, zoom and pan map, selecting objects
             - copy and paste
 
     - What is WIP
-        - set up particle systems as entities
         - set up arbitrary lights as entities
-        - multiple bounding volumes per model entity
-        - some other bug fixes that need to be resolved
 
     - Technology
         - uses TDME for rendering and GUI

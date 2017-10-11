@@ -27,10 +27,6 @@ TDMEViewer
             - transparent faces
             - material count
 
-    - What is WIP
-        - multiple bounding volumes per model
-        - some other bug fixes that need to be resolved
-
     - Technology
         - uses TDME for rendering and GUI
         - platforms
